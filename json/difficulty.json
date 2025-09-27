@@ -1,0 +1,19 @@
+[
+    {
+        "EASY":
+        {
+            "timerSec":1400,
+            "hints":3
+        },
+        "MEDIUM":
+        {
+            "timerSec":1200,
+            "hints":2
+        },
+        "HARD":
+        {
+            "timerSec":900,
+            "hints":1
+        }
+    }
+]
