@@ -1,6 +1,5 @@
 [
   {
-    "timerID": "b7e3a3f0-9a21-4c64-9d58-7c77b4c7f9d2",
     "initialSeconds": 1800,
     "remainingSeconds": 1800,
     "isExpired": false
