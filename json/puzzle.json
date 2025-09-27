@@ -1,5 +1,30 @@
 [
     {
-        
+    "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
+    "type": "NumberPuzzle",
+    "title": "Password Calculation",
+    "objective": "Use math to figure out the password.",
+    "solved": false
+    },
+    {
+    "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
+    "type": "WordPuzzle",
+    "title": "Anagram Unlock",
+    "objective": "Rearrange letters to form the correct password.",
+    "solved": true
+    },
+    {
+    "puzzleID": "ee77945b-67c9-4b65-8bf6-67e3f0478349",
+    "type": "WordPuzzle",
+    "title": "Riddle Answer",
+    "objective": "Solve the riddle to open the chest.",
+    "solved": true
+    },
+    {
+    "puzzleID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
+    "type": "WordPuzzle",
+    "title": "Scrambled Code",
+    "objective": "Unscramble the letters to reveal the code word.",
+    "solved": true
     }
 ]
