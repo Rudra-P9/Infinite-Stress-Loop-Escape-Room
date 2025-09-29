@@ -2,22 +2,29 @@
   {
     "roomID": "62343172-dd4c-4be6-ba73-22df6e77e802",
     "difficulty": "EASY",
-    "puzzleID":
+    "puzzleIDs": [
       "0a7f2ae3-f096-4669-a81b-943573553b0c"
-  },{
+    ]
+  },
+  {
     "roomID": "66f3e4a1-44c0-4956-9f19-d21ba01151ce",
     "difficulty": "HARD",
-    "puzzleID":
+    "puzzleIDs": [
       "c96f61f5-7255-4083-b8c2-106f6d350253"
-  },{
+    ]
+  },
+  {
     "roomID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
     "difficulty": "MEDIUM",
-    "puzzleID":
+    "puzzleIDs": [
       "f8836f88-c4c0-49f7-83db-7a15f6f092ef"
-  },{
+    ]
+  },
+  {
     "roomID": "ee77945b-67c9-4b65-8bf6-67e3f0478349",
     "difficulty": "EASY",
-    "puzzleID":
+    "puzzleIDs": [
       "c0fea17a-656a-4918-9c66-a03ce4d1b169"
+    ]
   }
 ]

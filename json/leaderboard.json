@@ -1,34 +1,36 @@
-[
+{
+  "entries": [
     {
-        "entries":
-        [
-            {
-            "username":"EscapeRoomLover",
-            "userID":"24f05b3b-514d-444f-b6ac-b0e649df6fb6",
-            "difficulty": "EASY",
-            "timeSeconds": 300,
-            "date": "2025-09-27"
-            },{
-            "username":"iGitThis",
-            "userID":"a1dceaba-b9a9-4b95-9864-8fb80807e1df",
-            "difficulty": "HARD",
-            "timeSeconds": 720,
-            "date": "2025-04-16" 
-            },{
-            "username":"PushPioneer12",
-            "userID":"2514a407-44fd-4183-95c0-1f16f9968bfc",
-            "difficulty": "MEDIUM",
-            "timeSeconds": 480,
-            "date": "2025-12-05"
-            },
-            {
-            "username":"NullPointerHero",
-            "userID":"b287f426-a9d3-4d49-a738-3e03de9f4d60",
-            "difficulty": "EASY",
-            "timeSeconds": 260,
-            "date": "2025-07-24"
-            }
-            
-        ]
+      "username": "iGitThis",
+      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "difficulty": "HARD",
+      "timeLeftSec": 720,
+      "score": 720,
+      "date": "2025-04-16"
+    },
+    {
+      "username": "PushPioneer12",
+      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "difficulty": "MEDIUM",
+      "timeLeftSec": 480,
+      "score": 480,
+      "date": "2025-12-05"
+    },
+    {
+      "username": "EscapeRoomLover",
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "difficulty": "EASY",
+      "timeLeftSec": 300,
+      "score": 300,
+      "date": "2025-09-27"
+    },
+    {
+      "username": "NullPointerHero",
+      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "difficulty": "EASY",
+      "timeLeftSec": 260,
+      "score": 260,
+      "date": "2025-07-24"
     }
-]
+  ]
+}

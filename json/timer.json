@@ -1,7 +1,13 @@
-[
-  {
+{
+  "initialSecondsByDifficulty": {
+    "EASY": 1800,
+    "MEDIUM": 1500,
+    "HARD": 1200
+  },
+  "session": {
+    "difficulty": "EASY",
     "initialSeconds": 1800,
     "remainingSeconds": 1800,
-    "isExpired": false
+    "lastUpdated": "2025-09-27T17:42:00Z"
   }
-]
+}
