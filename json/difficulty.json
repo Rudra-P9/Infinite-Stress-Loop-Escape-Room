@@ -1,0 +1,16 @@
+[
+    {
+        "EASY":
+        {
+            "hints":3
+        },
+        "MEDIUM":
+        {
+            "hints":2
+        },
+        "HARD":
+        {
+            "hints":1
+        }
+    }
+]

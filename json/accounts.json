@@ -1,0 +1,24 @@
+{
+  "accounts": [
+    {
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "username": "EscapeRoomLover",
+      "password": "Whosjson91"
+    },
+    {
+      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "username": "iGitThis",
+      "password": "Albert291"
+    },
+    {
+      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "username": "PushPioneer12",
+      "password": "cats1971"
+    },
+    {
+      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "username": "NullPointerHero",
+      "password": "javaaws20"
+    }
+  ]
+}

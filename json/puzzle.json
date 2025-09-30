@@ -1,0 +1,38 @@
+[
+  {
+    "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
+    "type": "NumberPuzzle",
+    "title": "Password Calculation",
+    "objective": "Use math to figure out the password.",
+    "difficulty": "EASY",
+    "solution": "1234",
+    "solved": false
+  },
+  {
+    "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
+    "type": "WordPuzzle",
+    "title": "Anagram Unlock",
+    "objective": "Rearrange letters to form the correct password.",
+    "difficulty": "HARD",
+    "solution": "UNLOCK",
+    "solved": true
+  },
+  {
+    "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
+    "type": "WordPuzzle",
+    "title": "Cipher Shift",
+    "objective": "Decode the substitution cipher to reveal the secret word.",
+    "difficulty": "MEDIUM",
+    "solution": "SECRET",
+    "solved": true
+  },
+  {
+    "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
+    "type": "WordPuzzle",
+    "title": "Scrambled Code",
+    "objective": "Unscramble the letters to reveal the code word.",
+    "difficulty": "EASY",
+    "solution": "MIRROR",
+    "solved": true
+  }
+]
