@@ -19,6 +19,28 @@
       "difficulty": "EASY",
       "puzzleIDs": [
         "0a7f2ae3-f096-4669-a81b-943573553b0c"
+      ],
+      "puzzle":[
+        {
+          "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
+          "type": "NumberPuzzle",
+          "title": "Password Calculation",
+          "objective": "Use math to figure out the password.",
+          "difficulty": "EASY",
+          "solution": "1234",
+          "solved": false,
+
+          "hints":[
+          {
+            "hintID": "5a9a1c21-1f3a-4a24-b8e9-e1f1a5c1c11",
+            "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
+            "hint": "Try common codes",
+            "order": 1,
+            "text": "Start by testing obvious codes like 0000 or 1234 — sometimes the simplest answer works.",
+            "revealed": false
+          }
+          ]
+        }
       ]
     },
     {
@@ -26,6 +48,28 @@
       "difficulty": "HARD",
       "puzzleIDs": [
         "c96f61f5-7255-4083-b8c2-106f6d350253"
+      ],
+      "puzzle":[
+        {
+          "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
+          "type": "WordPuzzle",
+          "title": "Anagram Unlock",
+          "objective": "Rearrange letters to form the correct password.",
+          "difficulty": "HARD",
+          "solution": "UNLOCK",
+          "solved": true,
+
+          "hints":[
+          {
+            "hintID": "64d2b41f-3a53-4b5d-bf1c-91862e71b4f7",
+            "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
+            "hint": "Think of instruments",
+            "order": 1,
+            "text": "Think about an instrument with keys that don't open doors.",
+            "revealed": false
+          }
+          ]
+        }
       ]
     },
     {
@@ -33,6 +77,28 @@
       "difficulty": "MEDIUM",
       "puzzleIDs": [
         "f8836f88-c4c0-49f7-83db-7a15f6f092ef"
+      ],
+       "puzzle":[
+        {
+          "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
+          "type": "WordPuzzle",
+          "title": "Cipher Shift",
+          "objective": "Decode the substitution cipher to reveal the secret word.",
+          "difficulty": "MEDIUM",
+          "solution": "SECRET",
+          "solved": true,
+
+          "hints":[
+          {
+            "hintID": "7ef05c7a-56a8-4f7c-9ab2-7b0f013d1eab",
+            "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
+            "hint": "Look for patterns",
+            "order": 1,
+            "text": "Look for a repeating pattern — substitution ciphers often replace letters consistently.",
+            "revealed": false
+          }
+          ]
+        }
       ]
     },
     {
@@ -40,81 +106,32 @@
       "difficulty": "EASY",
       "puzzleIDs": [
         "c0fea17a-656a-4918-9c66-a03ce4d1b169"
+      ],
+      "puzzle":[
+        {
+          "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
+          "type": "WordPuzzle",
+          "title": "Scrambled Code",
+          "objective": "Unscramble the letters to reveal the code word.",
+          "difficulty": "EASY",
+          "solution": "MIRROR",
+          "solved": true,
+
+          "hints":[
+          {
+            "hintID": "82de92f5-4594-4b91-8cb2-45a33f92a0b4",
+            "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
+            "hint": "Use symmetry",
+            "order": 1,
+            "text": "Try moving the statues so they mirror each other — symmetry is often the solution.",
+            "revealed": false
+          }
+          ]
+        }
       ]
     }
   ],
-  "puzzles": [
-    {
-      "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
-      "type": "NumberPuzzle",
-      "title": "Password Calculation",
-      "objective": "Use math to figure out the password.",
-      "difficulty": "EASY",
-      "solution": "1234",
-      "solved": false
-    },
-    {
-      "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
-      "type": "WordPuzzle",
-      "title": "Anagram Unlock",
-      "objective": "Rearrange letters to form the correct password.",
-      "difficulty": "HARD",
-      "solution": "UNLOCK",
-      "solved": true
-    },
-    {
-      "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
-      "type": "WordPuzzle",
-      "title": "Cipher Shift",
-      "objective": "Decode the substitution cipher to reveal the secret word.",
-      "difficulty": "MEDIUM",
-      "solution": "SECRET",
-      "solved": true
-    },
-    {
-      "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
-      "type": "WordPuzzle",
-      "title": "Scrambled Code",
-      "objective": "Unscramble the letters to reveal the code word.",
-      "difficulty": "EASY",
-      "solution": "MIRROR",
-      "solved": true
-    }
-  ],
-  "hints": [
-    {
-      "hintID": "5a9a1c21-1f3a-4a24-b8e9-e1f1a5c1c11",
-      "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
-      "hint": "Try common codes",
-      "order": 1,
-      "text": "Start by testing obvious codes like 0000 or 1234 — sometimes the simplest answer works.",
-      "revealed": false
-    },
-    {
-      "hintID": "64d2b41f-3a53-4b5d-bf1c-91862e71b4f7",
-      "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
-      "hint": "Think of instruments",
-      "order": 1,
-      "text": "Think about an instrument with keys that don't open doors.",
-      "revealed": false
-    },
-    {
-      "hintID": "7ef05c7a-56a8-4f7c-9ab2-7b0f013d1eab",
-      "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
-      "hint": "Look for patterns",
-      "order": 1,
-      "text": "Look for a repeating pattern — substitution ciphers often replace letters consistently.",
-      "revealed": false
-    },
-    {
-      "hintID": "82de92f5-4594-4b91-8cb2-45a33f92a0b4",
-      "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
-      "hint": "Use symmetry",
-      "order": 1,
-      "text": "Try moving the statues so they mirror each other — symmetry is often the solution.",
-      "revealed": false
-    }
-  ],
+  
   "story": {
     "storyText": "Escape the manor by following the clues. Each solved puzzle advances the plot.",
     "storyPos": 0,
