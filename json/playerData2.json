@@ -1,0 +1,168 @@
+{
+  "users": [
+    {
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649df6fb6",
+      "username": "EscapeRoomLover",
+      "password": "Whosjson091",
+      "inventory": {
+        "items": [
+          "key"
+        ]
+      }
+    },
+    {
+      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "username": "iGitThis",
+      "password": "Albert291",
+      "inventory": {
+        "items": []
+      }
+    },
+    {
+      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "username": "PushPioneer12",
+      "password": "cats1971",
+      "inventory": {
+        "items": []
+      }
+    },
+    {
+      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "username": "NullPointerHero",
+      "password": "javaawesome20",
+      "inventory": {
+        "items": [
+          "key"
+        ]
+      }
+    }
+  ],
+  "savedData": [
+    {
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649df6fb6",
+      "roomID": "62343172-dd4c-4be6-ba73-22df6e77e802",
+      "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
+      "hintsUsed": 2,
+      "score": 1325
+    },
+    {
+      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "roomID": "66f3e4a1-44c0-4956-9f19-d21ba01151ce",
+      "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
+      "hintsUsed": 0,
+      "score": 2100
+    },
+    {
+      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "roomID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
+      "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
+      "hintsUsed": 1,
+      "score": 2050
+    },
+    {
+      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "roomID": "ee77945b-67c9-4b65-8bf6-67e3f0478349",
+      "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
+      "hintsUsed": 0,
+      "score": 1500
+    }
+  ],
+  "scores": [
+    {
+      "scoreID": "0bd16cb2-430e-4d4a-923e-f777ebef5006",
+      "username": "EscapeRoomLover",
+      "difficulty": "EASY",
+      "timeSeconds": 300,
+      "hintsUsed": 1,
+      "puzzlesSolved": 1,
+      "date": "2025-09-27"
+    },
+    {
+      "scoreID": "9acfc9d7-bdfd-4fb6-b4aa-1869c0d41014",
+      "username": "iGitThis",
+      "difficulty": "HARD",
+      "timeSeconds": 720,
+      "hintsUsed": 0,
+      "puzzlesSolved": 1,
+      "date": "2025-04-16"
+    },
+    {
+      "scoreID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
+      "username": "PushPioneer12",
+      "difficulty": "MEDIUM",
+      "timeSeconds": 480,
+      "hintsUsed": 2,
+      "puzzlesSolved": 1,
+      "date": "2025-12-05"
+    },
+    {
+      "scoreID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
+      "username": "NullPointerHero",
+      "difficulty": "EASY",
+      "timeSeconds": 260,
+      "hintsUsed": 0,
+      "puzzlesSolved": 1,
+      "date": "2025-07-24"
+    }
+  ],
+  "leaderboard": {
+    "entries": [
+      {
+        "username": "EscapeRoomLover",
+        "userID": "24f05b3b-514d-444f-b6ac-b0e649df6fb6",
+        "difficulty": "EASY",
+        "timeSeconds": 300,
+        "date": "2025-09-27"
+      },
+      {
+        "username": "iGitThis",
+        "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+        "difficulty": "HARD",
+        "timeSeconds": 720,
+        "date": "2025-04-16"
+      },
+      {
+        "username": "PushPioneer12",
+        "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+        "difficulty": "MEDIUM",
+        "timeSeconds": 480,
+        "date": "2025-12-05"
+      },
+      {
+        "username": "NullPointerHero",
+        "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+        "difficulty": "EASY",
+        "timeSeconds": 260,
+        "date": "2025-07-24"
+      }
+    ]
+  },
+  "progress": [
+    {
+      "progressUUID": "prog-001",
+      "userUUID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6c",
+      "c": 1
+    },
+    {
+      "progressUUID": "prog-002",
+      "userUUID": "a1dceaba-b9a9-4b95-9864-8fb80870e1df",
+      "c": 3
+    },
+    {
+      "progressUUID": "prog-003",
+      "userUUID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "c": 2
+    },
+    {
+      "progressUUID": "prog-004",
+      "userUUID": "b287f426-a9a3-4d49-a738-3e03de9f4d60",
+      "c": 0
+    }
+  ],
+  "sessionTimer": {
+    "difficulty": "EASY",
+    "initialSeconds": 1800,
+    "remainingSeconds": 1800,
+    "lastUpdated": "2025-09-27T17:42:00Z"
+  }
+}
