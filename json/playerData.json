@@ -150,7 +150,7 @@
       "score": 260,
       "date": "2025-07-24"
     },
-    
+
     "progress",
     {
       "progressUUID": "prog-001",
@@ -171,5 +171,13 @@
       "progressUUID": "prog-004",
       "userUUID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
       "c": 0
+    },
+
+    "userSessionTimer",
+    {
+      "difficulty": "EASY",
+      "initialSeconds": 1800,
+      "remainingSeconds": 1800,
+      "lastUpdated": "2025-09-27T17:42:00Z"
     }
 ]
