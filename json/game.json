@@ -140,5 +140,10 @@
         "storyText": "With the last lock undone, the exit opens and fresh air pours in."
       }
     ]
+  },
+  "timer": {
+    "EASY": 1800,
+    "MEDIUM": 1500,
+    "HARD": 1200
   }
 }
