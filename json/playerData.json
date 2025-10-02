@@ -1,7 +1,7 @@
-[
-    "user",
+{
+  "users": [
     {
-    "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
       "username": "EscapeRoomLover",
       "password": "Whosjson91",
       "inventory": {
@@ -34,10 +34,10 @@
       "inventory": {
         "items": ["key"],
         "capacity": 7
+      }
     }
-    },
-
-    "savedData",
+  ],
+  "savedData": [
     {
       "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
       "roomID": "62343172-dd4c-4be6-ba73-22df6e77e802",
@@ -77,47 +77,47 @@
       "timeLeftSec": 1110,
       "inventoryItems": ["key"],
       "lastSavedAt": "2025-07-23T21:10:05Z"
-    },
-
-    "scores",
+    }
+  ],
+  "scores": [
     {
-    "scoreID": "0bd16cb2-430e-4d4a-923e-f777ebef5006",
-    "username": "EscapeRoomLover",
-    "difficulty": "EASY",
-    "timeSeconds": 300,
-    "hintsUsed": 1,
-    "puzzlesSolved": 1,
-    "date": "2025-09-27"
-  },
-  {
-    "scoreID": "9acfc9d7-bdfd-4fb6-b4aa-1869c0d41014",
-    "username": "iGitThis",
-    "difficulty": "HARD",
-    "timeSeconds": 720,
-    "hintsUsed": 0,
-    "puzzlesSolved": 1,
-    "date": "2025-04-16"
-  },
-  {
-    "scoreID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
-    "username": "PushPioneer12",
-    "difficulty": "MEDIUM",
-    "timeSeconds": 480,
-    "hintsUsed": 2,
-    "puzzlesSolved": 1,
-    "date": "2025-12-05"
-  },
-  {
-    "scoreID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
-    "username": "NullPointerHero",
-    "difficulty": "EASY",
-    "timeSeconds": 260,
-    "hintsUsed": 0,
-    "puzzlesSolved": 1,
-    "date": "2025-07-24"
-  },
-
-  "leaderboard",
+      "scoreID": "0bd16cb2-430e-4d4a-923e-f777ebef5006",
+      "username": "EscapeRoomLover",
+      "difficulty": "EASY",
+      "timeSeconds": 300,
+      "hintsUsed": 1,
+      "puzzlesSolved": 1,
+      "date": "2025-09-27"
+    },
+    {
+      "scoreID": "9acfc9d7-bdfd-4fb6-b4aa-1869c0d41014",
+      "username": "iGitThis",
+      "difficulty": "HARD",
+      "timeSeconds": 720,
+      "hintsUsed": 0,
+      "puzzlesSolved": 1,
+      "date": "2025-04-16"
+    },
+    {
+      "scoreID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
+      "username": "PushPioneer12",
+      "difficulty": "MEDIUM",
+      "timeSeconds": 480,
+      "hintsUsed": 2,
+      "puzzlesSolved": 1,
+      "date": "2025-12-05"
+    },
+    {
+      "scoreID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
+      "username": "NullPointerHero",
+      "difficulty": "EASY",
+      "timeSeconds": 260,
+      "hintsUsed": 0,
+      "puzzlesSolved": 1,
+      "date": "2025-07-24"
+    }
+  ],
+  "leaderboard": [
     {
       "username": "iGitThis",
       "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
@@ -149,9 +149,9 @@
       "timeLeftSec": 260,
       "score": 260,
       "date": "2025-07-24"
-    },
-
-    "progress",
+    }
+  ],
+  "progress": [
     {
       "progressUUID": "prog-001",
       "userUUID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6c",
@@ -171,13 +171,12 @@
       "progressUUID": "prog-004",
       "userUUID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
       "c": 0
-    },
-
-    "userSessionTimer",
-    {
-      "difficulty": "EASY",
-      "initialSeconds": 1800,
-      "remainingSeconds": 1800,
-      "lastUpdated": "2025-09-27T17:42:00Z"
     }
-]
+  ],
+  "userSessionTimer": {
+    "difficulty": "EASY",
+    "initialSeconds": 1800,
+    "remainingSeconds": 1800,
+    "lastUpdated": "2025-09-27T17:42:00Z"
+  }
+}
