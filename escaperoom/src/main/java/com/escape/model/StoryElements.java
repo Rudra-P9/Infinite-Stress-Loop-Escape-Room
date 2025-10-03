@@ -5,6 +5,8 @@ import java.util.ArrayList;
 /**
  * Class for the story elements of the Escape Room.
  * Methods to get the story text and convert to String.
+ * 
+ * @author Talan Kinard
  */
 public class StoryElements 
 {
