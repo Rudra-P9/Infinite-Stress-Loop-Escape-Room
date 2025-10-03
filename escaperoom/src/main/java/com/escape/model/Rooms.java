@@ -3,6 +3,8 @@ package com.escape.model;
 /**
  * Rooms of the EscapeRoom
  * Each room has an ID, puzzles, and a difficulty level.
+ * 
+ * @author Talan Kinard
  */
 
 public class Rooms 
