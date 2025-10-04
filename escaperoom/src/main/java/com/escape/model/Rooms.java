@@ -1,5 +1,6 @@
 package com.escape.model;
 
+import java.util.ArrayList;
 /**
  * Rooms of the EscapeRoom
  * Each room has an ID, puzzles, and a difficulty level.
