@@ -23,21 +23,18 @@ public class Timer {
      * Starts the countdown.
      */
     public void start() {
-        // stub method
     }
 
     /**
      * Pauses the countdown.
      */
     public void pause() {
-        // stub method
     }
 
     /**
      * Resumes the countdown after being paused.
      */
     public void resume() {
-        // stub method
     }
 
     /**
@@ -46,7 +43,6 @@ public class Timer {
      * @param seconds number of seconds to subtract
      */
     public void reduceBy(int seconds) {
-        // stub method
     }
 
     /**
@@ -55,7 +51,6 @@ public class Timer {
      * @return true if time is up, false otherwise
      */
     public boolean isExpired() {
-        // stub method
         return false;
     }
 }
