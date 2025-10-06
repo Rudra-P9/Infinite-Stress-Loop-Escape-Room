@@ -16,6 +16,7 @@ public class Accounts {
     /**
      * Private constructor to enforce singleton pattern.
      */
+    
     private Accounts() {}
 
     /**
