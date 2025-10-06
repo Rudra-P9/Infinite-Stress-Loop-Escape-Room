@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class StoryElements 
 {
-    private ArrayList<Story> story;
+    private ArrayList<StoryElements> story;
     private String storyText;
     private static final int storyPos = 0;
 
