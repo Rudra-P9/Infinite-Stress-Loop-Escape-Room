@@ -28,7 +28,7 @@ public class GameDataWriter {
      *
      * @param rooms the list of rooms to save
      */
-    public void saveRooms(ArrayList<Room> rooms) {
+    public void saveRooms(ArrayList<Rooms> rooms) {
     }
 
     /**

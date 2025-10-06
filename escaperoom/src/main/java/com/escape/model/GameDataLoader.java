@@ -21,7 +21,7 @@ public class GameDataLoader {
      *
      * @return the leaderboard
      */
-    public LeaderBoard loadLeaderBoard() {
+    public Leaderboard loadLeaderBoard() {
         return null;
     }
 
@@ -39,7 +39,7 @@ public class GameDataLoader {
      *
      * @return the list of rooms
      */
-    public ArrayList<Room> loadRooms() {
+    public ArrayList<Rooms> loadRooms() {
         return null;
     }
 }
