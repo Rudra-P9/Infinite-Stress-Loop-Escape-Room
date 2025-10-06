@@ -9,7 +9,7 @@ import java.util.UUID;
  * 
  * @author Jacob Kinard
  */
-public abstract class User extends Accounts {
+public abstract class User {
 
     public UUID userID;
     private String username;
@@ -24,7 +24,7 @@ public abstract class User extends Accounts {
      * @param password  the password for login
      * @param inventory the inventory associated with the user
      */
-    public User(UUID userID, String username, String password, Inventory inventory) {
+    public User(UUID userID, String username, String password,Inventory inventory) {
         this.inventory = inventory;
         this.password = password;
         this.username = username;
