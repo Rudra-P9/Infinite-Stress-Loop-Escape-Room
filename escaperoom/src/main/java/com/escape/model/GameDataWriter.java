@@ -44,7 +44,7 @@ public class GameDataWriter {
      *
      * @param leaderBoard the leaderboard to save
      */
-    public void saveLeaderBoard(LeaderBoard leaderBoard) {
+    public void saveLeaderBoard(Leaderboard leaderBoard) {
     }
 
     /**

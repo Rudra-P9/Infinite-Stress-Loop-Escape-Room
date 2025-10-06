@@ -13,7 +13,7 @@ public class Rooms
     /**
      * List of rooms.
      */
-    private ArrayList<Room> rooms;
+    private ArrayList<Rooms> rooms;
 
     /**
      * Unique identifier for the room.
