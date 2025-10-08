@@ -63,7 +63,14 @@ public class Accounts {
      * @param username the username of the account to delete
      */
     public void deleteAccount(String username) {
+    User userToRemove = getUser(username);
+    if (userToRemove != null) {
+        accounts.remove(userToRemove);
+        System.out.println("Account deleted for username: " + username);
+    } else {
+        System.out.println("No account found for username: " + username);
     }
+}
 
     /**
      * Retrieves the user account associated with the specified username.
