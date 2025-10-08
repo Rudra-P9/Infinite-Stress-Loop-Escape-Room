@@ -11,25 +11,7 @@ import com.escape.Driver;
  * @author Jacob Kinard
  */
 public class Accounts {
-    /**
-     * Main method for testing account creation and writing to JSON.
-     */
-    public static void main(String[] args) {
-        // Create Accounts singleton
-        Accounts accounts = Accounts.getInstance();
-        // Create a user account
-        accounts.createAccount("testuser", "testpass");
-        // Collect users into a list for writing
-        ArrayList<User> users = new ArrayList<>();
-        User user = accounts.getUser("testuser");
-        if (user != null) {
-            users.add(user);
-        }
-        // Write users to JSON
-        GameDataWriter writer = new GameDataWriter();
-        writer.saveUsers(users);
-        System.out.println("Test user created and written to json/playerData.json");
-    }
+    
 
     private ArrayList<User> accounts = new ArrayList<>();
     private static Accounts instance;
@@ -96,5 +78,24 @@ public class Accounts {
             }
         }
         return null;
+    }
+    /**
+     * Main method for testing account creation and writing to JSON.
+     */
+    public static void main(String[] args) {
+        // Create Accounts singleton
+        Accounts accounts = Accounts.getInstance();
+        // Create a user account
+        accounts.createAccount("testuser", "testpass");
+        // Collect users into a list for writing
+        ArrayList<User> users = new ArrayList<>();
+        User user = accounts.getUser("testuser");
+        if (user != null) {
+            users.add(user);
+        }
+        // Write users to JSON
+        GameDataWriter writer = new GameDataWriter();
+        writer.saveUsers(users);
+        System.out.println("Test user created and written to json/playerData.json");
     }
 }
