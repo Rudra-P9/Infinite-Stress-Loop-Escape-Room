@@ -2,6 +2,8 @@ package com.escape.model;
 
 import java.util.ArrayList;
 
+import com.escape.Driver;
+
 /**
  * Singleton class that manages user accounts in the escape game system.
  * Provides methods to create, delete, and retrieve user accounts.
@@ -9,9 +11,28 @@ import java.util.ArrayList;
  * @author Jacob Kinard
  */
 public class Accounts {
+    /**
+     * Main method for testing account creation and writing to JSON.
+     */
+    public static void main(String[] args) {
+        // Create Accounts singleton
+        Accounts accounts = Accounts.getInstance();
+        // Create a user account
+        accounts.createAccount("testuser", "testpass");
+        // Collect users into a list for writing
+        ArrayList<User> users = new ArrayList<>();
+        User user = accounts.getUser("testuser");
+        if (user != null) {
+            users.add(user);
+        }
+        // Write users to JSON
+        GameDataWriter writer = new GameDataWriter();
+        writer.saveUsers(users);
+        System.out.println("Test user created and written to json/playerData.json");
+    }
 
-    private ArrayList<User> account;
-    private static Accounts accounts;
+    private ArrayList<User> accounts = new ArrayList<>();
+    private static Accounts instance;
 
     /**
      * Private constructor to enforce singleton pattern.
@@ -25,7 +46,10 @@ public class Accounts {
      * @return the shared Accounts instance
      */
     public static Accounts getInstance() {
-        return accounts;
+        if (instance == null) {
+            instance = new Accounts();
+        }
+        return instance;
     }
 
     /**
@@ -35,7 +59,21 @@ public class Accounts {
      * @param password the desired password
      */
     public void createAccount(String username, String password) {
+        if (getUser(username) != null) {
+            System.out.println("Account already exists for username: " + username);
+            return;
+        }
+        accounts.add(new User(Driver.getUUID(),username, password));
+        Accounts.toString("Account created for username: " + username);
+        
     }
+    /*
+     * prints input values to console
+     */
+    private static void toString(String input){
+        System.out.println(input);
+    }
+
 
     /**
      * Deletes the user account associated with the specified username.
@@ -51,7 +89,12 @@ public class Accounts {
      * @param username the username of the account to retrieve
      * @return the User object (currently commented out)
      */
-    public void /*User*/ getUser(String username) {
-        
+    public User getUser(String username) {
+        for (User user : accounts) {
+            if (user.getUser().equals(username)) {
+                return user;
+            }
+        }
+        return null;
     }
 }
