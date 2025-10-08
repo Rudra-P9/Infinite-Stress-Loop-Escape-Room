@@ -30,7 +30,7 @@ public class GameDataWriter {
         // Save to playerData.json
         JSONObject root = new JSONObject();
         root.put("users", usersArray);
-        writeFile("json/playerData.json", root);
+        writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
 
     /**
@@ -136,7 +136,7 @@ public class GameDataWriter {
         timer.put("HARD", 1200);
         gameData.put("timer", timer);
         
-        writeFile("json/game.json", gameData);
+        writeFile("escaperoom/src/main/resources/json/game.json", gameData);
     }
 
     /**
@@ -157,7 +157,7 @@ public class GameDataWriter {
         
         JSONObject root = new JSONObject();
         root.put("scores", scoresArray);
-        writeFile("json/playerData.json", root);
+        writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
 
     /**
@@ -179,7 +179,7 @@ public class GameDataWriter {
         
         JSONObject root = new JSONObject();
         root.put("leaderBoard", leaderBoardArray);
-        writeFile("json/playerData.json", root);
+        writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
 
     /**
@@ -199,7 +199,7 @@ public class GameDataWriter {
         
         JSONObject root = new JSONObject();
         root.put("savedData", savedDataArray);
-        writeFile("json/playerData.json", root);
+        writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
 
     /**
@@ -210,7 +210,7 @@ public class GameDataWriter {
         JSONObject accountsObj = new JSONObject();
         // TODO: Add account data - this goes in playerData.json under users
         
-        writeFile("json/playerData.json", accountsObj);
+        writeFile("escaperoom/src/main/resources/json/playerData.json", accountsObj);
     }
 
     /**
