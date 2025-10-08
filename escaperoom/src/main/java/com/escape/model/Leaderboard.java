@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Talan Kinard
  */
 
-public class Leaderboard 
+public class LeaderBoard 
 {
     /**
      * List of users currently on the leaderboard.
@@ -49,6 +49,6 @@ public class Leaderboard
      */
     public void printLB()
     {
-        System.out.println("Printing Leaderboard..."); //hardcode stub for now
+        System.out.println("Printing LeaderBoard..."); //hardcode stub for now
     }
 }

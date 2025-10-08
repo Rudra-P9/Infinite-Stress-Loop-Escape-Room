@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
  * Saves different types of game data to JSON files
  * @author Dylan Diaz
  * @author Rudra Patel
- * @version 1.0
+ * @version 2.0
  */
 public class GameDataWriter {
 
@@ -162,23 +162,23 @@ public class GameDataWriter {
 
     /**
      * Saves leaderboard data to playerData.json
-     * @param leaderboard the leaderboard to save
+     * @param leaderBoard the leaderboard to save
      */
-    public void saveLeaderboard(Leaderboard leaderboard) {
-        JSONArray leaderboardArray = new JSONArray();
+    public void saveLeaderBoard(LeaderBoard leaderBoard) {
+        JSONArray leaderBoardArray = new JSONArray();
         
-        ArrayList<User> entries = leaderboard.getLB();
+        ArrayList<User> entries = leaderBoard.getLB();
         if (entries != null) {
             for (User user : entries) {
                 JSONObject entryObj = new JSONObject();
                 entryObj.put("userID", user.userID.toString());
                 // TODO: Add username and score details
-                leaderboardArray.add(entryObj);
+                leaderBoardArray.add(entryObj);
             }
         }
         
         JSONObject root = new JSONObject();
-        root.put("leaderboard", leaderboardArray);
+        root.put("leaderBoard", leaderBoardArray);
         writeFile("json/playerData.json", root);
     }
 
