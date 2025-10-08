@@ -9,7 +9,6 @@ public class GameDataLoader {
 
     /**
      * Loads a list of user scores
-     *
      * @return the list of scores
      */
     public ArrayList<Score> loadScores() {
@@ -18,7 +17,6 @@ public class GameDataLoader {
 
     /**
      * Loads leaderboard data
-     *
      * @return the leaderboard
      */
     public Leaderboard loadLeaderboard() {
@@ -27,7 +25,6 @@ public class GameDataLoader {
 
     /**
      * Loads account information
-     *
      * @return the accounts
      */
     public Accounts loadAccounts() {
@@ -36,7 +33,6 @@ public class GameDataLoader {
 
     /**
      * Loads room data
-     *
      * @return the list of rooms
      */
     public ArrayList<Rooms> loadRooms() {
