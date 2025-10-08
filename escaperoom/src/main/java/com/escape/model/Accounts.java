@@ -1,7 +1,6 @@
 package com.escape.model;
 
 import java.util.ArrayList;
-
 import com.escape.Driver;
 
 /**
@@ -11,33 +10,9 @@ import com.escape.Driver;
  * @author Jacob Kinard
  */
 public class Accounts {
-    /**
-     * Main method for testing account creation and writing to JSON.
-     */
-    public static void main(String[] args) {
-        // Create Accounts singleton
-        Accounts accounts = Accounts.getInstance();
-        // Create a user account
-        accounts.createAccount("testuser", "testpass");
-        // Collect users into a list for writing
-        ArrayList<User> users = new ArrayList<>();
-        User user = accounts.getUser("testuser");
-        if (user != null) {
-            users.add(user);
-        }
-        // Write users to JSON
-        GameDataWriter writer = new GameDataWriter();
-        writer.saveUsers(users);
-        System.out.println("Test user created and written to json/playerData.json");
-    }
-
+    
     private ArrayList<User> accounts = new ArrayList<>();
     private static Accounts instance;
-
-    /**
-     * Private constructor to enforce singleton pattern.
-     */
-    
     private Accounts() {}
 
     /**
@@ -67,13 +42,6 @@ public class Accounts {
         Accounts.toString("Account created for username: " + username);
         
     }
-    /*
-     * prints input values to console
-     */
-    private static void toString(String input){
-        System.out.println(input);
-    }
-
 
     /**
      * Deletes the user account associated with the specified username.
@@ -81,6 +49,13 @@ public class Accounts {
      * @param username the username of the account to delete
      */
     public void deleteAccount(String username) {
+    User userToRemove = getUser(username);
+        if (userToRemove != null) {
+            accounts.remove(userToRemove);
+            System.out.println("Account deleted for username: " + username);
+        } else {
+            System.out.println("No account found for username: " + username);
+        }
     }
 
     /**
@@ -96,5 +71,32 @@ public class Accounts {
             }
         }
         return null;
+    }
+
+    /*
+     * prints input values to console
+     */
+    private static void toString(String input){
+        System.out.println(input);
+    }
+
+    /**
+     * Main method for testing account creation and writing to JSON.
+     */
+    public static void main(String[] args) {
+        // Create Accounts singleton
+        Accounts accounts = Accounts.getInstance();
+        // Create a user account
+        accounts.createAccount("testuser", "testpass");
+        // Collect users into a list for writing
+        ArrayList<User> users = new ArrayList<>();
+        User user = accounts.getUser("testuser");
+            if (user != null) {
+                users.add(user);
+            }
+        // Write users to JSON
+        GameDataWriter writer = new GameDataWriter();
+        writer.saveUsers(users);
+        System.out.println("Test user created and written to json/playerData.json");
     }
 }
