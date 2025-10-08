@@ -28,10 +28,10 @@ public class GameDataLoader {
     /* ----------search paths (most stable first) ---------- */
 
     private static final String[] GAME_CANDIDATES   = {
-  "json/game.json", "src/main/resources/json/game.json"
+  "json/game.json", "escaperoom/src/main/resources/json/game.json"
 };
     private static final String[] PLAYER_CANDIDATES = {
-  "json/playerData.json", "src/main/resources/json/playerData.json"
+  "json/playerData.json", "escaperoom/src/main/resources/json/playerData.json"
 };
 
 
