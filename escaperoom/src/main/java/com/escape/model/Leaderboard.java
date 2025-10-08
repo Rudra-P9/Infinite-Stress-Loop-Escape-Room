@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Talan Kinard
  */
 
-public class LeaderBoard 
+public class Leaderboard
 {
     /**
      * List of users currently on the leaderboard.

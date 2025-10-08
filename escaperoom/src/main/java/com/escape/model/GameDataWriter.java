@@ -164,7 +164,7 @@ public class GameDataWriter {
      * Saves leaderboard data to playerData.json
      * @param leaderBoard the leaderboard to save
      */
-    public void saveLeaderBoard(LeaderBoard leaderBoard) {
+    public void saveLeaderBoard(Leaderboard leaderBoard) {
         JSONArray leaderBoardArray = new JSONArray();
         
         ArrayList<User> entries = leaderBoard.getLB();
