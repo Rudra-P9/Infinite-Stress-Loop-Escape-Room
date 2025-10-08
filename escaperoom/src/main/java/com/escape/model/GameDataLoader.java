@@ -21,7 +21,7 @@ public class GameDataLoader {
      *
      * @return the leaderboard
      */
-    public Leaderboard loadLeaderBoard() {
+    public Leaderboard loadLeaderboard() {
         return null;
     }
 
