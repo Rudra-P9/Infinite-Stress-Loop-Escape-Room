@@ -1,5 +1,5 @@
 package com.escape;
-
+import java.util.UUID;
 import com.escape.model.UI;
 
 /**
@@ -21,6 +21,11 @@ public class Driver {
     // Methods
     public void start() {
         ui.run(); // start the main UI
+    }
+
+    //get random UUID
+    public static UUID getUUID() {
+        return UUID.randomUUID();
     }
 
     public static void main(String[] args) {
