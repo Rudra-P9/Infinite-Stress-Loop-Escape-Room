@@ -9,12 +9,19 @@ import java.util.UUID;
  * 
  * @author Jacob Kinard
  */
-public abstract class User {
+public class User {
+    /**
+     * Returns the username of this user.
+     * @return the username
+     */
+    public String getUser() {
+        return this.username;
+    }
 
     public UUID userID;
     private String username;
     private String password;
-    private Inventory inventory;
+   // private Inventory inventory;
 
     /**
      * Constructs a new User with the specified credentials and inventory.
@@ -24,8 +31,8 @@ public abstract class User {
      * @param password  the password for login
      * @param inventory the inventory associated with the user
      */
-    public User(UUID userID, String username, String password,Inventory inventory) {
-        this.inventory = inventory;
+    public User(UUID userID, String username, String password/*Inventory inventory*/) {
+        //this.inventory = inventory;
         this.password = password;
         this.username = username;
         this.userID = userID;
@@ -37,7 +44,9 @@ public abstract class User {
      * @param username the username to authenticate
      * @param password the password to authenticate
      */
-    public void login(String username, String password) {}
+    public void login(String username, String password) {
+
+    }
 
     /**
      * Checks whether the provided credentials match the user's stored credentials.
@@ -58,4 +67,12 @@ public abstract class User {
      * Logs the user out of the system.
      */
     public void logout() {}
+
+    /*
+     * TESTING THE USER CLASS CODE BELOW
+     */
+
+     public static void main(String[] args){
+        
+     }
 }
