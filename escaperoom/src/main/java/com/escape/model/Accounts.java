@@ -38,6 +38,21 @@ public class Accounts {
             System.out.println("Account already exists for username: " + username);
             return;
         }
+        // Also check persisted users on disk to avoid creating duplicates when
+        // the in-memory list hasn't been populated from disk.
+        try {
+            GameDataLoader loader = new GameDataLoader();
+            for (User u : loader.getUsers()) {
+                if (u.getUsername() != null && u.getUsername().equals(username)) {
+                    System.out.println("Account already exists for username (persisted): " + username);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            // If loader fails, continue with creation (we don't want to block account creation)
+            // but log for visibility.
+            System.out.println("Warning: could not check persisted users: " + e.getMessage());
+        }
         accounts.add(new User(Driver.getUUID(),username, password));
         Accounts.toString("Account created for username: " + username);
         
@@ -73,6 +88,14 @@ public class Accounts {
         return null;
     }
 
+    /**
+     * Returns a copy of the internal accounts list for external use (safe copy).
+     * @return list of users
+     */
+    public ArrayList<User> getAccounts() {
+        return new ArrayList<>(accounts);
+    }
+
     /*
      * prints input values to console
      */
@@ -86,17 +109,36 @@ public class Accounts {
     public static void main(String[] args) {
         // Create Accounts singleton
         Accounts accounts = Accounts.getInstance();
-        // Create a user account
-        accounts.createAccount("testuser", "testpass");
-        // Collect users into a list for writing
-        ArrayList<User> users = new ArrayList<>();
-        User user = accounts.getUser("testuser");
-            if (user != null) {
-                users.add(user);
+        String username = "testuser";
+        String password = "testpass";
+
+        // Check persisted users first to avoid duplicates
+        GameDataLoader loader = new GameDataLoader();
+        boolean exists = false;
+        try {
+            for (User u : loader.getUsers()) {
+                if (u.getUsername() != null && u.getUsername().equals(username)) {
+                    exists = true;
+                    break;
+                }
             }
-        // Write users to JSON
+        } catch (Exception e) {
+            // If loader fails (file missing), we'll proceed to create user
+            System.out.println("Warning: could not read existing users; proceeding to create. " + e.getMessage());
+        }
+
+        if (exists) {
+            System.out.println("Account already exists for username: " + username + " — not saving.");
+            return;
+        }
+
+        // Create and persist the user
+        accounts.createAccount(username, password);
+        ArrayList<User> users = new ArrayList<>();
+        User user = accounts.getUser(username);
+        if (user != null) users.add(user);
         GameDataWriter writer = new GameDataWriter();
         writer.saveUsers(users);
-        System.out.println("Test user created and written to json/playerData.json");
+        System.out.println("Test user created and written to json/test.json");
     }
 }
