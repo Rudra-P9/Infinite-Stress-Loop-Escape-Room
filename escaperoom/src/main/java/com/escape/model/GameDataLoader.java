@@ -39,31 +39,40 @@ public class GameDataLoader {
 
     /** Loads users from playerData.json - "users". */
     public ArrayList<User> getUsers() {
-        JSONObject data = readObjectFromClasspath("json/playerData.json");
+        JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
         JSONArray arr   = (JSONArray) data.get("users");
 
         ArrayList<User> out = new ArrayList<>();
         if (arr == null) return out;
 
         for (Object o : arr) {
+            if (!(o instanceof JSONObject)) continue;
             JSONObject uo = (JSONObject) o;
 
-            User u = newInstance(User.class);
-            setIfPresent(u, "setUserID",   String.class, (String) uo.get("userID"));
-            setIfPresent(u, "setUsername", String.class, (String) uo.get("username"));
-            setIfPresent(u, "setPassword", String.class, (String) uo.get("password"));
+            String idStr = uo.get("userID") == null ? null : uo.get("userID").toString();
+            java.util.UUID id = null;
+            try {
+                if (idStr != null && !idStr.isEmpty()) id = java.util.UUID.fromString(idStr);
+            } catch (Exception e) {
+                // ignore malformed UUIDs
+            }
 
+            String username = uo.get("username") == null ? null : uo.get("username").toString();
+            String password = uo.get("password") == null ? null : uo.get("password").toString();
+
+            User u = new User(id, username, password);
+
+            // parse inventory if present
             JSONObject invObj = (JSONObject) uo.get("inventory");
             if (invObj != null) {
                 @SuppressWarnings("unchecked")
                 ArrayList<String> items = invObj.get("items") instanceof JSONArray
                         ? new ArrayList<>((JSONArray) invObj.get("items"))
                         : new ArrayList<>();
-
-                Inventory inv = newInstance(Inventory.class);
-                setIfPresent(inv, "setItems",    List.class, items);
-                setIfPresent(inv, "setCapacity", int.class, toInt(invObj.get("capacity")));
-                setIfPresent(u,  "setInventory", Inventory.class, inv);
+                //Inventory inv = new Inventory();
+                // Inventory API is stubbed; if you implement setItems/setCapacity, use them here
+                // otherwise we leave inventory handling for later
+                // set capacity if possible
             }
 
             out.add(u);
@@ -73,7 +82,7 @@ public class GameDataLoader {
 
     /** Loads rooms from game.json - "rooms". Only sets puzzleIDs. */
     public ArrayList<Rooms> getRooms() {
-        JSONObject game  = readObjectFromClasspath("json/game.json");
+    JSONObject game  = readObjectFromCandidates(GAME_CANDIDATES);
         JSONArray rooms = (JSONArray) game.get("rooms");
 
         ArrayList<Rooms> out = new ArrayList<>();
@@ -112,7 +121,7 @@ public class GameDataLoader {
 
     /** Returns one Score. I choose the fastest (smallest timeSeconds) from playerData.json - "scores". */
     public Score getScore() {
-        JSONObject data = readObjectFromClasspath("json/playerData.json");
+    JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
         JSONArray scores  = (JSONArray) data.get("scores");
 
         if (scores == null || scores.isEmpty()) {
@@ -145,7 +154,7 @@ public class GameDataLoader {
      * Tries setEntries(List), then setLB(List), else falls back to addEntry(...).
      */
     public Leaderboard getLeaderBoard() {
-        JSONObject data = readObjectFromClasspath("json/playerData.json");
+    JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
         JSONArray arr   = (JSONArray) data.get("leaderboard");
 
         Leaderboard lb = newInstance(Leaderboard.class);
@@ -184,16 +193,42 @@ public class GameDataLoader {
     /* ------------------------ helpers ------------------------ */
 
     private static JSONObject readObjectFromClasspath(String resourcePath) {
-    try (var in = GameDataLoader.class.getClassLoader().getResourceAsStream(resourcePath)) {
-        if (in == null) {
-            throw new IllegalStateException("Resource not on classpath: " + resourcePath);
+        try (var in = GameDataLoader.class.getClassLoader().getResourceAsStream(resourcePath)) {
+            if (in == null) {
+                return new JSONObject();
+            }
+            var r = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8);
+            return (JSONObject) new JSONParser().parse(r);
+        } catch (Exception e) {
+            return new JSONObject();
         }
-        var r = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8);
-        return (JSONObject) new JSONParser().parse(r);
-    } catch (Exception e) {
-        throw new RuntimeException("Error reading resource: " + resourcePath, e);
     }
-}
+
+    /**
+     * Try classpath resource first then a list of filesystem candidate paths.
+     * Returns empty JSONObject when none found.
+     */
+    private static JSONObject readObjectFromCandidates(String[] candidates) {
+        for (String c : candidates) {
+            // try classpath
+            try (var in = GameDataLoader.class.getClassLoader().getResourceAsStream(c)) {
+                if (in != null) {
+                    var r = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8);
+                    return (JSONObject) new JSONParser().parse(r);
+                }
+            } catch (Exception e) {
+                // ignore and try filesystem
+            }
+
+            // try filesystem path
+            try (var fr = new FileReader(c)) {
+                return (JSONObject) new JSONParser().parse(fr);
+            } catch (Exception e) {
+                // ignore and try next candidate
+            }
+        }
+        return new JSONObject();
+    }
 
 
     private static String str(Object o) { return (o == null ? null : o.toString()); }
