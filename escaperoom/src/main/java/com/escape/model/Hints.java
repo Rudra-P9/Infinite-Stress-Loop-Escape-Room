@@ -1,11 +1,11 @@
 package com.escape.model;
 
 /**
- * Creates Hints for the escaperoom depending on the puzzle or room.
- * Each hint will need to be connected to a puzzle and
- * have a description.
+ * Representation of the data model of a hint.
+ * Holds every part of a hint such as the hint identifier, order, whether it's revealed
+ * and the actual text displayed for the hint.
  * 
- * @author Jacob Kinard
+ * @author Jacob Kinard & Talan Kinard
  */
 
 public class Hints {
@@ -25,6 +25,7 @@ public class Hints {
      */
 
     public Hints(String hint, int order, boolean revealed, String text){
+        
         this.hint = hint;
         this.order = order;
         this.revealed = revealed;
@@ -49,16 +50,17 @@ public class Hints {
      */
 
     public String setHint(String h){
-        return hint = h;
+        this.hint = h;
+        return this.hint;
     }
 
     /**
      * Returns a string representation of the hint object.
-     *
-     * @return a placeholder string
      */
 
+    @Override 
     public String toString(){
-        return "a string";
+        return  "Hints: hint id = " +hint+" | order = "+order+
+                " | text = "+text+" | revealed = "+revealed;
     }
 }

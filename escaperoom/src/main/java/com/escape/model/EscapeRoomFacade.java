@@ -9,18 +9,11 @@ package com.escape.model;
 
 public class EscapeRoomFacade 
 {
-    /**
-     * Should be noted won't work until the implementation of these classes.
-     * Surrounded by comments for now.
-     */
-
-    /** 
+    
     private User currentUser;
-    private Settings settings;
-    private Room currentRoom;
+    private Rooms currentRoom;
     private Timer timer;
     private SavedData savedData;
-    */
 
     /**
      * Starts a game session.
