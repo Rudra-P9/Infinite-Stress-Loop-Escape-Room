@@ -128,7 +128,7 @@ public class Accounts {
         }
 
         if (exists) {
-            System.out.println("Account already exists for username: " + username + " — not saving.");
+            System.out.println("Account already exists for username: " + username + " was not saved.");
             return;
         }
 
@@ -140,5 +140,6 @@ public class Accounts {
         GameDataWriter writer = new GameDataWriter();
         writer.saveUsers(users);
         System.out.println("Test user created and written to json/test.json");
+        
     }
 }
