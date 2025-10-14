@@ -1,10 +1,11 @@
 package com.escape.model;
+
 /**
  * Handles the countdown timer for the game.
- *
- * Keeps track of how much time the player has to finish a room.
- * Can start, pause, resume, or reduce time as the game runs.
- * Checks when time has fully run out.
+ * Tracks how much time the player has to finish a room.
+ * Supports starting, pausing, resuming, and reducing time.
+ * Also checks whether time has expired.
+ * 
  * @author Dylan Diaz
  */
 public class Timer {
@@ -19,38 +20,70 @@ public class Timer {
      */
     private int remainingSeconds;
 
+    private boolean isRunning;
+
     /**
-     * Starts the countdown.
+     * Constructs a Timer with the specified starting time.
+     * 
+     * @param initialSeconds the total time in seconds to start with
+     */
+    public Timer(int initialSeconds) {
+        this.initialSeconds = initialSeconds;
+        this.remainingSeconds = initialSeconds;
+        this.isRunning = false;
+    }
+
+    /**
+     * Starts the countdown by resetting remaining time.
      */
     public void start() {
+        remainingSeconds = initialSeconds;
+        isRunning = true;
     }
 
     /**
      * Pauses the countdown.
      */
     public void pause() {
+        isRunning = false;
     }
 
     /**
      * Resumes the countdown after being paused.
      */
     public void resume() {
+        isRunning = true;
     }
 
     /**
-     * Reduces the remaining time by a certain number of seconds.
-     *
-     * @param seconds number of seconds to subtract
+     * Reduces the remaining time by a specified number of seconds.
+     * 
+     * @param seconds the number of seconds to subtract
      */
     public void reduceBy(int seconds) {
+        if (isRunning) {
+            remainingSeconds -= seconds;
+            if (remainingSeconds < 0) {
+                remainingSeconds = 0;
+            }
+        }
     }
 
     /**
      * Checks if the timer has reached zero.
-     *
+     * 
      * @return true if time is up, false otherwise
      */
     public boolean isExpired() {
-        return false;
+        return remainingSeconds <= 0;
+    }
+
+    /**
+     * Returns the number of seconds remaining on the timer.
+     * 
+     * @return the remaining time in seconds
+     */
+    public int getRemainingSeconds() {
+        return remainingSeconds;
     }
 }
