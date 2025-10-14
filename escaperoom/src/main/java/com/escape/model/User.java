@@ -24,6 +24,22 @@ public class User {
    // private Inventory inventory;
 
     /**
+     * Returns the username (same as getUser but clearer name for writers/loaders).
+     * @return username
+     */
+    public String getUsername() {
+        return this.username;
+    }
+
+    /**
+     * Returns the user's password (used by the writer; consider removing in production).
+     * @return password
+     */
+    public String getPassword() {
+        return this.password;
+    }
+
+    /**
      * Constructs a new User with the specified credentials and inventory.
      *
      * @param userID    the unique identifier for the user
