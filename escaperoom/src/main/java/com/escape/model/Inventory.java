@@ -3,61 +3,91 @@ package com.escape.model;
 import java.util.ArrayList;
 
 /**
- * Class for all functions inventory related.
- * Stores items and has actions such as add, remove, clear, and view.
+ * Represents a user's inventory in the escape room game.
+ * Stores items and enforces a capacity limit.
  * 
- * @author Talan Kinard
+ * @author Dylan Diaz
  */
-
-public class Inventory 
-{
-    public ArrayList<Inventory> inventory;
-    public String items;
-    public int capacity;
-
+public class Inventory {
 
     /**
-     * Returns the list of inventory items
-     * @return the inventory list
+     * List of item names currently in the inventory.
      */
-    public ArrayList<Inventory> getInventory()
-    {
-        return null;
-    }
+    private ArrayList<String> items;
 
     /**
-     * Adds an item to the inventory.
+     * Maximum number of items the inventory can hold.
      */
-    public void addInventory()
-    {
-        
-    }
+    private int capacity;
 
     /**
-     * Clears the inventory of all items.
-     */
-    public void clearInventory()
-    {
-        
-    }
-
-
-    /**
-     * Removes an object from inventory by name.
+     * Constructs an inventory with a specified capacity.
      * 
-     * @param item, the item to remove
+     * @param capacity the maximum number of items allowed
      */
-    public void removeFromInventory(String item)
-    {
-        
-    }
- 
-    /**
-     * Displays the current inventory
-     */
-    public void viewInventory()
-    {
-        
+    public Inventory(int capacity) {
+        this.capacity = capacity;
+        this.items = new ArrayList<>();
     }
 
+    /**
+     * Adds an item to the inventory if there's space.
+     * 
+     * @param item the item to add
+     * @return true if added successfully, false if inventory is full
+     */
+    public boolean addItem(String item) {
+        if (items.size() < capacity) {
+            items.add(item);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Removes an item from the inventory.
+     * 
+     * @param item the item to remove
+     * @return true if removed, false if item not found
+     */
+    public boolean removeItem(String item) {
+        return items.remove(item);
+    }
+
+    /**
+     * Checks if the inventory contains a specific item.
+     * 
+     * @param item the item to check
+     * @return true if the item is present, false otherwise
+     */
+    public boolean hasItem(String item) {
+        return items.contains(item);
+    }
+
+    /**
+     * Returns the list of items in the inventory.
+     * 
+     * @return the inventory items
+     */
+    public ArrayList<String> getItems() {
+        return items;
+    }
+
+    /**
+     * Returns the maximum capacity of the inventory.
+     * 
+     * @return the inventory capacity
+     */
+    public int getCapacity() {
+        return capacity;
+    }
+
+    /**
+     * Returns the number of items currently stored.
+     * 
+     * @return the current item count
+     */
+    public int getItemCount() {
+        return items.size();
+    }
 }
