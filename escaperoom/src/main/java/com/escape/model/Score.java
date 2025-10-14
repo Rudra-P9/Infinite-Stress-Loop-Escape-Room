@@ -3,41 +3,68 @@ package com.escape.model;
 import java.util.Date;
 
 /**
- * Class for representation of the game leaderboard.
- * Stores user entries and contains methods for retrieving.
+ * Represents a player's score for a completed escape room.
+ * Used by SavedData and LeaderBoard.
+ * Interacts with GameDataWriter and GameDataLoader for persistence.
  * 
- * @author Rudra Patel
+ * @author Dylan Diaz
  */
 public class Score {
+
     private String username;
     private Difficulty difficulty;
     private int timeLeftSec;
     private Date date;
-    private int score;
+    private int scoreValue;
 
-    public Score() {}
-
-    public Score(String username, Difficulty difficulty, int timeLeftSec, int score) {
+    /**
+     * Constructs a Score with all required fields.
+     * 
+     * @param username the player's username
+     * @param difficulty the difficulty level of the room
+     * @param timeLeftSec seconds remaining when the room was completed
+     * @param date the date the score was recorded
+     */
+    public Score(String username, Difficulty difficulty, int timeLeftSec, Date date) {
         this.username = username;
         this.difficulty = difficulty;
         this.timeLeftSec = timeLeftSec;
-        this.score = score;
-        this.date = new Date();
+        this.date = date;
+        this.scoreValue = 0; // default until set
     }
 
-    // getters / setters
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    /**
+     * Returns the score value.
+     * 
+     * @return the score value
+     */
+    public int getScore() {
+        return scoreValue;
+    }
 
-    public Difficulty getDifficulty() { return difficulty; }
-    public void setDifficulty(Difficulty difficulty) { this.difficulty = difficulty; }
+    /**
+     * Sets the score value.
+     * 
+     * @param scoreValue the score to assign
+     */
+    public void setScore(int scoreValue) {
+        this.scoreValue = scoreValue;
+    }
 
-    public int getTimeLeftSec() { return timeLeftSec; }
-    public void setTimeLeftSec(int timeLeftSec) { this.timeLeftSec = timeLeftSec; }
+    // Getters for associated classes to use
+    public String getUsername() {
+        return username;
+    }
 
-    public int getScore() { return score; }
-    public void setScore(int score) { this.score = score; }
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
 
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
+    public int getTimeLeftSec() {
+        return timeLeftSec;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 }
