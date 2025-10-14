@@ -9,11 +9,13 @@ package com.escape.model;
 
 public class EscapeRoomFacade 
 {
-    
+
     private User currentUser;
     private Rooms currentRoom;
     private Timer timer;
     private SavedData savedData;
+    private GameDataLoader loader;
+    private GameDataWriter writer;
 
     /**
      * Starts a game session.
