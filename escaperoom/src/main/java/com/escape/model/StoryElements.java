@@ -14,21 +14,22 @@ public class StoryElements
     private String storyText;
     private static final int storyPos = 0;
 
-
     /**
      * @return story text
      */
+
     public String getStory()
     {
-        return null;
+        return storyText;
     }
 
     /**
      * String representation of story elements
      */
+
     @Override
     public String toString()
     {
-        return "";
+        return "Story Elements: Story Position = "+storyPos+" | Text = "+storyText;
     }
 }
