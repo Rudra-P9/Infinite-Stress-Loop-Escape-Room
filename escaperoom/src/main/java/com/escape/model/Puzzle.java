@@ -1,9 +1,12 @@
 package com.escape.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * Abstract base class representing a puzzle for the escaperoom.
+ * Will include inheritence for following puzzle subclasses.
  * Each puzzle has a unique ID, title, objective, and solved status.
  * It also includes a hint and basic data for gameplay logic.
  * 
@@ -16,15 +19,70 @@ public abstract class Puzzle {
     protected String objective;
     protected boolean solved;
 
-    Hints hint = new Hints(title, 0, solved, objective);
+    //Difficulty enum
+    protected Difficulty difficulty;
 
     /**
-     * Returns the hint associated with this puzzle.
+     * Hints for the puzzle
+     */
+    protected final List<Hints> hints = new ArrayList<>();
+
+    /**
+     * Constructor to interact with subclasses.
+     * @param title puzzle title
+     * @param objective objective text displayed to user
+     * @param solved solved state
+     * @param difficulty difficulty enum
+     */
+    protected Puzzle(String title, String objective, boolean solved, Difficulty difficulty) {
+        this.puzzleID = UUID.randomUUID();
+        this.title = title;
+        this.objective = objective;
+        this.solved = solved;
+    }
+
+    /**
+     * Checks user input versus the solution
+     * @param input player input
+     * @return true if correct false otherwise
+     */
+    public abstract boolean checkAnswer(String input);
+
+    /**
+     * Returns the puzzle solution string wise.
+     * @return solution as String
+     */
+    public abstract String getSolution();
+
+    /**
+     * Sets solution. 
+     * @param solution
+     */
+    public abstract void setSolution(String solution);
+
+    /**
+     * Grabs first hint object
      *
-     * @return the hint string
+     * @return a hint or either a message saying there isn't a hint.
      */
     public String getHint() {
-        return hint.getHint();
+        if(hints.isEmpty() || hints == null) {
+            return "No hint for this puzzle!";
+        }
+        for(Hints h: hints) {
+            if(!h.revealed) {
+                return h.text;
+            }
+        }
+        return "No hint for this puzzle!";
+    }
+
+    /**
+     * List to get populated from JSON.
+     * @return LIST OF HINTS
+     */
+    public List<Hints> getHints() {
+        return hints;
     }
 
     /**
@@ -33,7 +91,23 @@ public abstract class Puzzle {
      * @return true if solved, false otherwise
      */
     public boolean solved() {
-        return true;
+        return solved;
+    }
+
+    /**
+     * Subclasses/Facade to update solved state
+     * @param solved
+     */
+    protected void setSolved(boolean solved) {
+        this.solved = solved;
+    }
+
+    /**
+     * 
+     * @return puzzle UUID
+     */
+    public UUID getPuzzleID() {
+         return puzzleID;
     }
 
     /**
@@ -86,34 +160,19 @@ public abstract class Puzzle {
      *
      * @return the difficulty level as an integer
      */
-    public int getDifficultyLevel() {
-        return 1; //will need to be tweaked to be dynamic
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 
     /**
-     * Returns the solution to the puzzle.
-     *
-     * @return the solution string
+     * Sets difficulty, safety check for null.
+     * @param difficulty
      */
-    public String getSolution() {
-        return "solution"; //same idea as setSolution needed GameDataLoader
+    public void setDifficulty(Difficulty difficulty) {
+        if(difficulty == null) {
+            throw new IllegalArgumentException("difficulty failed.");
+        }
+        this.difficulty = difficulty;
     }
 
-    /**
-     * Sets the solution for the puzzle.
-     *
-     * @param solution the solution string to assign
-     */
-    public void setSolution(String solution) {
-        // this.solution = solution; or something. will need GameDataLaoader to load the solutions
-    }
-
-    /**
-     * Returns the unique identifier of the puzzle.
-     *
-     * @return the puzzle UUID
-     */
-    public UUID getPuzzleID() {
-        return puzzleID;
-    }
 }
