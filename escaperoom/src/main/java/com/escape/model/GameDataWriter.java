@@ -209,24 +209,24 @@ public class GameDataWriter {
 
     /**
      * Saves leaderboard data to playerData.json
-     * @param leaderBoard the leaderboard to save
+     * @param leaderboard the leaderboard to save
      */
-    public void saveLeaderBoard(Leaderboard leaderBoard) {
+    public void saveLeaderboard(Leaderboard leaderboard) {
         JSONObject root = readJsonObject("escaperoom/src/main/resources/json/playerData.json");
-        JSONArray leaderBoardArray = (JSONArray) root.getOrDefault("leaderboard", new JSONArray());
+        JSONArray leaderboardArray = (JSONArray) root.getOrDefault("leaderboard", new JSONArray());
 
-        ArrayList<User> entries = leaderBoard.getLB();
+        ArrayList<User> entries = leaderboard.getLB();
         if (entries != null) {
             for (User user : entries) {
                 JSONObject entryObj = new JSONObject();
                 entryObj.put("userID", user.userID == null ? null : user.userID.toString());
                 entryObj.put("username", user.getUsername());
                 // TODO: Add score details if you have them on User or Leaderboard entries
-                leaderBoardArray.add(entryObj);
+                leaderboardArray.add(entryObj);
             }
         }
 
-        root.put("leaderboard", leaderBoardArray);
+        root.put("leaderboard", leaderboardArray);
         writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
 

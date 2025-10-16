@@ -49,6 +49,6 @@ public class Leaderboard
      */
     public void printLB()
     {
-        System.out.println("Printing LeaderBoard..."); //hardcode stub for now
+        System.out.println("Printing Leaderboard..."); //hardcode stub for now
     }
 }

@@ -150,10 +150,10 @@ public class GameDataLoader {
     }
 
     /**
-     * Builds a LeaderBoard from playerData.json - "leaderboard".
+     * Builds a Leaderboard from playerData.json - "leaderboard".
      * Tries setEntries(List), then setLB(List), else falls back to addEntry(...).
      */
-    public Leaderboard getLeaderBoard() {
+    public Leaderboard getLeaderboard() {
     JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
         JSONArray arr   = (JSONArray) data.get("leaderboard");
 

@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Represents a player's score for a completed escape room.
- * Used by SavedData and LeaderBoard.
+ * Used by SavedData and Leaderboard.
  * Interacts with GameDataWriter and GameDataLoader for persistence.
  * 
  * @author Dylan Diaz
