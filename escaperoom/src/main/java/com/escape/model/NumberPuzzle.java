@@ -1,43 +1,53 @@
 package com.escape.model;
-import java.util.UUID;
 
 /**
  * Child class responsible for managing any and all "number" puzzles.
- * @author Jacob Kinard
+ * @author Jacob Kinard & Talan Kinard
  * 
  */
-public class NumberPuzzle extends Puzzle{
-    /**
-     *  
-     *
-     * @param title - The title of the puzzle
-     * @param objective - Is the objective of the puzzle and is a description of what the user is trying to solve.
-     * @param solved - holds the vlaue if the puzzle is solved or not
-     * @param solution - holds the valid number solution to the puzzle
-     * @param puzzleID - holds a uniqe identifier address for puzzle object
-     * 
-     */
-    public UUID puzzleID;
-    private String title;
-    private String objective;
-    private boolean solved;
-    private int solution;
+public class NumberPuzzle extends Puzzle {
 
-    public NumberPuzzle(String title, String objective, int solution, boolean solved){
-        this.title = title;
-        this.objective = objective;
-        this.puzzleID = puzzleID;
-        this.solved = solved;
+     /**
+     * Contructs wordpuzzle instance.
+     * @param puzzleID unique ID for the puzzle
+     * @param title title of puzzle displayed 
+     * @param objective obj of the puzzle displayed
+     * @param solution correct answer to the puzzle
+     * @param category category of puzzle
+     * @param type the distinct type of puzzle within the category
+     */
+    public NumberPuzzle (String puzzleID, String title, String objective, String solution,
+                     String category, String type) {
+                        super(puzzleID, title, objective, solution, category, type);
+                     }
+    
+    /**
+     * Checks player answer versus correct solution.
+     */
+    @Override
+    public boolean checkAnswer(String answer) {
+        if(answer == null || solution == null) {
+            return false;
+        }
+
+        try {
+            double playerInput = Double.parseDouble(answer.trim());
+            double correctInput = Double.parseDouble(solution.trim());
+            return Math.abs(playerInput - correctInput) < 0.0001; //parsing succeeds and returns
+        } catch (NumberFormatException e) {
+            System.out.println("Number is invalid for puzzle type: "+type);
+            return false;
+        }
+    }
+
+    @Override
+    public String getSolution() {
+        return solution;
+    }
+
+    @Override
+    public void setSolution(String solution) {
         this.solution = solution;
     }
 
-    /**
-     *  
-     *@return returns a vlaue if the puzzle is solved.
-     */
-    public boolean isSolved(){
-        return true;
-
-    }
-    
 }
