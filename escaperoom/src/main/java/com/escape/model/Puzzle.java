@@ -2,7 +2,6 @@ package com.escape.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Abstract base class representing a puzzle for the escaperoom.
@@ -109,8 +108,8 @@ public abstract class Puzzle {
      * 
      * @return puzzle UUID
      */
-    public UUID getPuzzleID() {
-         return puzzleID;
+    public String getPuzzleID() {
+        return puzzleID;
     }
 
     /**
@@ -118,7 +117,7 @@ public abstract class Puzzle {
      *
      * @param puzzleID the UUID to assign
      */
-    public void setPuzzleID(UUID puzzleID) {
+    public void setPuzzleID(String puzzleID) {
         this.puzzleID = puzzleID;
     }
 
