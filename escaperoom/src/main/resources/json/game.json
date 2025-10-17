@@ -1,8 +1,8 @@
 {
   "game": {
-    "title":"TBD",
+    "title":"TBD Escape",
     "difficulty":"EASY",
-    "difficultyTimer": {
+    "timerByDifficulty": {
       "EASY":1800,
       "MEDIUM":1500,
       "HARD":1200
@@ -15,168 +15,109 @@
     "completePos":6
   },
 
-  "difficulties": {
-    "EASY": {
-      "hintsAllowed": 3,
-      "initialSeconds": 1800
-    },
-    "MEDIUM": {
-      "hintsAllowed": 2,
-      "initialSeconds": 1500
-    },
-    "HARD": {
-      "hintsAllowed": 1,
-      "initialSeconds": 1200
-    }
+  "story": {
+    "intro": "Welcome to TBD",
+    "roomOneIntro": "You enter a tavern searching for info...tbd",
+    "roomOneConc": "You answer the riddle correctly, the tavern keep offers you a mysterious letter `P` in return... I would remember that.",
+    "roomTwoIntro": "TBD",
+    "roomTwoBetween": "You complete the task and get a letter `H` but wait... this happens now you have to do this!",
+    "roomTwoConc": "Using that info you get another letter `O`",
+    "roomThreeIntro": "You enter...",
+    "roomThreeBetween": "This happens! A letter appears `N`!",
+    "roomThreeConc": "After completing that task you enter the final battle...!",
+    "finalPuzzle": "Enter the word of artifacts collected along the journey to win!",
+    "conclusion": "Congrats on your journey....outro story tbd"
   },
+
   "rooms": [
     {
-      "roomID": "62343172-dd4c-4be6-ba73-22df6e77e802",
-      "difficulty": "EASY",
-      "puzzleIDs": [
-        "0a7f2ae3-f096-4669-a81b-943573553b0c"
-      ],
-      "puzzle":[
+      "roomID": "room1",
+      "title": "TBD",
+      "puzzles":[
         {
-          "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
-          "type": "NumberPuzzle",
-          "title": "Password Calculation",
-          "objective": "Use math to figure out the password.",
-          "difficulty": "EASY",
-          "solution": "1234",
-          "solved": false,
-
-          "hints":[
-          {
-            "hintID": "5a9a1c21-1f3a-4a24-b8e9-e1f1a5c1c11",
-            "puzzleID": "0a7f2ae3-f096-4669-a81b-943573553b0c",
-            "hint": "Try common codes",
-            "order": 1,
-            "text": "Start by testing obvious codes like 0000 or 1234 — sometimes the simplest answer works.",
-            "revealed": false
-          }
-          ]
+          "id": "roomOnePuzzleOne",
+          "order": 1,
+          "category": "WORD",
+          "type": "RIDDLE",
+          "title": "TBD RIDDLE",
+          "objective": "Answer this riddle....",
+          "prompt": "TBD",
+          "solution": "TBD",
+          "hint":"TBD",
+          "rewardLetter": "P"
         }
       ]
     },
     {
-      "roomID": "66f3e4a1-44c0-4956-9f19-d21ba01151ce",
-      "difficulty": "HARD",
-      "puzzleIDs": [
-        "c96f61f5-7255-4083-b8c2-106f6d350253"
-      ],
-      "puzzle":[
+      "roomID": "room2",
+      "title": "TBD",
+      "puzzles":[
         {
-          "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
-          "type": "WordPuzzle",
-          "title": "Anagram Unlock",
-          "objective": "Rearrange letters to form the correct password.",
-          "difficulty": "HARD",
-          "solution": "UNLOCK",
-          "solved": true,
-
-          "hints":[
-          {
-            "hintID": "64d2b41f-3a53-4b5d-bf1c-91862e71b4f7",
-            "puzzleID": "c96f61f5-7255-4083-b8c2-106f6d350253",
-            "hint": "Think of instruments",
-            "order": 1,
-            "text": "Think about an instrument with keys that don't open doors.",
-            "revealed": false
-          }
-          ]
+          "id": "roomTwoPuzzleOne",
+          "order": 2,
+          "category": "WORD",
+          "type": "LETTER_DECIPHER",
+          "title": "TBD Decipher",
+          "objective": "Decipher this ancient text into a word.",
+          "prompt": "TBD",
+          "solution": "TBD",
+          "hint":"TBD",
+          "rewardLetter": "H"
+        },
+        {
+          "id": "roomTwoPuzzleTwo",
+          "order": 3,
+          "category": "WORD",
+          "type": "ARROW_DECIPHER",
+          "title": "TBD Arrows",
+          "objective": "What could these arrows mean...",
+          "prompt": "TBD",
+          "solution": "TBD",
+          "hint":"Use WASD",
+          "rewardLetter": "O"
         }
       ]
     },
     {
-      "roomID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
-      "difficulty": "MEDIUM",
-      "puzzleIDs": [
-        "f8836f88-c4c0-49f7-83db-7a15f6f092ef"
-      ],
-       "puzzle":[
+      "roomID": "room3",
+      "title": "TBD",
+      "puzzles":[
         {
-          "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
-          "type": "WordPuzzle",
-          "title": "Cipher Shift",
-          "objective": "Decode the substitution cipher to reveal the secret word.",
-          "difficulty": "MEDIUM",
-          "solution": "SECRET",
-          "solved": true,
-
-          "hints":[
-          {
-            "hintID": "7ef05c7a-56a8-4f7c-9ab2-7b0f013d1eab",
-            "puzzleID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
-            "hint": "Look for patterns",
-            "order": 1,
-            "text": "Look for a repeating pattern — substitution ciphers often replace letters consistently.",
-            "revealed": false
-          }
-          ]
-        }
-      ]
-    },
-    {
-      "roomID": "ee77945b-67c9-4b65-8bf6-67e3f0478349",
-      "difficulty": "EASY",
-      "puzzleIDs": [
-        "c0fea17a-656a-4918-9c66-a03ce4d1b169"
-      ],
-      "puzzle":[
+          "id": "roomThreePuzzleOne",
+          "order": 4,
+          "category": "NUMBER",
+          "type": "SHAPE_MATH",
+          "title": "TBD Math",
+          "objective": "Figure out what these mysterious ancient symbols could mean...",
+          "prompt": "TBD",
+          "solution": "TBD",
+          "hint":"TBD",
+          "rewardLetter": "N"
+        },
         {
-          "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
-          "type": "WordPuzzle",
-          "title": "Scrambled Code",
-          "objective": "Unscramble the letters to reveal the code word.",
-          "difficulty": "EASY",
-          "solution": "MIRROR",
-          "solved": true,
-
-          "hints":[
-          {
-            "hintID": "82de92f5-4594-4b91-8cb2-45a33f92a0b4",
-            "puzzleID": "c0fea17a-656a-4918-9c66-a03ce4d1b169",
-            "hint": "Use symmetry",
-            "order": 1,
-            "text": "Try moving the statues so they mirror each other — symmetry is often the solution.",
-            "revealed": false
-          }
-          ]
+          "id": "roomThreePuzzleTwo",
+          "order": 5,
+          "category": "AUDIO",
+          "type": "AUDIO_DECIPHER",
+          "title": "TBD Audio",
+          "objective": "What could this audio mean...",
+          "prompt": "audio path",
+          "solution": "TBD",
+          "hint":"TBD",
+          "rewardLetter": "E"
+        },
+        {
+          "id": "roomThreeFinale",
+          "order": 6,
+          "category": "WORD",
+          "type": "FINAL_LOCK",
+          "title": "Final Lock",
+          "objective": "Enter the collected letters (in order) to escape.",
+          "solution": "PHONE",
+          "hint": "Use the letters from your journey.",
+          "rewardLetter": ""
         }
       ]
     }
-  ],
-  
-  "story": {
-    "storyText": "Escape the manor by following the clues. Each solved puzzle advances the plot.",
-    "storyPos": 0,
-    "storyBeats": [
-      {
-        "storyID": "intro",
-        "order": 1,
-        "storyText": "Welcome to the manor. Something is off… the door locks behind you."
-      },
-      {
-        "storyID": "pp1",
-        "order": 2,
-        "storyText": "A panel slides open after the first puzzle—there’s a note and a strange symbol."
-      },
-      {
-        "storyID": "pp2",
-        "order": 3,
-        "storyText": "Footsteps upstairs. The study door is now ajar."
-      },
-      {
-        "storyID": "finale",
-        "order": 99,
-        "storyText": "With the last lock undone, the exit opens and fresh air pours in."
-      }
-    ]
-  },
-  "timer": {
-    "EASY": 1800,
-    "MEDIUM": 1500,
-    "HARD": 1200
-  }
+  ]
 }

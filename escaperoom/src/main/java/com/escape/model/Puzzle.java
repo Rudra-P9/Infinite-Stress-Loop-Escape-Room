@@ -14,10 +14,13 @@ import java.util.UUID;
  */
 public abstract class Puzzle {
 
-    protected UUID puzzleID;
+    protected String puzzleID;
     protected String title;
     protected String objective;
     protected boolean solved;
+    protected String solution;
+    protected String category;
+    protected String type;
 
     //Difficulty enum
     protected Difficulty difficulty;
@@ -34,8 +37,8 @@ public abstract class Puzzle {
      * @param solved solved state
      * @param difficulty difficulty enum
      */
-    protected Puzzle(String title, String objective, boolean solved, Difficulty difficulty) {
-        this.puzzleID = UUID.randomUUID();
+    protected Puzzle(String puzzleID, String title, String objective, String solution, boolean solved, Difficulty difficulty, String category, String type) {
+        this.puzzleID = puzzleID;
         this.title = title;
         this.objective = objective;
         this.solved = solved;
