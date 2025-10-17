@@ -10,7 +10,7 @@ import java.util.UUID;
  * Each puzzle has a unique ID, title, objective, and solved status.
  * It also includes a hint and basic data for gameplay logic.
  * 
- * @author Jacob Kinard
+ * @author Jacob Kinard & Talan Kinard
  */
 public abstract class Puzzle {
 

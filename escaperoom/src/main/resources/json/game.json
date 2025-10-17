@@ -1,4 +1,14 @@
 {
+  "game": {
+    "title":"TBD",
+    "difficulty":"EASY",
+    "difficultyTimer": {
+      "EASY":1800,
+      "MEDIUM":1500,
+      "HARD":1200
+    },
+    "finalWord":"TBD";
+  },
   "difficulties": {
     "EASY": {
       "hintsAllowed": 3,

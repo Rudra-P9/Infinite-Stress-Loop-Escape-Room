@@ -27,7 +27,7 @@ public class Progress {
      * of a puzzle the value of story pos will go up +1.
      */
     private int storyPos;
-    private static final int TOTAL_BEATS = 5;
+    private static final int TOTAL_BEATS = 6;
 
 
 
@@ -105,7 +105,8 @@ public class Progress {
      * 2 -> PUZZLE 3
      * 3 -> PUZZLE 4
      * 4 -> PUZZLE 5
-     * 5 -> COMPLETION
+     * 5 -> FINAL WORD ENTRY
+     * 6 -> COMPLETION
      * @param pos
      */
 
