@@ -7,8 +7,14 @@
       "MEDIUM":1500,
       "HARD":1200
     },
-    "finalWord":"TBD";
+    "finalWord":"PHONE"
   },
+
+  "progress": {
+    "startPos":0,
+    "completePos":6
+  },
+
   "difficulties": {
     "EASY": {
       "hintsAllowed": 3,
