@@ -1,43 +1,75 @@
 package com.escape.model;
-import java.util.UUID;
 
 /**
  * Child class responsible for managing any and all "word" puzzles.
- * @author Jacob Kinard
- * 
+ * Handles riddle, decipher, arrow, and the final puzzles.
+ * @author Jacob Kinard & Talan Kinard
  */
 public class WordPuzzle extends Puzzle{
+   
     /**
-     *  
-     *
-     * @param title - The title of the puzzle
-     * @param objective - Is the objective of the puzzle and is a description of what the user is trying to solve.
-     * @param solved - holds the vlaue if the puzzle is solved or not
-     * @param solution - holds the valid solution to the puzzle
-     * @param puzzleID - holds a uniqe identifier address for puzzle object
-     * 
+     * Contructs wordpuzzle instance.
+     * @param puzzleID unique ID for the puzzle
+     * @param title title of puzzle displayed 
+     * @param objective obj of the puzzle displayed
+     * @param solution correct answer to the puzzle
+     * @param category category of puzzle
+     * @param type the distinct type of puzzle within the category
      */
-    public UUID puzzleID;
-    private String title;
-    private String objective;
-    private boolean solved;
-    private String solution;
+    public WordPuzzle (String puzzleID, String title, String objective, String solution,
+                     String category, String type) {
+                        super(puzzleID, title, objective, solution, category, type);
+                     }
+    
+    /**
+     * Player input compared to expected solution.
+     * Input/Solution both trimmed and uppercased and no spaces for easy input checks.
+     */
+    @Override
+    public boolean checkAnswer(String answer) {
+        if(answer == null || solution == null) {
+            return false;
+        }
 
-    public WordPuzzle(String title, String objective, String solution, boolean solved){
-        this.title = title;
-        this.objective = objective;
-        this.puzzleID = puzzleID;
-        this.solved = solved;
+        String fixedAnswer = fix(answer);
+        String fixedSolution = fix(solution);
+
+        switch(type.toUpperCase()) {
+            case "RIDDLE":
+            case "LETTER_DECIPHER":
+            case "ARROW_DECIPHER":
+            case "FINAL_LOCK":
+                return fixedAnswer.equals(fixedSolution);
+            default:
+                System.out.println("Error in puzzle type.");
+                return false;
+
+        }
+    }
+
+    /**
+     * Gets the correct solution.
+     */
+    @Override
+    public String getSolution() {
+        return solution;
+    }
+
+    /**
+     * Sets the correct solution.
+     */
+    @Override
+    public void setSolution(String solution) {
         this.solution = solution;
     }
 
     /**
-     *  
-     *@return returns a vlaue if the puzzle is solved.
+     * Method to fix the inputs, example trim, uppercase, and remove spaces.
+     * @param input
+     * @return a fixed version of the string.
      */
-    public boolean isSolved(){
-        return true;
-
+    private String fix(String input) {
+        return input.trim().toUpperCase().replaceAll("\\s+","");
     }
     
 }

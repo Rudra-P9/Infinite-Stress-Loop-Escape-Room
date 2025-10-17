@@ -43,6 +43,16 @@ public abstract class Puzzle {
         this.solved = solved;
     }
 
+    protected Puzzle(String puzzleID, String title, String objective, String solution, String category, String type) {
+        this.puzzleID = puzzleID;
+        this.title = title;
+        this.objective = objective;
+        this.solution = solution;
+        this.category = category;
+        this.type = type;
+        this.solved = false;
+    }
+
     /**
      * Checks user input versus the solution
      * @param input player input
