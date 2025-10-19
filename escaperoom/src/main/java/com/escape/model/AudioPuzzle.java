@@ -20,5 +20,43 @@ public class AudioPuzzle extends Puzzle {
                      String category, String type) {
                         super(puzzleID, title, objective, solution, category, type);
                      }
+
+    /**
+     * Check's player input versus expected solution.
+     */
+    @Override
+    public boolean checkAnswer(String answer) {
+        if(answer == null || solution == null) {
+            return false;
+        }
+
+        String fixedAnswer = fix(answer);
+        String fixedSolution = fix(solution);
+        return fixedAnswer.equals(fixedSolution);
+    }
+
+    public String getSolution() {
+        return solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    /**
+     * Placeholder for audio.
+     */
+    private void playAudio() {
+        System.out.println("TODO ADD AUDIO");
+    }
+
+    /**
+     * Fixes formatting on Strings to accept any input.
+     * @param input of a String to fix
+     * @return a fixed version of the String
+     */
+    private String fix(String input) {
+        return input.trim().toUpperCase().replaceAll("\\s+","");
+    }
     
 }
