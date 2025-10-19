@@ -8,7 +8,7 @@ package com.escape.model;
 public class NumberPuzzle extends Puzzle {
 
      /**
-     * Contructs wordpuzzle instance.
+     * Contructs numberpuzzle instance.
      * @param puzzleID unique ID for the puzzle
      * @param title title of puzzle displayed 
      * @param objective obj of the puzzle displayed
