@@ -1,6 +1,6 @@
 package com.escape.model;
 
-import java.util.ArrayList;
+import java.util.List;
 /**
  * Rooms of the EscapeRoom
  * Each room has an ID, puzzles, and a difficulty level.
@@ -8,54 +8,89 @@ import java.util.ArrayList;
  * @author Talan Kinard
  */
 
-public class Rooms 
-{
-    /**
-     * List of rooms.
-     */
-    private ArrayList<Rooms> rooms;
+public class Rooms {
 
     /**
      * Unique identifier for the room.
      */
     private String roomID;
-    private ArrayList<Puzzle> puzzles;
-    private int difficulty;
+    private String title;
+    private List<Puzzle> puzzles;
 
     /**
-     * Adds a puzzle to the room.
-     * @param p the puzzle to be added.
+     * Default constructor
      */
-    public void addPuzzle(Puzzle p)
-    {
+    public Rooms() {
 
+    }
+
+    /**
+     * Constructs a room with id, title, and puzzles
+     * @param roomID the id for the room
+     * @param title name of the room
+     * @param puzzles the puzzles the room contains
+     */
+    public Rooms(String roomID, String title, List<Puzzle> puzzles) {
+        this.roomID = roomID;
+        this.title = title;
+        this.puzzles = puzzles;
     }
 
     /**
      * Returns the list of puzzles associated with the room.
+     * @return puzzles
+     */
+    public List<Puzzle> getPuzzles()
+    {
+        return puzzles;
+    }
+
+    /**
+     * Sets the list of puzzles for this room.
+     * @param puzzles
+     */
+    public void setPuzzles(List<Puzzle> puzzles) {
+        this.puzzles = puzzles;
+    }
+
+    /**
+     * Returns the id of the room.
      * @return
      */
-    public ArrayList<Puzzle> getPuzzles()
-    {
-        return null;
+    public String getRoomID() {
+        return roomID;
     }
 
     /**
-     * Gets the story related to the room/puzzle.
-     * @return the story.
+     * Sets the identifier for this room.
+     * @param roomID
      */
-    protected String getStory()
-    {
-        return null;
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
     }
 
     /**
-     * Adjusts the difficulty level.
-     * @param level the new difficulty level.
+     * Returns the title of the room.
+     * @return
      */
-    public void adjustDifficulty(Difficulty level)
-    {
+    public String getTitle() {
+        return title;
+    }
 
+    /**
+     * Sets the title of the room.
+     * @param title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Provides a String description for the room and avoids a NullPointer with an incorrect load.
+     */
+    @Override
+    public String toString() {
+        return "Room: "+title+" ("+roomID+"), Puzzles: "+(puzzles != null ? puzzles.size() : 0);
     }
 
 }
