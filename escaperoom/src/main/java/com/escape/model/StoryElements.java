@@ -1,35 +1,33 @@
 package com.escape.model;
 
-import java.util.ArrayList;
-
 /**
  * Class for the story elements of the Escape Room.
- * Methods to get the story text and convert to String.
+ * Data holder for all story elements.
  * 
  * @author Talan Kinard
  */
 public class StoryElements 
 {
-    private ArrayList<StoryElements> story;
-    private String storyText;
-    private static final int storyPos = 0;
+    private String intro;
+    private String outro;
 
-    /**
-     * @return story text
-     */
+    private String roomOneIntro;
+    private String roomOneConc;
 
-    public String getStory()
-    {
-        return storyText;
+    private String roomTwoIntro;
+    private String roomTwoBetween;
+    private String roomTwoConc;
+
+    private String roomThreeIntro;
+    private String roomThreeBetween;
+    private String roomThreeConc;
+
+    private String finalPuzzleIntro;
+
+    public StoryElements() {
+
     }
 
-    /**
-     * String representation of story elements
-     */
 
-    @Override
-    public String toString()
-    {
-        return "Story Elements: Story Position = "+storyPos+" | Text = "+storyText;
-    }
+
 }
