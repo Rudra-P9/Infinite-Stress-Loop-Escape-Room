@@ -1,12 +1,9 @@
 package com.escape.model;
 
-import java.io.File;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,64 +12,81 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 /**
- * Loads small, data from JSON into our model objects.
- * Files used during development:
- * - game.json       (rooms, puzzles metadata, story, etc.)
- * - playerData.json (users, scores, leaderboard, saved progress)
+ * Reads game data from JSON into lightweight model objects.
+ *
+ * Sources during development:
+ *   - game.json        : rooms, story, puzzle metadata (we only consume what we need)
+ *   - playerData.json  : users, scores, leaderboard, saved progress
+ *
+ * Notes:
+ *  • Loader is intentionally "read-only": it never writes back to JSON.
+ *  • We keep the loader tolerant to teammates' in-progress classes:
+ *      - Reflection is used to call setters only when they exist.
+ *      - A public no-arg constructor is required for instantiated types.
+ *  • We try both classpath resources and filesystem paths so it works from IDE or build.
  *
  * Author: Kirtan Patel
- * Version: 2.0
+ * Version: 5.0
  */
 public class GameDataLoader {
 
-    /* ----------search paths (most stable first) ---------- */
+    /* ----------------------------------------------------------------------
+     * Candidate paths for JSON files.
+     * Keep the order stable: classpath-first would also work, but here we
+     * try these common filesystem locations (dev-friendly) and also the
+     * classpath inside readObjectFromCandidates().
+     * -------------------------------------------------------------------- */
+    private static final String[] GAME_CANDIDATES = {
+        "json/game.json",
+        "escaperoom/src/main/resources/json/game.json"
+    };
 
-    private static final String[] GAME_CANDIDATES   = {
-  "json/game.json", "escaperoom/src/main/resources/json/game.json"
-};
     private static final String[] PLAYER_CANDIDATES = {
-  "json/playerData.json", "escaperoom/src/main/resources/json/playerData.json"
-};
+        "json/playerData.json",
+        "escaperoom/src/main/resources/json/playerData.json"
+    };
 
+    /* ========================= PUBLIC API ========================= */
 
-    /* ---------------------------- API ---------------------------- */
-
-    /** Loads users from playerData.json - "users". */
+    /**
+     * Parse users from playerData.json -- "users" array.
+     * Builds minimal User objects (UUID/username/password). Inventory is
+     * parsed but only wired in if/when the User/Inventory APIs exist.
+     */
     public ArrayList<User> getUsers() {
         JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
         JSONArray arr   = (JSONArray) data.get("users");
 
         ArrayList<User> out = new ArrayList<>();
-        if (arr == null) return out;
+        if (arr == null) return out; // no users section -- empty list
 
         for (Object o : arr) {
             if (!(o instanceof JSONObject)) continue;
             JSONObject uo = (JSONObject) o;
 
+            // Parse UUID if present and well-formed
             String idStr = uo.get("userID") == null ? null : uo.get("userID").toString();
             java.util.UUID id = null;
             try {
                 if (idStr != null && !idStr.isEmpty()) id = java.util.UUID.fromString(idStr);
-            } catch (Exception e) {
-                // ignore malformed UUIDs
+            } catch (Exception ignore) {
+                // Malformed id is ignored; we still create a User
             }
 
             String username = uo.get("username") == null ? null : uo.get("username").toString();
             String password = uo.get("password") == null ? null : uo.get("password").toString();
 
+            // Our User constructor (UUID, username, password)
             User u = new User(id, username, password);
 
-            // parse inventory if present
+            // Inventory block is read for future use,
+            // but we don’t enforce any Inventory APIs here.
             JSONObject invObj = (JSONObject) uo.get("inventory");
             if (invObj != null) {
-                @SuppressWarnings("unchecked")
-                ArrayList<String> items = invObj.get("items") instanceof JSONArray
-                        ? new ArrayList<>((JSONArray) invObj.get("items"))
-                        : new ArrayList<>();
-                //Inventory inv = new Inventory();
-                // Inventory API is stubbed; if you implement setItems/setCapacity, use them here
-                // otherwise we leave inventory handling for later
-                // set capacity if possible
+                // If at some point Inventory has setItems/setCapacity, we can invoke them here.
+                // For now we just demonstrate safe parsing.
+                // JSONArray items = (JSONArray) invObj.get("items");
+                // int capacity = toInt(invObj.get("capacity"));
             }
 
             out.add(u);
@@ -80,36 +94,49 @@ public class GameDataLoader {
         return out;
     }
 
-    /** Loads rooms from game.json - "rooms". Only sets puzzleIDs. */
+    /**
+     * Parse rooms from game.json -- "rooms" array.
+     * We only set simple metadata (roomID, difficulty) and an optional list
+     * of puzzleIDs; we do not instantiate concrete Puzzle subclasses here.
+     */
     public ArrayList<Rooms> getRooms() {
-    JSONObject game  = readObjectFromCandidates(GAME_CANDIDATES);
+        JSONObject game  = readObjectFromCandidates(GAME_CANDIDATES);
         JSONArray rooms = (JSONArray) game.get("rooms");
 
         ArrayList<Rooms> out = new ArrayList<>();
         if (rooms == null) return out;
 
         for (Object rObj : rooms) {
+            if (!(rObj instanceof JSONObject)) continue;
             JSONObject ro = (JSONObject) rObj;
 
+            // Create a Rooms instance via no-arg constructor
             Rooms r = newInstance(Rooms.class);
+
+            // Fill what we can from JSON using reflection-friendly setters
             setIfPresent(r, "setRoomID", String.class, (String) ro.get("roomID"));
 
+            // Difficulty may be "EASY/MEDIUM/HARD" as String, or sometimes int in team stubs
             Object diff = ro.get("difficulty");
             boolean ok = setIfPresent(r, "setDifficulty", String.class, diff == null ? null : diff.toString());
-            if (!ok && diff != null) { // if someone uses an int in their stub
+            if (!ok && diff != null) {
                 setIfPresent(r, "setDifficulty", int.class, mapDifficultyToInt(diff.toString()));
             }
 
+            // Puzzle IDs (if present)
             JSONArray ids = (JSONArray) ro.get("puzzleIDs");
             if (ids != null) {
                 @SuppressWarnings("unchecked")
                 ArrayList<String> idList = new ArrayList<>((JSONArray) ids);
+                // Prefer a bulk-setter if available
                 boolean set = setIfPresent(r, "setPuzzleIDs", List.class, idList);
                 if (!set) {
+                    // Fall back to per-item adder if provided
                     for (String id : idList) setIfPresent(r, "addPuzzleID", String.class, id);
                 }
             }
 
+            // Optional story field that some versions include
             if (ro.get("story") != null) {
                 setIfPresent(r, "setStory", String.class, ro.get("story").toString());
             }
@@ -119,29 +146,36 @@ public class GameDataLoader {
         return out;
     }
 
-    /** Returns one Score. I choose the fastest (smallest timeSeconds) from playerData.json - "scores". */
+    /**
+     * Choose a single "best" score from playerData.json -- "scores".
+     * Here “best” is the minimal timeSeconds (fastest completion).
+     */
     public Score getScore() {
-    JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
+        JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
         JSONArray scores  = (JSONArray) data.get("scores");
 
         if (scores == null || scores.isEmpty()) {
+            // If there are no scores, still return a Score object to avoid null checks.
             return newInstance(Score.class);
         }
 
+        // Single pass to find the minimal timeSeconds
         JSONObject best = null;
         long bestTime = Long.MAX_VALUE;
         for (Object o : scores) {
+            if (!(o instanceof JSONObject)) continue;
             JSONObject so = (JSONObject) o;
             long t = toLong(so.get("timeSeconds"));
             if (t < bestTime) { bestTime = t; best = so; }
         }
         if (best == null) best = (JSONObject) scores.get(0);
 
+        // Populate a Score object using whichever setters exist
         Score s = newInstance(Score.class);
         setIfPresent(s, "setUsername",    String.class,  str(best.get("username")));
         setIfPresent(s, "setDifficulty",  String.class,  str(best.get("difficulty")));
         setIfPresent(s, "setTimeSeconds", long.class,    toLong(best.get("timeSeconds")));
-        setIfPresent(s, "setTimeLeftSec", long.class,    toLong(best.get("timeLeftSec"))); // if your class has it
+        setIfPresent(s, "setTimeLeftSec", long.class,    toLong(best.get("timeLeftSec"))); // tolerant alias
         setIfPresent(s, "setHintsUsed",   int.class,     toInt(best.get("hintsUsed")));
         setIfPresent(s, "setPuzzlesSolved", int.class,   toInt(best.get("puzzlesSolved")));
         setIfPresent(s, "setDate",        String.class,  str(best.get("date")));
@@ -150,11 +184,14 @@ public class GameDataLoader {
     }
 
     /**
-     * Builds a Leaderboard from playerData.json - "leaderboard".
-     * Tries setEntries(List), then setLB(List), else falls back to addEntry(...).
+     * Build a Leaderboard from playerData.json -- "leaderboard".
+     * Strategy:
+     *  1) Collect entries as Score objects.
+     *  2) Prefer a bulk setter (setEntries or setLB).
+     *  3) If not available, try addEntry(username, difficulty, timeSeconds, score, date).
      */
     public Leaderboard getLeaderboard() {
-    JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
+        JSONObject data = readObjectFromCandidates(PLAYER_CANDIDATES);
         JSONArray arr   = (JSONArray) data.get("leaderboard");
 
         Leaderboard lb = newInstance(Leaderboard.class);
@@ -162,6 +199,7 @@ public class GameDataLoader {
 
         ArrayList<Score> list = new ArrayList<>();
         for (Object o : arr) {
+            if (!(o instanceof JSONObject)) continue;
             JSONObject jo = (JSONObject) o;
 
             Score s = newInstance(Score.class);
@@ -173,66 +211,49 @@ public class GameDataLoader {
             setIfPresent(s, "setDate",        String.class, str(jo.get("date")));
             list.add(s);
 
-            // addEntry(username, difficulty, timeSeconds, score, date)
-            boolean added = setIfPresent(
+            // Fallback: if the Leaderboard exposes a variadic 'addEntry', call it safely
+            setIfPresent(
                 lb,
                 "addEntry",
                 new Class<?>[]{ String.class, String.class, long.class, long.class, String.class },
-                new Object[]{ sSafe(s,"getUsername"), sSafe(s,"getDifficulty"), nSafe(s,"getTimeSeconds"), nSafe(s,"getScore"), sSafe(s,"getDate") }
+                new Object[]{ sSafe(s,"getUsername"), sSafe(s,"getDifficulty"),
+                              nSafe(s,"getTimeSeconds"), nSafe(s,"getScore"), sSafe(s,"getDate") }
             );
-            if (added) {
-                // if addEntry works, we don't need setEntries later
-            }
         }
 
+        // Prefer a bulk setter; if not present we already tried addEntry above
         boolean ok = setIfPresent(lb, "setEntries", List.class, list);
         if (!ok) setIfPresent(lb, "setLB", List.class, list);
         return lb;
     }
 
-    /* ------------------------ helpers ------------------------ */
-
-    private static JSONObject readObjectFromClasspath(String resourcePath) {
-        try (var in = GameDataLoader.class.getClassLoader().getResourceAsStream(resourcePath)) {
-            if (in == null) {
-                return new JSONObject();
-            }
-            var r = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8);
-            return (JSONObject) new JSONParser().parse(r);
-        } catch (Exception e) {
-            return new JSONObject();
-        }
-    }
+    /* ========================= HELPERS ========================= */
 
     /**
-     * Try classpath resource first then a list of filesystem candidate paths.
-     * Returns empty JSONObject when none found.
+     * Attempt to read JSON from classpath first, then from each filesystem path.
+     * On any failure, returns an empty JSONObject to keep the loader resilient.
      */
     private static JSONObject readObjectFromCandidates(String[] candidates) {
         for (String c : candidates) {
-            // try classpath
+            // Try as classpath resource
             try (var in = GameDataLoader.class.getClassLoader().getResourceAsStream(c)) {
                 if (in != null) {
                     var r = new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8);
                     return (JSONObject) new JSONParser().parse(r);
                 }
-            } catch (Exception e) {
-                // ignore and try filesystem
-            }
+            } catch (Exception ignore) { }
 
-            // try filesystem path
+            // Try as direct filesystem path
             try (var fr = new FileReader(c)) {
                 return (JSONObject) new JSONParser().parse(fr);
-            } catch (Exception e) {
-                // ignore and try next candidate
-            }
+            } catch (Exception ignore) { }
         }
         return new JSONObject();
     }
 
-
     private static String str(Object o) { return (o == null ? null : o.toString()); }
 
+    /** Map common difficulty strings to a small integer (if a stub expects an int). */
     private static int mapDifficultyToInt(String diff) {
         if (diff == null) return 0;
         switch (diff.trim().toUpperCase()) {
@@ -243,18 +264,22 @@ public class GameDataLoader {
         }
     }
 
+    /** Safe number parsing helpers; never throw, default to 0. */
     private static long toLong(Object n) {
         if (n == null) return 0L;
         if (n instanceof Number) return ((Number) n).longValue();
         try { return Long.parseLong(n.toString()); } catch (Exception e) { return 0L; }
     }
-
     private static int toInt(Object n) {
         if (n == null) return 0;
         if (n instanceof Number) return ((Number) n).intValue();
         try { return Integer.parseInt(n.toString()); } catch (Exception e) { return 0; }
     }
 
+    /**
+     * Try to call a single-arg method (e.g., a setter) if it exists on the target.
+     * Returns true when successfully invoked, false if the method is absent or fails.
+     */
     private static boolean setIfPresent(Object target, String setter, Class<?> param, Object value) {
         if (target == null || setter == null) return false;
         try {
@@ -268,6 +293,7 @@ public class GameDataLoader {
         }
     }
 
+    /** Variant for a fixed signature like addEntry(u, d, t, s, date). */
     private static boolean setIfPresent(Object target, String method, Class<?>[] params, Object[] values) {
         if (target == null || method == null) return false;
         try {
@@ -281,6 +307,10 @@ public class GameDataLoader {
         }
     }
 
+    /**
+     * Create an instance using the public no-arg constructor.
+     * We throw a clear message if a class cannot be constructed this way.
+     */
     private static <T> T newInstance(Class<T> type) {
         try {
             if (Modifier.isAbstract(type.getModifiers()) || type.isInterface()) {
@@ -297,7 +327,7 @@ public class GameDataLoader {
         }
     }
 
-    //  getters used only for the leaderboard addEntry fallback
+    /* Safe getter helpers used for addEntry fallback (avoid reflection duplication) */
     private static String sSafe(Object obj, String getterName) {
         try { Object v = obj.getClass().getMethod(getterName).invoke(obj); return v == null ? null : v.toString(); }
         catch (Exception e) { return null; }
@@ -306,7 +336,38 @@ public class GameDataLoader {
         try { Object v = obj.getClass().getMethod(getterName).invoke(obj); return toLong(v); }
         catch (Exception e) { return 0L; }
     }
-     
-    
+    public static void main(String[] args) {
+    GameDataLoader dl = new GameDataLoader();
+
+    var users = dl.getUsers();
+    var rooms = dl.getRooms();
+    var best  = dl.getScore();
+    var lb    = dl.getLeaderboard();
+
+    System.out.println("=== DATA LOADER TESTING ===");
+    System.out.println("users=" + users.size());
+    System.out.println("rooms=" + rooms.size());
+    System.out.println("bestUser=" + safe(best, "getUsername"));
+    System.out.println("leaderboardSize=" + getLbSize(lb));
+}
+
+// helper for printing without depending on concrete API
+private static String safe(Object o, String getter) {
+    try { Object v = o.getClass().getMethod(getter).invoke(o); return v == null ? null : v.toString(); }
+    catch (Exception e) { return null; }
+}
+private static int getLbSize(Leaderboard lb) {
+    try {
+        var m = lb.getClass().getMethod("getEntries");
+        Object v = m.invoke(lb);
+        if (v instanceof java.util.List<?>) return ((java.util.List<?>) v).size();
+    } catch (Exception ignore) { }
+    try {
+        var m = lb.getClass().getMethod("getLB");
+        Object v = m.invoke(lb);
+        if (v instanceof java.util.List<?>) return ((java.util.List<?>) v).size();
+    } catch (Exception ignore) { }
+    return 0;
+}
 
 }

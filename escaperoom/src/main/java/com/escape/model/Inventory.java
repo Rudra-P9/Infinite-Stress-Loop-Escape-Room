@@ -15,6 +15,9 @@ public class Inventory {
      */
     private ArrayList<String> items;
 
+    /** Required for GameDataLoader reflection. */
+    public Inventory() { }
+
     /**
      * Maximum number of items the inventory can hold.
      */

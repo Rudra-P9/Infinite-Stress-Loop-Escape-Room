@@ -9,13 +9,21 @@ import java.util.Date;
  * 
  * @author Dylan Diaz
  */
+
+  
+
 public class Score {
+
+
 
     private String username;
     private Difficulty difficulty;
     private int timeLeftSec;
     private Date date;
     private int scoreValue;
+    
+    /** Required for GameDataLoader reflection. */
+    public Score() { }
 
     /**
      * Constructs a Score with all required fields.
