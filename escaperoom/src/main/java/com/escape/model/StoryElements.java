@@ -22,7 +22,8 @@ public class StoryElements
     private String roomThreeBetween;
     private String roomThreeConc;
 
-    private String finalPuzzleIntro;
+    private String finalPuzzle;
+    private String conclusion;
 
     public StoryElements() {
 
