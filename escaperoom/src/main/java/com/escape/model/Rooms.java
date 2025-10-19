@@ -1,6 +1,6 @@
 package com.escape.model;
 
-import java.util.List;
+import java.util.ArrayList;
 /**
  * Rooms of the EscapeRoom
  * Each room has an ID, puzzles, and a difficulty level.
@@ -15,13 +15,13 @@ public class Rooms {
      */
     private String roomID;
     private String title;
-    private List<Puzzle> puzzles;
+    private ArrayList<Puzzle> puzzles;
 
     /**
      * Default constructor
      */
     public Rooms() {
-
+        puzzles = new ArrayList<>();
     }
 
     /**
@@ -30,7 +30,7 @@ public class Rooms {
      * @param title name of the room
      * @param puzzles the puzzles the room contains
      */
-    public Rooms(String roomID, String title, List<Puzzle> puzzles) {
+    public Rooms(String roomID, String title, ArrayList<Puzzle> puzzles) {
         this.roomID = roomID;
         this.title = title;
         this.puzzles = puzzles;
@@ -40,7 +40,7 @@ public class Rooms {
      * Returns the list of puzzles associated with the room.
      * @return puzzles
      */
-    public List<Puzzle> getPuzzles()
+    public ArrayList<Puzzle> getPuzzles()
     {
         return puzzles;
     }
@@ -49,7 +49,7 @@ public class Rooms {
      * Sets the list of puzzles for this room.
      * @param puzzles
      */
-    public void setPuzzles(List<Puzzle> puzzles) {
+    public void setPuzzles(ArrayList<Puzzle> puzzles) {
         this.puzzles = puzzles;
     }
 
