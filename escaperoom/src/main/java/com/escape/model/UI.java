@@ -34,6 +34,7 @@ public class UI
                 case "3": System.out.println("Exiting UI."); running = false; break;
                 case "h": facade.getHint(); break;
                 case "s": facade.saveGame(); System.out.println("Saved game."); break;
+                case "q": running = false; break;
                 default: System.out.println("Unknown option. Use 1,2,3, h (hint), s (save), q (quit).");
             }
         }
