@@ -1,10 +1,14 @@
 package com.escape.model;
 
+import java.util.ArrayList;
+
 /**
  * Facade class to organize the Escape Room.
  * Interface that provides game functions to start, end, pause, resuming, save, and loading.
  * 
  * @author Talan Kinard
+ * @author Jacob kinard
+ * @version 1.1
  */
 
 public class EscapeRoomFacade 
@@ -13,15 +17,26 @@ public class EscapeRoomFacade
     private User currentUser;
     private Rooms currentRoom;
     private Timer timer;
-    private SavedData savedData;
     private GameDataLoader loader;
     private GameDataWriter writer;
+    private Accounts accounts;
+    private Score score;
 
     /**
      * Starts a game session.
      */
     public void startGame()
     {
+        // initialize components used during a game
+        if (loader == null) loader = new GameDataLoader();
+        if (writer == null) writer = new GameDataWriter();
+        if (accounts == null) accounts = Accounts.getInstance();
+        if (timer == null) timer = new Timer(1800); // default seconds, may be overwritten by room difficulty
+        // choose a default room if none set
+        if (currentRoom == null) {
+            ArrayList<Rooms> rooms = loader.getRooms();
+            if (!rooms.isEmpty()) currentRoom = rooms.get(0);
+        }
 
     }
 
@@ -30,6 +45,10 @@ public class EscapeRoomFacade
      */
     public void endGame()
     {
+        // stop timer and clear current session
+        if (timer != null) timer.pause();
+        currentUser = null;
+        currentRoom = null;
 
     }
 
@@ -38,6 +57,7 @@ public class EscapeRoomFacade
      */
     public void pauseGame()
     {
+        if (timer != null) timer.pause();
 
     }
 
@@ -46,6 +66,7 @@ public class EscapeRoomFacade
      */
     public void resumeGame()
     {
+        if (timer != null) timer.resume();
         
     }
 
@@ -54,6 +75,14 @@ public class EscapeRoomFacade
      */
     public void saveGame()
     {
+        // persist minimal saved data via writer
+        if (writer == null) writer = new GameDataWriter();
+        SavedData sd = new SavedData();
+        sd.room = (currentRoom == null ? null : currentRoom.getRoomID());
+        sd.score = (score == null ? 0 : (int) score.getScore());
+        sd.hints = 0; // not tracked centrally yet
+        sd.puzzle = null;
+        writer.saveSavedData(sd);
 
     }
 
@@ -62,6 +91,12 @@ public class EscapeRoomFacade
      */
     public void loadGame()
     {
+        if (loader == null) loader = new GameDataLoader();
+        // For now load first saved user and first room as a simple restore
+        ArrayList<User> users = loader.getUsers();
+        if (!users.isEmpty()) currentUser = users.get(0);
+        ArrayList<Rooms> rooms = loader.getRooms();
+        if (!rooms.isEmpty()) currentRoom = rooms.get(0);
 
     }
 
@@ -70,7 +105,12 @@ public class EscapeRoomFacade
      */
     public void getHint()
     {
-    
+        // Expose hint retrieval via currentRoom's puzzles if present
+        if (currentRoom == null) return;
+        ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
+        if (puzzles == null || puzzles.isEmpty()) return;
+        Puzzle p = puzzles.get(0);
+        System.out.println("Hint: " + p.getHint());
     }
 
     /**
@@ -87,5 +127,30 @@ public class EscapeRoomFacade
     public void getRoom()
     {
 
+    }
+
+    // Print basic user info to stdout for console UI
+    public void printUserInfo() {
+        if (currentUser == null) System.out.println("No user logged in");
+        else System.out.println("User: " + currentUser.getUsername());
+    }
+
+    // Print basic room info
+    public void printRoomInfo() {
+        if (currentRoom == null) System.out.println("No room selected");
+        else System.out.println("Room: " + currentRoom.toString());
+    }
+
+    /* Additional simple accessors used by the UI */
+    public String getCurrentUsername() {
+        return currentUser == null ? null : currentUser.getUsername();
+    }
+
+    public String getCurrentRoomTitle() {
+        return currentRoom == null ? null : currentRoom.getTitle();
+    }
+
+    public int getTimeRemaining() {
+        return timer == null ? 0 : timer.getRemainingSeconds();
     }
 }
