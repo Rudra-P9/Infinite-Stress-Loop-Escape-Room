@@ -34,4 +34,29 @@ public class SavedData {
      * Additional saved data in key-value form.
      */
     protected HashMap<String, String>[] saveData;
+
+    //constructors
+    public SavedData() {}
+
+    public SavedData(String room, int score, int hints, String puzzle) {
+        this.room = room;
+        this.score = score;
+        this.hints = hints;
+        this.puzzle = puzzle;
+    }
+
+    //getters
+    public String getRoom() { return room; }
+    public int getScore() { return score; }
+    public int getHints() { return hints; }
+    public String getPuzzle() { return puzzle; }
+    @SuppressWarnings("unchecked")
+    public HashMap<String, String>[] getSaveData() { return saveData; }
+
+    //setters
+    public void setRoom(String room) { this.room = room; }
+    public void setScore(int score) { this.score = score; }
+    public void setHints(int hints) { this.hints = hints; }
+    public void setPuzzle(String puzzle) { this.puzzle = puzzle; }
+    public void setSaveData(HashMap<String, String>[] saveData) { this.saveData = saveData; }
 }

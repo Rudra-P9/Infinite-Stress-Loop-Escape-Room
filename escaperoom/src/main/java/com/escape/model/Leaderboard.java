@@ -1,54 +1,100 @@
 package com.escape.model;
 
-import java.util.ArrayList;
-
 /**
- * Class for representation of the game leaderboard.
- * Stores user entries and contains methods for retrieving.
+ * Class that represents the leaderboard for the Escape Room.
+ * Stores the list of users and their rankings.
  * 
  * @author Talan Kinard
+ * @author Dylan Diaz
  */
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
-public class Leaderboard
-{
-    /**
-     * List of users currently on the leaderboard.
-     */
-    public ArrayList<User> entries;
+public class Leaderboard {
 
-    /**
-     * 
-     * @param d the difficulty level.
-     * @return a list of scores in relation with the difficulty level.
-     */
-    public ArrayList<Score> topByDifficulty(Difficulty d)
-    {
-        return null;
+    private final ArrayList<User> lb = new ArrayList<>();
+
+    public Leaderboard() { }
+
+    public ArrayList<User> getLB() {
+        return new ArrayList<>(lb);
     }
 
-    /**
-     * Gets leaderboard entries
-     * @return current leaderboard entries
-     */
-    public ArrayList<User> getLB()
-    {
-        return null;
+    public void setLB(List<User> users) {
+        lb.clear();
+        if (users != null) lb.addAll(users);
     }
 
-    /**
-     * Sets the leaderboard entries
-     * @param entries a list of users to the leaderboard.
-     */
-    public void setLB(ArrayList<User> entries)
-    {
-
+    public void addOrReplace(User user) {
+        if (user == null) return;
+        boolean replaced = false;
+        int index = 0;
+        for (User existing : lb) {
+            try {
+                if (existing.userID != null && user.userID != null &&
+                        existing.userID.toString().equals(user.userID.toString())) {
+                    lb.set(index, user);
+                    replaced = true;
+                    break;
+                }
+            } catch (Exception ignore) { }
+            if (existing.getUsername() != null && user.getUsername() != null &&
+                    existing.getUsername().equals(user.getUsername())) {
+                lb.set(index, user);
+                replaced = true;
+                break;
+            }
+            index++;
+        }
+        if (!replaced) lb.add(user);
     }
 
-    /**
-     * Prints the leaderboard.
-     */
-    public void printLB()
-    {
-        System.out.println("Printing Leaderboard..."); //hardcode stub for now
+    public boolean removeByUserID(UUID userID) {
+        if (userID == null) return false;
+        Iterator<User> it = lb.iterator();
+        while (it.hasNext()) {
+            User u = it.next();
+            if (u.userID != null && u.userID.equals(userID)) {
+                it.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeByUsername(String username) {
+        if (username == null) return false;
+        Iterator<User> it = lb.iterator();
+        while (it.hasNext()) {
+            User u = it.next();
+            if (username.equals(u.getUsername())) {
+                it.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<User> topN(int n) {
+        if (n <= 0) return new ArrayList<>();
+        int max = Math.min(n, lb.size());
+        ArrayList<User> out = new ArrayList<>();
+        for (int i = 0; i < max; i++) out.add(lb.get(i));
+        return out;
+    }
+
+    public void clear() {
+        lb.clear();
+    }
+
+    public int size() {
+        return lb.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Leaderboard{entries=" + lb.size() + "}";
     }
 }
