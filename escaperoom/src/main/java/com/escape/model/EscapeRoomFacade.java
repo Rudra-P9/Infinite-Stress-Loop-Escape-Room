@@ -153,4 +153,50 @@ public class EscapeRoomFacade
     public int getTimeRemaining() {
         return timer == null ? 0 : timer.getRemainingSeconds();
     }
+
+    /* -----------------------
+       Account-related facade wrappers (void delegations to Accounts)
+       ----------------------- */
+
+    /** Create an account via Accounts singleton and persist it. */
+    public void createAccount(String username, String password) {
+        if (accounts == null) accounts = Accounts.getInstance();
+        accounts.createAccount(username, password);
+        // persist accounts to disk if writer available
+        if (writer == null) writer = new GameDataWriter();
+        writer.saveAccounts(accounts);
+    }
+
+    /** Delete an account via Accounts singleton and persist changes. */
+    public void deleteAccount(String username) {
+        if (accounts == null) accounts = Accounts.getInstance();
+        accounts.deleteAccount(username);
+        if (writer == null) writer = new GameDataWriter();
+        writer.saveAccounts(accounts);
+    }
+
+    /** Attempt to log in a user. This is a void wrapper; UI can call getCurrentUsername() to check result. */
+    public void login(String username, String password) {
+        if (username == null || password == null) return;
+        // try persisted users first
+        if (loader == null) loader = new GameDataLoader();
+        for (User u : loader.getUsers()) {
+            if (username.equals(u.getUsername()) && password.equals(u.getPassword())) {
+                currentUser = u;
+                return;
+            }
+        }
+        // try in-memory accounts
+        if (accounts == null) accounts = Accounts.getInstance();
+        User u = accounts.getUser(username);
+        if (u != null) {
+            // The Accounts class currently doesn't verify password; use User.getPassword if available
+            if (password.equals(u.getPassword())) currentUser = u;
+        }
+    }
+
+    /** Log out current user. */
+    public void logout() {
+        currentUser = null;
+    }
 }
