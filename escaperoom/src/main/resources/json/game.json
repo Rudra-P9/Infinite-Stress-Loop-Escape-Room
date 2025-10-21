@@ -1,13 +1,13 @@
 {
   "game": {
-    "title":"TBD Escape",
+    "title":"Escape The Varen Project",
     "difficulty":"EASY",
     "timerByDifficulty": {
       "EASY":1800,
       "MEDIUM":1500,
       "HARD":1200
     },
-    "finalWord":"PHONE"
+    "finalWord":"REALM"
   },
 
   "progress": {
@@ -16,104 +16,104 @@
   },
 
   "story": {
-    "intro": "Welcome to TBD",
-    "roomOneIntro": "You enter a tavern searching for info...tbd",
-    "roomOneConc": "You answer the riddle correctly, the tavern keep offers you a mysterious letter `P` in return... I would remember that.",
-    "roomTwoIntro": "TBD",
-    "roomTwoBetween": "You complete the task and get a letter `H` but wait... this happens now you have to do this!",
-    "roomTwoConc": "Using that info you get another letter `O`",
-    "roomThreeIntro": "You enter...",
-    "roomThreeBetween": "This happens! A letter appears `N`!",
-    "roomThreeConc": "After completing that task you enter the final battle...!",
-    "finalPuzzle": "Enter the word of artifacts collected along the journey to win!",
-    "conclusion": "Congrats on your journey....outro story tbd"
+    "intro": "“You wake up in a bright white room, the light dazing you. A voice echoes, shaky yet familiar `Hey. Easy now. My name’s Varen. You’re safe. We’re going to get you out of here.'",
+    "roomOneIntro": "“A terminal flickers to life. Varen begins, 'This is a basic calibration to confirm your logic is intact.’”",
+    "roomOneConc": "The console chimes softly. A compartment opens, revealing a glowing tag labeled 'R'. Varen sounds pleased: 'Good. Neural patterns are stabilizing. Let’s continue then.'",
+    "roomTwoIntro": "You step into a corridor lined with broken screens and scattered data fragments floating in the air. Each fragment flashes with jumbled text. Varen’s tone softens: 'These are memory shards... pieces of what was once mine. Try to put them back together.'",
+    "roomTwoBetween": "The screens pulse as the first fragment stabilizes. Among the data, a symbol flashes bright, releasing a tag with the letter 'E'. The floor shifts slightly beneath your feet, reorienting itself. Varen murmurs: 'Spatial mapping is unstable… we’ll need to recalibrate your movement pathways next.'",
+    "roomTwoConc": "When the second puzzle finishes, the corridor lights flicker, then stabilize. A faint hum echoes through the glass as another tag materializes,  the letter 'A'. Varen whispers: 'Memory alignment, seventy-five percent. You’re restoring more than just data. Shall we continue…?'",
+    "roomThreeIntro": "Moving to the next room, you step into the core chamber. The lights dim to a soft pulse that syncs with your heartbeat. Varen speaks calmly: 'We’re nearing full synchronization. This test measures how our thoughts align, patterns, logic, precision. Solve it exactly as I would.'", 
+    "roomThreeBetween": "As you complete the calculation, the console flickers. The number locks in perfectly, almost too perfect. The system hums in resonance with your pulse. A glowing mark forms on the terminal, a tag with the letter 'L' dispenses. Varen’s tone shifts, uncertain,  'That frequency… it’s echoing back. Something’s trying to communicate. Listen closely, it’s not me.'",
+    "roomThreeConc": "Static floods the speakers. A voice overlays Varen’s own,  distorted, layered, identical voice. 'Subject 03 synchronization nearing completion.' The lights flicker as the chamber shakes. From the distortion, a faint frequency plays, hidden within the noise, a message: the letter 'M' and an equal tag appears to grab. Varen’s voice breaks: 'It’s my voice… no… its yours. The system is waiting for the final command.'",
+    "finalPuzzle": "The central terminal activates. Lines of code race across the glass. The prompt appears: 'ENTER MERGE COMMAND.' Varen pleads: 'Listen to me,  you execute it, we won’t come back.'",
+    "conclusion": "You type REALM. The room floods with white light. The hum fades into silence, then darkness. You open your eyes in a sterile white room. A camera blinks red in the corner. An intercom crackles to life. You walk toward it, press the button, and speak `Hey. Easy now. My name’s Varen. You’re safe. We’re going to get you out of here."
   },
 
   "rooms": [
     {
       "roomID": "room1",
-      "title": "TBD",
+      "title": "Calibration Chamber",
       "puzzles":[
         {
           "id": "roomOnePuzzleOne",
           "order": 1,
           "category": "WORD",
           "type": "RIDDLE",
-          "title": "TBD RIDDLE",
+          "title": "Calibration Puzzle",
           "objective": "Answer this riddle....",
-          "prompt": "TBD",
-          "solution": "TBD",
-          "hint":"TBD",
-          "rewardLetter": "P"
+          "prompt": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind.",
+          "solution": "Echo",
+          "hint":"Think of a sound that comes back when you call.",
+          "rewardLetter": "R"
         }
       ]
     },
     {
       "roomID": "room2",
-      "title": "TBD",
+      "title": "Fragment Corridor",
       "puzzles":[
         {
           "id": "roomTwoPuzzleOne",
           "order": 2,
           "category": "WORD",
           "type": "LETTER_DECIPHER",
-          "title": "TBD Decipher",
-          "objective": "Decipher this ancient text into a word.",
-          "prompt": "TBD",
-          "solution": "TBD",
-          "hint":"TBD",
-          "rewardLetter": "H"
+          "title": "Scattered Fragments",
+          "objective": "Decipher these letters into a word.",
+          "prompt": "YROMEM",
+          "solution": "MEMORY",
+          "hint":"Varen: ‘This fragment’s scrambled. Try reading it the way memory echoes,  reversed.’",
+          "rewardLetter": "E"
         },
         {
           "id": "roomTwoPuzzleTwo",
           "order": 3,
           "category": "WORD",
           "type": "ARROW_DECIPHER",
-          "title": "TBD Arrows",
+          "title": "Movement Detection",
           "objective": "What could these arrows mean...",
-          "prompt": "TBD",
-          "solution": "TBD",
-          "hint":"Use WASD",
-          "rewardLetter": "O"
+          "prompt": "Translate the directional code into movement letters. ↑ ← ↓ → → ↓ ↑ ← ",
+          "solution": "WASDDSWA",
+          "hint":"Varen: 'Each direction has a symbol. You’ve moved this way before, remember how it felt.' (WASD).",
+          "rewardLetter": "A"
         }
       ]
     },
     {
       "roomID": "room3",
-      "title": "TBD",
+      "title": "Synchronization Core",
       "puzzles":[
         {
           "id": "roomThreePuzzleOne",
           "order": 4,
           "category": "NUMBER",
           "type": "SHAPE_MATH",
-          "title": "TBD Math",
+          "title": "Synchronization Symbol Test",
           "objective": "Figure out what these mysterious ancient symbols could mean...",
-          "prompt": "TBD",
-          "solution": "TBD",
-          "hint":"TBD",
-          "rewardLetter": "N"
+          "prompt": "Decode the shape values to solve the equation. ▲ + ▲ + ■ = 12, ■ + ● = 6, ▲ + ● = ?",
+          "solution": "6",
+          "hint":"Varen: 'The value of the square is four.'",
+          "rewardLetter": "L"
         },
         {
           "id": "roomThreePuzzleTwo",
           "order": 5,
           "category": "AUDIO",
           "type": "AUDIO_DECIPHER",
-          "title": "TBD Audio",
+          "title": "The Signal",
           "objective": "What could this audio mean...",
-          "prompt": "audio path",
-          "solution": "TBD",
-          "hint":"TBD",
-          "rewardLetter": "E"
+          "prompt": "Listen carefully to the frequency distortion and enter the word you hear.",
+          "solution": "MIRROR",
+          "hint":"Piece the letters together…",
+          "rewardLetter": "M"
         },
         {
           "id": "roomThreeFinale",
           "order": 6,
           "category": "WORD",
           "type": "FINAL_LOCK",
-          "title": "Final Lock",
+          "title": "Merge Command",
           "objective": "Enter the collected letters (in order) to escape.",
-          "solution": "PHONE",
+          "solution": "REALM",
           "hint": "Use the letters from your journey.",
           "rewardLetter": ""
         }
