@@ -21,7 +21,7 @@ public class RiddlePuzzle extends Puzzle {
     private static boolean riddlesLoaded = false;
     private static final Random random = new Random();
 
-    private String solution; // implements abstract get/setSolution
+    private String riddleSolution; // implements abstract get/setSolution
 
     // Inner class for riddle storage
     private static class Riddle {
@@ -53,7 +53,7 @@ public class RiddlePuzzle extends Puzzle {
         if (!riddles.isEmpty()) {
             Riddle chosen = riddles.get(random.nextInt(riddles.size()));
             this.setObjective(chosen.question);
-            this.solution = chosen.answer;
+            this.riddleSolution = chosen.answer;
             this.setSolution(chosen.answer);
         } else {
             this.setObjective("No riddles available!");
@@ -105,12 +105,12 @@ public class RiddlePuzzle extends Puzzle {
 
     @Override
     public String getSolution() {
-        return solution;
+        return riddleSolution;
     }
 
     @Override
     public void setSolution(String solution) {
-        this.solution = (solution == null) ? "" : solution.trim();
+        this.riddleSolution = (solution == null) ? "" : solution.trim();
     }
 
     /**
@@ -119,8 +119,8 @@ public class RiddlePuzzle extends Puzzle {
      */
     @Override
     public boolean checkAnswer(String input) {
-        if (input == null || solution == null) return false;
-        boolean correct = solution.trim().equalsIgnoreCase(input.trim());
+        if (input == null || riddleSolution == null) return false;
+        boolean correct = riddleSolution.trim().equalsIgnoreCase(input.trim());
         if (correct) setSolved(true);
         return correct;
     }
@@ -130,7 +130,7 @@ public class RiddlePuzzle extends Puzzle {
         return "RiddlePuzzle{" +
                 "objective='" + getObjective() + '\'' +
                 ", solved=" + solved() +
-                ", solution='" + solution + '\'' +
+                ", solution='" + riddleSolution + '\'' +
                 '}';
     }
 }
