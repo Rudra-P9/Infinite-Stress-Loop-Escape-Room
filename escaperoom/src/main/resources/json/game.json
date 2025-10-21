@@ -44,7 +44,7 @@
           "prompt": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind.",
           "solution": "Echo",
           "hint":"Think of a sound that comes back when you call.",
-          "rewardLetter": "R"
+          "rewardLetter": "E"
         }
       ]
     },
@@ -62,7 +62,7 @@
           "prompt": "YROMEM",
           "solution": "MEMORY",
           "hint":"Varen: ‘This fragment’s scrambled. Try reading it the way memory echoes,  reversed.’",
-          "rewardLetter": "E"
+          "rewardLetter": "A"
         },
         {
           "id": "roomTwoPuzzleTwo",
@@ -74,7 +74,7 @@
           "prompt": "Translate the directional code into movement letters. ↑ ← ↓ → → ↓ ↑ ← ",
           "solution": "WASDDSWA",
           "hint":"Varen: 'Each direction has a symbol. You’ve moved this way before, remember how it felt.' (WASD).",
-          "rewardLetter": "A"
+          "rewardLetter": "M"
         }
       ]
     },
@@ -92,7 +92,7 @@
           "prompt": "Decode the shape values to solve the equation. ▲ + ▲ + ■ = 12, ■ + ● = 6, ▲ + ● = ?",
           "solution": "6",
           "hint":"Varen: 'The value of the square is four.'",
-          "rewardLetter": "L"
+          "rewardLetter": "R"
         },
         {
           "id": "roomThreePuzzleTwo",
@@ -104,7 +104,7 @@
           "prompt": "Listen carefully to the frequency distortion and enter the word you hear.",
           "solution": "MIRROR",
           "hint":"Piece the letters together…",
-          "rewardLetter": "M"
+          "rewardLetter": "L"
         },
         {
           "id": "roomThreeFinale",
