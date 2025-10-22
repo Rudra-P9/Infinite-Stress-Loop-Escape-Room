@@ -91,4 +91,16 @@ public class User {
      public static void main(String[] args){
         
      }
+
+     private int score;
+
+    /** Returns the user's current score. */
+    public int getScore() {
+        return score;
+    }
+
+    /** Sets the user's score. */
+    public void setScore(int score) {
+       this.score = score;
+    }
 }
