@@ -31,6 +31,9 @@ public class UI
             switch (input) {
                 case "1": facade.startGame(); System.out.println("Game started. User: " + facade.getCurrentUsername()); break;
                 case "2": facade.loadGame(); System.out.println("Game loaded. Room: " + facade.getCurrentRoomTitle()); break;
+                case "sc1": runScenarioOne(); break;
+                case "sc2": runScenarioTwo(); break;
+                case "sc3": runScenarioThree(); break;
                 case "3": System.out.println("Exiting UI."); running = false; break;
                 case "4": // create account
                     System.out.print("New username: ");
@@ -52,6 +55,33 @@ public class UI
                     facade.logout();
                     System.out.println("Logged out.");
                     break;
+                case "checkroom":
+                    System.out.println(facade.checkRoom());
+                    break;
+                case "checkuser":
+                    System.out.println(facade.checkUser());
+                    break;
+                case "checkpuzzle":
+                    System.out.println(facade.checkPuzzles());
+                    break;
+                case "checkprogress":
+                    System.out.println(facade.checkProgress());
+                    break;
+                case "checkall":
+                    System.out.println(facade.checkAll());
+                    break;
+                case "7": // S1
+                    runScenarioOne();
+                    System.out.println("Starting Scenario One...");
+                    break;
+                case "8": // S2
+                    runScenarioTwo();
+                    System.out.println("Starting Scenario Two...");
+                    break;
+                case "9": // S3
+                    runScenarioThree();
+                    System.out.println("Starting Scenario Three...");
+                    break;
                 case "h": facade.getHint(); break;
                 case "s": facade.saveGame(); System.out.println("Saved game."); break;
                 case "q": running = false; break;
@@ -72,50 +102,50 @@ public class UI
         System.out.println("4. Create Account");
         System.out.println("5. Login");
         System.out.println("6. Logout");
+        System.out.println();
+        System.out.println("Scenario runners (shortcuts):");
+        System.out.println("sc1 - Run Scenario 1 (create, start, save)");
+        System.out.println("sc2 - Run Scenario 2 (create, start, save, load)");
+        System.out.println("sc3 - Run Scenario 3 (create, start, hint, solve, save)");
+        System.out.println();
+        System.out.println("Other commands: h (hint), s (save), q (quit), checkall (validation)");
     }
 
-    // Scenario 1 - makeing an account and starting a game, then saving and exiting.
-    public void displayScenarioOne()
-    {
-        System.out.println("<---Escape Room Scenario one--->");
-        System.out.println("1. Start Game");
-        System.out.println("2. Load Game");
-        System.out.println("3. Login");
-        System.out.println("4. Logout");
-        System.out.println("5. Create Account");
-        System.out.println("q to Exit");
-        // menu is displayed and the user needs an account, slect option 5
 
-
-            
+    /* ---------------------
+       Scenario runners (automated flows)
+       --------------------- */
+    public void runScenarioOne() {
+        System.out.println("\n--- SCENARIO 1: create account, start, save ---");
+        String username = "scenario1_" + System.currentTimeMillis();
+        facade.createAccount(username, "pw1");
+        facade.startGame();
+        System.out.println("Started game for: " + username + ", time remaining: " + facade.getTimeRemaining());
+        facade.saveGame();
+        System.out.println("Scenario 1 complete.\n");
     }
 
-    // Scenario 2 - loading a game with an existing account.
-    public void displayScenarioTwo()
-    {
-        System.out.println("<---Escape Room Scenario Two--->");
-        System.out.println("1. Start Game");
-        System.out.println("2. Load Game");
-        System.out.println("3. Login");
-        System.out.println("4. Logout");
-        System.out.println("5. Create Account");
-        System.out.println("q to Exit");
-        // menu is displayed and the user picks option 
-
-
-            
+    public void runScenarioTwo() {
+        System.out.println("\n--- SCENARIO 2: create account, start, save, load ---");
+        String username = "scenario2_" + System.currentTimeMillis();
+        facade.createAccount(username, "pw2");
+        facade.startGame();
+        facade.saveGame();
+        facade.loadGame();
+        System.out.println("Loaded user: " + facade.getCurrentUsername() + ", Room: " + facade.getCurrentRoomTitle());
+        System.out.println("Scenario 2 complete.\n");
     }
 
-    // Scenario 3 - playing the game, getting a hint, and solving a puzzle.
-    public void displayScenarioThree()
-    {
-        System.out.println("<---Escape Room Scenario Three--->");
-        System.out.println("1. Start Game");
-        System.out.println("2. Load Game");
-        System.out.println("3. Login");
-        System.out.println("4. Logout");
-        System.out.println("5. Create Account");
-        System.out.println("q to Exit");
-        // menu is displayed and the user picks option 1 to start a game
-}
+    public void runScenarioThree() {
+        System.out.println("\n--- SCENARIO 3: create account, start, hint, solve puzzle, save ---");
+        String username = "scenario3_" + System.currentTimeMillis();
+        facade.createAccount(username, "pw3");
+        facade.startGame();
+        System.out.println("Requesting a hint:");
+        facade.getHint();
+        System.out.println("Simulating solving a puzzle...");
+        facade.solveCurrentPuzzle();
+        facade.saveGame();
+        System.out.println("Scenario 3 complete.\n");
+    }
 }
