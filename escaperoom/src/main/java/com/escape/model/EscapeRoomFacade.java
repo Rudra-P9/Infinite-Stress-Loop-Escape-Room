@@ -1,6 +1,7 @@
 package com.escape.model;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Facade class to organize the Escape Room.
@@ -21,6 +22,7 @@ public class EscapeRoomFacade
     private GameDataWriter writer;
     private Accounts accounts;
     private Score score;
+    private Progress progress;
 
     /**
      * Starts a game session.
@@ -38,6 +40,102 @@ public class EscapeRoomFacade
             if (!rooms.isEmpty()) currentRoom = rooms.get(0);
         }
 
+    }
+
+    /**
+     * Helper used by scenarios/tests: mark the first unsolved puzzle in the current room as solved.
+     */
+    public void solveCurrentPuzzle() {
+        if (currentRoom == null) {
+            System.out.println("No current room to solve puzzles in.");
+            return;
+        }
+        ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
+        if (puzzles == null || puzzles.isEmpty()) {
+            System.out.println("No puzzles found in current room.");
+            return;
+        }
+
+        for (Puzzle p : puzzles) {
+            if (!p.solved()) {
+                // setSolved is protected in Puzzle; same package allows access
+                p.setSolved(true);
+                // advance or create progress
+                if (progress == null) {
+                    UUID userId = (currentUser == null) ? null : currentUser.userID;
+                    progress = new Progress(UUID.randomUUID(), userId);
+                }
+                progress.advanceStory();
+                System.out.println("Solved puzzle: " + p.getTitle());
+                return;
+            }
+        }
+        System.out.println("All puzzles already solved.");
+    }
+
+    public Progress getProgress() { return progress; }
+
+    /**
+     * Return a short summary about the current room for validation.
+     */
+    public String checkRoom() {
+        if (currentRoom == null) return "No current room";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Room: ").append(currentRoom.getTitle()).append(" (ID=").append(currentRoom.getRoomID()).append(")\n");
+        ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
+        if (puzzles == null || puzzles.isEmpty()) sb.append("  no puzzles\n");
+        else {
+            sb.append("  puzzles:\n");
+            for (Puzzle p : puzzles) {
+                sb.append("    - ").append(p.getTitle()).append(" [solved=").append(p.solved()).append("]\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Return a short summary about the current user for validation.
+     */
+    public String checkUser() {
+        if (currentUser == null) return "No user logged in";
+        return "User: " + currentUser.getUsername() + " (id=" + currentUser.userID + ")";
+    }
+
+    /**
+     * Return a short summary about puzzles in the current room.
+     */
+    public String checkPuzzles() {
+        if (currentRoom == null) return "No current room";
+        ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
+        if (puzzles == null || puzzles.isEmpty()) return "No puzzles in current room";
+        StringBuilder sb = new StringBuilder();
+        for (Puzzle p : puzzles) {
+            sb.append(p.getTitle()).append(" -> solved=").append(p.solved()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Return progress summary if available.
+     */
+    public String checkProgress() {
+        if (progress == null) return "No progress recorded";
+        return progress.toString();
+    }
+
+    /**
+     * Return a combined summary of user, room, puzzles, and progress for quick validation.
+     */
+    public String checkAll() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== CHECKALL ===\n");
+        sb.append(checkUser()).append("\n");
+        sb.append(checkRoom()).append("\n");
+        sb.append("Puzzles:\n");
+        sb.append(checkPuzzles()).append("\n");
+        sb.append("Progress: ").append(checkProgress()).append("\n");
+        sb.append("=== END CHECKALL ===");
+        return sb.toString();
     }
 
     /**
@@ -92,9 +190,22 @@ public class EscapeRoomFacade
     public void loadGame()
     {
         if (loader == null) loader = new GameDataLoader();
-        // For now load first saved user and first room as a simple restore
+        // Load persisted users and rooms. If a currentUser already exists (e.g. just created
+        // or logged in), prefer refreshing it from persisted users (match by username).
         ArrayList<User> users = loader.getUsers();
-        if (!users.isEmpty()) currentUser = users.get(0);
+        if (currentUser == null) {
+            if (!users.isEmpty()) currentUser = users.get(0);
+        } else {
+            if (users != null) {
+                for (User u : users) {
+                    if (u.getUsername() != null && u.getUsername().equals(currentUser.getUsername())) {
+                        currentUser = u; // refresh to persisted copy
+                        break;
+                    }
+                }
+            }
+        }
+
         ArrayList<Rooms> rooms = loader.getRooms();
         if (!rooms.isEmpty()) currentRoom = rooms.get(0);
 
@@ -165,6 +276,15 @@ public class EscapeRoomFacade
         // persist accounts to disk if writer available
         if (writer == null) writer = new GameDataWriter();
         writer.saveAccounts(accounts);
+        // Make the newly created account the active user so subsequent save/load operate on it.
+        try {
+            User created = accounts.getUser(username);
+            if (created != null) {
+                this.currentUser = created;
+            }
+        } catch (Exception ignore) {
+            // defensive: don't break account creation on minor errors
+        }
     }
 
     /** Delete an account via Accounts singleton and persist changes. */
