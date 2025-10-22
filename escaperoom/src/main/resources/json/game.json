@@ -100,8 +100,8 @@
           "category": "AUDIO",
           "type": "AUDIO_DECIPHER",
           "title": "The Signal",
-          "objective": "What could this audio mean...",
-          "prompt": "Listen carefully to the frequency distortion and enter the word you hear.",
+          "objective": "Decipher the unknown audio.",
+          "prompt": "Listen carefully to the frequency distortion and enter the letters that you hear to form a word.",
           "solution": "MIRROR",
           "hint":"Piece the letters together…",
           "rewardLetter": "L"
@@ -112,7 +112,8 @@
           "category": "WORD",
           "type": "FINAL_LOCK",
           "title": "Merge Command",
-          "objective": "Enter the collected letters (in order) to escape.",
+          "objective": "Enter the Merge Command.",
+          "prompt":"Enter the collected letters (in order).",
           "solution": "REALM",
           "hint": "Use the letters from your journey.",
           "rewardLetter": ""

@@ -20,6 +20,10 @@ public abstract class Puzzle {
     protected String solution;
     protected String category;
     protected String type;
+    protected String prompt;
+    protected String rewardLetter; 
+    protected String hint; 
+
 
     //Difficulty enum
     protected Difficulty difficulty;
@@ -185,6 +189,34 @@ public abstract class Puzzle {
             throw new IllegalArgumentException("difficulty failed.");
         }
         this.difficulty = difficulty;
+    }
+
+    /**
+     * Gets the prompt text for this puzzle.
+     */
+    public String getPrompt() {
+        return prompt;
+    }
+
+    /**
+     * Sets the prompt text for this puzzle.
+     */
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+    }
+
+     /**
+     * Returns the reward letter given after solving the puzzle.
+     */
+    public String getRewardLetter() {
+        return rewardLetter;
+    }
+
+    /**
+     * Sets the reward letter for the puzzle (from JSON).
+     */
+    public void setRewardLetter(String rewardLetter) {
+        this.rewardLetter = rewardLetter;
     }
 
 }

@@ -100,51 +100,119 @@ public class GameDataLoader {
      * of puzzleIDs; we do not instantiate concrete Puzzle subclasses here.
      */
     public ArrayList<Rooms> getRooms() {
-        JSONObject game  = readObjectFromCandidates(GAME_CANDIDATES);
-        JSONArray rooms = (JSONArray) game.get("rooms");
+    JSONObject gameRoot = readObjectFromCandidates(GAME_CANDIDATES);
+    JSONArray roomsArray = (JSONArray) gameRoot.get("rooms");
 
-        ArrayList<Rooms> out = new ArrayList<>();
-        if (rooms == null) return out;
+    ArrayList<Rooms> rooms = new ArrayList<>();
+    if (roomsArray == null) return rooms;
 
-        for (Object rObj : rooms) {
-            if (!(rObj instanceof JSONObject)) continue;
-            JSONObject ro = (JSONObject) rObj;
+    for (Object roomObj : roomsArray) {
+        if (!(roomObj instanceof JSONObject)) continue;
+        JSONObject roomJson = (JSONObject) roomObj;
 
-            // Create a Rooms instance via no-arg constructor
-            Rooms r = newInstance(Rooms.class);
+        Rooms room = new Rooms();
+        room.setRoomID((String) roomJson.get("roomID"));
+        room.setTitle((String) roomJson.get("title"));
 
-            // Fill what we can from JSON using reflection-friendly setters
-            setIfPresent(r, "setRoomID", String.class, (String) ro.get("roomID"));
-
-            // Difficulty may be "EASY/MEDIUM/HARD" as String, or sometimes int in team stubs
-            Object diff = ro.get("difficulty");
-            boolean ok = setIfPresent(r, "setDifficulty", String.class, diff == null ? null : diff.toString());
-            if (!ok && diff != null) {
-                setIfPresent(r, "setDifficulty", int.class, mapDifficultyToInt(diff.toString()));
-            }
-
-            // Puzzle IDs (if present)
-            JSONArray ids = (JSONArray) ro.get("puzzleIDs");
-            if (ids != null) {
-                @SuppressWarnings("unchecked")
-                ArrayList<String> idList = new ArrayList<>((JSONArray) ids);
-                // Prefer a bulk-setter if available
-                boolean set = setIfPresent(r, "setPuzzleIDs", List.class, idList);
-                if (!set) {
-                    // Fall back to per-item adder if provided
-                    for (String id : idList) setIfPresent(r, "addPuzzleID", String.class, id);
-                }
-            }
-
-            // Optional story field that some versions include
-            if (ro.get("story") != null) {
-                setIfPresent(r, "setStory", String.class, ro.get("story").toString());
-            }
-
-            out.add(r);
+        ArrayList<Puzzle> puzzleList = new ArrayList<>();
+        JSONArray puzzleArray = (JSONArray) roomJson.get("puzzles");
+        if (puzzleArray == null) {
+            room.setPuzzles(puzzleList);
+            rooms.add(room);
+            continue;
         }
-        return out;
+
+        
+
+        for (Object pObj : puzzleArray) {
+            if (!(pObj instanceof JSONObject)) continue;
+            JSONObject pJson = (JSONObject) pObj;
+
+            String category = (String) pJson.get("category");
+            String type = (String) pJson.get("type");
+            Puzzle puzzle = null;
+
+            if ("AUDIO".equalsIgnoreCase(category)) {
+                puzzle = new AudioPuzzle(
+                    (String) pJson.get("id"),
+                    (String) pJson.get("title"),
+                    (String) pJson.get("objective"),
+                    (String) pJson.get("solution"),
+                    category, type
+                );
+            } else if ("NUMBER".equalsIgnoreCase(category)) {
+                puzzle = new NumberPuzzle(
+                    (String) pJson.get("id"),
+                    (String) pJson.get("title"),
+                    (String) pJson.get("objective"),
+                    (String) pJson.get("solution"),
+                    category, type
+                );
+            } else {
+                // Default to word puzzles
+                puzzle = new WordPuzzle(
+                    (String) pJson.get("id"),
+                    (String) pJson.get("title"),
+                    (String) pJson.get("objective"),
+                    (String) pJson.get("solution"),
+                    category, type
+                );
+            }
+
+            
+
+            if (pJson.get("prompt") != null)
+            puzzle.setPrompt((String) pJson.get("prompt"));
+
+            if (pJson.get("hint") != null) 
+            {
+                String hintText = (String) pJson.get("hint");
+                Hints h = new Hints("hint1", 1, false, hintText);
+                puzzle.getHints().add(h);
+            }
+
+            if (pJson.get("rewardLetter") != null)
+                setIfPresent(puzzle, "setRewardLetter", String.class, (String) pJson.get("rewardLetter"));
+
+            puzzleList.add(puzzle);
+        }
+
+        room.setPuzzles(puzzleList);
+        rooms.add(room);
     }
+
+    return rooms;
+}
+
+/**
+ * Loads all story text (intro, room intros, transitions, conclusions, etc.)
+ * from game.json and returns a populated StoryElements object.
+ */
+public StoryElements getStory() {
+    JSONObject gameRoot = readObjectFromCandidates(GAME_CANDIDATES);
+    JSONObject storyJson = (JSONObject) gameRoot.get("story");
+
+    StoryElements story = new StoryElements();
+
+    if (storyJson == null) {
+        System.out.println("Warning: No 'story' section found in JSON.");
+        return story;
+    }
+
+    story.setIntro((String) storyJson.get("intro"));
+    story.setRoomOneIntro((String) storyJson.get("roomOneIntro"));
+    story.setRoomOneConc((String) storyJson.get("roomOneConc"));
+    story.setRoomTwoIntro((String) storyJson.get("roomTwoIntro"));
+    story.setRoomTwoBetween((String) storyJson.get("roomTwoBetween"));
+    story.setRoomTwoConc((String) storyJson.get("roomTwoConc"));
+    story.setRoomThreeIntro((String) storyJson.get("roomThreeIntro"));
+    story.setRoomThreeBetween((String) storyJson.get("roomThreeBetween"));
+    story.setRoomThreeConc((String) storyJson.get("roomThreeConc"));
+    story.setFinalPuzzle((String) storyJson.get("finalPuzzle"));
+    story.setConclusion((String) storyJson.get("conclusion"));
+
+    return story;
+}
 
     /**
      * Choose a single "best" score from playerData.json -- "scores".
@@ -369,5 +437,36 @@ private static int getLbSize(Leaderboard lb) {
     } catch (Exception ignore) { }
     return 0;
 }
+
+public static class TextPuzzle extends Puzzle {
+    private String hint;
+    private String rewardLetter;
+
+    public TextPuzzle() {
+        super(null, null, null, null, null, null);
+    }
+
+    @Override
+    public boolean checkAnswer(String input) {
+        return input != null && solution != null && input.trim().equalsIgnoreCase(solution.trim());
+    }
+
+    @Override
+    public String getSolution() {
+        return solution;
+    }
+
+    @Override
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    public void setHint(String hint) { this.hint = hint; }
+    public String getHint() { return hint != null ? hint : super.getHint(); }
+
+    public void setRewardLetter(String rewardLetter) { this.rewardLetter = rewardLetter; }
+    public String getRewardLetter() { return rewardLetter; }
+}
+
 
 }
