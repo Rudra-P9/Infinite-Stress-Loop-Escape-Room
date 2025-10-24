@@ -171,7 +171,7 @@ public class Rooms {
                                 System.out.println("\n" + story.getRoomThreeBetween());
                             } else if (room.getRoomID().equalsIgnoreCase("room3") && i == puzzles.size() - 1) {
                                 System.out.println("\n" + story.getRoomThreeConc());
-                            } else if (puzzle.getTitle().equalsIgnoreCase("Merge")) {
+                            } else if (puzzle.getTitle().equalsIgnoreCase("Merge Command")) {
                                 if (collectedLetters.size() < 5) {
                                     System.out.println("\nSystem locked. The merge command cannot execute yet.");
                                     System.out.println("You still sense incomplete data fragments...");
@@ -181,8 +181,6 @@ public class Rooms {
                                     return;
                                 } else {
                                     System.out.println("\n" + story.getConclusion());
-                                    System.out.println("\n--- Game Complete ---");
-                                    System.out.println(progress);
                                     return;
                                 }
                             }

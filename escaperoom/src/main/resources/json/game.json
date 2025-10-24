@@ -71,7 +71,7 @@
           "type": "ARROW_DECIPHER",
           "title": "Movement Detection",
           "objective": "What could these arrows mean...",
-          "prompt": "Translate the directional code into movement letters. ↑ ← ↓ → → ↓ ↑ ← ",
+          "prompt": "Translate the directional code into movement letters. \u2191 \u2190 \u2193 \u2192 \u2192 \u2193 \u2191 \u2190",
           "solution": "WASDDSWA",
           "hint":"Varen: 'Each direction has a symbol. You’ve moved this way before, remember how it felt.' (WASD).",
           "rewardLetter": "M"
@@ -89,7 +89,7 @@
           "type": "SHAPE_MATH",
           "title": "Synchronization Symbol Test",
           "objective": "Figure out what these mysterious ancient symbols could mean...",
-          "prompt": "Decode the shape values to solve the equation. ▲ + ▲ + ■ = 12, ■ + ● = 6, ▲ + ● = ?",
+          "prompt": "Decode the shape values to solve the equation. \u25B2 + \u25B2 + \u25A0 = 12, \u25A0 + \u25CF = 6, \u25B2 + \u25CF = ?",
           "solution": "6",
           "hint":"Varen: 'The value of the square is four.'",
           "rewardLetter": "R"
