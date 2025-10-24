@@ -201,10 +201,10 @@ public class Rooms {
                     break;
                     case "2":
                         System.out.println("Hint: " + puzzle.getHint());
+                        progress.useHint();
                         break;
                     case "3":
                         System.out.println(progress);
-                        
                         break;
                     case "4":
                         System.out.println("Letter tags collected: "+collectedLetters);

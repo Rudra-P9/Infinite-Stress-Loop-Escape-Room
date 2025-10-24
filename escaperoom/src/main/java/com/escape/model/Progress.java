@@ -28,6 +28,8 @@ public class Progress {
      */
     private int storyPos;
     private static final int TOTAL_BEATS = 6;
+    private int questionsAnswered;
+    private int hintsUsed;
 
 
 
@@ -56,6 +58,8 @@ public class Progress {
          * Starting position holds a value of zero.
          */
         this.storyPos = 0; 
+        this.hintsUsed = 0;
+        this.questionsAnswered = 0;
     }
 
     /**
@@ -129,6 +133,7 @@ public class Progress {
      */
     public void advanceStory()
     {
+        questionsAnswered++;
         if(storyPos < TOTAL_BEATS) {
             storyPos++;
         }
@@ -155,9 +160,19 @@ public class Progress {
         return storyPos;
     }
 
+    public void useHint() {
+        hintsUsed++;
+    }
+
+    public int getHintsUsed() {
+        return hintsUsed;
+    }
+
     @Override
     public String toString() {
-        return "Progress: "+getCompletionPercent()+"% of the Escape Room completed";
+        return "Progress: "+getCompletionPercent()+"% of the Escape Room completed"
+        +"\nHints Used: "+getHintsUsed()
+        +"\nPuzzles Solved: "+questionsAnswered();
     }
     
     

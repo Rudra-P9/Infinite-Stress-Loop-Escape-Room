@@ -117,7 +117,8 @@
           "prompt": "Enter the collected letters in order.",
           "objective": "Complete the final command to complete the Varen merge.",
           "solution": "REALM",
-          "type": "FINAL_LOCK"
+          "type": "FINAL_LOCK",
+          "hint": "Check your inventory and enter those letters in order."
         }
       ]
     }
