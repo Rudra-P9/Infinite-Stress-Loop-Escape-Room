@@ -43,6 +43,53 @@ public class EscapeRoomFacade
     }
 
     /**
+     * Starts a game session with the given difficulty.
+     * If no difficulty is provided, the game defaults to EASY difficulty.
+     * 
+     * @param difficulty the difficulty level of the game
+     */
+    public void startGame(Difficulty difficulty) {
+        if (currentUser == null) {
+            System.out.println("ERROR: No user logged in. Cannot start game.");
+            return;
+        }
+        
+        this.currentDifficulty = (difficulty == null) ? Difficulty.EASY : difficulty;
+        this.collectedLetters = new ArrayList<>();
+        
+        // Load all rooms from JSON
+        allRooms = loader.getRooms();
+        if (allRooms.isEmpty()) {
+            System.out.println("ERROR: No rooms found in game.json");
+            return;
+        }
+        
+        // Start with room1
+        for (Rooms room : allRooms) {
+            if ("room1".equals(room.getRoomID())) {
+                currentRoom = room;
+                break;
+            }
+        }
+        
+        if (currentRoom == null) currentRoom = allRooms.get(0);
+        
+        // Initialize timer based on difficulty
+        int seconds = getSecondsForDifficulty(currentDifficulty);
+        timer = new Timer(seconds);
+        timer.start();
+        
+        // Initialize progress
+        progress = new Progress(UUID.randomUUID(), currentUser.userID);
+        
+        // Initialize score
+        score = new Score(currentUser.getUsername(), currentDifficulty, 0, new java.util.Date(), 0);
+        
+        System.out.println("Game started for " + currentUser.getUsername() + 
+                         " on " + currentDifficulty + " difficulty (" + seconds + "s)");
+    }
+
+    /**
      * Helper used by scenarios/tests: mark the first unsolved puzzle in the current room as solved.
      */
     public void solveCurrentPuzzle() {
@@ -318,5 +365,147 @@ public class EscapeRoomFacade
     /** Log out current user. */
     public void logout() {
         currentUser = null;
+    }
+
+    private Difficulty currentDifficulty;
+    private ArrayList<String> collectedLetters;
+    private ArrayList<Rooms> allRooms;
+
+    
+    private int getSecondsForDifficulty(Difficulty diff) {
+        switch (diff) {
+            case EASY: return 1800;
+            case MEDIUM: return 1500;
+            case HARD: return 1200;
+            default: return 1800;
+        }
+    }
+
+    public boolean solvePuzzle(String answer) {
+        if (currentRoom == null) {
+            System.out.println("No current room");
+            return false;
+        }
+        
+        ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
+        if (puzzles == null || puzzles.isEmpty()) {
+            System.out.println("No puzzles in room");
+            return false;
+        }
+        
+        for (Puzzle p : puzzles) {
+            if (!p.solved()) {
+                boolean correct = p.checkAnswer(answer);
+                if (correct) {
+                    p.setSolved(true);
+                    progress.advanceStory();
+                    
+                    String rewardLetter = p.getRewardLetter();
+                    if (rewardLetter != null && !rewardLetter.isEmpty() 
+                        && !collectedLetters.contains(rewardLetter)) {
+                        collectedLetters.add(rewardLetter);
+                        System.out.println("Collected letter: " + rewardLetter);
+                    }
+                    
+                    System.out.println("Puzzle solved: " + p.getTitle());
+                    return true;
+                } else {
+                    System.out.println("Incorrect answer");
+                    return false;
+                }
+            }
+        }
+        
+        System.out.println("All puzzles in this room are already solved");
+        return false;
+    }
+
+    public String useHint() {
+        if (currentRoom == null) return "No current room";
+        
+        ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
+        if (puzzles == null || puzzles.isEmpty()) return "No puzzles in room";
+        
+        for (Puzzle p : puzzles) {
+            if (!p.solved()) {
+                progress.useHint();
+                return p.getHint();
+            }
+        }
+        
+        return "All puzzles solved in this room";
+    }
+
+    public boolean moveToRoom(String roomID) {
+        if (allRooms == null) {
+            allRooms = loader.getRooms();
+        }
+        
+        for (Rooms room : allRooms) {
+            if (roomID.equals(room.getRoomID())) {
+                currentRoom = room;
+                System.out.println("Moved to room: " + room.getTitle());
+                return true;
+            }
+        }
+        
+        System.out.println("Room not found: " + roomID);
+        return false;
+    }
+
+    public boolean isCurrentRoomComplete() {
+        if (currentRoom == null) return false;
+        ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
+        if (puzzles == null || puzzles.isEmpty()) return true;
+        
+        for (Puzzle p : puzzles) {
+            if (!p.solved()) return false;
+        }
+        return true;
+    }
+
+    public long calculateFinalScore() {
+        if (timer == null || currentDifficulty == null) return 0;
+        
+        long timeLeft = timer.getRemainingSeconds();
+        int hints = progress == null ? 0 : progress.getHintsUsed();
+        
+        double multiplier;
+        switch (currentDifficulty) {
+            case EASY: multiplier = 1.0; break;
+            case MEDIUM: multiplier = 1.5; break;
+            case HARD: multiplier = 2.0; break;
+            default: multiplier = 1.0;
+        }
+        
+        long baseScore = (long) (timeLeft * multiplier);
+        long penalty = hints * 50;
+        long finalScore = Math.max(0, baseScore - penalty);
+        
+        if (score != null) {
+            score.setScore(finalScore);
+        }
+        
+        return finalScore;
+    }
+
+    public ArrayList<String> getCollectedLetters() {
+        return new ArrayList<>(collectedLetters);
+    }
+
+    public Difficulty getCurrentDifficulty() {
+        return currentDifficulty;
+    }
+
+    public Rooms getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public Score getCurrentScore() {
+        return score;
     }
 }
