@@ -192,6 +192,26 @@ public class EscapeRoomFacade
     {
         // stop timer and clear current session
         if (timer != null) timer.pause();
+
+        // calculate final score
+        long finalScore = calculateFinalScore();
+    
+        // save score and update leaderboard
+        if (currentUser != null && score != null) {
+            score.setTimeLeftSec(timer == null ? 0 : timer.getRemainingSeconds());
+            score.setScore(finalScore);
+            currentUser.setScore((int) finalScore);
+            
+            writer.saveScore(score);
+            
+            Leaderboard lb = loader.getLeaderboard();
+            lb.addOrReplace(currentUser);
+            writer.saveLeaderboard(lb);
+            
+            System.out.println("Game ended. Final score: " + finalScore);
+        }
+
+        // cleanup
         currentUser = null;
         currentRoom = null;
 
