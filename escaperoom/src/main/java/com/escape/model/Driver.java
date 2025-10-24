@@ -1,6 +1,5 @@
-package com.escape;
+package com.escape.model;
 import java.util.UUID;
-import com.escape.model.UI;
 
 /**
  * Driver class to start the Escape Room application.

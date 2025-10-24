@@ -1,7 +1,6 @@
 package com.escape.model;
 
 import java.util.ArrayList;
-import com.escape.Driver;
 
 /**
  * Singleton class that manages user accounts in the escape game system.
