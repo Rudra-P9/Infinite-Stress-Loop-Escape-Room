@@ -1,6 +1,7 @@
 package com.escape.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Represents a player's score for a completed escape room.
@@ -200,5 +201,9 @@ public class Score {
                 ", score=" + scoreValue +
                 ", date=" + date +
                 '}';
+    }
+
+    public UUID getUserId() {
+        throw new UnsupportedOperationException("Unimplemented method 'getUserId'");
     }
 }
