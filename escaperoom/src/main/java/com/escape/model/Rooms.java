@@ -19,6 +19,8 @@ public class Rooms {
     private String roomID;
     private String title;
     private ArrayList<Puzzle> puzzles;
+    private static final ArrayList<String> collectedLetters = new ArrayList<>();
+
 
     /**
      * Default constructor
@@ -96,6 +98,144 @@ public class Rooms {
         return "Room: "+title+" ("+roomID+"), Puzzles: "+(puzzles != null ? puzzles.size() : 0);
     }
 
+    private static Rooms findRoomByID(ArrayList<Rooms> rooms, String id) {
+    for (Rooms r : rooms) {
+            if (r.getRoomID().equalsIgnoreCase(id)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    
+    private static void playRoom(Rooms room, StoryElements story, Scanner scanner, Progress progress) {
+    if (room == null) {
+        System.out.println("Room not found.");
+        return;
+    }
+
+        System.out.println("\n--- " + room.getTitle() + " ---");
+
+        switch (room.getRoomID().toLowerCase()) {
+            case "room1":
+                System.out.println(story.getRoomOneIntro());
+                break;
+            case "room2":
+                System.out.println(story.getRoomTwoIntro());
+                break;
+            case "room3":
+                System.out.println(story.getRoomThreeIntro());
+                break;
+            case "final":
+                System.out.println(story.getFinalPuzzle());
+                break;
+        }
+
+        ArrayList<Puzzle> puzzles = room.getPuzzles();
+
+        for (int i = 0; i < puzzles.size(); i++) {
+            Puzzle puzzle = puzzles.get(i);
+            System.out.println("\nPuzzle: " + puzzle.getTitle());
+            System.out.println("Prompt: " + puzzle.getPrompt());
+            System.out.println("Objective: " + puzzle.getObjective());
+
+            boolean solved = false;
+            while (!solved) {
+                System.out.println(
+                    "\nChoose an Option:\n" +
+                    "1. Enter Answer\n" +
+                    "2. Get a Hint\n" +
+                    "3. Check Progress\n" +
+                    "4. Open Inventory\n" +
+                    "5. See Time Remaining (Seconds)\n" +
+                    "6. Quit\n"
+                );
+                System.out.print("Enter Choice: ");
+                String choice = scanner.nextLine().trim();
+
+                switch (choice) {
+                    case "1":
+                        System.out.print("Enter Answer: ");
+                        String answer = scanner.nextLine().trim();
+                        if (puzzle.checkAnswer(answer)) {
+                            progress.advanceStory();
+                            solved = true;
+
+                            if (room.getRoomID().equalsIgnoreCase("room1")) {
+                                System.out.println("\n" + story.getRoomOneConc());
+                            } else if (room.getRoomID().equalsIgnoreCase("room2") && i == 0) {
+                                System.out.println("\n" + story.getRoomTwoBetween());
+                            } else if (room.getRoomID().equalsIgnoreCase("room2") && i == puzzles.size() - 1) {
+                                System.out.println("\n" + story.getRoomTwoConc());
+                            } else if (room.getRoomID().equalsIgnoreCase("room3") && i == 0) {
+                                System.out.println("\n" + story.getRoomThreeBetween());
+                            } else if (room.getRoomID().equalsIgnoreCase("room3") && i == puzzles.size() - 1) {
+                                System.out.println("\n" + story.getRoomThreeConc());
+                            } else if (puzzle.getTitle().equalsIgnoreCase("Merge")) {
+                                if (collectedLetters.size() < 5) {
+                                    System.out.println("\nSystem locked. The merge command cannot execute yet.");
+                                    System.out.println("You still sense incomplete data fragments...");
+                                    System.out.println("(Collect all letters before returning here.)");
+                                    System.out.println("Press enter to continue...");
+                                    scanner.nextLine();
+                                    return;
+                                } else {
+                                    System.out.println("\n" + story.getConclusion());
+                                    System.out.println("\n--- Game Complete ---");
+                                    System.out.println(progress);
+                                    return;
+                                }
+                            }
+
+                            // After a puzzle is solved, award the letter
+                            String rewardLetter = getNextLetter(collectedLetters);
+                            if (rewardLetter != null && !rewardLetter.isEmpty() && !collectedLetters.contains(rewardLetter)) {
+                                collectedLetters.add(rewardLetter);
+                                System.out.println("\nA tag with the letter " + rewardLetter + " reveals itself!");
+                            }
+                            System.out.println("Press enter to continue...");
+                            scanner.nextLine();
+                        } else {
+                            System.out.println("Not quite. Try again.");
+                        }
+                    break;
+                    case "2":
+                        System.out.println("Hint: " + puzzle.getHint());
+                        break;
+                    case "3":
+                        System.out.println(progress);
+                        
+                        break;
+                    case "4":
+                        System.out.println("Letter tags collected: "+collectedLetters);
+                        break;
+                    case "5":
+                        System.out.println("You're checking the timer!");
+                        break;
+                    case "6":
+                        System.out.println("Exiting Escape The Varen Project...");
+                        scanner.close();
+                        System.exit(0);
+                        return;
+                    default:
+                        System.out.println("Invalid Choice, please select 1–6.");
+                        break;
+                    
+                }
+            }
+        }
+    }
+
+    private static String getNextLetter(ArrayList<String> collectedLetters) {
+        String [] order = {"R","E","A","L","M"};
+        for(String letter : order) {
+            if(!collectedLetters.contains(letter)) {
+                return letter;
+            }
+        }
+        return "";
+    }
+
     /**
      * Puzzle Testing
      * @param args
@@ -105,161 +245,59 @@ public class Rooms {
         try {
             GameDataLoader loader = new GameDataLoader();
             ArrayList<Rooms> rooms = loader.getRooms();
-            
             StoryElements story = loader.getStory();
-            
-            /** 
-            StoryElements story = new StoryElements();
-            story.setIntro("\nYou wake up in a bright white room, the light dazing you. A voice echoes, shaky yet familiar `Hey. Easy now. My name’s Varen. You’re safe. We’re going to get you out of here.'");
-
-            story.setRoomOneIntro("A terminal flickers to life. Varen begins, 'This is a basic calibration to confirm your logic is intact.’");
-            story.setRoomOneConc("The console chimes softly. A compartment opens, revealing a glowing tag labeled 'R'. Varen sounds pleased: 'Good. Neural patterns are stabilizing. Let’s continue then.’");
-
-            story.setRoomTwoIntro("You step into a corridor lined with broken screens and scattered data fragments floating in the air. Each fragment flashes with jumbled text. Varen’s tone softens: 'These are memory shards... pieces of what was once mine. Try to put them back together.'");
-            story.setRoomTwoBetween("The screens pulse as the first fragment stabilizes. Among the data, a symbol flashes bright, releasing a tag with the letter 'E'. The floor shifts slightly beneath your feet, reorienting itself. Varen murmurs: 'Spatial mapping is unstable… we’ll need to recalibrate your movement pathways next.'");
-            story.setRoomTwoConc("When the second puzzle finishes, the corridor lights flicker, then stabilize. A faint hum echoes through the glass as another tag materializes, the letter 'A'. Varen whispers: 'Memory alignment, seventy-five percent. You’re restoring more than just data. Shall we continue…?'");
-
-            story.setRoomThreeIntro("Moving to the next room, you step into the core chamber. The lights dim to a soft pulse that syncs with your heartbeat. Varen speaks calmly: 'We’re nearing full synchronization. This test measures how our thoughts align, patterns, logic, precision. Solve it exactly as I would.'");
-            story.setRoomThreeBetween("As you complete the calculation, the console flickers. The number locks in perfectly, almost too perfect. The system hums in resonance with your pulse. A glowing mark forms on the terminal, a tag with the letter 'L' dispenses. Varen’s tone shifts, uncertain, 'That frequency… it’s echoing back. Something’s trying to communicate. Listen closely, it’s not me.'");
-            story.setRoomThreeConc("Static floods the speakers. A voice overlays Varen’s own, distorted, layered, identical voice. 'Subject 03 synchronization nearing completion.' The lights flicker as the chamber shakes. From the distortion, a faint frequency plays, hidden within the noise, a message: the letter 'M' and an equal tag appears to grab. Varen’s voice breaks: 'It’s my voice… no… its yours. The system is waiting for the final command.'");
-
-            story.setFinalPuzzle("The central terminal activates. Lines of code race across the glass. The prompt appears: 'ENTER MERGE COMMAND.' Varen pleads: 'Listen to me, you execute it, we won’t come back.'");
-            story.setConclusion("You type REALM. The room floods with white light. The hum fades into silence, then darkness. You open your eyes in a sterile white room. A camera blinks red in the corner. An intercom crackles to life. You walk toward it, press the button, and speak `Hey. Easy now. My name’s Varen. You’re safe. We’re going to get you out of here.'");
-            */
 
             if (rooms.isEmpty()) {
                 System.out.println("No rooms found");
                 return;
             }
 
-            // Count total puzzles (optional debugging)
-            int totalPuzzles = 0;
-            for (Rooms r : rooms) {
-                if (r.getPuzzles() != null) {
-                    totalPuzzles += r.getPuzzles().size();
-                }
-            }
-
             Progress progress = new Progress(UUID.randomUUID(), UUID.randomUUID());
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("--- ROOM & PUZZLE TESTING ---");
+            System.out.println("\n");
             System.out.println(story.getIntro());
 
-            // Loop through each room
-            for (int i = 0; i < rooms.size(); i++) {
-                Rooms room = rooms.get(i);
-                ArrayList<Puzzle> puzzles = room.getPuzzles();
+            playRoom(findRoomByID(rooms, "room1"),story,scanner,progress);
+            
+            boolean room2Completed = false;
+            boolean room3Completed = false;
 
-                System.out.println("\n--- " + room.getTitle() + " ---");
+            while(!(room2Completed && room3Completed)) {
+                System.out.println("\nVaren:'There's diverging rooms, which way will you choose?'");
+                System.out.println("1. Fragment Corridor ");
+                System.out.println("2. Synchronization Core");
+                System.out.print("Enter Choice: ");
+                String choice = scanner.nextLine().trim();
 
-                // Room intro
-                switch (i) {
-                    case 0:
-                        System.out.println(story.getRoomOneIntro());
-                        break;
-                    case 1:
-                        System.out.println(story.getRoomTwoIntro());
-                        break;
-                    case 2:
-                        System.out.println(story.getRoomThreeIntro());
-                        break;
-                }
-
-                // Puzzle loop
-                for (int p = 0; p < puzzles.size(); p++) {
-                    Puzzle puzzle = puzzles.get(p);
-                    System.out.println("\nPuzzle: " + puzzle.getTitle());
-                    System.out.println("Prompt: " + puzzle.getPrompt());
-                    System.out.println("Objective: " + puzzle.getObjective());
-
-                    boolean solved = false;
-                    while (!solved) {
-                        System.out.println(
-                            "\nChoose an Option:\n" +
-                            "1. Enter Answer\n" +
-                            "2. Get a Hint\n" +
-                            "3. Check Progress\n" +
-                            "4. Quit\n"
-                        );
-                        System.out.print("Enter Choice: ");
-                        String choice = scanner.nextLine().trim();
-
-                        switch (choice) {
-                            case "1":
-                                System.out.print("Enter Answer: ");
-                                String answer = scanner.nextLine().trim();
-                                if (puzzle.checkAnswer(answer)) {
-                                    progress.advanceStory();
-                                    solved = true;
-
-                                    if (puzzle.getTitle().equalsIgnoreCase("Merge Command")) 
-                                    {
-
-                                        // Wait for player input before finalizing
-                                        System.out.println("\n(Press Enter to continue...)");
-                                        scanner.nextLine();
-
-                                        // Then show the final system merge / ending
-                                        System.out.println("\n" + story.getConclusion());
-                                        System.out.println("\n--- GAME COMPLETE ---");
-                                        System.out.println(progress);
-                                        return;
-                                    }
-                                } else {
-                                    System.out.println("Not quite. Try again.");
-                                }
-                                break;
-                            case "2":
-                                System.out.println("Hint: " + puzzle.getHint());
-                                break;
-                            case "3":
-                                System.out.println(progress);
-                                break;
-                            case "4":
-                                System.out.println("Exiting Escape The Varen Project...");
-                                scanner.close();
-                                return;
-                            default:
-                                System.out.println("Invalid Choice, please select 1-4.");
-                                break;
+                switch(choice) {
+                    case "1":
+                        if(!room2Completed) {
+                            playRoom(findRoomByID(rooms, "room2"),story,scanner,progress);
+                            room2Completed = true;
+                        } else {
+                            System.out.println("Fragment Corridor already stabilized!");
                         }
-                    }
-
-                    // Between-story transitions
-                    if (i == 1 && p == 0) 
-                    {
-                        System.out.println("\n" + story.getRoomTwoBetween());
-                        System.out.println("\n(Press Enter to continue...)");
-                        scanner.nextLine();
-                    }
-                    if (i == 2 && p == 0) 
-                    {
-                        System.out.println("\n" + story.getRoomThreeBetween());
-                        System.out.println("\n(Press Enter to continue...)");
-                        scanner.nextLine();
-                    }
-                    if (i == 2 && p == 1) 
-                    {
-                        System.out.println("\n" + story.getRoomThreeConc());
-                        System.out.println("\n(Press Enter to continue...)");
-                        scanner.nextLine();
-                    }
-                }
-
-                // Room conclusions
-                switch (i) {
-                    case 0:
-                        System.out.println(story.getRoomOneConc());
                         break;
-                    case 1:
-                        System.out.println(story.getRoomTwoConc());
+                    case "2":
+                        if(!room3Completed) {
+                            playRoom(findRoomByID(rooms, "room3"),story,scanner,progress);
+                            room3Completed = true;
+                        } else {
+                            System.out.println("Full syncronization already reached!");
+                        }
                         break;
-                    case 2:
-                        System.out.println(story.getRoomThreeConc());
+                    default:
+                        System.out.println("Invalid choice!");
                         break;
                 }
             }
+
+            System.out.println("\nAll systemed aligned...proceeding to the final command.");
+            playRoom(findRoomByID(rooms, "final"), story, scanner, progress);
+            System.out.println("\n--- The Varen Project Complete ---");
+            System.out.println(progress);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -63,6 +63,7 @@ public abstract class Puzzle {
      * @return true if correct false otherwise
      */
     public abstract boolean checkAnswer(String input);
+    
 
     /**
      * Returns the puzzle solution string wise.

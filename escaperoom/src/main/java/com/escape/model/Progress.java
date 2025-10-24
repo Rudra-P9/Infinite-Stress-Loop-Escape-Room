@@ -151,6 +151,10 @@ public class Progress {
         return storyPos / (double) TOTAL_BEATS * 100;
     }
 
+    public int questionsAnswered() {
+        return storyPos;
+    }
+
     @Override
     public String toString() {
         return "Progress: "+getCompletionPercent()+"% of the Escape Room completed";

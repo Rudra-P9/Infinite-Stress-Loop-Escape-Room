@@ -18,13 +18,13 @@
   "story": {
     "intro": "“You wake up in a bright white room, the light dazing you. A voice echoes, shaky yet familiar `Hey. Easy now. My name’s Varen. You’re safe. We’re going to get you out of here.'",
     "roomOneIntro": "“A terminal flickers to life. Varen begins, 'This is a basic calibration to confirm your logic is intact.’”",
-    "roomOneConc": "The console chimes softly. A compartment opens, revealing a glowing tag labeled 'R'. Varen sounds pleased: 'Good. Neural patterns are stabilizing. Let’s continue then.'",
+    "roomOneConc": "The console chimes softly. Varen sounds pleased: 'Good. Neural patterns are stabilizing. Let’s continue then.'",
     "roomTwoIntro": "You step into a corridor lined with broken screens and scattered data fragments floating in the air. Each fragment flashes with jumbled text. Varen’s tone softens: 'These are memory shards... pieces of what was once mine. Try to put them back together.'",
-    "roomTwoBetween": "The screens pulse as the first fragment stabilizes. Among the data, a symbol flashes bright, releasing a tag with the letter 'E'. The floor shifts slightly beneath your feet, reorienting itself. Varen murmurs: 'Spatial mapping is unstable… we’ll need to recalibrate your movement pathways next.'",
-    "roomTwoConc": "When the second puzzle finishes, the corridor lights flicker, then stabilize. A faint hum echoes through the glass as another tag materializes,  the letter 'A'. Varen whispers: 'Memory alignment, seventy-five percent. You’re restoring more than just data. Shall we continue…?'",
+    "roomTwoBetween": "The screens pulse as the first fragment stabilizes. The floor shifts slightly beneath your feet, reorienting itself. Varen murmurs: 'Spatial mapping is unstable… we’ll need to recalibrate your movement pathways next.'",
+    "roomTwoConc": "When the second puzzle finishes, the corridor lights flicker, then stabilize. Varen whispers: 'Memory alignment, seventy-five percent. You’re restoring more than just data. Shall we continue…?'",
     "roomThreeIntro": "Moving to the next room, you step into the core chamber. The lights dim to a soft pulse that syncs with your heartbeat. Varen speaks calmly: 'We’re nearing full synchronization. This test measures how our thoughts align, patterns, logic, precision. Solve it exactly as I would.'", 
-    "roomThreeBetween": "As you complete the calculation, the console flickers. The number locks in perfectly, almost too perfect. The system hums in resonance with your pulse. A glowing mark forms on the terminal, a tag with the letter 'L' dispenses. Varen’s tone shifts, uncertain,  'That frequency… it’s echoing back. Something’s trying to communicate. Listen closely, it’s not me.'",
-    "roomThreeConc": "Static floods the speakers. A voice overlays Varen’s own,  distorted, layered, identical voice. 'Subject 03 synchronization nearing completion.' The lights flicker as the chamber shakes. From the distortion, a faint frequency plays, hidden within the noise, a message: the letter 'M' and an equal tag appears to grab. Varen’s voice breaks: 'It’s my voice… no… its yours. The system is waiting for the final command.'",
+    "roomThreeBetween": "As you complete the calculation, the console flickers. The number locks in perfectly, almost too perfect. The system hums in resonance with your pulse. Varen’s tone shifts, uncertain,  'That frequency… it’s echoing back. Something’s trying to communicate. Listen closely, it’s not me.'",
+    "roomThreeConc": "Static floods the speakers. A voice overlays Varen’s own,  distorted, layered, identical voice. 'Subject 03 synchronization nearing completion.' The lights flicker as the chamber shakes. Varen’s voice breaks: 'It’s my voice… no… its yours. The system is waiting for the final command.'",
     "finalPuzzle": "The central terminal activates. Lines of code race across the glass. The prompt appears: 'ENTER MERGE COMMAND.' Varen pleads: 'Listen to me,  you execute it, we won’t come back.'",
     "conclusion": "You type REALM. The room floods with white light. The hum fades into silence, then darkness. You open your eyes in a sterile white room. A camera blinks red in the corner. An intercom crackles to life. You walk toward it, press the button, and speak `Hey. Easy now. My name’s Varen. You’re safe. We’re going to get you out of here."
   },
@@ -100,23 +100,24 @@
           "category": "AUDIO",
           "type": "AUDIO_DECIPHER",
           "title": "The Signal",
-          "objective": "Decipher the unknown audio.",
+          "objective": "Decipher the unknown audio.g9t",
           "prompt": "Listen carefully to the frequency distortion and enter the letters that you hear to form a word.",
           "solution": "MIRROR",
           "hint":"Piece the letters together…",
           "rewardLetter": "L"
-        },
+        }
+      ]
+    },
+    {
+      "roomID": "final",
+      "title": "Final Command",
+      "puzzles": [
         {
-          "id": "roomThreeFinale",
-          "order": 6,
-          "category": "WORD",
-          "type": "FINAL_LOCK",
           "title": "Merge Command",
-          "objective": "Enter the Merge Command.",
-          "prompt":"Enter the collected letters (in order).",
+          "prompt": "Enter the collected letters in order.",
+          "objective": "Complete the final command to complete the Varen merge.",
           "solution": "REALM",
-          "hint": "Use the letters from your journey.",
-          "rewardLetter": ""
+          "type": "FINAL_LOCK"
         }
       ]
     }
