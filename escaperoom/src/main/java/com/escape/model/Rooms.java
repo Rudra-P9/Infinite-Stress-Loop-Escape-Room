@@ -218,8 +218,8 @@ public class Rooms {
                         break;
                     case "6":
                         System.out.println("Exiting Escape The Varen Project...");
-                        scanner.close();
-                        System.exit(0);
+                        UI ui = new UI();
+                        ui.run();
                         return;
                     case "7":
                         if (puzzle instanceof AudioPuzzle) {
@@ -251,7 +251,7 @@ public class Rooms {
      * @param args
      */
 
-     public static void main(String[] args) {
+     public void startGame() {
         try {
             GameDataLoader loader = new GameDataLoader();
             ArrayList<Rooms> rooms = loader.getRooms();
