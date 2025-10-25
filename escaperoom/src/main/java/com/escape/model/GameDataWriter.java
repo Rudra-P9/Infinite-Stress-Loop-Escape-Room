@@ -248,7 +248,7 @@ public class GameDataWriter {
         JSONArray leaderboardArray = (JSONArray) root.getOrDefault("leaderboard", new JSONArray());
         
         if (leaderboard != null) {
-            ArrayList<Score> scores = leaderboard.getScores();
+            ArrayList<Score> scores = leaderboard.getLB();
             if (scores != null) {
                 for (Score s : scores) {
                     JSONObject entryObj = new JSONObject();
