@@ -157,6 +157,12 @@
       "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
       "timeLeftSec": 1110,
       "roomID": "ee77945b-67c9-4b65-8bf6-67e3f0478349"
+    },
+    {
+      "score": 0,
+      "hints": 0,
+      "puzzle": null,
+      "room": null
     }
   ],
   "users": [
@@ -201,6 +207,26 @@
       },
       "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
       "username": "NullPointerHero"
+    },
+    {
+      "password": "loganPass123",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "a369165b-b6cd-4e8c-b06a-c9cdcf7e3b33",
+      "username": "Logan Rivers"
+    },
+    {
+      "password": "leniSecret",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "72441e6f-6071-4115-bb69-ca49634cec53",
+      "username": "Leni Rivers"
     }
   ]
 }
