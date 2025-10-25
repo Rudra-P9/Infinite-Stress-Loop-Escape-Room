@@ -81,12 +81,20 @@ public class GameDataLoader {
 
             // Inventory block is read for future use,
             // but we don’t enforce any Inventory APIs here.
+            // Inventory block: construct Inventory(capacity) and populate items
             JSONObject invObj = (JSONObject) uo.get("inventory");
             if (invObj != null) {
-                // If at some point Inventory has setItems/setCapacity, we can invoke them here.
-                // For now we just demonstrate safe parsing.
-                // JSONArray items = (JSONArray) invObj.get("items");
-                // int capacity = toInt(invObj.get("capacity"));
+                int capacity = toInt(invObj.get("capacity"));
+                // If capacity is zero, pick a sensible default based on items length
+                JSONArray items = (JSONArray) invObj.get("items");
+                if (capacity <= 0) capacity = (items == null) ? 26 : Math.max(26, items.size());
+                Inventory inv = new Inventory(capacity);
+                if (items != null) {
+                    for (Object it : items) {
+                        if (it != null) inv.addItem(it.toString());
+                    }
+                }
+                u.setInventory(inv);
             }
 
             out.add(u);
