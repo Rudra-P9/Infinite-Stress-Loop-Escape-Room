@@ -220,24 +220,32 @@ public class GameDataWriter {
      * per-entry score/timing as your Leaderboard design stabilizes.
      */
     public void saveLeaderboard(Leaderboard leaderboard) {
+        //Read current data from playerData.json
         JSONObject root = readJsonObject("escaperoom/src/main/resources/json/playerData.json");
+        //rebuilds the leaderboard array from the  current leaderboard
         JSONArray leaderboardArray = (JSONArray) root.getOrDefault("leaderboard", new JSONArray());
+        
+        if (leaderboard != null) {
+            ArrayList<Score> scores = leaderboard.getScores();
+            if (scores != null) {
+                for (Score s : scores) {
+                    JSONObject entryObj = new JSONObject();
+                    entryObj.put("username",   s.getUsername());
+                    entryObj.put("difficulty", (s.getDifficulty() == null) ? null : s.getDifficulty().toString());
 
-        ArrayList<User> entries = leaderboard.getLB();
-        if (entries != null) {
-            for (User user : entries) {
-                JSONObject entryObj = new JSONObject();
-                entryObj.put("userID",   user.userID == null ? null : user.userID.toString());
-                entryObj.put("username", user.getUsername());
+        
+                entryObj.put("timeLeftSec",  s.getTimeLeftSec());   
+                entryObj.put("score",      s.getScore());
+                entryObj.put("date",       (s.getDate() == null) ? null : s.getDate().toString());
+
                 leaderboardArray.add(entryObj);
-            }
+                }
+            }   
         }
-
         root.put("leaderboard", leaderboardArray);
-        writeFile("escaperoom/src/main/resources/json/playerData.json", root);
+            writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
-
-    /* ========================= SAVED DATA & ACCOUNTS ========================= */
+    /*SAVED DATA & ACCOUNTS
 
     /**
      * Append a saved-game snapshot to playerData.json -- "savedData".
@@ -269,7 +277,7 @@ public class GameDataWriter {
         }
     }
 
-    /* ========================= I/O & PRINT HELPERS ========================= */
+    /* I/O & PRINT HELPERS
 
     /**
      * Read JSON object from path. If file does not exist, return an empty JSON object.
@@ -302,7 +310,7 @@ public class GameDataWriter {
         }
     }
 
-    /* -------- pretty printing (minimal, no external deps) -------- */
+    //pretty printing
 
     private String prettyPrint(Object json) { return prettyPrint(json, 0) + System.lineSeparator(); }
 

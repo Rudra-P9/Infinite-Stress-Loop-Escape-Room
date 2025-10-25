@@ -217,7 +217,7 @@ public class EscapeRoomFacade
             writer.saveScore(score);
             
             Leaderboard lb = loader.getLeaderboard();
-            lb.addOrReplace(currentUser);
+            lb.addOrReplace(score);
             writer.saveLeaderboard(lb);
             
             System.out.println("Game ended. Final score: " + finalScore);
