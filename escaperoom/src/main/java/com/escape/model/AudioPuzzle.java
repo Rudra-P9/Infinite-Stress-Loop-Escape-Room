@@ -7,6 +7,8 @@ package com.escape.model;
  */
 public class AudioPuzzle extends Puzzle {
 
+    private final String audioPath;
+
     /**
      * Contructs audiopuzzle instance.
      * @param puzzleID unique ID for the puzzle
@@ -17,9 +19,19 @@ public class AudioPuzzle extends Puzzle {
      * @param type the distinct type of puzzle within the category
      */
     public AudioPuzzle (String puzzleID, String title, String objective, String solution,
-                     String category, String type) {
+                     String category, String type, String audioPath) {
                         super(puzzleID, title, objective, solution, category, type);
+                        this.audioPath = audioPath;
                      }
+
+    /**
+     * Second constructor to not mess with the GameDataLoader.
+     */
+    public AudioPuzzle(String puzzleID, String title, String objective,
+                   String solution, String category, String type) {
+                    super(puzzleID, title, objective, solution, category, type);
+                    this.audioPath = null;  
+    }
 
     /**
      * Check's player input versus expected solution.
@@ -47,7 +59,7 @@ public class AudioPuzzle extends Puzzle {
      * Placeholder for audio.
      */
     private void playAudio() {
-        System.out.println("TODO ADD AUDIO");
+        AudioPlayer.play(audioPath);
     }
 
     /**
@@ -57,6 +69,23 @@ public class AudioPuzzle extends Puzzle {
      */
     private String fix(String input) {
         return input.trim().toUpperCase().replaceAll("\\s+","");
+    }
+
+    /**
+     * Audio Test
+     */
+    public static void main(String[] args) {
+         AudioPuzzle puzzle = new AudioPuzzle(
+            "PZL-A1",
+            "Echo Puzzle",
+            "Listen carefully and identify the sound.",
+            "echo",
+            "sound",
+            "audio",
+            "/audio/varenprojectescapeaudio.wav"
+        );
+
+        puzzle.playAudio();
     }
     
 }
