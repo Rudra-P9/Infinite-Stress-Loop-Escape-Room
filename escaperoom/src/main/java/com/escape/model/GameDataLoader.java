@@ -93,6 +93,74 @@ public class GameDataLoader {
         }
         return out;
     }
+    
+    /**
+    * Load puzzles for a given room from game.json.
+    *
+    * <p>Looks up the room by its {@code roomID}. If not found and the id is in the
+    * form {@code "roomN"} (e.g., "room1"), it falls back to the N-th room
+    * (1-based). If the room or its {@code puzzles[]} is missing, returns an empty list.</p>
+    */
+    public java.util.List<Puzzle> loadPuzzlesForRoom(String roomId,
+                                                    java.util.Map<String,String> textOut) {
+        java.util.List<Puzzle> out = new java.util.ArrayList<>();
+
+        org.json.simple.JSONObject root  = readObjectFromCandidates(GAME_CANDIDATES);
+        org.json.simple.JSONArray  rooms = (org.json.simple.JSONArray) root.get("rooms");
+        if (rooms == null) return out;
+
+        // find the room by id (or fallback to index roomN)
+        org.json.simple.JSONObject target = null;
+        for (Object rObj : rooms) {
+            org.json.simple.JSONObject ro = (org.json.simple.JSONObject) rObj;
+            String id = ro.get("roomID") == null ? null : ro.get("roomID").toString();
+            if (roomId != null && roomId.equals(id)) { target = ro; break; }
+        }
+        if (target == null && roomId != null && roomId.startsWith("room")) {
+            try {
+                int idx = Integer.parseInt(roomId.substring(4)) - 1; // "room1" -> 0
+                if (idx >= 0 && idx < rooms.size()) target = (org.json.simple.JSONObject) rooms.get(idx);
+            } catch (Exception ignore) { }
+        }
+        if (target == null) return out;
+
+        org.json.simple.JSONArray puzzles = (org.json.simple.JSONArray) target.get("puzzles");
+        if (puzzles == null) return out;
+
+        for (Object pObj : puzzles) {
+            org.json.simple.JSONObject po = (org.json.simple.JSONObject) pObj;
+
+            String id        = po.get("id")        == null ? null : po.get("id").toString();
+            String category  = po.get("category")  == null ? ""   : po.get("category").toString();
+            String type      = po.get("type")      == null ? ""   : po.get("type").toString();
+            String title     = po.get("title")     == null ? ""   : po.get("title").toString();
+            String objective = po.get("objective") == null ? ""   : po.get("objective").toString();
+            String solution  = po.get("solution")  == null ? ""   : po.get("solution").toString();
+            String hint      = po.get("hint")      == null ? ""   : po.get("hint").toString();
+            String prompt    = po.get("prompt")    == null ? ""   : po.get("prompt").toString();
+            String reward    = po.get("rewardLetter") == null ? "" : po.get("rewardLetter").toString();
+
+            Puzzle p;
+            if ("NUMBER".equalsIgnoreCase(category)) {
+                p = new NumberPuzzle(id, title, objective, solution, category, type);
+            } else if ("AUDIO".equalsIgnoreCase(category)) {
+                p = new AudioPuzzle(id, title, objective, solution, category, type);
+            } else { // default to WORD for RIDDLE / LETTER_DECIPHER / ARROW_DECIPHER / FINAL_LOCK
+                p = new WordPuzzle(id, title, objective, solution, category, type);
+            }
+            out.add(p);
+
+            // stash text(prompt/hint/reward) if requested
+            if (textOut != null && id != null) {
+                if (!prompt.isBlank()) textOut.put(id + ":prompt", prompt);
+                if (!hint.isBlank())   textOut.put(id + ":hint",   hint);
+                if (!reward.isBlank()) textOut.put(id + ":reward", reward);
+            }
+        }
+
+        return out;
+    }
+
 
     /**
      * Parse rooms from game.json -- "rooms" array.

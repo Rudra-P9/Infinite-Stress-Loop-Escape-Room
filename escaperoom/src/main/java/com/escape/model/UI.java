@@ -29,8 +29,22 @@ public class UI
             System.out.print("Enter choice (or 'q' to quit): ");
             String input = scanner.nextLine().trim();
             switch (input) {
-                case "1": facade.startGame(); System.out.println("Game started. User: " + facade.getCurrentUsername()); break;
-                case "2": facade.loadGame(); System.out.println("Game loaded. Room: " + facade.getCurrentRoomTitle()); break;
+                case "1": if (facade.getCurrentUser() == null) {
+                        System.out.println("ERROR: Please log in before starting the game.");
+                        break;
+                    }
+                    facade.startGame();
+                    System.out.println("Game started. User: " + facade.getCurrentUsername());
+                    // If we want to immediately run puzzles for the current room, call runner here.
+                    // startGameUI(); method we use to loop puzzles
+                    break;
+                case "2": if (facade.getCurrentUser() == null) {
+                        System.out.println("ERROR: Please log in before loading the game.");
+                        break;
+                    }
+                        facade.loadGame();
+                        System.out.println("Game loaded. Room: " + facade.getCurrentRoomTitle());
+                        break;
                 case "sc1": runScenarioOne(); break;
                 case "sc2": runScenarioTwo(); break;
                 case "sc3": runScenarioThree(); break;

@@ -25,70 +25,76 @@ public class EscapeRoomFacade
     private Score score;
     private Progress progress;
 
+    // logged in? 
+    private boolean isLoggedIn() { return currentUser != null; }
+
+    // Ensure the loader/writer/accounts exist. 
+    private void ensureCore() {
+    if (loader == null)   loader = new GameDataLoader();
+    if (writer == null)   writer = new GameDataWriter();
+    if (accounts == null) accounts = Accounts.getInstance();
+    }
+
+
     /**
-     * Starts a game session.
+     * Starts a game session with default difficulty.
      */
     public void startGame()
     {
-        // initialize components used during a game
-        if (loader == null) loader = new GameDataLoader();
-        if (writer == null) writer = new GameDataWriter();
-        if (accounts == null) accounts = Accounts.getInstance();
-        if (timer == null) timer = new Timer(1800); // default seconds, may be overwritten by room difficulty
-        // choose a default room if none set
-        if (currentRoom == null) {
-            ArrayList<Rooms> rooms = loader.getRooms();
-            if (!rooms.isEmpty()) currentRoom = rooms.get(0);
-        }
-
+        startGame(Difficulty.EASY);
     }
-
     /**
-     * Starts a game session with the given difficulty.
-     * If no difficulty is provided, the game defaults to EASY difficulty.
-     * 
-     * @param difficulty the difficulty level of the game
-     */
+    * Starts a game session with the given difficulty.
+    * Requires a logged-in user.
+    * @param difficulty the difficulty level of the game
+    */
     public void startGame(Difficulty difficulty) {
-        if (currentUser == null) {
-            System.out.println("ERROR: No user logged in. Cannot start game.");
+        ensureCore();
+
+        if (!isLoggedIn()) {
+            System.out.println("ERROR: No user logged in. Please log in before starting the game.");
             return;
         }
-        
+
         this.currentDifficulty = (difficulty == null) ? Difficulty.EASY : difficulty;
-        this.collectedLetters = new ArrayList<>();
-        
-        // Load all rooms from JSON
-        allRooms = loader.getRooms();
-        if (allRooms.isEmpty()) {
+        this.collectedLetters  = new ArrayList<>();
+
+        // Load all rooms (from JSON)
+        if (allRooms == null || allRooms.isEmpty()) {
+            allRooms = loader.getRooms();
+        }
+        if (allRooms == null || allRooms.isEmpty()) {
             System.out.println("ERROR: No rooms found in game.json");
             return;
         }
-        
-        // Start with room1
-        for (Rooms room : allRooms) {
-            if ("room1".equals(room.getRoomID())) {
-                currentRoom = room;
-                break;
-            }
+
+        // Pick the starting room (prefer room1 by id, else first)
+        currentRoom = null;
+        for (Rooms r : allRooms) {
+            if ("room1".equalsIgnoreCase(r.getRoomID())) { currentRoom = r; break; }
         }
-        
         if (currentRoom == null) currentRoom = allRooms.get(0);
-        
-        // Initialize timer based on difficulty
+
+        // Load puzzles for that room from JSON (so the room has playable puzzles)
+        var textMap = new java.util.HashMap<String,String>(); // holds prompt/hint/reward strings
+        var puzzles = loader.loadPuzzlesForRoom(currentRoom.getRoomID(), textMap);
+        // if your Rooms has a setPuzzles, use it; otherwise store locally as needed
+        currentRoom.setPuzzles(new ArrayList<>(puzzles));
+
+        // Timer by difficulty
         int seconds = getSecondsForDifficulty(currentDifficulty);
         timer = new Timer(seconds);
         timer.start();
-        
-        // Initialize progress
+
+        // Initialize session progress & score
         progress = new Progress(UUID.randomUUID(), currentUser.userID);
-        
-        // Initialize score
         score = new Score(currentUser.getUsername(), currentDifficulty, 0, new java.util.Date(), 0);
-        
-        System.out.println("Game started for " + currentUser.getUsername() + 
-                         " on " + currentDifficulty + " difficulty (" + seconds + "s)");
-    }
+
+        System.out.println("Game started for " + currentUser.getUsername()
+            + " on " + currentDifficulty + " (" + seconds + "s). Room: "
+            + (currentRoom.getTitle() == null ? currentRoom.getRoomID() : currentRoom.getTitle()));
+}
+
 
     /**
      * Helper used by scenarios/tests: mark the first unsolved puzzle in the current room as solved.
@@ -191,6 +197,11 @@ public class EscapeRoomFacade
      */
     public void endGame()
     {
+        ensureCore();
+    if (!isLoggedIn()) {
+        System.out.println("ERROR: No user logged in. Nothing to end.");
+        return;
+    }
         // stop timer and clear current session
         if (timer != null) timer.pause();
 
@@ -241,6 +252,11 @@ public class EscapeRoomFacade
      */
     public void saveGame()
     {
+        ensureCore();
+    if (!isLoggedIn()) {
+        System.out.println("ERROR: No user logged in. Cannot save.");
+        return;
+    }
         // persist minimal saved data via writer
         if (writer == null) writer = new GameDataWriter();
         SavedData sd = new SavedData();
@@ -253,31 +269,58 @@ public class EscapeRoomFacade
     }
 
     /**
-     * Loads a previously saved game.
-     */
-    public void loadGame()
-    {
-        if (loader == null) loader = new GameDataLoader();
-        // Load persisted users and rooms. If a currentUser already exists (e.g. just created
-        // or logged in), prefer refreshing it from persisted users (match by username).
-        ArrayList<User> users = loader.getUsers();
-        if (currentUser == null) {
-            if (!users.isEmpty()) currentUser = users.get(0);
-        } else {
-            if (users != null) {
-                for (User u : users) {
-                    if (u.getUsername() != null && u.getUsername().equals(currentUser.getUsername())) {
-                        currentUser = u; // refresh to persisted copy
-                        break;
-                    }
-                }
+ * Loads a previously saved game for the current user (requires login).
+ * Minimal restore: user (refresh), rooms list, currentRoom = first or room1,
+ * timer based on difficulty and puzzles for the room.
+ */
+public void loadGame() {
+    ensureCore();
+
+    if (!isLoggedIn()) {
+        System.out.println("ERROR: No user logged in. Please log in before loading the game.");
+        return;
+    }
+
+    // Refresh this user from disk by username (if present)
+    ArrayList<User> users = loader.getUsers();
+    if (users != null) {
+        for (User u : users) {
+            if (u.getUsername() != null && u.getUsername().equals(currentUser.getUsername())) {
+                currentUser = u;
+                break;
             }
         }
-
-        ArrayList<Rooms> rooms = loader.getRooms();
-        if (!rooms.isEmpty()) currentRoom = rooms.get(0);
-
     }
+
+    // Load rooms
+    allRooms = loader.getRooms();
+    if (allRooms == null || allRooms.isEmpty()) {
+        System.out.println("ERROR: No rooms found to load.");
+        return;
+    }
+
+    // Pick room1 or the first as a simple “resume”
+    currentRoom = null;
+    for (Rooms r : allRooms) {
+        if ("room1".equalsIgnoreCase(r.getRoomID())) { currentRoom = r; break; }
+    }
+    if (currentRoom == null) currentRoom = allRooms.get(0);
+
+    // Load puzzles into the room (so UI can run them)
+    var textMap = new java.util.HashMap<String,String>();
+    var puzzles = loader.loadPuzzlesForRoom(currentRoom.getRoomID(), textMap);
+    currentRoom.setPuzzles(new ArrayList<>(puzzles));
+
+    // If timer/progress/score are null (first load), initialize them
+    if (currentDifficulty == null) currentDifficulty = Difficulty.EASY;
+    if (timer == null)  timer  = new Timer(getSecondsForDifficulty(currentDifficulty));
+    if (progress == null) progress = new Progress(UUID.randomUUID(), currentUser.userID);
+    if (score == null)    score    = new Score(currentUser.getUsername(), currentDifficulty, 0, new java.util.Date(), 0);
+
+    System.out.println("Game loaded for " + currentUser.getUsername()
+        + ". Room: " + (currentRoom.getTitle() == null ? currentRoom.getRoomID() : currentRoom.getTitle()));
+}
+
 
     /**
      * Displays a hint to the player.
@@ -403,6 +446,10 @@ public class EscapeRoomFacade
     }
 
     public boolean solvePuzzle(String answer) {
+        if (!isLoggedIn()) {
+        System.out.println("No user logged in");
+        return false;
+    }
         if (currentRoom == null) {
             System.out.println("No current room");
             return false;
