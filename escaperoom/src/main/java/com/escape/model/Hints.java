@@ -55,9 +55,63 @@ public class Hints {
     }
 
     /**
+     * Gets the order/sequence of this hint.
+     * @return the order number
+     */
+    public int getOrder() {
+        return order;
+    }
+
+    /**
+     * Sets the order of this hint.
+     * @param order the order number
+     */
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    /**
+     * Gets the text content of the hint.
+     * @return the hint text
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * Sets the text content of the hint.
+     * @param text the hint text
+     */
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    /**
+     * Checks if this hint has been revealed to the player.
+     * @return true if revealed, false otherwise
+     */
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    /**
+     * Marks this hint as revealed.
+     */
+    public void reveal() {
+        this.revealed = true;
+    }
+
+    /**
+     * Sets the revealed status of this hint.
+     * @param revealed the revealed status
+     */
+    public void setRevealed(boolean revealed) {
+        this.revealed = revealed;
+    }
+
+    /**
      * Returns a string representation of the hint object.
      */
-
     @Override 
     public String toString(){
         return  "Hints: hint id = " +hint+" | order = "+order+
