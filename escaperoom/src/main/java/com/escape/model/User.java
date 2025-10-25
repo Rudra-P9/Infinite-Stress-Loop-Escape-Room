@@ -1,6 +1,7 @@
 package com.escape.model;
 
 import java.util.UUID;
+import java.util.ArrayList;
 
 /**
  * Abstract base class representing a user in the escape game system.
@@ -21,7 +22,7 @@ public class User {
     public UUID userID;
     private String username;
     private String password;
-   // private Inventory inventory;
+    private Inventory inventory;
 
     /**
      * Returns the username (same as getUser but clearer name for writers/loaders).
@@ -47,11 +48,12 @@ public class User {
      * @param password  the password for login
      * @param inventory the inventory associated with the user
      */
-    public User(UUID userID, String username, String password/*Inventory inventory*/) {
-        //this.inventory = inventory;
+    public User(UUID userID, String username, String password) {
         this.password = password;
         this.username = username;
         this.userID = userID;
+        // Initialize a default inventory
+        this.inventory = new Inventory(5);
     }
 
     /**
@@ -85,6 +87,34 @@ public class User {
     public void logout() {}
 
     /*
+     * Inventory accessors. We keep a convenience method named
+     * getCollectedLetters() for compatibility with existing code that
+     * expects an ArrayList of strings (delegates to Inventory.getItems()).
+     */
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public ArrayList<String> getCollectedLetters() {
+        return inventory == null ? new ArrayList<>() : inventory.getItems();
+    }
+
+    /**
+     * Adds a collected letter to the user's inventory.
+     * Returns true if the item was added (capacity permitting).
+     */
+    public boolean addCollectedLetter(String letter) {
+        if (letter == null) return false;
+        if (this.inventory == null) this.inventory = new Inventory(26);
+        if (this.inventory.hasItem(letter)) return false; // avoid duplicates
+        return this.inventory.addItem(letter);
+    }
+    
+    /**
      * TESTING THE USER CLASS CODE BELOW
      */
 
