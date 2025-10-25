@@ -16,7 +16,12 @@ public class AudioPlayer {
     
     public static void play(String resourcePath) {
         try{
-            InputStream fileStream = AudioPlayer.class.getResourceAsStream(resourcePath);
+            /**
+             * Flexible across classes.
+             */
+            String cleanPath = resourcePath.startsWith("/") ? resourcePath.substring(1) : resourcePath;
+            InputStream fileStream = AudioPlayer.class
+                .getResourceAsStream("/" + cleanPath);
 
             /**
              * Quick path and confirmation for audio grab.
@@ -31,7 +36,7 @@ public class AudioPlayer {
             Clip clip = AudioSystem.getClip();
             clip.open(audioStream);
 
-            System.out.println("The terminal beings to play a robotic audio...");
+            System.out.println("The terminal begins to play a robotic audio...");
             clip.start();
             System.out.println("");
 

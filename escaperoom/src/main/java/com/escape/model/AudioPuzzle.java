@@ -30,7 +30,7 @@ public class AudioPuzzle extends Puzzle {
     public AudioPuzzle(String puzzleID, String title, String objective,
                    String solution, String category, String type) {
                     super(puzzleID, title, objective, solution, category, type);
-                    this.audioPath = null;  
+                    this.audioPath = "audio/varenprojectescapeaudio.wav";
     }
 
     /**
@@ -58,7 +58,7 @@ public class AudioPuzzle extends Puzzle {
     /**
      * Placeholder for audio.
      */
-    private void playAudio() {
+    public void playAudio() {
         AudioPlayer.play(audioPath);
     }
 
@@ -69,6 +69,10 @@ public class AudioPuzzle extends Puzzle {
      */
     private String fix(String input) {
         return input.trim().toUpperCase().replaceAll("\\s+","");
+    }
+
+    public String getAudioPath() {
+        return audioPath;
     }
 
     /**

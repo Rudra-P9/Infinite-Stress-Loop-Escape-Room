@@ -100,7 +100,7 @@
           "category": "AUDIO",
           "type": "AUDIO_DECIPHER",
           "title": "The Signal",
-          "objective": "Decipher the unknown audio.g9t",
+          "objective": "Decipher the unknown audio.",
           "prompt": "Listen carefully to the frequency distortion and enter the letters that you hear to form a word.",
           "solution": "MIRROR",
           "hint":"Piece the letters together…",

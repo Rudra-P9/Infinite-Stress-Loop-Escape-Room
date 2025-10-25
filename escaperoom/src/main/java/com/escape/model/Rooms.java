@@ -139,6 +139,11 @@ public class Rooms {
             System.out.println("Prompt: " + puzzle.getPrompt());
             System.out.println("Objective: " + puzzle.getObjective());
 
+            if(puzzle instanceof AudioPuzzle) {
+                AudioPuzzle ap =(AudioPuzzle) puzzle;
+                ap.playAudio();
+            }
+
             boolean solved = false;
             while (!solved) {
                 System.out.println(
@@ -148,7 +153,8 @@ public class Rooms {
                     "3. Check Progress\n" +
                     "4. Open Inventory\n" +
                     "5. See Time Remaining (Seconds)\n" +
-                    "6. Quit\n"
+                    "6. Quit\n"+
+                    (puzzle instanceof AudioPuzzle ? "7. Replay Audio\n" : "")
                 );
                 System.out.print("Enter Choice: ");
                 String choice = scanner.nextLine().trim();
@@ -215,6 +221,12 @@ public class Rooms {
                         scanner.close();
                         System.exit(0);
                         return;
+                    case "7":
+                        if (puzzle instanceof AudioPuzzle) {
+                            System.out.println("\nThe terminal starts again...");
+                            ((AudioPuzzle) puzzle).playAudio();
+                        }
+                        break;
                     default:
                         System.out.println("Invalid Choice, please select 1–6.");
                         break;
