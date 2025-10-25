@@ -56,43 +56,14 @@ public class EscapeRoomFacade
             return;
         }
 
+        // Set difficulty and reset collected letters for this session
         this.currentDifficulty = (difficulty == null) ? Difficulty.EASY : difficulty;
         this.collectedLetters  = new ArrayList<>();
 
-        // Load all rooms (from JSON)
-        if (allRooms == null || allRooms.isEmpty()) {
-            allRooms = loader.getRooms();
-        }
-        if (allRooms == null || allRooms.isEmpty()) {
-            System.out.println("ERROR: No rooms found in game.json");
-            return;
-        }
-
-        // Pick the starting room (prefer room1 by id, else first)
-        currentRoom = null;
-        for (Rooms r : allRooms) {
-            if ("room1".equalsIgnoreCase(r.getRoomID())) { currentRoom = r; break; }
-        }
-        if (currentRoom == null) currentRoom = allRooms.get(0);
-
-        // Load puzzles for that room from JSON (so the room has playable puzzles)
-        var textMap = new java.util.HashMap<String,String>(); // holds prompt/hint/reward strings
-        var puzzles = loader.loadPuzzlesForRoom(currentRoom.getRoomID(), textMap);
-        // if your Rooms has a setPuzzles, use it; otherwise store locally as needed
-        currentRoom.setPuzzles(new ArrayList<>(puzzles));
-
-        // Timer by difficulty
-        int seconds = getSecondsForDifficulty(currentDifficulty);
-        timer = new Timer(seconds);
-        timer.start();
-
-        // Initialize session progress & score
-        progress = new Progress(UUID.randomUUID(), currentUser.userID);
-        score = new Score(currentUser.getUsername(), currentDifficulty, 0, new java.util.Date(), 0);
-
-        System.out.println("Game started for " + currentUser.getUsername()
-            + " on " + currentDifficulty + " (" + seconds + "s). Room: "
-            + (currentRoom.getTitle() == null ? currentRoom.getRoomID() : currentRoom.getTitle()));
+        // Delegate to the interactive Rooms runner which handles loading rooms, puzzles and play loop.
+        // This keeps the facade behaviour consistent with the existing Rooms startGame implementation.
+        Rooms roomRunner = new Rooms();
+        roomRunner.startGame();
 }
 
 
