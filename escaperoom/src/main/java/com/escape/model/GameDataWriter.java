@@ -42,6 +42,17 @@ public class GameDataWriter {
             userObj.put("userID", user.userID == null ? null : user.userID.toString());
             userObj.put("username", user.getUsername());
             userObj.put("password", user.getPassword());
+            // Inventory block (capacity + items)
+            JSONObject invObj = new JSONObject();
+            JSONArray items = new JSONArray();
+            if (user.getInventory() != null && user.getInventory().getItems() != null) {
+                for (String it : user.getInventory().getItems()) items.add(it);
+                invObj.put("capacity", user.getInventory().getCapacity());
+            } else {
+                invObj.put("capacity", 0);
+            }
+            invObj.put("items", items);
+            userObj.put("inventory", invObj);
 
             // Replace existing entry if same userID or username; else append
             boolean replaced = false;
@@ -90,6 +101,17 @@ public class GameDataWriter {
         userObj.put("userID", user.userID == null ? null : user.userID.toString());
         userObj.put("username", user.getUsername());
         userObj.put("password", user.getPassword());
+        // Persist inventory (capacity + items)
+        JSONObject invObj = new JSONObject();
+        JSONArray items = new JSONArray();
+        if (user.getInventory() != null && user.getInventory().getItems() != null) {
+            for (String it : user.getInventory().getItems()) items.add(it);
+            invObj.put("capacity", user.getInventory().getCapacity());
+        } else {
+            invObj.put("capacity", 0);
+        }
+        invObj.put("items", items);
+        userObj.put("inventory", invObj);
 
         boolean replaced = false;
         for (Object o : new ArrayList<>(usersArray)) {
