@@ -2,6 +2,7 @@ package com.escape.model;
 
 import java.io.FileReader;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -128,7 +129,7 @@ public class GameDataLoader {
             try {
                 int idx = Integer.parseInt(roomId.substring(4)) - 1; // "room1" -> 0
                 if (idx >= 0 && idx < rooms.size()) target = (org.json.simple.JSONObject) rooms.get(idx);
-            } catch (Exception ignore) { }
+            } catch (NumberFormatException ignore) { }
         }
         if (target == null) return out;
 
@@ -412,12 +413,12 @@ public StoryElements getStory() {
     private static long toLong(Object n) {
         if (n == null) return 0L;
         if (n instanceof Number) return ((Number) n).longValue();
-        try { return Long.parseLong(n.toString()); } catch (Exception e) { return 0L; }
+        try { return Long.parseLong(n.toString()); } catch (NumberFormatException e) { return 0L; }
     }
     private static int toInt(Object n) {
         if (n == null) return 0;
         if (n instanceof Number) return ((Number) n).intValue();
-        try { return Integer.parseInt(n.toString()); } catch (Exception e) { return 0; }
+        try { return Integer.parseInt(n.toString()); } catch (NumberFormatException e) { return 0; }
     }
 
     /**
@@ -430,9 +431,7 @@ public StoryElements getStory() {
             Method m = target.getClass().getMethod(setter, param);
             m.invoke(target, value);
             return true;
-        } catch (NoSuchMethodException nsme) {
-            return false;
-        } catch (Exception ex) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException nsme) {
             return false;
         }
     }
@@ -444,9 +443,7 @@ public StoryElements getStory() {
             Method m = target.getClass().getMethod(method, params);
             m.invoke(target, values);
             return true;
-        } catch (NoSuchMethodException nsme) {
-            return false;
-        } catch (Exception ex) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException nsme) {
             return false;
         }
     }
@@ -465,7 +462,7 @@ public StoryElements getStory() {
             return c.newInstance();
         } catch (UnsupportedOperationException uoe) {
             throw uoe;
-        } catch (Exception e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException(
                 "Class " + type.getName() + " needs a public no-arg constructor for the loader.", e);
         }
@@ -474,11 +471,11 @@ public StoryElements getStory() {
     /* Safe getter helpers used for addEntry fallback (avoid reflection duplication) */
     private static String sSafe(Object obj, String getterName) {
         try { Object v = obj.getClass().getMethod(getterName).invoke(obj); return v == null ? null : v.toString(); }
-        catch (Exception e) { return null; }
+        catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) { return null; }
     }
     private static long nSafe(Object obj, String getterName) {
         try { Object v = obj.getClass().getMethod(getterName).invoke(obj); return toLong(v); }
-        catch (Exception e) { return 0L; }
+        catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) { return 0L; }
     }
     public static void main(String[] args) {
     GameDataLoader dl = new GameDataLoader();
@@ -498,19 +495,19 @@ public StoryElements getStory() {
 // helper for printing without depending on concrete API
 private static String safe(Object o, String getter) {
     try { Object v = o.getClass().getMethod(getter).invoke(o); return v == null ? null : v.toString(); }
-    catch (Exception e) { return null; }
+    catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) { return null; }
 }
 private static int getLbSize(Leaderboard lb) {
     try {
         var m = lb.getClass().getMethod("getEntries");
         Object v = m.invoke(lb);
         if (v instanceof java.util.List<?>) return ((java.util.List<?>) v).size();
-    } catch (Exception ignore) { }
+    } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ignore) { }
     try {
         var m = lb.getClass().getMethod("getLB");
         Object v = m.invoke(lb);
         if (v instanceof java.util.List<?>) return ((java.util.List<?>) v).size();
-    } catch (Exception ignore) { }
+    } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ignore) { }
     return 0;
 }
 
@@ -538,9 +535,12 @@ public static class TextPuzzle extends Puzzle {
     }
 
     public void setHint(String hint) { this.hint = hint; }
+    @Override
     public String getHint() { return hint != null ? hint : super.getHint(); }
 
+    @Override
     public void setRewardLetter(String rewardLetter) { this.rewardLetter = rewardLetter; }
+    @Override
     public String getRewardLetter() { return rewardLetter; }
 }
 
