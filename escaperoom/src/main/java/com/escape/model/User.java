@@ -1,7 +1,7 @@
 package com.escape.model;
 
-import java.util.UUID;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Abstract base class representing a user in the escape game system.

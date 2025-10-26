@@ -8,7 +8,17 @@ package com.escape.model;
  */
 public enum Difficulty 
 {
-    EASY,
-    MEDIUM,
-    HARD
+    EASY(1800),
+    MEDIUM(1200),
+    HARD(600);
+
+    private final int timeLimitSec;
+    Difficulty(int seconds) {
+        this.timeLimitSec = seconds;
+    }
+
+    public int getTimeLimitSec() {
+        return timeLimitSec;
+    }
+    
 }

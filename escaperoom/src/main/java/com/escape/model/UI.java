@@ -69,6 +69,9 @@ public class UI
                 case "7": // display leaderboard
                     displayLeaderboard();
                     break;
+                case "8": //change difficulty
+                    changeDifficulty();
+                    break;
                 case "s": facade.saveGame(); System.out.println("Saved game."); break;
                 case "q": running = false; break;
                 default: System.out.println("Unknown option. Use 1,2,3, h (hint), s (save), q (quit).");
@@ -99,11 +102,46 @@ public class UI
     }
 
     /**
+     * Method for the User to change the difficulty of the game.
+     */
+    private void changeDifficulty() {
+        System.out.println("Select Difficulty: ");
+        System.out.println("1. EASY (1800 sec)");
+        System.out.println("2. MEDIUM (1500 sec)");
+        System.out.println("3. HARD (1200 sec)");
+        System.out.print("Choice: ");
+
+        String input = scanner.nextLine().trim().toUpperCase();
+
+        Difficulty selected = Difficulty.EASY;
+
+        switch(input) {
+            case "1":
+            case "EASY":
+                selected = Difficulty.EASY;
+                break;
+            case "2":
+            case "MEDIUM":
+                selected = Difficulty.MEDIUM;
+                break;
+            case "3":
+            case "HARD":
+                selected = Difficulty.HARD;
+                break;
+            default:
+                System.out.println("Invalid choice, defaulting to EASY.");
+                break;
+        }
+
+        facade.setCurrentDifficulty(selected);
+    }
+
+    /**
      * main menu.
      */
     public void displayMainMenu()
     {
-        System.out.println("<---Escape Room!!!!--->");
+        System.out.println("<--- Escape Room : The Varen Project --->");
         System.out.println("1. Start Game");
         System.out.println("2. Load Game");
         System.out.println("3. Exit");
@@ -111,6 +149,7 @@ public class UI
         System.out.println("5. Login");
         System.out.println("6. Logout");
         System.out.println("7. Display Leaderboard");
+        System.out.println("8. Change Difficulty");
         System.out.println();
         System.out.println("Other commands: s (save), q (quit)");
     }

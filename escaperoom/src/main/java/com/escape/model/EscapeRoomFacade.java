@@ -44,7 +44,10 @@ public class EscapeRoomFacade
      * Starts a game session with the default difficulty level.
      */
     public void startGame() {
-        startGame(Difficulty.EASY);
+        if (currentDifficulty == null) {
+            currentDifficulty = Difficulty.EASY;
+        }
+        startGame(currentDifficulty);
     }
 
     /**
@@ -564,6 +567,25 @@ public void loadGame() {
 
     public Difficulty getCurrentDifficulty() {
         return currentDifficulty;
+    }
+
+    /**
+     * Updates the game's difficulty and resets the timer accordingly.
+     * Called by the UI when the player changes difficulty.
+     */
+    public void setCurrentDifficulty(Difficulty difficulty) {
+        if (difficulty == null) {
+            System.out.println("Invalid difficulty. Defaulting to EASY.");
+            difficulty = Difficulty.EASY;
+        }
+
+        this.currentDifficulty = difficulty;
+
+        int seconds = getSecondsForDifficulty(difficulty);
+        this.timer = new Timer(seconds);
+
+        System.out.println("Difficulty set to " + difficulty +
+            " (" + seconds + " seconds). Timer reset.");
     }
 
     public Rooms getCurrentRoom() {
