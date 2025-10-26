@@ -26,13 +26,15 @@ public class EscapeRoomFacade
     private Progress progress;
 
     // logged in? 
-    private boolean isLoggedIn() { return currentUser != null; }
+    private boolean isLoggedIn() {
+        return currentUser != null;
+    }
 
     // Ensure the loader/writer/accounts exist. 
     private void ensureCore() {
-    if (loader == null)   loader = new GameDataLoader();
-    if (writer == null)   writer = new GameDataWriter();
-    if (accounts == null) accounts = Accounts.getInstance();
+        if (loader == null)   loader = new GameDataLoader();
+        if (writer == null)   writer = new GameDataWriter();
+        if (accounts == null) accounts = Accounts.getInstance();
     }
 
 
@@ -60,12 +62,38 @@ public class EscapeRoomFacade
         this.currentDifficulty = (difficulty == null) ? Difficulty.EASY : difficulty;
         this.collectedLetters  = new ArrayList<>();
 
-        // Delegate to the interactive Rooms runner which handles loading rooms, puzzles and play loop.
-        // This keeps the facade behaviour consistent with the existing Rooms startGame implementation.
-        Rooms roomRunner = new Rooms();
-        roomRunner.startGame();
-}
+        if (allRooms == null || allRooms.isEmpty()) {
+            allRooms = loader.getRooms();
+        }
+        if (allRooms == null || allRooms.isEmpty()) {
+            System.out.println("ERROR: No rooms found to start game.");
+            return;
+        }
 
+        currentRoom = null;
+        for (Rooms r : allRooms) {
+            if ("room1".equalsIgnoreCase(r.getRoomID())) {
+                currentRoom = r;
+                break;
+            }
+        }
+        if (currentRoom == null) currentRoom = allRooms.get(0);
+
+        var textMap = new java.util.HashMap<String,String>();
+        var puzzles = loader.loadPuzzlesForRoom(currentRoom.getRoomID(), textMap);
+        currentRoom.setPuzzles(new ArrayList<>(puzzles));
+
+        int seconds = getSecondsForDifficulty(currentDifficulty);
+        timer = new Timer(seconds);
+        timer.start();
+
+        progress = new Progress(UUID.randomUUID(), currentUser.userID);
+        score = new Score(currentUser.getUsername(), currentDifficulty, 0, new java.util.Date(), 0);
+
+        System.out.println("Game started for " + currentUser.getUsername()
+            + " on " + currentDifficulty + " (" + seconds + "s). Room: "
+            + (currentRoom.getTitle() == null ? currentRoom.getRoomID() : currentRoom.getTitle()));
+    }
 
     /**
      * Helper used by scenarios/tests: mark the first unsolved puzzle in the current room as solved.
