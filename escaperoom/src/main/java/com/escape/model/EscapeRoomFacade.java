@@ -390,23 +390,41 @@ public void loadGame() {
 
     /** Attempt to log in a user. This is a void wrapper; UI can call getCurrentUsername() to check result. */
     public void login(String username, String password) {
-        if (username == null || password == null) return;
+        if (username == null || password == null) {
+            System.out.println("ERROR: Username and password cannot be null.");
+            return;
+        }
         String uNorm = username.trim();
-        // persisted users
+
+        // Check persisted users
         if (loader == null) loader = new GameDataLoader();
         for (User u : loader.getUsers()) {
-            if (u.getUsername()!=null && u.getPassword()!=null
+            if (u.getUsername() != null && u.getPassword() != null
                 && u.getUsername().equalsIgnoreCase(uNorm)
                 && u.getPassword().equals(password)) {
-            currentUser = u;
-            return;
+                currentUser = u;
+                System.out.println("Login successful.");
+                return;
             }
         }
-        // in-memory accounts
+
+        // Check in-memory accounts
         if (accounts == null) accounts = Accounts.getInstance();
-        User u = accounts.getUserCaseInsensitive(uNorm); // or scan accounts list and equalsIgnoreCase
-        if (u != null && password.equals(u.getPassword())) currentUser = u;
-}
+        try {
+            User u = accounts.getUserCaseInsensitive(uNorm);
+            if (u != null && password.equals(u.getPassword())) {
+                currentUser = u;
+                System.out.println("Login successful.");
+                return;
+            }
+        } catch (UnsupportedOperationException e) {
+            System.out.println("ERROR: Login failed.");
+            return;
+        }
+
+        // If no match is found
+        System.out.println("ERROR: Invalid username or password.");
+    }
 
 
     /** Log out current user. */
