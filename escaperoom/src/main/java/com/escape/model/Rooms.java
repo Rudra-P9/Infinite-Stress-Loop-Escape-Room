@@ -20,6 +20,7 @@ public class Rooms {
     private String title;
     private ArrayList<Puzzle> puzzles;
     private static final ArrayList<String> collectedLetters = new ArrayList<>();
+    private static boolean quit = false; 
 
 
     /**
@@ -125,15 +126,19 @@ public class Rooms {
         switch (room.getRoomID().toLowerCase()) {
             case "room1":
                 System.out.println(story.getRoomOneIntro());
+                Speek.speak(story.getRoomOneIntro());
                 break;
             case "room2":
                 System.out.println(story.getRoomTwoIntro());
+                Speek.speak(story.getRoomTwoIntro());
                 break;
             case "room3":
                 System.out.println(story.getRoomThreeIntro());
+                Speek.speak(story.getRoomThreeIntro());
                 break;
             case "final":
                 System.out.println(story.getFinalPuzzle());
+                Speek.speak(story.getFinalPuzzle());
                 break;
         }
 
@@ -143,6 +148,7 @@ public class Rooms {
             Puzzle puzzle = puzzles.get(i);
             System.out.println("\nPuzzle: " + puzzle.getTitle());
             System.out.println("Prompt: " + puzzle.getPrompt());
+            Speek.speak(puzzle.getPrompt());
             System.out.println("Objective: " + puzzle.getObjective());
 
             if(puzzle instanceof AudioPuzzle) {
@@ -230,7 +236,10 @@ public class Rooms {
                     case "6":
                     
                         System.out.println("Exiting Escape The Varen Project...");
-                        // just return to caller;
+                        UI ui = new UI();
+                        ui.run();
+                        scanner.close();
+                        quit();
                         return;
 
                     case "7":
@@ -257,6 +266,9 @@ public class Rooms {
             }
         }
         return "";
+    }
+    private static void quit() {
+        quit = true;
     }
 
     /**
@@ -285,8 +297,9 @@ public class Rooms {
 
         boolean room2Completed = false;
         boolean room3Completed = false;
+        boolean quit = false;
 
-        while (!(room2Completed && room3Completed)) {
+        while (!(room2Completed && room3Completed && quit)) {
             System.out.println("\nVaren:'There's diverging rooms, which way will you choose?'");
             System.out.println("1. Fragment Corridor ");
             System.out.println("2. Synchronization Core");
