@@ -70,7 +70,9 @@ public class UI
                 case "q": running = false; break;
                 default: System.out.println("Unknown option. Use 1,2,3, h (hint), s (save), q (quit).");
             }
+            
         }
+        System.exit(0); // exit in place to stop inifinate loops in puzzles
     }
 
     /**
