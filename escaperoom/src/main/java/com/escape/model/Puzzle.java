@@ -94,7 +94,7 @@ public abstract class Puzzle {
     public String getHint() {
         if(hints != null && !hints.isEmpty()) {
             for(Hints h: hints) {
-                if(!h.revealed) {
+                if(h.getText() != null && !h.getText().isEmpty()) {
                     h.reveal();
                     return h.getText();
                 }

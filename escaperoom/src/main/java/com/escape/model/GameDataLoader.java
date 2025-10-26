@@ -244,8 +244,10 @@ public class GameDataLoader {
             if (pJson.get("hint") != null) 
             {
                 String hintText = (String) pJson.get("hint");
-                Hints h = new Hints("hint1", 1, false, hintText);
-                puzzle.getHints().add(h);
+                if (hintText != null && !hintText.isEmpty()) {
+                    Hints h = new Hints("hint1", 1, false, hintText);
+                    puzzle.getHints().add(h);
+                }
             }
 
             if (pJson.get("rewardLetter") != null)

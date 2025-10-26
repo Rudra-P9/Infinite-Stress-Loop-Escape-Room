@@ -82,7 +82,13 @@ public class UI
      * Display the leaderboard.
      */
     private void displayLeaderboard() {
-        Leaderboard leaderboard = new Leaderboard(); // Assuming Leaderboard is initialized elsewhere or can be instantiated here
+        GameDataLoader loader = new GameDataLoader();
+        Leaderboard leaderboard = loader.getLeaderboard();
+
+        if(leaderboard.size() == 0) {
+            System.out.println("Leaderboard cannot be loaded!");
+        }
+        
         System.out.println("=== Leaderboard ===");
         int rank = 1;
         for (Score score : leaderboard.getLB()) {
