@@ -66,6 +66,9 @@ public class UI
                     facade.logout();
                     System.out.println("Logged out.");
                     break;
+                case "7": // display leaderboard
+                    displayLeaderboard();
+                    break;
                 case "s": facade.saveGame(); System.out.println("Saved game."); break;
                 case "q": running = false; break;
                 default: System.out.println("Unknown option. Use 1,2,3, h (hint), s (save), q (quit).");
@@ -73,6 +76,20 @@ public class UI
             
         }
         System.exit(0); // exit in place to stop inifinate loops in puzzles
+    }
+
+    /**
+     * Display the leaderboard.
+     */
+    private void displayLeaderboard() {
+        Leaderboard leaderboard = new Leaderboard(); // Assuming Leaderboard is initialized elsewhere or can be instantiated here
+        System.out.println("=== Leaderboard ===");
+        int rank = 1;
+        for (Score score : leaderboard.getLB()) {
+            System.out.println(rank + ". " + score.getUsername() + " - " + score.getScore());
+            rank++;
+        }
+        System.out.println("===================");
     }
 
     /**
@@ -87,7 +104,7 @@ public class UI
         System.out.println("4. Create Account");
         System.out.println("5. Login");
         System.out.println("6. Logout");
-        System.out.println();
+        System.out.println("7. Display Leaderboard");
         System.out.println();
         System.out.println("Other commands: s (save), q (quit)");
     }
