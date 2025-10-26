@@ -340,11 +340,23 @@ public void loadGame() {
     // If timer/progress/score are null (first load), initialize them
     if (currentDifficulty == null) currentDifficulty = Difficulty.EASY;
     if (timer == null)  timer  = new Timer(getSecondsForDifficulty(currentDifficulty));
-    if (progress == null) progress = new Progress(UUID.randomUUID(), currentUser.userID);
+    // Load persisted progress for this user (if present) and use it so the
+    // subsequent Rooms.startGame() call resumes from that saved point.
+    Progress restored = loader.loadProgressForUser(currentUser.userID);
+    if (restored != null) {
+        this.progress = restored;
+        System.out.println("Restored progress (pos=" + progress.getStoryPos() + ") for " + currentUser.getUsername());
+    } else if (progress == null) {
+        progress = new Progress(UUID.randomUUID(), currentUser.userID);
+    }
     if (score == null)    score    = new Score(currentUser.getUsername(), currentDifficulty, 0, new java.util.Date(), 0);
 
     System.out.println("Game loaded for " + currentUser.getUsername()
         + ". Room: " + (currentRoom.getTitle() == null ? currentRoom.getRoomID() : currentRoom.getTitle()));
+
+    // Now start the interactive game loop; Rooms.startGame will consult
+    // facade.getProgress() and fast-forward puzzles to the saved storyPos.
+    new Rooms().startGame(this);
 }
 
 

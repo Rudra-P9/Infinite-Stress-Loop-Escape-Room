@@ -2,7 +2,7 @@ package com.escape.model;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.UUID;
+// import java.util.UUID; // not needed (use fully-qualified UUID where required)
 
 /**
  * Rooms of the EscapeRoom
@@ -20,7 +20,6 @@ public class Rooms {
     private String title;
     private ArrayList<Puzzle> puzzles;
     private static final ArrayList<String> collectedLetters = new ArrayList<>();
-    private static boolean quit = false; 
 
 
     /**
@@ -191,7 +190,8 @@ public class Rooms {
                     "5. See Time Remaining (Seconds)\n" +
                     "6. Quit\n"+
                     (puzzle instanceof AudioPuzzle ? "7. Replay Audio\n" : "")+
-                    "8. Save & Logout (Scenario)\n"
+                    "8. Save & Logout (Scenario)\n" +
+                    "9. Save Progress\n"
                 );
                 System.out.print("Enter Choice: ");
                 String choice = scanner.nextLine().trim();
@@ -273,7 +273,6 @@ public class Rooms {
                             for (int k = 0; k < Math.min(sp, GLOBAL_ORDER.length); k++) {
                                 String rid = GLOBAL_ORDER[k][0];
                                 int idx    = Integer.parseInt(GLOBAL_ORDER[k][1]);
-                                Rooms rr   = room; // default to current
                                 // show nicer names if it’s the current room
                                 String title = (room.getRoomID().equals(rid)
                                             && idx < room.getPuzzles().size())
@@ -319,8 +318,19 @@ public class Rooms {
                             ((AudioPuzzle) puzzle).playAudio();
                         }
                         break;
+                    case "9":
+                        // Save progress only (no logout)
+                        if (facade != null) {
+                            try { facade.saveProgressForCurrentUser(progress); } catch (Throwable ignored) {}
+                            System.out.println("Progress saved.");
+                            Speek.speak("Progress saved.");
+                        } else {
+                            System.out.println("Unable to save: game facade not available.");
+                            Speek.speak("Unable to save: game facade not available.");
+                        }
+                        break;
                     default:
-                        System.out.println("Invalid Choice, please select 1–6.");
+                        System.out.println("Invalid choice, please select a valid option.");
                         break;
 
                     case "8": // Save & Logout (Scenario)
@@ -362,8 +372,8 @@ public class Rooms {
     /**
      * Sets the quit flag to true, which will cause the game loop to exit.
      */
-    private static void quit() {
-        quit = true;
+    private void quit() {
+        this.quitRequested = true;
     }
 
     /** Hard-coded global puzzle order (roomID, indexWithinRoom) used to fast-forward on resume. */
