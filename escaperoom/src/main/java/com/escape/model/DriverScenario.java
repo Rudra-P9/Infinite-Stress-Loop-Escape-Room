@@ -1,8 +1,11 @@
 package com.escape.model;
 
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Scanner;
+
 
 /**
  * Runs through each of the scenarios given by the instructor
@@ -10,21 +13,21 @@ import java.time.LocalDate;
  */
 public class DriverScenario {
 
-/**
- * Main driver for the Escape Room project.
- * Runs through each of the scenarios given by the instructor to demonstrate the capabilities of the Escape Room system.
- * 
- * @author Dylan Diaz
- */
+
     public static void main(String[] args) throws Exception {
+
 
         GameDataLoader loader = new GameDataLoader();
         GameDataWriter writer = new GameDataWriter();
         EscapeRoomFacade facade = new EscapeRoomFacade();
         Accounts accounts = Accounts.getInstance();
 
-        // duplicate account attempt
-        System.out.println("\nCreate Account Duplicate User");
+
+        Scanner in = new Scanner(System.in);
+
+
+        // Create Account - Duplicate User
+        System.out.println("\nCreate Account - Duplicate User");
         String bro = "Logan Rivers";
         if (accounts.getUser(bro) == null) {
             accounts.createAccount(bro, "loganPass123");
@@ -34,17 +37,19 @@ public class DriverScenario {
             System.out.println("Account already exists for username " + bro);
         }
 
-        System.out.println("Leni tries to create an account with her brothers name");
+
+        System.out.println("Leni tries to create an account using her brothers username should be rejected");
         if (accounts.getUser("Logan Rivers") == null) {
             accounts.createAccount("Logan Rivers", "leniTry");
             writer.saveAccounts(accounts);
+            System.out.println("Unexpected duplicate account created this should not happen");
         } else {
-            System.out.println("Account already exists for username Logan Rivers");
+            System.out.println("Duplicate rejected as expected");
         }
-        System.out.println("Duplicate rejected");
 
-        // create and log in Leni
-        System.out.println("\nCreate Account Success");
+
+        // Create Account - Success
+        System.out.println("\nCreate Account - Success");
         String lena = "Leni Rivers";
         if (accounts.getUser(lena) == null) {
             accounts.createAccount(lena, "leniSecret");
@@ -54,48 +59,87 @@ public class DriverScenario {
             System.out.println("Account already exists for username " + lena);
         }
 
-        try {
-            facade.login(lena, "leniSecret");
-        } catch (Throwable ignored) { }
-        try { System.out.println("Logged in as " + facade.getCurrentUsername()); } catch (Throwable ignored) { System.out.println("Logged in"); }
 
-        // --- Interactive play: enter room, solve a few, then CHOOSE 8 to Save & Logout (Scenario) ---
-        System.out.println("\nEnter Room • Play a bit • Choose '8' to Save & Logout (Scenario)");
-        facade.startGame(Difficulty.EASY); // Rooms.startGame(facade) is called inside
+        // Interactive login
+        System.out.println("\nInteractive Login");
+        System.out.print("Enter username ");
+        String inputUser = in.nextLine().trim();
+        System.out.print("Enter password ");
+        String inputPass = in.nextLine();
 
-        // When Rooms returns, the scenario option 8 saved progress and logged out for us.
-        if (facade.getCurrentUser() == null) {
-            System.out.println("Detected scenario logout from Rooms. Progress was saved to:");
-            System.out.println("  escaperoom/src/main/resources/json/playerData.json");
+
+        facade.login(inputUser, inputPass);
+
+
+        String cur = null;
+        try { cur = facade.getCurrentUsername(); } catch (Throwable ignored) { }
+        if (cur == null) {
+            System.out.println("Login failed or no user set in facade exiting");
+            in.close();
+            return;
         } else {
-            try { facade.logout(); } catch (Throwable ignored) {}
+            System.out.println("Logged in as " + cur);
         }
 
-        // Log back in and restore
-        try { facade.login(lena, "leniSecret"); } catch (Throwable ignored) {}
-        try { facade.restoreProgressForCurrentUser(); } catch (Throwable ignored) {}
 
-        Progress progress = null;
-        try { progress = facade.getProgress(); } catch (Throwable ignored) {}
-        System.out.println("\nRestored progress:");
-        System.out.println(progress == null ? "No progress found" : progress.toString());
-
-        // Resume to finish
-        System.out.println("\n--- RESUMING PLAY ---");
+        // Enter an Escape Room - Hear the story
+        System.out.println("\nEnter Room the Rooms UI will run now");
         facade.startGame(Difficulty.EASY);
 
 
-        // show JSON snapshot
-        System.out.println("\nSaved JSON snapshot");
-        try {
-            String json = new String(java.nio.file.Files.readAllBytes(
-                    java.nio.file.Paths.get("escaperoom/src/main/resources/json/playerData.json")));
-            System.out.println(json);
-        } catch (Throwable ignored) { System.out.println("Could not read playerData.json"); }
+        if (facade.getCurrentUser() == null) {
+            System.out.println("\nDetected scenario logout from Rooms progress was saved to");
+            System.out.println("escaperoom/src/main/resources/json/playerData.json");
+        } else {
+            try { facade.saveGame(); } catch (Throwable ignored) { }
+            try { facade.endGame(); } catch (Throwable ignored) { }
+        }
 
-        // finish game and update leaderboard
-        System.out.println("\nFinish Game Leaderboard");
-        try { facade.endGame(); System.out.println("End game requested"); } catch (Throwable ignored) { System.out.println("End game failed"); }
+
+        // Re-login and show persistence
+        System.out.println("\nRe login to verify saved progress");
+        System.out.print("Re enter username ");
+        inputUser = in.nextLine().trim();
+        System.out.print("Re enter password ");
+        inputPass = in.nextLine();
+
+
+        facade.login(inputUser, inputPass);
+
+
+        try {
+            facade.restoreProgressForCurrentUser();
+        } catch (Throwable ignored) { }
+
+
+        Progress progress = null;
+        try { progress = facade.getProgress(); } catch (Throwable ignored) { }
+        System.out.println("\nRestored progress");
+        System.out.println(progress == null ? "No progress found" : progress.toString());
+
+
+        // Resume to finish final puzzles
+        System.out.println("\nResuming play to finish the game");
+        facade.startGame(Difficulty.EASY);
+
+
+        // Show saved json snapshot
+        System.out.println("\nSaved JSON snapshot playerData.json");
+        try {
+            byte[] json = java.nio.file.Files.readAllBytes(
+                    java.nio.file.Paths.get("escaperoom/src/main/resources/json/playerData.json"));
+            System.out.println(new String(json));
+        } catch (Throwable ignored) {
+            System.out.println("Could not read playerData.json");
+        }
+
+
+        // Finish Game and update leaderboard
+        System.out.println("\nFinish Game and Leaderboard");
+        try { facade.endGame(); System.out.println("End game requested"); }
+        catch (Throwable ignored) { System.out.println("End game failed"); }
+
+
         Leaderboard lb = null;
         try { lb = loader.getLeaderboard(); } catch (Throwable ignored) { }
         if (lb != null) {
@@ -105,31 +149,32 @@ public class DriverScenario {
                     System.out.printf("%d %s %d pts %s%n", rank++, s.getUsername(), s.getScore(),
                             s.getDifficulty() == null ? "unknown" : s.getDifficulty());
                 }
-            } catch (Throwable ignored) { System.out.println("Could not print leaderboard entries"); }
+            } catch (Throwable ignored) {
+                System.out.println("Could not print leaderboard entries");
+            }
         } else {
             System.out.println("No leaderboard available");
         }
 
-        // certificate of completion
+
+        // Certificate of Completion
         System.out.println("\nCertificate of Completion");
         long finalScore = 0;
         try { finalScore = facade.calculateFinalScore(); } catch (Throwable ignored) { }
-        try { makeCertificate(lena, "Infinite Stress Loop Escape Room", finalScore, facade.getCurrentDifficulty(), progress == null ? 0 : progress.getHintsUsed()); System.out.println("Certificate written to certificate_" + lena.replace(' ', '_') + ".txt"); } catch (Throwable ignored) { System.out.println("Certificate creation failed"); }
+        try {
+            makeCertificate(inputUser, "Escape The Varen Project", finalScore, facade.getCurrentDifficulty(),
+                    progress == null ? 0 : progress.getHintsUsed());
+            System.out.println("Certificate written to certificate_" + inputUser.replace(' ', '_') + ".txt");
+        } catch (Throwable ignored) {
+            System.out.println("Certificate creation failed");
+        }
+
 
         System.out.println("\nAll scenarios complete");
+        in.close();
     }
 
-    /**
-     * Creates a certificate of completion for the given user in the given game.
-     * The certificate contains the user's name, the game name, the date of completion,
-     * the difficulty level, the number of hints used, and the final score.
-     * The certificate is written to a file named "certificate_<user>.txt"
-     * @param user the username of the player
-     * @param game the name of the game
-     * @param score the final score of the player
-     * @param diff the difficulty level of the game
-     * @param hints the number of hints used by the player
-     */
+
     private static void makeCertificate(String user, String game, long score, Difficulty diff, int hints) {
         String filename = "certificate_" + user.replace(' ', '_') + ".txt";
         String header = "*******************************************\n" +
@@ -138,9 +183,10 @@ public class DriverScenario {
         String body = String.format("Player %s%nGame %s%nDate %s%n%n", user, game, LocalDate.now());
         body += String.format("Difficulty %s%nHints used %d%nFinal Score %d%n%n",
                 diff == null ? "Unknown" : diff, hints, score);
-        body += "Message\nYou survived the Infinite Stress Loop\n";
-        body += "Enjoy your freedom until the next puzzle\n\n";
-        body += "Signed\nThe Infinite Stress Loop Dev Team\n";
+        body += "Message\nCongratulations on escaping the Varen Project\n";
+        body += "You discovered truths and unlocked doors\n\n";
+        body += "Signed\nThe Escape Room Dev Team\n";
+
 
         try (FileWriter fw = new FileWriter(filename)) {
             fw.write(header);
