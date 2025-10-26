@@ -7,22 +7,29 @@ import java.util.UUID;
  * 
  * @author Rudra Patel
  */
+
 public class Driver {
 
-    // Attribute
     private UI ui;
-
-    // Constructor
+    /**
+     * Constructor for the Driver class.
+     * Initializes the UI instance.
+     */
     public Driver() {
         ui = new UI();
     }
 
-    // Methods
+    /**
+     * Starts the main application loop by running the UI.
+     */
     public void start() {
         ui.run(); // start the main UI
     }
 
-    //get random UUID
+    /**
+     * Generates a random UUID.
+     * @return a randomly generated UUID
+     */
     public static UUID getUUID() {
         return UUID.randomUUID();
     }
