@@ -16,8 +16,8 @@
   },
 
   "story": {
-    "intro": "“You wake up in a bright white room, the light dazing you. A voice echoes, shaky yet familiar `Hey. Easy now. My name`s Varen. You`re safe. We`re going to get you out of here.'",
-    "roomOneIntro": "“A terminal flickers to life. Varen begins, 'This is a basic calibration to confirm your logic is intact.’”",
+    "intro": "'You wake up in a bright white room, the light dazing you. A voice echoes, shaky yet familiar `Hey. Easy now. My name`s Varen. You`re safe. We`re going to get you out of here.'",
+    "roomOneIntro": "'A terminal flickers to life. Varen begins, 'This is a basic calibration to confirm your logic is intact.’",
     "roomOneConc": "The console chimes softly. Varen sounds pleased: 'Good. Neural patterns are stabilizing. Let`s continue then.'",
     "roomTwoIntro": "You step into a corridor lined with broken screens and scattered data fragments floating in the air. Each fragment flashes with jumbled text. Varen`s tone softens: 'These are memory shards... pieces of what was once mine. Try to put them back together.'",
     "roomTwoBetween": "The screens pulse as the first fragment stabilizes. The floor shifts slightly beneath your feet, reorienting itself. Varen murmurs: 'Spatial mapping is unstable… we`ll need to recalibrate your movement pathways next.'",
@@ -71,7 +71,7 @@
           "type": "ARROW_DECIPHER",
           "title": "Movement Detection",
           "objective": "What could these arrows mean...",
-          "prompt": "Translate the directional code into movement letters. \u2191 \u2190 \u2193 \u2192 \u2192 \u2193 \u2191 \u2190",
+          "prompt": "Translate the directional code into movement letters. T<V>>VT< (T = UP, V = DOWN, < = Left, > = Right) ",
           "solution": "WASDDSWA",
           "hint":"Varen: 'Each direction has a symbol. You`ve moved this way before, remember how it felt.' (WASD).",
           "rewardLetter": "M"
@@ -89,9 +89,9 @@
           "type": "SHAPE_MATH",
           "title": "Synchronization Symbol Test",
           "objective": "Figure out what these mysterious ancient symbols could mean...",
-          "prompt": "Decode the shape values to solve the equation. \u25B2 + \u25B2 + \u25A0 = 12, \u25A0 + \u25CF = 6, \u25B2 + \u25CF = ?",
+          "prompt": "Decode the shape values to solve the equation. A + A + B = 12, B + O = 6, A + O = ?",
           "solution": "6",
-          "hint":"Varen: 'The value of the square is four.'",
+          "hint":"Varen: 'The value of the B is four.'",
           "rewardLetter": "R"
         },
         {
