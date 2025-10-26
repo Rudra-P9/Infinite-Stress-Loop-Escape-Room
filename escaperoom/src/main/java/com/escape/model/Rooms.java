@@ -220,6 +220,7 @@ public class Rooms {
                         System.out.println("Exiting Escape The Varen Project...");
                         UI ui = new UI();
                         ui.run();
+                        scanner.close();
                         return;
                     case "7":
                         if (puzzle instanceof AudioPuzzle) {
