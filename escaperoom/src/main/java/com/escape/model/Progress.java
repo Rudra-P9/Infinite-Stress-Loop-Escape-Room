@@ -17,6 +17,7 @@ public class Progress {
 
     private int questionsAnswered;
     private int hintsUsed;
+    private java.util.List<String> hintedPuzzles = new java.util.ArrayList<>();
 
     public Progress(UUID progressUUID, UUID userUUID) {
         if (progressUUID == null) progressUUID = UUID.randomUUID();
@@ -81,6 +82,28 @@ public class Progress {
      * If other code calls questionsAnswered(), it now does the right thing.
      */
     public int questionsAnswered() { return getQuestionsAnswered(); }
+
+
+
+
+        /** Record that a hint was used on a particular puzzle title. */
+        public void addHintFor(String puzzleTitle) {
+            if (puzzleTitle != null && !puzzleTitle.isBlank() && !hintedPuzzles.contains(puzzleTitle)) {
+                hintedPuzzles.add(puzzleTitle);
+            }
+            hintsUsed++; // keep your counter consistent
+        }
+
+        /** Titles of puzzles where a hint was used (persisted). */
+        public java.util.List<String> getHintedPuzzles() {
+            return new java.util.ArrayList<>(hintedPuzzles);
+        }
+
+        /** Used by loader to restore hinted puzzles list. */
+        public void setHintedPuzzles(java.util.List<String> titles) {
+            this.hintedPuzzles = (titles == null) ? new java.util.ArrayList<>() : new java.util.ArrayList<>(titles);
+        }
+
 
 /**
  * Returns a string representation of the Progress object.

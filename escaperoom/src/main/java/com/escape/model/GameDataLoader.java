@@ -353,25 +353,40 @@ public StoryElements getStory() {
         org.json.simple.JSONArray arr = (org.json.simple.JSONArray) root.get("progress");
         if (arr == null) return null;
 
+        // arr is the progress array you already read: (JSONArray) root.get("progress");
         for (Object o : arr) {
-            org.json.simple.JSONObject jo = (org.json.simple.JSONObject) o;
-            String uid = jo.get("userUUID") == null ? null : jo.get("userUUID").toString();
-            if (userId.toString().equals(uid)) {
-                String pid = jo.get("progressUUID") == null ? null : jo.get("progressUUID").toString();
-                int c        = parseIntSafe(jo.get("c"),        0);
-                int answered = parseIntSafe(jo.get("answered"), 0);
-                int hints    = parseIntSafe(jo.get("hints"),    0);
+            JSONObject jo = (JSONObject) o;
 
-                Progress p = new Progress(
-                    (pid == null ? java.util.UUID.randomUUID() : java.util.UUID.fromString(pid)),
-                    userId
-                );
-                p.setStoryPos(c);
-                p.setQuestionsAnswered(answered);
-                p.setHintsUsed(hints);
-                return p;
+            String uid = String.valueOf(jo.get("userUUID"));
+            if (uid == null) continue;
+            if (!uid.equals(userId.toString())) continue;
+
+            // Construct the Progress
+            java.util.UUID progId = parseUuid(String.valueOf(jo.get("progressUUID")));
+            Progress prog = new Progress(progId, userId);
+
+            // Restore story counter "c"
+            Object cObj = jo.get("c");
+            if (cObj != null) {
+                try { prog.setStoryPos(Integer.parseInt(String.valueOf(cObj))); } catch (Exception ignore) {}
             }
+
+            // (Optional) If you saved "hints" or "answered", you can read them too,
+            // but it's OK to skip if you don't have setters.
+
+            // NEW: restore hinted puzzle titles
+            Object ht = jo.get("hintedTitles");
+            if (ht instanceof JSONArray) {
+                java.util.ArrayList<String> list = new java.util.ArrayList<>();
+                for (Object x : (JSONArray) ht) {
+                    if (x != null) list.add(x.toString());
+                }
+                prog.setHintedPuzzles(list);
+            }
+
+            return prog;  // you matched the user, done
         }
+
         return null;
     }
 
@@ -431,6 +446,10 @@ public StoryElements getStory() {
     }
 
     /* ========================= HELPERS ========================= */
+    private static java.util.UUID parseUuid(String s) {
+    try { return java.util.UUID.fromString(s); }
+    catch (Exception e) { return java.util.UUID.randomUUID(); }
+}
 
     /**
      * Attempt to read JSON from classpath first, then from each filesystem path.

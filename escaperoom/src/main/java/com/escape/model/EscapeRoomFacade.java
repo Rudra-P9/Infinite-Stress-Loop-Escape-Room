@@ -223,32 +223,58 @@ public class EscapeRoomFacade
         System.out.println("ERROR: No user logged in. Nothing to end.");
         return;
     }
-        // stop timer and clear current session
-        if (timer != null) timer.pause();
+        // pause timer first
+            if (timer != null) timer.pause();
 
-        // calculate final score
-        long finalScore = calculateFinalScore();
-    
-        // save score and update leaderboard
-        if (currentUser != null && score != null) {
-            score.setTimeLeftSec(timer == null ? 0 : timer.getRemainingSeconds());
+            long timeLeft = (timer == null) ? 0 : timer.getRemainingSeconds();
+
+            // Create a score if we never made one
+            if (score == null) {
+                score = new Score(
+                    currentUser.getUsername(),
+                    currentDifficulty == null ? Difficulty.EASY : currentDifficulty,
+                    timeLeft,
+                    new java.util.Date(),
+                    progress == null ? 0 : progress.getHintsUsed()
+                );
+            }
+
+            // keep score fields up to date
+            score.setTimeLeftSec(timeLeft);
+            
+
+            // compute final score and set it
+            long finalScore = calculateFinalScore();
             score.setScore(finalScore);
-            currentUser.setScore((int) finalScore);
-            
+
+            // persist: save score and leaderboard
+            if (writer == null) writer = new GameDataWriter();
             writer.saveScore(score);
-            
+
+            if (loader == null) loader = new GameDataLoader();
             Leaderboard lb = loader.getLeaderboard();
+            if (lb == null) lb = new Leaderboard();
+
+            // remove any existing score by this username
+            try {
+                lb.removeByUsername(currentUser.getUsername()); // if you have this helper
+            } catch (Throwable ignored) {
+                // fallback: manual filter
+                java.util.List<Score> keep = new java.util.ArrayList<>();
+                for (Score s : lb.topN(1000)) {
+                    if (!currentUser.getUsername().equalsIgnoreCase(s.getUsername())) keep.add(s);
+                }
+                lb.setLB(keep); // a setter if needed; otherwise rebuild LB class
+            }
+
+            // add/replace and save
             lb.addOrReplace(score);
             writer.saveLeaderboard(lb);
-            
-            System.out.println("Game ended. Final score: " + finalScore);
-            saveProgressSnapshot();
-        }
 
-        // cleanup
-        currentUser = null;
-        currentRoom = null;
-        
+            System.out.println("Game ended. Final score: " + finalScore);
+
+            // clean up session (optional)
+            currentRoom = null;
 
 
     }

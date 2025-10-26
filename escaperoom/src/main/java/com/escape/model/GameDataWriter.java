@@ -258,6 +258,12 @@ public class GameDataWriter {
         jo.put("answered",     Integer.valueOf(p.getQuestionsAnswered()));
         jo.put("hints",        Integer.valueOf(p.getHintsUsed()));
 
+        // persist the puzzle titles where a hint was used
+        org.json.simple.JSONArray hinted = new org.json.simple.JSONArray();
+        for (String t : p.getHintedPuzzles()) {
+            hinted.add(t);
+        }
+        jo.put("hintedTitles", hinted);
         boolean replaced = false;
         for (int i = 0; i < arr.size(); i++) {
             org.json.simple.JSONObject existing = (org.json.simple.JSONObject) arr.get(i);

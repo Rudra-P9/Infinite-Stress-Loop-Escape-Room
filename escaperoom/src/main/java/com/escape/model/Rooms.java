@@ -71,7 +71,11 @@ public class Rooms {
      private boolean quitRequested = false;
 
      // Set when the player chooses the scripted Save & Logout option.
-    private boolean scenarioLogoutRequested = false;
+    private static boolean scenarioLogoutRequested = false;
+
+    // Track which puzzles the player asked hints for (session only; fine for demo)
+    private static final java.util.LinkedHashSet<String> hintedIn = new java.util.LinkedHashSet<>();
+
 
 
 
@@ -121,6 +125,7 @@ public class Rooms {
         }
         return null;
     }
+
 
     
     private static boolean playRoom(
@@ -260,9 +265,13 @@ public class Rooms {
                         }
                         break;
                     case "2":
-                        System.out.println("Hint: " + puzzle.getHint());
-                        progress.useHint();
-                        break;
+                            System.out.println("Hint: " + puzzle.getHint());
+                            // track *which* puzzle used a hint:
+                            progress.addHintFor(puzzle.getTitle());
+                            // persist immediately if we want:
+                            try { if (facade != null) facade.saveProgressForCurrentUser(progress); } catch (Throwable ignored) {}
+                            break;
+
                     case "3":
                         System.out.println(progress);
                         // optional: list solved so far (by scanning puzzles in all rooms is more involved;
@@ -279,6 +288,11 @@ public class Rooms {
                                             ? room.getPuzzles().get(idx).getTitle()
                                             : ("Puzzle " + (k+1));
                                 System.out.println(" - " + title);
+                            }
+                            // also show where hints were used (this session)
+                            if (!hintedIn.isEmpty()) {
+                                System.out.println("Hints used in:");
+                                for (String t : hintedIn) System.out.println(" - " + t);
                             }
                         }
                         break;
@@ -321,18 +335,19 @@ public class Rooms {
                         break;
 
                     case "8": // Save & Logout (Scenario)
-                        if (!allowScenarioSave) {
-                            System.out.println("Keep playing: solve at least 3 puzzles to unlock this scenario step.");
-                            break;
-                        }
+                    if (!allowScenarioSave) {
+                        System.out.println("Keep playing: solve at least 3 puzzles to unlock this scenario step.");
+                        break;
+                    }
+                    if (facade != null) {
+                        try { facade.saveGame(); } catch (Throwable ignored) {}
+                        try { facade.saveProgressForCurrentUser(progress); } catch (Throwable ignored) {}
+                        try { facade.logout(); } catch (Throwable ignored) {}
+                    }
+                    System.out.println("Saved & logged out. Returning to DriverScenario...");
+                    Rooms.scenarioLogoutRequested = true;
+                    return false;
 
-                        if (facade != null) {
-                            try { facade.saveGame(); } catch (Throwable ignored) {}
-                            try { facade.saveProgressForCurrentUser(progress); } catch (Throwable ignored) {}
-                            try { facade.logout(); } catch (Throwable ignored) {}
-                        }
-                        System.out.println("Saved & logged out. Returning to DriverScenario...");
-                        return false;   // return to DriverScenario
                     }
                 }
             }
@@ -375,6 +390,11 @@ public class Rooms {
         {"final", "0"}
     };
 
+    /** Public accessor so other classes (DriverScenario) can read the order. */
+public static String[][] getGlobalOrder() {
+    return GLOBAL_ORDER;
+}
+
     /** Marks the first `count` puzzles (in global order) as solved on the provided rooms list. */
     private static void fastForwardSolved(ArrayList<Rooms> rooms, int count) {
         if (rooms == null || count <= 0) return;
@@ -408,6 +428,10 @@ public class Rooms {
         
         try {
             quitRequested = false;  // fresh run
+            scenarioLogoutRequested = false; // fresh run
+            Rooms.scenarioLogoutRequested = false;   // reset for this run
+
+
             GameDataLoader loader = new GameDataLoader();
             ArrayList<Rooms> rooms = loader.getRooms();
             StoryElements story = loader.getStory();
@@ -439,6 +463,33 @@ public class Rooms {
             int alreadySolved = (progress == null) ? 0 : progress.getStoryPos();
             fastForwardSolved(rooms, alreadySolved);
 
+            int sp = (progress == null) ? 0 : progress.getStoryPos();
+
+            if (sp >= 1) {
+                System.out.println("\n--- Resume Summary ---");
+                // This prints: percent complete, hints used, puzzles solved
+                System.out.println(progress);
+
+                // Names of solved puzzles (first N by global order)
+                try {
+                    int solved = Math.min(sp, GLOBAL_ORDER.length);
+                    if (solved > 0) {
+                        System.out.println("Solved so far:");
+                        for (int k = 0; k < solved; k++) {
+                            String rid = GLOBAL_ORDER[k][0];
+                            int idx    = Integer.parseInt(GLOBAL_ORDER[k][1]);
+                            Rooms rr   = findRoomByID(rooms, rid);
+                            String title =
+                                (rr != null && rr.getPuzzles() != null && idx < rr.getPuzzles().size())
+                                ? rr.getPuzzles().get(idx).getTitle()
+                                : ("Puzzle " + (k + 1));
+                            System.out.println(" - " + title);
+                        }
+                    }
+                } catch (Throwable ignored) {}
+            }
+
+
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("--- ROOM & PUZZLE TESTING ---\n");
@@ -447,41 +498,88 @@ public class Rooms {
             boolean r1 = playRoom(findRoomByID(rooms, "room1"),
                       story, scanner, progress, facade);
             if (!r1) return; // player quit or Save&Logout; stop and return to DriverScenario
-
-
-            boolean room2Completed = false;
-            boolean room3Completed = false;
-
-            while (!(room2Completed && room3Completed)) {
-                System.out.println("\nVaren:'There's diverging rooms, which way will you choose?'");
-                System.out.println("1. Fragment Corridor ");
-                System.out.println("2. Synchronization Core");
-                System.out.print("Enter Choice: ");
-                String choice = scanner.nextLine().trim();
-
-                switch (choice) {
-                    case "1":
-                        if (!room2Completed) {
-                            boolean done = playRoom(findRoomByID(rooms, "room2"),
-                                                    story, scanner, progress, facade);
-                            if (!done) return;           // user quit or Save&Logout -> bubble out
-                            room2Completed = true;       // mark complete only on success
-                        } else {
-                            System.out.println("Fragment Corridor already stabilized!");
-                        }
-                        break;
-                    case "2":
-                        if (!room3Completed) {
-                            boolean done = playRoom(findRoomByID(rooms, "room3"),
-                                                    story, scanner, progress, facade);
-                            if (!done) return;           // user quit or Save&Logout
-                            room3Completed = true;       // only if truly finished
-                        } else {
-                            System.out.println("Full syncronization already reached!");
-                        }
-                        break;
-                }
+            // If the player already reached the 5th beat, jump directly to FINAL.
+            if (progress.getStoryPos() >= 5) {       // 5 puzzles solved = final ready
+            System.out.println("\nAll systems aligned... proceeding to the Final Command.");
+            playRoom(findRoomByID(rooms, "final"), story, scanner, progress, facade);
+            if (Rooms.scenarioLogoutRequested) return;
             }
+
+
+            
+
+            // Compute what’s already done from restored progress
+        boolean room2Completed = (sp >= 3);  // Fragment Corridor done?
+        boolean room3Completed = (sp >= 5);  // Synchronization Core done?
+
+        while (true) {
+
+            // If both rooms are complete, stop asking and proceed to FINAL
+            if (room2Completed && room3Completed) break;
+
+            System.out.println("\nVaren:'There's diverging rooms, which way will you choose?'");
+            System.out.println("1. Fragment Corridor");
+            System.out.println("2. Synchronization Core");
+            System.out.print("Enter Choice: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1": {
+                    // Room 2: will print "(Skipping solved)" for its puzzles if already solved
+                    Rooms r2 = findRoomByID(rooms, "room2");
+                    playRoom(r2, story, scanner, progress, facade);
+                    if (scenarioLogoutRequested || quitRequested) return;
+                    room2Completed = true;
+                    if (Rooms.scenarioLogoutRequested) return;
+
+                    // Immediately chain into Room 3 if not complete
+                    if (!room3Completed) {
+                        Rooms r3 = findRoomByID(rooms, "room3");
+                        playRoom(r3, story, scanner, progress, facade);
+                        if (scenarioLogoutRequested || quitRequested) return;
+                        room3Completed = (progress != null && progress.getStoryPos() >= 5);
+                        if (Rooms.scenarioLogoutRequested) return;
+                    }
+                    // After 1 (and optional chain), go straight to Final
+                    break;
+                }
+
+                case "2": {
+                    // Room 3
+                    Rooms r3 = findRoomByID(rooms, "room3");
+                    playRoom(r3, story, scanner, progress, facade);
+                    if (Rooms.scenarioLogoutRequested) return;
+                    if (scenarioLogoutRequested || quitRequested) return;
+
+                    // Re-evaluate completion status from progress
+                    room3Completed = (progress != null && progress.getStoryPos() >= 5);
+
+                    // If still not done (player saved or quit), re-show the menu
+                    if (!room3Completed) {
+                        continue;
+                    }
+                    // Otherwise, go straight to Final
+                    break;
+                }
+
+                default:
+                    System.out.println("Invalid choice!");
+                    continue;
+            }
+
+            // We only get here when: (a) you chose 1 (and we handled chain),
+            // or (b) you chose 2 and actually finished Room 3. Proceed to Final.
+            break;
+        }
+
+        // ---------- Final Command ----------
+        System.out.println("\nAll systems aligned... proceeding to the Final Command.");
+        playRoom(findRoomByID(rooms, "final"), story, scanner, progress, facade);
+        if (Rooms.scenarioLogoutRequested) return;
+        if (scenarioLogoutRequested || quitRequested) return;
+        System.out.println("\n--- The Varen Project Complete ---");
+        System.out.println(progress);
+
 
             System.out.println("\nAll systemed aligned...proceeding to the final command.");
             boolean finalDone = playRoom(findRoomByID(rooms, "final"),

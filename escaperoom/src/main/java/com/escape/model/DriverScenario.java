@@ -114,10 +114,51 @@ public class DriverScenario {
 
         Progress progress = null;
         try { progress = facade.getProgress(); } catch (Throwable ignored) { }
-        System.out.println("\nRestored progress");
-        System.out.println(progress == null ? "No progress found" : progress.toString());
+        System.out.println("\nRestored progress:");
+        System.out.println(progress); //  existing percent/hints/solved counter
+        
+        // --- Resume banner: show solved puzzle names and where hints were used ---
+        try {
+            int sp = (progress == null) ? 0 : progress.getStoryPos();
+            System.out.println("\nSolved so far:");
 
+            // Load rooms once to resolve human-friendly titles
+            GameDataLoader tmpLoader = new GameDataLoader();
+            java.util.ArrayList<com.escape.model.Rooms> all = tmpLoader.getRooms();
 
+            String[][] order = com.escape.model.Rooms.getGlobalOrder();
+            for (int k = 0; k < Math.min(sp, order.length); k++) {
+                String rid = order[k][0];
+                int idx    = Integer.parseInt(order[k][1]);
+
+                // find the room by id
+                com.escape.model.Rooms rr = null;
+                for (com.escape.model.Rooms r : all) {
+                    if (rid.equalsIgnoreCase(r.getRoomID())) { rr = r; break; }
+                }
+
+                String title;
+                if (rr != null && rr.getPuzzles() != null && idx >= 0 && idx < rr.getPuzzles().size()) {
+                    title = rr.getPuzzles().get(idx).getTitle();
+                } else {
+                    title = "Puzzle " + (k + 1); // safe fallback
+                }
+                System.out.println(" - " + title);
+            }
+
+            // Also show which puzzles the player used a hint on (if any)
+            if (progress != null && progress.getHintedPuzzles() != null && !progress.getHintedPuzzles().isEmpty()) {
+                System.out.println("\nHint used on:");
+                for (String t : progress.getHintedPuzzles()) {
+                    System.out.println(" * " + t);
+                }
+            }
+        } catch (Throwable ignored) {
+            // Never fail the resume flow because of printing
+        }
+
+        
+        //
         // Resume to finish final puzzles
         System.out.println("\nResuming play to finish the game");
         facade.startGame(Difficulty.EASY);
@@ -141,16 +182,18 @@ public class DriverScenario {
 
 
         Leaderboard lb = null;
-        try { lb = loader.getLeaderboard(); } catch (Throwable ignored) { }
+        // RELOAD to get the newly-saved score
+        try {
+            loader = new GameDataLoader();
+            lb = loader.getLeaderboard();
+        } catch (Throwable ignored) {}
+
         if (lb != null) {
             int rank = 1;
-            try {
-                for (Score s : lb.topN(10)) {
-                    System.out.printf("%d %s %d pts %s%n", rank++, s.getUsername(), s.getScore(),
-                            s.getDifficulty() == null ? "unknown" : s.getDifficulty());
-                }
-            } catch (Throwable ignored) {
-                System.out.println("Could not print leaderboard entries");
+            for (Score s : lb.topN(10)) {
+                System.out.printf("%d %s %d pts %s%n",
+                    rank++, s.getUsername(), s.getScore(),
+                    s.getDifficulty() == null ? "unknown" : s.getDifficulty());
             }
         } else {
             System.out.println("No leaderboard available");
