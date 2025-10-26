@@ -10,6 +10,8 @@ import java.util.List;
  * It also includes a hint and basic data for gameplay logic.
  * 
  * @author Jacob Kinard & Talan Kinard
+ * @author Rudra Patel
+ * @version 1.2
  */
 public abstract class Puzzle {
 
@@ -44,9 +46,16 @@ public abstract class Puzzle {
         this.puzzleID = puzzleID;
         this.title = title;
         this.objective = objective;
+        this.solution = solution;
         this.solved = solved;
+        this.difficulty = difficulty;
+        this.category = category;
+        this.type = type;
     }
 
+    /**
+     * Constructor for puzzles with basic parameters.
+     */
     protected Puzzle(String puzzleID, String title, String objective, String solution, String category, String type) {
         this.puzzleID = puzzleID;
         this.title = title;
@@ -83,15 +92,86 @@ public abstract class Puzzle {
      * @return a hint or either a message saying there isn't a hint.
      */
     public String getHint() {
-        if(hints.isEmpty() || hints == null) {
-            return "No hint for this puzzle!";
-        }
-        for(Hints h: hints) {
-            if(!h.revealed) {
-                return h.text;
+        if(hints != null && !hints.isEmpty()) {
+            for(Hints h: hints) {
+                if(!h.revealed) {
+                    h.reveal();
+                    return h.getText();
+                }
             }
+            return "All hints for this puzzle have been used.";
+        }
+        if (hint != null && !hint.isEmpty()) {
+            return hint;
         }
         return "No hint for this puzzle!";
+    }
+
+    /**
+     * Returns the text of the hint at the given index without revealing it.
+     * If the index is out of bounds or there are no hints, returns null.
+     * @param index the index of the hint to peek
+     * @return the text of the hint at the given index, or null if out of bounds or no hints
+     */
+    public String peekHint(int index) {
+        if (hints != null && index >= 0 && index < hints.size()) {
+            return hints.get(index).getText();
+        }
+        return null;
+    }
+
+
+    /**
+     * Returns the total number of hints associated with this puzzle.
+     * If this puzzle has no hints associated with it, returns 0.
+     * @return the total number of hints
+     */
+    public int getHintCount() {
+        return hints == null ? 0 : hints.size();
+    }
+
+    /**
+     * Returns the number of revealed hints associated with this puzzle.
+     * If this puzzle has no hints associated with it, returns 0.
+     * @return the number of revealed hints
+     */
+    public int getRevealedHintCount() {
+        if (hints == null || hints.isEmpty()) return 0;
+
+        int count = 0;
+        for (Hints h : hints) {
+            if (h.isRevealed()) count++;
+        }
+        return count;
+    }
+
+    /**
+     * Returns true if there is at least one unrevealed hint in this puzzle.
+     * If this puzzle has no hints associated with it, returns true if there is a hint text.
+     * Otherwise, returns false.
+     * @return true if there is at least one unrevealed hint, false otherwise
+     */
+    public boolean hasHintsRemaining() {
+        if (hints == null || hints.isEmpty()) {
+            return hint != null && !hint.isEmpty();
+        }
+
+        for (Hints h : hints) {
+            if (!h.isRevealed()) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Resets all hints associated with this puzzle to unrevealed status.
+     * This method is used to reset the puzzle after a game restart.
+     */
+    public void reserHints() {
+        if (hints != null) {
+            for (Hints h : hints) {
+                h.setRevealed(false);
+            }
+        }
     }
 
     /**
@@ -100,6 +180,16 @@ public abstract class Puzzle {
      */
     public List<Hints> getHints() {
         return hints;
+    }
+
+    /**
+     * Adds a hint to the list of hints for this puzzle.
+     * @param hint the hint to be added
+     */
+    public void addHint(Hints hint) {
+        if (hint != null) {
+            this.hints.add(hint);
+        }
     }
 
     /**
@@ -218,6 +308,39 @@ public abstract class Puzzle {
      */
     public void setRewardLetter(String rewardLetter) {
         this.rewardLetter = rewardLetter;
+    }
+
+    /**
+     * Sets the simple hint text (if any) associated with this puzzle.
+     * 
+     * @param hint the simple hint text to assign
+     */
+    public void setSimpleHint(String hint) {
+        this.hint = hint;
+    }
+
+    /**
+     * Retrieves the simple hint text (if any) associated with this puzzle.
+     * 
+     * @return the simple hint text, or null if no hint is available
+     */
+    public String getSimpleHint() {
+        return hint;
+    }
+
+    /**
+     * Returns a string representation of the current hint status of the puzzle.
+     * Provides information about the total number of hints available, the number of hints revealed, and the number of hints remaining.
+     * 
+     * @return a string summarizing the hint status
+     */
+    public String getHintStatus() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Puzzle: ").append(title).append("\n");
+        sb.append("Hints available: ").append(getHintCount()).append("\n");
+        sb.append("Hints revealed: ").append(getRevealedHintCount()).append("\n");
+        sb.append("Hints remaining: ").append(hasHintsRemaining()).append("\n");
+        return sb.toString();
     }
 
 }
