@@ -7,12 +7,14 @@ package com.escape.model;
  * 
  * @author Talan Kinard
  * @author Dylan Diaz
+ * @author Rudra Patel
+ * @version 1.3
  */
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -148,14 +150,11 @@ public class Leaderboard {
     /* ----------------- Helpers ----------------- */
 
     private void sortByScoreDescending() {
-        Collections.sort(entries, new Comparator<Score>() {
-            @Override
-            public int compare(Score a, Score b) {
-                long av = (a == null ? Long.MIN_VALUE : a.getScore());
-                long bv = (b == null ? Long.MIN_VALUE : b.getScore());
-                // larger first
-                return Long.compare(bv, av);
-            }
+        Collections.sort(entries, (Score a, Score b) -> {
+            long av = (a == null ? Long.MIN_VALUE : a.getScore());
+            long bv = (b == null ? Long.MIN_VALUE : b.getScore());
+            // larger first
+            return Long.compare(bv, av);
         });
     }
 
@@ -165,7 +164,7 @@ public class Leaderboard {
             Method m = s.getClass().getMethod("getUsername");
             Object v = m.invoke(s);
             return v == null ? null : v.toString();
-        } catch (Exception t) {
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException t) {
             return null;
         }
     }
@@ -182,7 +181,7 @@ public class Leaderboard {
                 Method m = s.getClass().getMethod(mn);
                 Object v = m.invoke(s);
                 if (v != null) return v.toString();
-            } catch (Exception ignored) {}
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ignored) {}
         }
         String[] fieldNames = {"userID", "userId", "id"};
         for (String fn : fieldNames) {
@@ -191,7 +190,7 @@ public class Leaderboard {
                 f.setAccessible(true);
                 Object v = f.get(s);
                 if (v != null) return v.toString();
-            } catch (Exception ignored) {}
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException ignored) {}
         }
         return null;
     }
