@@ -108,7 +108,13 @@ public class Rooms {
     }
 
     
-    private static void playRoom(Rooms room, StoryElements story, Scanner scanner, Progress progress) {
+    private static void playRoom(
+        Rooms room,
+        StoryElements story,
+        Scanner scanner,
+        Progress progress,
+        EscapeRoomFacade facade) {
+   
     if (room == null) {
         System.out.println("Room not found.");
         return;
@@ -214,14 +220,19 @@ public class Rooms {
                         System.out.println("Letter tags collected: "+collectedLetters);
                         break;
                     case "5":
-                        System.out.println("You're checking the timer!");
+                        if (facade != null) {
+                            System.out.println("Time remaining (sec): " + facade.getTimeRemaining());
+                        } else {
+                            System.out.println("Timer not available (facade is null).");
+                        }
                         break;
+
                     case "6":
+                    
                         System.out.println("Exiting Escape The Varen Project...");
-                        UI ui = new UI();
-                        ui.run();
-                        scanner.close();
+                        // just return to caller;
                         return;
+
                     case "7":
                         if (puzzle instanceof AudioPuzzle) {
                             System.out.println("\nThe terminal starts again...");
@@ -232,10 +243,11 @@ public class Rooms {
                         System.out.println("Invalid Choice, please select 1–6.");
                         break;
                     
+                    }
                 }
             }
         }
-    }
+    
 
     private static String getNextLetter(ArrayList<String> collectedLetters) {
         String [] order = {"R","E","A","L","M"};
@@ -252,68 +264,65 @@ public class Rooms {
      * @param args
      */
 
-     public void startGame() {
-        try {
-            GameDataLoader loader = new GameDataLoader();
-            ArrayList<Rooms> rooms = loader.getRooms();
-            StoryElements story = loader.getStory();
+     public void startGame(EscapeRoomFacade facade) {
+    try {
+        GameDataLoader loader = new GameDataLoader();
+        ArrayList<Rooms> rooms = loader.getRooms();
+        StoryElements story = loader.getStory();
 
-            if (rooms.isEmpty()) {
-                System.out.println("No rooms found");
-                return;
+        if (rooms.isEmpty()) {
+            System.out.println("No rooms found");
+            return;
+        }
+
+        Progress progress = new Progress(UUID.randomUUID(), UUID.randomUUID());
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("--- ROOM & PUZZLE TESTING ---\n");
+        System.out.println(story.getIntro());
+
+        playRoom(findRoomByID(rooms, "room1"), story, scanner, progress, facade);
+
+        boolean room2Completed = false;
+        boolean room3Completed = false;
+
+        while (!(room2Completed && room3Completed)) {
+            System.out.println("\nVaren:'There's diverging rooms, which way will you choose?'");
+            System.out.println("1. Fragment Corridor ");
+            System.out.println("2. Synchronization Core");
+            System.out.print("Enter Choice: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    if (!room2Completed) {
+                        playRoom(findRoomByID(rooms, "room2"), story, scanner, progress, facade);
+                        room2Completed = true;
+                    } else {
+                        System.out.println("Fragment Corridor already stabilized!");
+                    }
+                    break;
+                case "2":
+                    if (!room3Completed) {
+                        playRoom(findRoomByID(rooms, "room3"), story, scanner, progress, facade);
+                        room3Completed = true;
+                    } else {
+                        System.out.println("Full syncronization already reached!");
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+                    break;
             }
+        }
 
-            Progress progress = new Progress(UUID.randomUUID(), UUID.randomUUID());
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("--- ROOM & PUZZLE TESTING ---");
-            System.out.println("\n");
-            System.out.println(story.getIntro());
-
-            playRoom(findRoomByID(rooms, "room1"),story,scanner,progress);
-            
-            boolean room2Completed = false;
-            boolean room3Completed = false;
-
-            while(!(room2Completed && room3Completed)) {
-                System.out.println("\nVaren:'There's diverging rooms, which way will you choose?'");
-                System.out.println("1. Fragment Corridor ");
-                System.out.println("2. Synchronization Core");
-                System.out.print("Enter Choice: ");
-                String choice = scanner.nextLine().trim();
-
-                switch(choice) {
-                    case "1":
-                        if(!room2Completed) {
-                            playRoom(findRoomByID(rooms, "room2"),story,scanner,progress);
-                            room2Completed = true;
-                        } else {
-                            System.out.println("Fragment Corridor already stabilized!");
-                        }
-                        break;
-                    case "2":
-                        if(!room3Completed) {
-                            playRoom(findRoomByID(rooms, "room3"),story,scanner,progress);
-                            room3Completed = true;
-                        } else {
-                            System.out.println("Full syncronization already reached!");
-                        }
-                        break;
-                    default:
-                        System.out.println("Invalid choice!");
-                        break;
-                }
-            }
-
-            System.out.println("\nAll systemed aligned...proceeding to the final command.");
-            playRoom(findRoomByID(rooms, "final"), story, scanner, progress);
-            System.out.println("\n--- The Varen Project Complete ---");
-            System.out.println(progress);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        System.out.println("\nAll systemed aligned...proceeding to the final command.");
+        playRoom(findRoomByID(rooms, "final"), story, scanner, progress, facade);
+        System.out.println("\n--- The Varen Project Complete ---");
+        System.out.println(progress);
+    } catch (Exception e) {
+        e.printStackTrace();
         }
     }
 }
-
 

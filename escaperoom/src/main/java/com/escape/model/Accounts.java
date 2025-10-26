@@ -141,4 +141,9 @@ public class Accounts {
         System.out.println("Test user created and written to json/test.json");
         
     }
+
+    public User getUserCaseInsensitive(String uNorm) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUserCaseInsensitive'");
+    }
 }

@@ -62,9 +62,20 @@ public class EscapeRoomFacade
 
         // Delegate to the interactive Rooms runner which handles loading rooms, puzzles and play loop.
         // This keeps the facade behaviour consistent with the existing Rooms startGame implementation.
-        Rooms roomRunner = new Rooms();
-        roomRunner.startGame();
-    }
+        int seconds = getSecondsForDifficulty(
+        currentDifficulty != null ? currentDifficulty : Difficulty.EASY);
+
+        if (timer == null) {
+            timer = new Timer(seconds);
+        } else {
+            // if you're restarting a brand-new run, re-create it:
+            timer = new Timer(seconds);
+        }
+        timer.start();
+
+        // then launch rooms:
+        new Rooms().startGame(this);
+            }
 
     /**
      * Helper used by scenarios/tests: mark the first unsolved puzzle in the current room as solved.
@@ -379,22 +390,23 @@ public void loadGame() {
     /** Attempt to log in a user. This is a void wrapper; UI can call getCurrentUsername() to check result. */
     public void login(String username, String password) {
         if (username == null || password == null) return;
-        // try persisted users first
+        String uNorm = username.trim();
+        // persisted users
         if (loader == null) loader = new GameDataLoader();
         for (User u : loader.getUsers()) {
-            if (username.equals(u.getUsername()) && password.equals(u.getPassword())) {
-                currentUser = u;
-                return;
+            if (u.getUsername()!=null && u.getPassword()!=null
+                && u.getUsername().equalsIgnoreCase(uNorm)
+                && u.getPassword().equals(password)) {
+            currentUser = u;
+            return;
             }
         }
-        // try in-memory accounts
+        // in-memory accounts
         if (accounts == null) accounts = Accounts.getInstance();
-        User u = accounts.getUser(username);
-        if (u != null) {
-            // The Accounts class currently doesn't verify password; use User.getPassword if available
-            if (password.equals(u.getPassword())) currentUser = u;
-        }
-    }
+        User u = accounts.getUserCaseInsensitive(uNorm); // or scan accounts list and equalsIgnoreCase
+        if (u != null && password.equals(u.getPassword())) currentUser = u;
+}
+
 
     /** Log out current user. */
     public void logout() {
