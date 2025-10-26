@@ -40,6 +40,20 @@ public class EscapeRoomFacade
         if (accounts == null) accounts = Accounts.getInstance();
     }
 
+        // Ensure 'progress' exists for the current user
+    private void ensureProgressExists() {
+        if (progress == null && currentUser != null) {
+            progress = new Progress(java.util.UUID.randomUUID(), currentUser.userID);
+        }
+    }
+
+    // Persist a snapshot of progress to playerData.json
+    private void saveProgressSnapshot() {
+        if (writer == null) writer = new GameDataWriter();
+        if (progress != null) writer.saveProgress(progress);
+    }
+
+
     /**
      * Starts a game session with the default difficulty level.
      */
@@ -58,10 +72,18 @@ public class EscapeRoomFacade
     public void startGame(Difficulty difficulty) {
         ensureCore();
 
+
         if (!isLoggedIn()) {
             System.out.println("ERROR: No user logged in. Please log in before starting the game.");
             return;
         }
+                // If progress wasn’t set by login (e.g., direct start), restore or create now
+        if (progress == null && currentUser != null) {
+            Progress restored = loader.loadProgressForUser(currentUser.userID);
+            progress = (restored != null) ? restored
+                                        : new Progress(java.util.UUID.randomUUID(), currentUser.userID);
+        }
+
 
         // Set difficulty and reset collected letters for this session
         this.currentDifficulty = (difficulty == null) ? Difficulty.EASY : difficulty;
@@ -162,6 +184,20 @@ public class EscapeRoomFacade
         return progress.toString();
     }
 
+    // in EscapeRoomFacade
+    public void saveProgressForCurrentUser(Progress p) {
+        ensureCore();
+        if (p != null) writer.saveProgress(p);
+    }
+
+    public void restoreProgressForCurrentUser() {
+        ensureCore();
+        if (currentUser == null) return;
+        Progress p = loader.loadProgressForUser(currentUser.userID);
+        if (p != null) this.progress = p;
+    }
+
+
     /**
      * Return a combined summary of user, room, puzzles, and progress for quick validation.
      */
@@ -206,11 +242,14 @@ public class EscapeRoomFacade
             writer.saveLeaderboard(lb);
             
             System.out.println("Game ended. Final score: " + finalScore);
+            saveProgressSnapshot();
         }
 
         // cleanup
         currentUser = null;
         currentRoom = null;
+        
+
 
     }
 
@@ -250,6 +289,8 @@ public class EscapeRoomFacade
         sd.hints = 0; // not tracked centrally yet
         sd.puzzle = null;
         writer.saveSavedData(sd);
+        saveProgressSnapshot();
+
 
     }
 
@@ -405,29 +446,47 @@ public void loadGame() {
             if (u.getUsername() != null && u.getPassword() != null
                 && u.getUsername().equalsIgnoreCase(uNorm)
                 && u.getPassword().equals(password)) {
-                currentUser = u;
-                System.out.println("Login successful.");
-                return;
+            currentUser = u;
+                // After we have a currentUser, try to restore progress
+            if (currentUser != null) {
+                if (loader == null) loader = new GameDataLoader();
+                Progress restored = loader.loadProgressForUser(currentUser.userID);
+                if (restored != null) {
+                    this.progress = restored;
+                    System.out.println("Restored progress for " + currentUser.getUsername()
+                        + " (pos=" + progress.getStoryPos()
+                        + ", hints=" + progress.getHintsUsed()
+                        + ", solved=" + progress.getQuestionsAnswered() + ")");
+                } else {
+                    this.progress = new Progress(java.util.UUID.randomUUID(), currentUser.userID);
+                }
+            }
+
+            return;
             }
         }
 
         // Check in-memory accounts
         if (accounts == null) accounts = Accounts.getInstance();
-        try {
-            User u = accounts.getUserCaseInsensitive(uNorm);
-            if (u != null && password.equals(u.getPassword())) {
-                currentUser = u;
-                System.out.println("Login successful.");
-                return;
+        User u = accounts.getUserCaseInsensitive(uNorm); // or scan accounts list and equalsIgnoreCase
+        if (u != null && password.equals(u.getPassword()))
+         currentUser = u;
+                // After we have a currentUser, try to restore progress
+        if (currentUser != null) {
+            if (loader == null) loader = new GameDataLoader();
+            Progress restored = loader.loadProgressForUser(currentUser.userID);
+            if (restored != null) {
+                this.progress = restored;
+                System.out.println("Restored progress for " + currentUser.getUsername()
+                    + " (pos=" + progress.getStoryPos()
+                    + ", hints=" + progress.getHintsUsed()
+                    + ", solved=" + progress.getQuestionsAnswered() + ")");
+            } else {
+                this.progress = new Progress(java.util.UUID.randomUUID(), currentUser.userID);
             }
-        } catch (UnsupportedOperationException e) {
-            System.out.println("ERROR: Login failed.");
-            return;
         }
 
-        // If no match is found
-        System.out.println("ERROR: Invalid username or password.");
-    }
+}
 
 
     /** Log out current user. */
@@ -470,7 +529,10 @@ public void loadGame() {
                 boolean correct = p.checkAnswer(answer);
                 if (correct) {
                     p.setSolved(true);
+                    ensureProgressExists();
                     progress.advanceStory();
+                    saveProgressSnapshot();
+
                     
                     String rewardLetter = p.getRewardLetter();
                     if (rewardLetter != null && !rewardLetter.isEmpty() 
@@ -500,7 +562,9 @@ public void loadGame() {
         
         for (Puzzle p : puzzles) {
             if (!p.solved()) {
+                ensureProgressExists();
                 progress.useHint();
+                saveProgressSnapshot();
                 return p.getHint();
             }
         }

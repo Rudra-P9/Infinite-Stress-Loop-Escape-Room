@@ -47,6 +47,15 @@ public class GameDataLoader {
         "escaperoom/src/main/resources/json/playerData.json"
     };
 
+        // Candidate locations for playerData.json (same pattern we already use for game.json)
+    private static final String[] PLAYERDATA_CANDIDATES = {
+        "escaperoom/src/main/resources/json/playerData.json",
+        "src/main/resources/json/playerData.json",
+        "resources/json/playerData.json",
+        "playerData.json"
+    };
+
+
     /* ========================= PUBLIC API ========================= */
 
     /**
@@ -329,6 +338,53 @@ public StoryElements getStory() {
         setIfPresent(s, "setScore",       long.class,    toLong(best.get("score")));
         return s;
     }
+
+        /**
+     * Load saved progress for the given user from playerData.json.
+     * Returns null if no saved entry exists.
+     */
+    public Progress loadProgressForUser(java.util.UUID userId) {
+        if (userId == null) return null;
+
+        // Use the same helper you already use elsewhere
+        org.json.simple.JSONObject root = readObjectFromCandidates(PLAYERDATA_CANDIDATES);
+        if (root == null) return null;
+
+        org.json.simple.JSONArray arr = (org.json.simple.JSONArray) root.get("progress");
+        if (arr == null) return null;
+
+        for (Object o : arr) {
+            org.json.simple.JSONObject jo = (org.json.simple.JSONObject) o;
+            String uid = jo.get("userUUID") == null ? null : jo.get("userUUID").toString();
+            if (userId.toString().equals(uid)) {
+                String pid = jo.get("progressUUID") == null ? null : jo.get("progressUUID").toString();
+                int c        = parseIntSafe(jo.get("c"),        0);
+                int answered = parseIntSafe(jo.get("answered"), 0);
+                int hints    = parseIntSafe(jo.get("hints"),    0);
+
+                Progress p = new Progress(
+                    (pid == null ? java.util.UUID.randomUUID() : java.util.UUID.fromString(pid)),
+                    userId
+                );
+                p.setStoryPos(c);
+                p.setQuestionsAnswered(answered);
+                p.setHintsUsed(hints);
+                return p;
+            }
+        }
+        return null;
+    }
+
+    // Small helper
+    private static int parseIntSafe(Object v, int deflt) {
+        if (v == null) return deflt;
+        try {
+            if (v instanceof Number) return ((Number) v).intValue();
+            return Integer.parseInt(v.toString());
+        } catch (Exception e) { return deflt; }
+    }
+
+
 
     /**
      * Build a Leaderboard from playerData.json -- "leaderboard".

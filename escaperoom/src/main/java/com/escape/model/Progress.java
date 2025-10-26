@@ -4,176 +4,91 @@ import java.util.UUID;
 
 /**
  * Represents a user's saved or ongoing progress in the game.
- * @author Dylan Diaz & Talan Kinard
+ * @author Dylan Diaz & Talan Kinard & Kirtan Patel
+ * Version 2
  */
 public class Progress {
-
-    /**
-     * Identifier for this progress record.
-     * Used to distinguish one saved progress instance from another.
-     */
     private UUID progressUUID;
-
-    /**
-     * Identifier of the user associated with this progress.
-     * Links this progress record to a specific user profile.
-     */
     private UUID userUUID;
 
-    /**
-     * These will be how we determine progress throughout the story.
-     * Each puzzle will be worth 20% of the total progress.
-     * Story pos 0-5, 5 meaning you've completed the puzzle, upon completion
-     * of a puzzle the value of story pos will go up +1.
-     */
+    // 0 -> before puzzle 1, 1..5 -> after solving those puzzles, 6 -> finished
     private int storyPos;
     private static final int TOTAL_BEATS = 6;
+
     private int questionsAnswered;
     private int hintsUsed;
 
-
-
-    /**
-     * Constructs a new Progress object with the specified identifiers.
-     *
-     * @param progressUUID the identifier for this progress record
-     * @param userUUID the identifier of the user associated with this progress
-     */
-    public Progress(UUID progressUUID, UUID userUUID) 
-    {
-        /*
-         * If UUID is null gives random UUID
-         */
-        if(progressUUID == null){
-            System.out.println("progressUUID null, giving random UUID.");
-            progressUUID = UUID.randomUUID();
-        }
-        if(userUUID == null){
-            System.out.println("userUUID null, giving random UUID.");
-            userUUID = UUID.randomUUID();
-        }
+    public Progress(UUID progressUUID, UUID userUUID) {
+        if (progressUUID == null) progressUUID = UUID.randomUUID();
+        if (userUUID == null)     userUUID     = UUID.randomUUID();
         this.progressUUID = progressUUID;
         this.userUUID = userUUID;
-        /**
-         * Starting position holds a value of zero.
-         */
-        this.storyPos = 0; 
+        this.storyPos = 0;
         this.hintsUsed = 0;
         this.questionsAnswered = 0;
     }
 
-    /**
-     * Returns the unique identifier for this progress record.
-     *
-     * @return the progress record's unique identifier
-     */
-    public UUID getProgressUUID() {
-        return progressUUID;
-    }
+    public UUID getProgressUUID() { return progressUUID; }
+    public void setProgressUUID(UUID progressUUID) { this.progressUUID = progressUUID; }
+
+    public UUID getUserUUID() { return userUUID; }
+    public void setUserUUID(UUID userUUID) { this.userUUID = userUUID; }
+
+    public int getStoryPos() { return storyPos; }
 
     /**
-     * Sets the unique identifier for this progress record.
-     *
-     * @param progressUUID the new unique identifier for this progress
+     * Clamp story position into 0..TOTAL_BEATS
      */
-    public void setProgressUUID(UUID progressUUID) {
-        this.progressUUID = progressUUID;
-    }
-
-    /**
-     * Returns the unique identifier of the user associated with this progress.
-     *
-     * @return the user's unique identifier
-     */
-    public UUID getUserUUID() {
-        return userUUID;
-    }
-
-    /**
-     * Sets the unique identifier of the user associated with this progress.
-     *
-     * @param userUUID the new unique identifier for the user
-     */
-    public void setUserUUID(UUID userUUID) {
-        this.userUUID = userUUID;
-    }
-
-    public int getStoryPos() {
-        return storyPos;
-    }
-
-    /**
-     * Sets story position
-     * 0 -> PUZZLE 1
-     * 1 -> PUZZLE 2
-     * 2 -> PUZZLE 3
-     * 3 -> PUZZLE 4
-     * 4 -> PUZZLE 5
-     * 5 -> FINAL WORD ENTRY
-     * 6 -> COMPLETION
-     * @param pos
-     */
-
     public void setStoryPos(int pos) {
-
-        if(pos<0) {
-            pos = 0;
-        }
-
-        if(pos > TOTAL_BEATS) {
-            pos = TOTAL_BEATS;
-        }
-
+        if (pos < 0) pos = 0;
+        if (pos > TOTAL_BEATS) pos = TOTAL_BEATS;
         storyPos = pos;
     }
 
     /**
-     * Method moves story position value +1
-     * to advance progress.
+     * Advance one beat; also increment questionsAnswered.
      */
-    public void advanceStory()
-    {
+    public void advanceStory() {
         questionsAnswered++;
-        if(storyPos < TOTAL_BEATS) {
+        if (storyPos < TOTAL_BEATS) {
             storyPos++;
         }
     }
 
-    /**
-     * Represents story completion if the story Pos reaches 5.
-     * @return
-     */
-    public boolean isComplete() {
-        return storyPos >= TOTAL_BEATS;
-    }
+    public boolean isComplete() { return storyPos >= TOTAL_BEATS; }
 
     /**
-     * @return a completion percentage 0-100.
-     * Each puzzle will be worth 20% of the 
-     * overall Escape Room.
+     * Completion percent: storyPos out of TOTAL_BEATS.
      */
     public double getCompletionPercent() {
-        return storyPos / (double) TOTAL_BEATS * 100;
+        return storyPos / (double) TOTAL_BEATS * 100.0;
     }
 
-    public int questionsAnswered() {
-        return storyPos;
+    /** True count of solved puzzles. */
+    public int getQuestionsAnswered() { return questionsAnswered; }
+    /** Setter used when restoring from a save file. */
+    public void setQuestionsAnswered(int questionsAnswered) {
+        this.questionsAnswered = Math.max(0, questionsAnswered);
     }
 
-    public void useHint() {
-        hintsUsed++;
-    }
+    public void useHint() { hintsUsed++; }
+    public int getHintsUsed() { return hintsUsed; }
+    /** Setter used when restoring from a save file. */
+    public void setHintsUsed(int hintsUsed) { this.hintsUsed = Math.max(0, hintsUsed); }
 
-    public int getHintsUsed() {
-        return hintsUsed;
-    }
+    /**
+     * Backward-compat alias: returns questionsAnswered).
+     * If other code calls questionsAnswered(), it now does the right thing.
+     */
+    public int questionsAnswered() { return getQuestionsAnswered(); }
 
     @Override
     public String toString() {
-        return "Progress: "+getCompletionPercent()+"% of the Escape Room completed"
-        +"\nHints Used: "+getHintsUsed()
-        +"\nPuzzles Solved: "+questionsAnswered();
+        return "Progress: " + getCompletionPercent() + "% of the Escape Room completed"
+             + "\nHints Used: " + getHintsUsed()
+             + "\nPuzzles Solved: " + getQuestionsAnswered();
     }
+
     
     
     

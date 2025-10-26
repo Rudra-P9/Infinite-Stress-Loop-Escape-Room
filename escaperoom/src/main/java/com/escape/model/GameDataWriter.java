@@ -236,6 +236,45 @@ public class GameDataWriter {
         writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
 
+        /**
+     * Upsert (save or replace) the player's progress into playerData.json.
+     * Keeps exactly one entry per userUUID inside the "progress" array.
+     */
+    public void saveProgress(Progress p) {
+        if (p == null) return;
+
+        final String PATH = "escaperoom/src/main/resources/json/playerData.json";
+
+        org.json.simple.JSONObject root = readJsonObject(PATH);
+        if (root == null) root = new org.json.simple.JSONObject();
+
+        org.json.simple.JSONArray arr = (org.json.simple.JSONArray)
+                root.getOrDefault("progress", new org.json.simple.JSONArray());
+
+        org.json.simple.JSONObject jo = new org.json.simple.JSONObject();
+        jo.put("userUUID",     p.getUserUUID()     == null ? null : p.getUserUUID().toString());
+        jo.put("progressUUID", p.getProgressUUID() == null ? null : p.getProgressUUID().toString());
+        jo.put("c",            Integer.valueOf(p.getStoryPos()));
+        jo.put("answered",     Integer.valueOf(p.getQuestionsAnswered()));
+        jo.put("hints",        Integer.valueOf(p.getHintsUsed()));
+
+        boolean replaced = false;
+        for (int i = 0; i < arr.size(); i++) {
+            org.json.simple.JSONObject existing = (org.json.simple.JSONObject) arr.get(i);
+            Object uid = existing.get("userUUID");
+            if (uid != null && uid.equals(jo.get("userUUID"))) {
+                arr.set(i, jo);
+                replaced = true;
+                break;
+            }
+        }
+        if (!replaced) arr.add(jo);
+
+        root.put("progress", arr);
+        writeFile(PATH, root);
+    }
+
+
     /**
      * Persist a simplified leaderboard to playerData.json -- "leaderboard".
      * This implementation serializes user identity/username; extend with

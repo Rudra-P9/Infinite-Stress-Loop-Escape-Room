@@ -66,6 +66,15 @@ public class Rooms {
     public String getRoomID() {
         return roomID;
     }
+    /**  Set when the player chooses option 6 (Quit) in any puzzle/room.
+     *startGame(...) will immediately return to the caller when this is true.
+    **/
+     private boolean quitRequested = false;
+
+     // Set when the player chooses the scripted Save & Logout option.
+    private boolean scenarioLogoutRequested = false;
+
+
 
     /**
      * Sets the identifier for this room.
@@ -109,7 +118,7 @@ public class Rooms {
     }
 
     
-    private static void playRoom(
+    private void playRoom(
         Rooms room,
         StoryElements story,
         Scanner scanner,
@@ -145,8 +154,14 @@ public class Rooms {
         }
 
         ArrayList<Puzzle> puzzles = room.getPuzzles();
-
-        for (int i = 0; i < puzzles.size(); i++) {
+        int i = 0;
+        while (i < puzzles.size() && puzzles.get(i).solved()) {
+            // show what we’re skipping
+            System.out.println("(Skipping solved) " + puzzles.get(i).getTitle());
+        i++;
+    }
+    
+        for (; i < puzzles.size(); i++) {
             Puzzle puzzle = puzzles.get(i);
             System.out.println("\nPuzzle: " + puzzle.getTitle());
             Speek.speak("Puzzle: " + puzzle.getTitle());
@@ -158,7 +173,7 @@ public class Rooms {
                 AudioPuzzle ap =(AudioPuzzle) puzzle;
                 ap.playAudio();
             }
-
+            boolean allowScenarioSave = (progress != null && progress.getStoryPos() >= 3);
             boolean solved = false;
             while (!solved) {
                 System.out.println(
@@ -169,7 +184,8 @@ public class Rooms {
                     "4. Open Inventory\n" +
                     "5. See Time Remaining (Seconds)\n" +
                     "6. Quit\n"+
-                    (puzzle instanceof AudioPuzzle ? "7. Replay Audio\n" : "")
+                    (puzzle instanceof AudioPuzzle ? "7. Replay Audio\n" : "")+
+                    "8. Save & Logout (Scenario)\n"
                 );
                 System.out.print("Enter Choice: ");
                 String choice = scanner.nextLine().trim();
@@ -180,8 +196,9 @@ public class Rooms {
                         String answer = scanner.nextLine().trim();
                         if (puzzle.checkAnswer(answer)) {
                             progress.advanceStory();
-                            solved = true;
+                            solved = true; // mark solved
 
+                            // Story beats between puzzles/rooms
                             if (room.getRoomID().equalsIgnoreCase("room1")) {
                                 System.out.println("\n" + story.getRoomOneConc());
                                 Speek.speak(story.getRoomOneConc());
@@ -207,34 +224,58 @@ public class Rooms {
                                     Speek.speak("Collect all letters before returning here.");
                                     System.out.println("Press enter to continue...");
                                     scanner.nextLine();
+                                    // return to caller (room selection), not to keep looping this puzzle
                                     return;
                                 } else {
                                     System.out.println("\n" + story.getConclusion());
                                     Speek.speak(story.getConclusion());
+                                    // final completion; return to caller
                                     return;
                                 }
                             }
 
-                            // After a puzzle is solved, award the letter
+                            // Award next letter tag after a correct solve
                             String rewardLetter = getNextLetter(collectedLetters);
                             if (rewardLetter != null && !rewardLetter.isEmpty() && !collectedLetters.contains(rewardLetter)) {
                                 collectedLetters.add(rewardLetter);
                                 System.out.println("\nA tag with the letter " + rewardLetter + " reveals itself!");
                                 Speek.speak("A tag with the letter " + rewardLetter + " reveals itself!");
                             }
+
                             System.out.println("Press enter to continue...");
                             scanner.nextLine();
+
+                            // leave the "while (!solved)" loop NOW,
+                            // so the outer for-loop moves to the next puzzle (or the room selection)
+                            break;
                         } else {
                             System.out.println("Not quite. Try again.");
                             Speek.speak("Not quite. Try again.");
                         }
-                    break;
+                        break;
                     case "2":
                         System.out.println("Hint: " + puzzle.getHint());
                         progress.useHint();
                         break;
                     case "3":
                         System.out.println(progress);
+                        // optional: list solved so far (by scanning puzzles in all rooms is more involved;
+                        // instead, we infer from global order + storyPos)
+                        int sp = progress.getStoryPos();
+                        if (sp > 0) {
+                            System.out.println("Solved so far:");
+                            for (int k = 0; k < Math.min(sp, GLOBAL_ORDER.length); k++) {
+                                String rid = GLOBAL_ORDER[k][0];
+                                int idx    = Integer.parseInt(GLOBAL_ORDER[k][1]);
+                                Rooms rr   = room; // default to current
+                                // show nicer names if it’s the current room
+                                String title = (room.getRoomID().equals(rid)
+                                            && idx < room.getPuzzles().size())
+                                            ? room.getPuzzles().get(idx).getTitle()
+                                            : ("Puzzle " + (k+1));
+                                System.out.println(" - " + title);
+                            }
+                        }
                         break;
                     case "4":
                         System.out.println("Letter tags collected: "+collectedLetters);
@@ -249,11 +290,21 @@ public class Rooms {
 
                     case "6":
                     
+                        // Make Quit exit the entire Rooms flow, save, and log out.
                         System.out.println("Exiting Escape The Varen Project...");
                         UI ui = new UI();
                         ui.run();
                         scanner.close();
                         quit();
+
+                        // Persist minimal state; your facade.saveGame() should also snapshot progress
+                        if (facade != null) {
+                            try { facade.saveGame(); } catch (Throwable ignore) {}
+                            try { facade.logout();   } catch (Throwable ignore) {}
+                        }
+
+                        // Signal the outer loops to stop and return immediately
+                        this.quitRequested = true;
                         return;
 
                     case "7":
@@ -265,7 +316,20 @@ public class Rooms {
                     default:
                         System.out.println("Invalid Choice, please select 1–6.");
                         break;
-                    
+
+                    case "8": // Save & Logout (Scenario)
+                        if (!allowScenarioSave) {
+                            System.out.println("Keep playing: solve at least 3 puzzles to unlock this scenario step.");
+                            break;
+                        }
+
+                        if (facade != null) {
+                            try { facade.saveGame(); } catch (Throwable ignored) {}
+                            try { facade.saveProgressForCurrentUser(progress); } catch (Throwable ignored) {}
+                            try { facade.logout(); } catch (Throwable ignored) {}
+                        }
+                        System.out.println("Saved & logged out. Returning to DriverScenario...");
+                        return;   // return to DriverScenario
                     }
                 }
             }
@@ -285,39 +349,84 @@ public class Rooms {
         quit = true;
     }
 
+    /** Hard-coded global puzzle order (roomID, indexWithinRoom) used to fast-forward on resume. */
+    private static final String[][] GLOBAL_ORDER = {
+        {"room1", "0"},
+        {"room2", "0"},
+        {"room2", "1"},
+        {"room3", "0"},
+        {"room3", "1"},
+        {"final", "0"}
+    };
+
+    /** Marks the first `count` puzzles (in global order) as solved on the provided rooms list. */
+    private static void fastForwardSolved(ArrayList<Rooms> rooms, int count) {
+        if (rooms == null || count <= 0) return;
+        for (int i = 0; i < Math.min(count, GLOBAL_ORDER.length); i++) {
+            String rid = GLOBAL_ORDER[i][0];
+            int idx = Integer.parseInt(GLOBAL_ORDER[i][1]);
+            Rooms r = findRoomByID(rooms, rid);
+            if (r == null) continue;
+            var ps = r.getPuzzles();
+            if (ps == null || idx < 0 || idx >= ps.size()) continue;
+            try { ps.get(idx).setSolved(true); } catch (Throwable ignored) {}
+        }
+    }
+
     /**
      * Puzzle Testing
      * @param args
      */
 
      public void startGame(EscapeRoomFacade facade) {
+        
         try {
+            quitRequested = false;  // fresh run
             GameDataLoader loader = new GameDataLoader();
             ArrayList<Rooms> rooms = loader.getRooms();
             StoryElements story = loader.getStory();
 
             if (rooms.isEmpty()) {
                 System.out.println("No rooms found");
-                Speek.speak("No rooms found");
                 return;
             }
+            
+            scenarioLogoutRequested = false; // <<< reset this run
+            Progress progress = (facade != null && facade.getProgress() != null)
+                    ? facade.getProgress()
+                    : new Progress(
+                        java.util.UUID.randomUUID(),
+                        (facade != null && facade.getCurrentUser() != null)
+                            ? facade.getCurrentUser().userID
+                            : java.util.UUID.randomUUID());
 
-            Progress progress = new Progress(UUID.randomUUID(), UUID.randomUUID());
+            if (facade != null && facade.getProgress() == null) {
+                // expose it back to the facade so future calls use the same object
+                // (add a setter if you don’t have one; otherwise skip this)
+                try { // optional if you added setProgress on the facade
+                    java.lang.reflect.Method m =
+                        facade.getClass().getMethod("setProgress", Progress.class);
+                    m.invoke(facade, progress);
+                } catch (Throwable ignored) {}
+            }
+            // after rooms/story are loaded and 'progress' is resolved
+            int alreadySolved = (progress == null) ? 0 : progress.getStoryPos();
+            fastForwardSolved(rooms, alreadySolved);
+
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("--- ROOM & PUZZLE TESTING ---\n");
-            Speek.speak("Welcome to the Escape Room!");
             System.out.println(story.getIntro());
-            Speek.speak(story.getIntro());
 
             playRoom(findRoomByID(rooms, "room1"), story, scanner, progress, facade);
+            if (quitRequested) return;
+
 
             boolean room2Completed = false;
             boolean room3Completed = false;
 
             while (!(room2Completed && room3Completed)) {
-                System.out.println("\nVaren: 'There's diverging rooms, which way will you choose?'");
-                Speek.speak("There's diverging rooms, which way will you choose?");
+                System.out.println("\nVaren:'There's diverging rooms, which way will you choose?'");
                 System.out.println("1. Fragment Corridor ");
                 System.out.println("2. Synchronization Core");
                 System.out.print("Enter Choice: ");
@@ -327,37 +436,35 @@ public class Rooms {
                     case "1":
                         if (!room2Completed) {
                             playRoom(findRoomByID(rooms, "room2"), story, scanner, progress, facade);
+                            if (scenarioLogoutRequested) return;   // <<< bail out
                             room2Completed = true;
                         } else {
                             System.out.println("Fragment Corridor already stabilized!");
-                            Speek.speak("Fragment Corridor already stabilized!");
                         }
                         break;
                     case "2":
                         if (!room3Completed) {
                             playRoom(findRoomByID(rooms, "room3"), story, scanner, progress, facade);
+                            if (scenarioLogoutRequested) return;   // <<< bail out
                             room3Completed = true;
                         } else {
-                            System.out.println("Full synchronization already reached!");
-                            Speek.speak("Full synchronization already reached!");
+                            System.out.println("Full syncronization already reached!");
                         }
                         break;
                     default:
                         System.out.println("Invalid choice!");
-                        Speek.speak("Invalid choice!");
                         break;
                 }
             }
 
-            System.out.println("\nAll systems aligned... proceeding to the final command.");
-            Speek.speak("All systems aligned... proceeding to the final command.");
+            System.out.println("\nAll systemed aligned...proceeding to the final command.");
             playRoom(findRoomByID(rooms, "final"), story, scanner, progress, facade);
+            if (scenarioLogoutRequested) return;   // <<< bail out
             System.out.println("\n--- The Varen Project Complete ---");
-            Speek.speak("The Varen Project is complete. Congratulations!");
             System.out.println(progress);
         } catch (Exception e) {
             e.printStackTrace();
+            }
         }
     }
-}
 

@@ -53,70 +53,31 @@ public class DriverScenario {
         } catch (Throwable ignored) { }
         try { System.out.println("Logged in as " + facade.getCurrentUsername()); } catch (Throwable ignored) { System.out.println("Logged in"); }
 
-        // start a game
-        System.out.println("\nEnter Room Hear Story");
-        try { facade.startGame(); } catch (Throwable ignored) { }
-        Rooms room = null;
-        try { room = facade.getCurrentRoom(); } catch (Throwable ignored) { }
-        if (room != null) {
-            try { System.out.println("Leni enters room " + room.getTitle()); } catch (Throwable ignored) { System.out.println("Leni enters a room"); }
-            System.out.println("Story\nThe lights flicker and the air feels heavy");
-            System.out.println("Pretend TTS reads the story aloud");
+        // --- Interactive play: enter room, solve a few, then CHOOSE 8 to Save & Logout (Scenario) ---
+        System.out.println("\nEnter Room • Play a bit • Choose '8' to Save & Logout (Scenario)");
+        facade.startGame(Difficulty.EASY); // Rooms.startGame(facade) is called inside
+
+        // When Rooms returns, the scenario option 8 saved progress and logged out for us.
+        if (facade.getCurrentUser() == null) {
+            System.out.println("Detected scenario logout from Rooms. Progress was saved to:");
+            System.out.println("  escaperoom/src/main/resources/json/playerData.json");
         } else {
-            System.out.println("No rooms found");
+            try { facade.logout(); } catch (Throwable ignored) {}
         }
 
-        // simulate solving puzzles and using hints
-        System.out.println("\nSolve Puzzles Hints Items");
-        try {
-            // call facade methods without assuming return types
-            facade.solveCurrentPuzzle();
-            System.out.println("Puzzle 1 solved attempted");
-        } catch (Throwable t) {
-            System.out.println("Puzzle 1 solve attempt failed");
-        }
-
-        try {
-            facade.getHint();
-            System.out.println("Hint requested");
-        } catch (Throwable t) {
-            System.out.println("Hint request failed");
-        }
-
-        try {
-            facade.solveCurrentPuzzle();
-            System.out.println("Puzzle 2 solved attempted");
-        } catch (Throwable t) {
-            System.out.println("Puzzle 2 solve attempt failed");
-        }
-
-        try {
-            facade.getHint();
-            System.out.println("Second hint requested");
-        } catch (Throwable t) {
-            System.out.println("Second hint request failed");
-        }
-
-        try {
-            facade.solveCurrentPuzzle();
-            System.out.println("Puzzle 3 solved attempted");
-        } catch (Throwable t) {
-            System.out.println("Puzzle 3 solve attempt failed");
-        }
-
-        // save game
-        System.out.println("\nSave Logout Login Persistence");
-        try { facade.saveGame(); System.out.println("Game saved to playerData.json"); } catch (Throwable ignored) { System.out.println("Save failed"); }
-        try { facade.logout(); System.out.println("Logged out"); } catch (Throwable ignored) { System.out.println("Logout failed"); }
-        try { facade.login(lena, "leniSecret"); System.out.println("Logged back in as " + facade.getCurrentUsername()); } catch (Throwable ignored) { System.out.println("Login failed"); }
+        // Log back in and restore
+        try { facade.login(lena, "leniSecret"); } catch (Throwable ignored) {}
+        try { facade.restoreProgressForCurrentUser(); } catch (Throwable ignored) {}
 
         Progress progress = null;
-        try { progress = facade.getProgress(); } catch (Throwable ignored) { }
-        if (progress != null) {
-            try { System.out.println("Progress " + progress.toString()); } catch (Throwable ignored) { System.out.println("Progress available"); }
-        } else {
-            System.out.println("No progress found");
-        }
+        try { progress = facade.getProgress(); } catch (Throwable ignored) {}
+        System.out.println("\nRestored progress:");
+        System.out.println(progress == null ? "No progress found" : progress.toString());
+
+        // Resume to finish
+        System.out.println("\n--- RESUMING PLAY ---");
+        facade.startGame(Difficulty.EASY);
+
 
         // show JSON snapshot
         System.out.println("\nSaved JSON snapshot");
