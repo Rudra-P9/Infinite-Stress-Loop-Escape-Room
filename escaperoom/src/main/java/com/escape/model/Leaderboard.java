@@ -30,7 +30,7 @@ public class Leaderboard {
      * Return a copy of the entries (Score objects), ordered best → worst.
      */
     public ArrayList<Score> getLB() {
-        return new ArrayList<>(entries);
+        return topN(10);
     }
 
     /**
