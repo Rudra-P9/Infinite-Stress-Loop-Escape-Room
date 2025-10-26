@@ -25,29 +25,33 @@ public class EscapeRoomFacade
     private Score score;
     private Progress progress;
 
-    // logged in? 
+    /**
+     * Checks if a user is currently logged in.
+     * @return true if a user is logged in, false otherwise
+     */
     private boolean isLoggedIn() { return currentUser != null; }
 
-    // Ensure the loader/writer/accounts exist. 
+    /**
+     * Ensures that core components like loader, writer, and accounts are initialized.
+     */
     private void ensureCore() {
         if (loader == null)   loader = new GameDataLoader();
         if (writer == null)   writer = new GameDataWriter();
         if (accounts == null) accounts = Accounts.getInstance();
     }
 
-
     /**
-     * Starts a game session with default difficulty.
+     * Starts a game session with the default difficulty level.
      */
-    public void startGame()
-    {
+    public void startGame() {
         startGame(Difficulty.EASY);
     }
+
     /**
-    * Starts a game session with the given difficulty.
-    * Requires a logged-in user.
-    * @param difficulty the difficulty level of the game
-    */
+     * Starts a game session with the specified difficulty level.
+     * Requires a logged-in user.
+     * @param difficulty the difficulty level of the game
+     */
     public void startGame(Difficulty difficulty) {
         ensureCore();
 
@@ -60,25 +64,24 @@ public class EscapeRoomFacade
         this.currentDifficulty = (difficulty == null) ? Difficulty.EASY : difficulty;
         this.collectedLetters  = new ArrayList<>();
 
-        // Delegate to the interactive Rooms runner which handles loading rooms, puzzles and play loop.
-        // This keeps the facade behaviour consistent with the existing Rooms startGame implementation.
+        // Initialize or reset the timer
         int seconds = getSecondsForDifficulty(
-        currentDifficulty != null ? currentDifficulty : Difficulty.EASY);
+            currentDifficulty != null ? currentDifficulty : Difficulty.EASY);
 
         if (timer == null) {
             timer = new Timer(seconds);
         } else {
-            // if you're restarting a brand-new run, re-create it:
             timer = new Timer(seconds);
         }
         timer.start();
 
-        // then launch rooms:
+        // Launch the game
         new Rooms().startGame(this);
-            }
+    }
 
     /**
-     * Helper used by scenarios/tests: mark the first unsolved puzzle in the current room as solved.
+     * Marks the first unsolved puzzle in the current room as solved.
+     * Used for scenarios or tests.
      */
     public void solveCurrentPuzzle() {
         if (currentRoom == null) {
@@ -93,9 +96,7 @@ public class EscapeRoomFacade
 
         for (Puzzle p : puzzles) {
             if (!p.solved()) {
-                // setSolved is protected in Puzzle; same package allows access
                 p.setSolved(true);
-                // advance or create progress
                 if (progress == null) {
                     UUID userId = (currentUser == null) ? null : currentUser.userID;
                     progress = new Progress(UUID.randomUUID(), userId);
