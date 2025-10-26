@@ -123,7 +123,7 @@ public class Rooms {
     }
 
     
-    private void playRoom(
+    private static boolean playRoom(
         Rooms room,
         StoryElements story,
         Scanner scanner,
@@ -133,7 +133,7 @@ public class Rooms {
     if (room == null) {
         System.out.println("Room not found.");
         Speek.speak("Room not found.");
-        return;
+        return false;
     }
 
         System.out.println("\n--- " + room.getTitle() + " ---");
@@ -231,12 +231,12 @@ public class Rooms {
                                     System.out.println("Press enter to continue...");
                                     scanner.nextLine();
                                     // return to caller (room selection), not to keep looping this puzzle
-                                    return;
+                                    return false;
                                 } else {
                                     System.out.println("\n" + story.getConclusion());
                                     Speek.speak(story.getConclusion());
                                     // final completion; return to caller
-                                    return;
+                                    return false;
                                 }
                             }
 
@@ -297,20 +297,7 @@ public class Rooms {
                     
                         // Make Quit exit the entire Rooms flow, save, and log out.
                         System.out.println("Exiting Escape The Varen Project...");
-                        UI ui = new UI();
-                        ui.run();
-                        scanner.close();
-                        quit();
-
-                        // Persist minimal state; your facade.saveGame() should also snapshot progress
-                        if (facade != null) {
-                            try { facade.saveGame(); } catch (Throwable ignore) {}
-                            try { facade.logout();   } catch (Throwable ignore) {}
-                        }
-
-                        // Signal the outer loops to stop and return immediately
-                        this.quitRequested = true;
-                        return;
+                        return false; // not completed
 
                     case "7":
                         if (puzzle instanceof AudioPuzzle) {
@@ -345,10 +332,12 @@ public class Rooms {
                             try { facade.logout(); } catch (Throwable ignored) {}
                         }
                         System.out.println("Saved & logged out. Returning to DriverScenario...");
-                        return;   // return to DriverScenario
+                        return false;   // return to DriverScenario
                     }
                 }
             }
+            // If we got here, all puzzles in this room were solved.
+            return true;
         }
     
 
@@ -455,8 +444,9 @@ public class Rooms {
             System.out.println("--- ROOM & PUZZLE TESTING ---\n");
             System.out.println(story.getIntro());
 
-            playRoom(findRoomByID(rooms, "room1"), story, scanner, progress, facade);
-            if (quitRequested) return;
+            boolean r1 = playRoom(findRoomByID(rooms, "room1"),
+                      story, scanner, progress, facade);
+            if (!r1) return; // player quit or Save&Logout; stop and return to DriverScenario
 
 
             boolean room2Completed = false;
@@ -472,31 +462,32 @@ public class Rooms {
                 switch (choice) {
                     case "1":
                         if (!room2Completed) {
-                            playRoom(findRoomByID(rooms, "room2"), story, scanner, progress, facade);
-                            if (scenarioLogoutRequested) return;   // <<< bail out
-                            room2Completed = true;
+                            boolean done = playRoom(findRoomByID(rooms, "room2"),
+                                                    story, scanner, progress, facade);
+                            if (!done) return;           // user quit or Save&Logout -> bubble out
+                            room2Completed = true;       // mark complete only on success
                         } else {
                             System.out.println("Fragment Corridor already stabilized!");
                         }
                         break;
                     case "2":
                         if (!room3Completed) {
-                            playRoom(findRoomByID(rooms, "room3"), story, scanner, progress, facade);
-                            if (scenarioLogoutRequested) return;   // <<< bail out
-                            room3Completed = true;
+                            boolean done = playRoom(findRoomByID(rooms, "room3"),
+                                                    story, scanner, progress, facade);
+                            if (!done) return;           // user quit or Save&Logout
+                            room3Completed = true;       // only if truly finished
                         } else {
                             System.out.println("Full syncronization already reached!");
                         }
-                        break;
-                    default:
-                        System.out.println("Invalid choice!");
                         break;
                 }
             }
 
             System.out.println("\nAll systemed aligned...proceeding to the final command.");
-            playRoom(findRoomByID(rooms, "final"), story, scanner, progress, facade);
-            if (scenarioLogoutRequested) return;   // <<< bail out
+            boolean finalDone = playRoom(findRoomByID(rooms, "final"),
+                             story, scanner, progress, facade);
+            if (!finalDone) return; // if they saved/logged out or were blocked, bail out
+
             System.out.println("\n--- The Varen Project Complete ---");
             System.out.println(progress);
         } catch (Exception e) {
