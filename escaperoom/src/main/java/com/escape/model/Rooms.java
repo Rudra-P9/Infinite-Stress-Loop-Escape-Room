@@ -108,6 +108,12 @@ public class Rooms {
         return "Room: "+title+" ("+roomID+"), Puzzles: "+(puzzles != null ? puzzles.size() : 0);
     }
 
+    /**
+     * Searches for a room with the given id in the given list of rooms.
+     * @param rooms list of rooms to search
+     * @param id id of the room to search for
+     * @return the room with the given id, or null if not found
+     */
     private static Rooms findRoomByID(ArrayList<Rooms> rooms, String id) {
     for (Rooms r : rooms) {
             if (r.getRoomID().equalsIgnoreCase(id)) {
@@ -336,6 +342,14 @@ public class Rooms {
         }
     
 
+    /**
+     * Given an ArrayList of Strings, this function returns the next letter in the order 
+     * of R, E, A, L, M that is not already in the ArrayList. If all letters are 
+     * already in the ArrayList, this function returns an empty string.
+     * 
+     * @param collectedLetters the ArrayList of Strings containing the letters already collected
+     * @return the next letter in the order that is not already collected, or an empty string if all are collected
+     */
     private static String getNextLetter(ArrayList<String> collectedLetters) {
         String [] order = {"R","E","A","L","M"};
         for(String letter : order) {
@@ -345,6 +359,9 @@ public class Rooms {
         }
         return "";
     }
+    /**
+     * Sets the quit flag to true, which will cause the game loop to exit.
+     */
     private static void quit() {
         quit = true;
     }
@@ -378,6 +395,16 @@ public class Rooms {
      * @param args
      */
 
+    /**
+     * Starts a new game with the given facade.
+     * 
+     * The game will load all rooms and puzzles from the disk, and then play through
+     * each room in order. The user can choose which room to play next between the
+     * Fragment Corridor and the Synchronization Core. After all rooms are complete,
+     * the final command will be played.
+     * 
+     * @param facade the facade for the Escape Room game
+     */
      public void startGame(EscapeRoomFacade facade) {
         
         try {

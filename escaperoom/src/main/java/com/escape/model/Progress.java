@@ -82,6 +82,11 @@ public class Progress {
      */
     public int questionsAnswered() { return getQuestionsAnswered(); }
 
+/**
+ * Returns a string representation of the Progress object.
+ * Includes the completion percentage, number of hints used, and number of puzzles solved.
+ * @return a string representation of the Progress object
+ */
     @Override
     public String toString() {
         return "Progress: " + getCompletionPercent() + "% of the Escape Room completed"

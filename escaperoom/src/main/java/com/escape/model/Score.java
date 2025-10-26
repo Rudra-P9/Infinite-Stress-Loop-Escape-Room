@@ -203,6 +203,13 @@ public class Score {
                 '}';
     }
 
+    /**
+     * Returns the unique identifier of the user associated with this score.
+     * This method is unimplemented and will throw an UnsupportedOperationException if called.
+     * 
+     * @return the unique identifier of the user associated with this score
+     * @throws UnsupportedOperationException if the method is called
+     */
     public UUID getUserId() {
         throw new UnsupportedOperationException("Unimplemented method 'getUserId'");
     }

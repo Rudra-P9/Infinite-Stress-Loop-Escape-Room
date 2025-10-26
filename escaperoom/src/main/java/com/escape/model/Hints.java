@@ -37,7 +37,6 @@ public class Hints {
      *
      * @return the hint string
      */
-
     public String getHint(){
         return hint;
     }
@@ -48,7 +47,6 @@ public class Hints {
      * @param h the new hint string
      * @return the updated hint string
      */
-
     public String setHint(String h){
         this.hint = h;
         return this.hint;

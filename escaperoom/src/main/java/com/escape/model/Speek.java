@@ -6,6 +6,11 @@ import com.sun.speech.freetts.VoiceManager;
 public class Speek {
     private static final String VOICE_NAME = "kevin16";
 
+    /**
+     * Speak the given text with the voice defined by VOICE_NAME.
+     * 
+     * @param text the text to speak
+     */
     public static void speak(String text){
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 

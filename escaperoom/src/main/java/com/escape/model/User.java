@@ -95,10 +95,21 @@ public class User {
         return inventory;
     }
 
+    /**
+     * Sets the user's inventory to the specified value.
+     *
+     * @param inventory the new inventory to assign
+     */
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
 
+    /**
+     * Returns the list of letters currently collected by the user.
+     * If the user has no inventory, an empty list is returned.
+     *
+     * @return the list of collected letters
+     */
     public ArrayList<String> getCollectedLetters() {
         return inventory == null ? new ArrayList<>() : inventory.getItems();
     }
@@ -118,6 +129,11 @@ public class User {
      * TESTING THE USER CLASS CODE BELOW
      */
 
+    /**
+     * Test driver for User class.
+     * 
+     * @param args command-line arguments (not used)
+     */
      public static void main(String[] args){
         
      }

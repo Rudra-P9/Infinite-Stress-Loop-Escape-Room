@@ -142,6 +142,11 @@ public class Accounts {
         
     }
 
+    /**
+     * Case-insensitive search for a user by username.
+     * @param uNorm the username to search for (case-insensitive)
+     * @return the User object associated with the username if found, null otherwise
+     */
     public User getUserCaseInsensitive(String uNorm) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getUserCaseInsensitive'");

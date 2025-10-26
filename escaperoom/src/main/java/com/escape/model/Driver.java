@@ -34,6 +34,11 @@ public class Driver {
         return UUID.randomUUID();
     }
 
+    /**
+     * Main entry point for the Escape Room application.
+     * Creates an instance of the Driver and starts the main application loop.
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         Driver driver = new Driver();
         driver.start();

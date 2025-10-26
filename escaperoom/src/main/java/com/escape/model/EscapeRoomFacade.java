@@ -394,10 +394,18 @@ public void loadGame() {
         return currentUser == null ? null : currentUser.getUsername();
     }
 
+    /**
+     * Returns the title of the current room, or null if no room is selected.
+     */
     public String getCurrentRoomTitle() {
         return currentRoom == null ? null : currentRoom.getTitle();
     }
 
+    /**
+     * Returns the number of seconds remaining for the player to complete the current room.
+     * If no timer is set (i.e. the game is not running), returns 0.
+     * @return the number of seconds remaining for the player to complete the current room
+     */
     public int getTimeRemaining() {
         return timer == null ? 0 : timer.getRemainingSeconds();
     }
@@ -499,6 +507,13 @@ public void loadGame() {
     private ArrayList<Rooms> allRooms;
 
     
+    /**
+     * Returns the number of seconds remaining for the current room based on the difficulty.
+     * Used to initialize the timer for a room.
+     * 
+     * @param diff the difficulty level of the room
+     * @return the number of seconds remaining for the room
+     */
     private int getSecondsForDifficulty(Difficulty diff) {
         switch (diff) {
             case EASY: return 1800;
@@ -508,6 +523,12 @@ public void loadGame() {
         }
     }
 
+    /**
+     * Solve a puzzle in the current room.
+     * 
+     * @param answer the user's answer to the puzzle
+     * @return true if the puzzle is solved, false otherwise
+     */
     public boolean solvePuzzle(String answer) {
         if (!isLoggedIn()) {
         System.out.println("No user logged in");
@@ -554,6 +575,14 @@ public void loadGame() {
         return false;
     }
 
+    /**
+     * Reveals the hint of an unsolved puzzle in the current room.
+     * Returns "No current room" if there is no current room,
+     * "No puzzles in room" if there are no puzzles in the current room,
+     * or "All puzzles solved in this room" if all puzzles are solved.
+     * Otherwise, returns the hint of the first unsolved puzzle found.
+     * @return the hint of an unsolved puzzle or a message indicating the state of the room
+     */
     public String useHint() {
         if (currentRoom == null) return "No current room";
         
@@ -572,6 +601,12 @@ public void loadGame() {
         return "All puzzles solved in this room";
     }
 
+    /**
+     * Move to a room specified by its roomID.
+     * 
+     * @param roomID the roomID of the room to move to
+     * @return true if the room is found and moved to, false otherwise
+     */
     public boolean moveToRoom(String roomID) {
         if (allRooms == null) {
             allRooms = loader.getRooms();
@@ -589,6 +624,11 @@ public void loadGame() {
         return false;
     }
 
+    /**
+     * Returns true if all puzzles in the current room are solved, false otherwise.
+     * If there is no current room or no puzzles in the current room, returns true.
+     * @return true if all puzzles in the current room are solved, false otherwise
+     */
     public boolean isCurrentRoomComplete() {
         if (currentRoom == null) return false;
         ArrayList<Puzzle> puzzles = currentRoom.getPuzzles();
@@ -600,6 +640,12 @@ public void loadGame() {
         return true;
     }
 
+    /**
+     * Calculates the final score based on the remaining time and hints used.
+     * The formula is: baseScore = timeLeft * difficultyMultiplier, penalty = hintsUsed * 50, finalScore = max(0, baseScore - penalty).
+     * If the score object is not null, its score value will be updated with the final score.
+     * @return the final score
+     */
     public long calculateFinalScore() {
         if (timer == null || currentDifficulty == null) return 0;
         
@@ -625,10 +671,19 @@ public void loadGame() {
         return finalScore;
     }
 
+    /**
+     * Returns a copy of the collected letters from the Escape Room.
+     * 
+     * @return a copy of the collected letters
+     */
     public ArrayList<String> getCollectedLetters() {
         return new ArrayList<>(collectedLetters);
     }
 
+    /**
+     * Returns the current difficulty level of the game.
+     * @return the current difficulty level of the game
+     */
     public Difficulty getCurrentDifficulty() {
         return currentDifficulty;
     }
@@ -652,14 +707,28 @@ public void loadGame() {
             " (" + seconds + " seconds). Timer reset.");
     }
 
+    /**
+     * Returns the current room, or null if no room is selected.
+     * @return the current room
+     */
     public Rooms getCurrentRoom() {
         return currentRoom;
     }
 
+    /**
+     * Returns the currently logged in user, or null if no user is logged in.
+     * 
+     * @return the currently logged in user, or null if no user is logged in
+     */
     public User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Returns the current score, or null if no score is recorded.
+     * This score is updated by the calculateFinalScore() method.
+     * @return the current score, or null if no score is recorded
+     */
     public Score getCurrentScore() {
         return score;
     }

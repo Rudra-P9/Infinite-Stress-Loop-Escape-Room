@@ -47,10 +47,18 @@ public class AudioPuzzle extends Puzzle {
         return fixedAnswer.equals(fixedSolution);
     }
 
+    /**
+     * Gets the correct solution to the puzzle.
+     * @return the correct solution string
+     */
     public String getSolution() {
         return solution;
     }
 
+    /**
+     * Sets the correct solution for the puzzle.
+     * @param solution the correct solution string to assign
+     */
     public void setSolution(String solution) {
         this.solution = solution;
     }
@@ -71,6 +79,10 @@ public class AudioPuzzle extends Puzzle {
         return input.trim().toUpperCase().replaceAll("\\s+","");
     }
 
+    /**
+     * Gets the path to the audio file associated with this puzzle.
+     * @return the path to the audio file
+     */
     public String getAudioPath() {
         return audioPath;
     }

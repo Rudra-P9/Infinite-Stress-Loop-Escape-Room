@@ -375,6 +375,14 @@ public class GameDataWriter {
 
     private String prettyPrint(Object json) { return prettyPrint(json, 0) + System.lineSeparator(); }
 
+    /**
+     * Pretty-print a JSON object/array with stable, human-readable formatting.
+     * Preserves order within a single run and produces two-space indentation to keep diffs short.
+     * 
+     * @param json   the object to pretty-print
+     * @param indent the number of spaces to indent the output
+     * @return the pretty-printed string
+     */
     private String prettyPrint(Object json, int indent) {
         if (json == null) return "null";
         if (json instanceof JSONObject) return prettyPrintObject((JSONObject) json, indent);
@@ -383,6 +391,14 @@ public class GameDataWriter {
         return json.toString();
     }
 
+    /**
+     * Pretty-print a JSON object with stable, human-readable formatting.
+     * Preserves order within a single run and produces two-space indentation to keep diffs short.
+     * 
+     * @param obj    the object to pretty-print
+     * @param indent the number of spaces to indent the output
+     * @return the pretty-printed string
+     */
     private String prettyPrintObject(JSONObject obj, int indent) {
         StringBuilder sb = new StringBuilder();
         sb.append('{').append('\n');
@@ -401,6 +417,14 @@ public class GameDataWriter {
         return sb.toString();
     }
 
+    /**
+     * Pretty-print a JSON array with stable, human-readable formatting.
+     * Preserves order within a single run and produces two-space indentation to keep diffs short.
+     * 
+     * @param arr   the array to pretty-print
+     * @param indent the number of spaces to indent the output
+     * @return the pretty-printed string
+     */
     private String prettyPrintArray(JSONArray arr, int indent) {
         StringBuilder sb = new StringBuilder();
         sb.append('[').append('\n');
@@ -414,6 +438,14 @@ public class GameDataWriter {
         return sb.toString();
     }
 
+    /**
+     * Escape a string according to JSON rules.
+     * 
+     * All characters between 0x00 and 0x1F (inclusive) are escaped as well as the following characters: \", \, \b, \f, \n, \r, \t
+     * 
+     * @param s the string to escape
+     * @return the escaped string
+     */
     private String escapeJson(String s) {
         if (s == null) return "";
         StringBuilder sb = new StringBuilder();
@@ -437,6 +469,15 @@ public class GameDataWriter {
  
  
     }
+    /**
+     * Quick test to verify that GameDataLoader and GameDataWriter interact correctly.
+     * Test sequence:
+     *  1. Load users from playerData.json
+     *  2. Append a unique user to playerData.json
+     *  3. Reload users from playerData.json
+     *  4. Quick cleanup of the user just written
+     * 
+     */
     public static void main(String[] args) {
     GameDataLoader loader = new GameDataLoader();
     GameDataWriter writer = new GameDataWriter();
@@ -468,6 +509,15 @@ public class GameDataWriter {
 // minimal cleanup helper (same path our writer uses)
 private static final String PLAYER_PATH = "escaperoom/src/main/resources/json/playerData.json";
 
+/**
+ * Helper to remove a user from playerData.json by username.
+ * 
+ * Quick-and-dirty removal of a user (by username) from playerData.json.
+ * This is intended for temporary testing and debugging use only.
+ * 
+ * @param uname the username of the user to remove
+ * @throws Exception if the file cannot be read, parsed, or written
+ */
 @SuppressWarnings("unchecked")
 private static void removeUserByUsername(String uname) throws Exception {
     var parser = new org.json.simple.parser.JSONParser();

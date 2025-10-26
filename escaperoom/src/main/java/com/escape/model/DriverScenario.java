@@ -10,6 +10,12 @@ import java.time.LocalDate;
  */
 public class DriverScenario {
 
+/**
+ * Main driver for the Escape Room project.
+ * Runs through each of the scenarios given by the instructor to demonstrate the capabilities of the Escape Room system.
+ * 
+ * @author Dylan Diaz
+ */
     public static void main(String[] args) throws Exception {
 
         GameDataLoader loader = new GameDataLoader();
@@ -113,6 +119,17 @@ public class DriverScenario {
         System.out.println("\nAll scenarios complete");
     }
 
+    /**
+     * Creates a certificate of completion for the given user in the given game.
+     * The certificate contains the user's name, the game name, the date of completion,
+     * the difficulty level, the number of hints used, and the final score.
+     * The certificate is written to a file named "certificate_<user>.txt"
+     * @param user the username of the player
+     * @param game the name of the game
+     * @param score the final score of the player
+     * @param diff the difficulty level of the game
+     * @param hints the number of hints used by the player
+     */
     private static void makeCertificate(String user, String game, long score, Difficulty diff, int hints) {
         String filename = "certificate_" + user.replace(' ', '_') + ".txt";
         String header = "*******************************************\n" +

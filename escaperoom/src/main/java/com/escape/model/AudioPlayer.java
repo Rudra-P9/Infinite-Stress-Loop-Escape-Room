@@ -14,6 +14,15 @@ import javax.sound.sampled.Clip;
  */
 public class AudioPlayer {
     
+    /**
+     * Plays an audio file stored in the resources folder.
+     * The filename should be relative to the resources folder.
+     * The filename should not include the leading slash.
+     * If the filename starts with a slash, it will be removed.
+     * If the file is not found, a message will be printed to the console.
+     * 
+     * @param resourcePath the path to the audio file to play
+     */
     public static void play(String resourcePath) {
         try{
             /**

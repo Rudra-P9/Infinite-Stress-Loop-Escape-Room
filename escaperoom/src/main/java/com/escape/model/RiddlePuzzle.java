@@ -103,11 +103,21 @@ public class RiddlePuzzle extends Puzzle {
         }
     }
 
+    /**
+     * Returns the solution to the riddle as a string.
+     * @return the solution as a string
+     */
     @Override
     public String getSolution() {
         return riddleSolution;
     }
 
+    /**
+     * Sets the solution to the riddle.
+     * If the solution is null, it is set to an empty string.
+     * Otherwise, it is trimmed to remove leading and trailing whitespace.
+     * @param solution the solution to set
+     */
     @Override
     public void setSolution(String solution) {
         this.riddleSolution = (solution == null) ? "" : solution.trim();
@@ -125,6 +135,12 @@ public class RiddlePuzzle extends Puzzle {
         return correct;
     }
 
+    /**
+     * Returns a string representation of the RiddlePuzzle object.
+     * The string representation includes the objective, solved status, and solution.
+     * 
+     * @return a string representation of the RiddlePuzzle object
+     */
     @Override
     public String toString() {
         return "RiddlePuzzle{" +

@@ -195,8 +195,13 @@ public class Leaderboard {
         return null;
     }
 
-    //console test
-
+    /**
+     * A simple console test:
+     *  1. Create a leaderboard with three scores.
+     *  2. Print the leaderboard.
+     *  3. Update one score.
+     *  4. Print the leaderboard again.
+     */
     public static void main(String[] args) {
         Leaderboard lb = new Leaderboard();
 

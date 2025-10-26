@@ -473,6 +473,11 @@ public StoryElements getStory() {
         if (n instanceof Number) return ((Number) n).longValue();
         try { return Long.parseLong(n.toString()); } catch (NumberFormatException e) { return 0L; }
     }
+    /**
+     * Safe integer parsing helper; never throws, defaults to 0.
+     * If the input is null, a Number, or a String that can be parsed to an int, returns the int value.
+     * If the input is a String that cannot be parsed to an int, returns 0.
+     */
     private static int toInt(Object n) {
         if (n == null) return 0;
         if (n instanceof Number) return ((Number) n).intValue();
@@ -535,6 +540,11 @@ public StoryElements getStory() {
         try { Object v = obj.getClass().getMethod(getterName).invoke(obj); return toLong(v); }
         catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) { return 0L; }
     }
+    /**
+     * Test the GameDataLoader class by loading and printing some sample data.
+     *
+     * The main method demonstrates how to use the GameDataLoader class to load data from the JSON files and print it to the console.
+     */
     public static void main(String[] args) {
     GameDataLoader dl = new GameDataLoader();
 
@@ -555,6 +565,12 @@ private static String safe(Object o, String getter) {
     try { Object v = o.getClass().getMethod(getter).invoke(o); return v == null ? null : v.toString(); }
     catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) { return null; }
 }
+/**
+ * Returns the number of entries in the leaderboard.
+ * If the leaderboard does not support getEntries() or getLB(), returns 0.
+ * @param lb the leaderboard
+ * @return the number of entries in the leaderboard
+ */
 private static int getLbSize(Leaderboard lb) {
     try {
         var m = lb.getClass().getMethod("getEntries");
@@ -577,30 +593,59 @@ public static class TextPuzzle extends Puzzle {
         super(null, null, null, null, null, null);
     }
 
+    /**
+     * Checks the player's answer against the solution.
+     * Case-insensitive; trims whitespace.
+     * @param input the player's answer
+     * @return true if correct, false otherwise
+     */
     @Override
     public boolean checkAnswer(String input) {
         return input != null && solution != null && input.trim().equalsIgnoreCase(solution.trim());
     }
 
+    /**
+     * Returns the solution string for the TextPuzzle.
+     * @return the solution string
+     */
     @Override
     public String getSolution() {
         return solution;
     }
 
+
+    /**
+     * Sets the correct solution for the TextPuzzle.
+     * @param solution the correct solution string.
+     */
     @Override
     public void setSolution(String solution) {
         this.solution = solution;
     }
 
     public void setHint(String hint) { this.hint = hint; }
+
+    /**
+     * Retrieves the hint associated with this TextPuzzle, or the puzzle's global hint if no specific hint is set.
+     * @return the hint string associated with this TextPuzzle, or the global hint if no specific hint is set.
+     */
     @Override
     public String getHint() { return hint != null ? hint : super.getHint(); }
 
+    /**
+     * Sets the reward letter for the puzzle (from JSON).
+     * @param rewardLetter the letter rewarded after solving the puzzle
+     */
     @Override
     public void setRewardLetter(String rewardLetter) { this.rewardLetter = rewardLetter; }
+
+    /**
+     * Retrieves the reward letter associated with this TextPuzzle.
+     * @return the letter rewarded after solving the puzzle, or null if no reward is set.
+     */
     @Override
     public String getRewardLetter() { return rewardLetter; }
-}
+    }
 
 
 }

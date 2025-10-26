@@ -17,6 +17,9 @@ public enum Difficulty
         this.timeLimitSec = seconds;
     }
 
+    /**
+     * Returns the time limit for the given difficulty level in seconds.
+     */
     public int getTimeLimitSec() {
         return timeLimitSec;
     }

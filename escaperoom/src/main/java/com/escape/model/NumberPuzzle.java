@@ -40,11 +40,21 @@ public class NumberPuzzle extends Puzzle {
         }
     }
 
+
+    /**
+     * Returns the correct solution to the puzzle.
+     * @return the correct solution as a String
+     */
     @Override
     public String getSolution() {
         return solution;
     }
 
+    /**
+     * Sets the correct solution to the puzzle.
+     * 
+     * @param solution the correct solution to the puzzle
+     */
     @Override
     public void setSolution(String solution) {
         this.solution = solution;
