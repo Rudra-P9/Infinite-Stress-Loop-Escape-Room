@@ -79,6 +79,8 @@ public class EscapeRoomFacade
         }
                 // If progress wasn’t set by login (e.g., direct start), restore or create now
         if (progress == null && currentUser != null) {
+            // Try a late restore in case login came from a different spot
+            if (loader == null) loader = new GameDataLoader();
             Progress restored = loader.loadProgressForUser(currentUser.userID);
             progress = (restored != null) ? restored
                                         : new Progress(java.util.UUID.randomUUID(), currentUser.userID);
@@ -127,6 +129,7 @@ public class EscapeRoomFacade
                     progress = new Progress(UUID.randomUUID(), userId);
                 }
                 progress.advanceStory();
+                saveProgressSnapshot();
                 System.out.println("Solved puzzle: " + p.getTitle());
                 return;
             }
@@ -500,10 +503,10 @@ public void loadGame() {
                 if (restored != null) {
                     this.progress = restored;
                     System.out.println("Restored progress for " + currentUser.getUsername()
-                        + " (pos=" + progress.getStoryPos()
-                        + ", hints=" + progress.getHintsUsed()
-                        + ", solved=" + progress.getQuestionsAnswered() + ")");
+                                    + " (pos=" + progress.getStoryPos()
+                                    + ", hints=" + progress.getHintsUsed() + ")");
                 } else {
+                    // First time login (no save yet) — create a fresh progress record.
                     this.progress = new Progress(java.util.UUID.randomUUID(), currentUser.userID);
                 }
             }

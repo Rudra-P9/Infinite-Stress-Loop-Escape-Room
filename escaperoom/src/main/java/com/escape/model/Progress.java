@@ -65,8 +65,13 @@ public class Progress {
         return storyPos / (double) TOTAL_BEATS * 100.0;
     }
 
+    
+
     /** True count of solved puzzles. */
-    public int getQuestionsAnswered() { return questionsAnswered; }
+    public int getQuestionsAnswered() {
+         return questionsAnswered; 
+        }
+
     /** Setter used when restoring from a save file. */
     public void setQuestionsAnswered(int questionsAnswered) {
         this.questionsAnswered = Math.max(0, questionsAnswered);
@@ -81,10 +86,8 @@ public class Progress {
      * Backward-compat alias: returns questionsAnswered).
      * If other code calls questionsAnswered(), it now does the right thing.
      */
-    public int questionsAnswered() { return getQuestionsAnswered(); }
-
-
-
+    public int questionsAnswered() { return questionsAnswered(); }
+    
 
         /** Record that a hint was used on a particular puzzle title. */
         public void addHintFor(String puzzleTitle) {

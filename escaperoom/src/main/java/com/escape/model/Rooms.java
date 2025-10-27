@@ -573,21 +573,17 @@ public static String[][] getGlobalOrder() {
         }
 
         // ---------- Final Command ----------
-        System.out.println("\nAll systems aligned... proceeding to the Final Command.");
-        playRoom(findRoomByID(rooms, "final"), story, scanner, progress, facade);
-        if (Rooms.scenarioLogoutRequested) return;
-        if (scenarioLogoutRequested || quitRequested) return;
-        System.out.println("\n--- The Varen Project Complete ---");
-        System.out.println(progress);
-
-
-            System.out.println("\nAll systemed aligned...proceeding to the final command.");
-            boolean finalDone = playRoom(findRoomByID(rooms, "final"),
-                             story, scanner, progress, facade);
-            if (!finalDone) return; // if they saved/logged out or were blocked, bail out
-
+        if (progress != null && progress.isComplete()) {
+            // Already complete (shouldn’t happen often, but safe)
             System.out.println("\n--- The Varen Project Complete ---");
             System.out.println(progress);
+            return;
+        }
+
+        System.out.println("\nAll systems aligned... proceeding to the Final Command.");
+        playRoom(findRoomByID(rooms, "final"), story, scanner, progress, facade);
+        System.out.println("\n--- The Varen Project Complete ---");
+        System.out.println(progress);
         } catch (Exception e) {
             e.printStackTrace();
             }

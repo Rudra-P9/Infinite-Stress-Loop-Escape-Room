@@ -56,6 +56,34 @@ public class GameDataLoader {
     };
 
 
+    // import at top of file (if not already there)
+// import org.json.simple.JSONObject;
+// import org.json.simple.JSONArray;
+// import org.json.simple.parser.JSONParser;
+
+@SuppressWarnings("unchecked")
+private static org.json.simple.JSONObject readJsonObject(String path) {
+    try (java.io.FileReader r = new java.io.FileReader(path)) {
+        org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+        Object parsed = parser.parse(r);
+        if (parsed instanceof org.json.simple.JSONObject) {
+            return (org.json.simple.JSONObject) parsed;
+        }
+        
+        if (parsed instanceof org.json.simple.JSONArray) {
+            org.json.simple.JSONObject wrapper = new org.json.simple.JSONObject();
+            wrapper.put("root", parsed);
+            return wrapper;
+        }
+    } catch (Exception e) {
+        // we can log if we want:
+        // e.printStackTrace();
+    }
+    return null;
+}
+
+
+
     /* ========================= PUBLIC API ========================= */
 
     /**
@@ -339,65 +367,53 @@ public StoryElements getStory() {
         return s;
     }
 
-        /**
-     * Load saved progress for the given user from playerData.json.
-     * Returns null if no saved entry exists.
-     */
-    public Progress loadProgressForUser(java.util.UUID userId) {
-        if (userId == null) return null;
+    /**
+ * Loads a saved progress snapshot for the given user from playerData.json.
+ * Returns null if no entry exists.
+ */
+public Progress loadProgressForUser(java.util.UUID userId) {
+    if (userId == null) return null;
 
-        // Use the same helper you already use elsewhere
-        org.json.simple.JSONObject root = readObjectFromCandidates(PLAYERDATA_CANDIDATES);
-        if (root == null) return null;
+    final String PATH = "escaperoom/src/main/resources/json/playerData.json";
+    org.json.simple.JSONObject root = readJsonObject(PATH);
+    if (root == null) return null;
 
-        org.json.simple.JSONArray arr = (org.json.simple.JSONArray) root.get("progress");
-        if (arr == null) return null;
+    org.json.simple.JSONArray arr = (org.json.simple.JSONArray) root.get("progress");
+    if (arr == null) return null;
 
-        // arr is the progress array you already read: (JSONArray) root.get("progress");
-        for (Object o : arr) {
-            JSONObject jo = (JSONObject) o;
+    for (Object o : arr) {
+        org.json.simple.JSONObject jo = (org.json.simple.JSONObject) o;
+        String uid = jo.get("userUUID") == null ? null : jo.get("userUUID").toString();
+        if (userId.toString().equals(uid)) {
+            // Parse fields (with safe defaults)
+            String pid  = jo.get("progressUUID") == null ? null : jo.get("progressUUID").toString();
+            int c       = parseIntSafe(jo.get("c"),        0);
+            int answered= parseIntSafe(jo.get("answered"), 0);
+            int hints   = parseIntSafe(jo.get("hints"),    0);
 
-            String uid = String.valueOf(jo.get("userUUID"));
-            if (uid == null) continue;
-            if (!uid.equals(userId.toString())) continue;
-
-            // Construct the Progress
-            java.util.UUID progId = parseUuid(String.valueOf(jo.get("progressUUID")));
-            Progress prog = new Progress(progId, userId);
-
-            // Restore story counter "c"
-            Object cObj = jo.get("c");
-            if (cObj != null) {
-                try { prog.setStoryPos(Integer.parseInt(String.valueOf(cObj))); } catch (Exception ignore) {}
-            }
-
-            // (Optional) If you saved "hints" or "answered", you can read them too,
-            // but it's OK to skip if you don't have setters.
-
-            // NEW: restore hinted puzzle titles
-            Object ht = jo.get("hintedTitles");
-            if (ht instanceof JSONArray) {
-                java.util.ArrayList<String> list = new java.util.ArrayList<>();
-                for (Object x : (JSONArray) ht) {
-                    if (x != null) list.add(x.toString());
-                }
-                prog.setHintedPuzzles(list);
-            }
-
-            return prog;  // you matched the user, done
+            Progress p = new Progress(
+                (pid == null ? java.util.UUID.randomUUID() : java.util.UUID.fromString(pid)),
+                userId
+            );
+            p.setStoryPos(c);
+            p.setQuestionsAnswered(answered);
+            p.setHintsUsed(hints);
+            return p;
         }
-
-        return null;
     }
+    return null;
+}
 
-    // Small helper
-    private static int parseIntSafe(Object v, int deflt) {
-        if (v == null) return deflt;
-        try {
-            if (v instanceof Number) return ((Number) v).intValue();
-            return Integer.parseInt(v.toString());
-        } catch (Exception e) { return deflt; }
+/** Small helper: parse int from JSON value, with default. */
+private static int parseIntSafe(Object v, int deflt) {
+    if (v == null) return deflt;
+    try {
+        if (v instanceof Number) return ((Number) v).intValue();
+        return Integer.parseInt(v.toString());
+    } catch (Exception e) {
+        return deflt;
     }
+}
 
 
 
