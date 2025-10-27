@@ -217,16 +217,6 @@
       },
       "userID": "a369165b-b6cd-4e8c-b06a-c9cdcf7e3b33",
       "username": "Logan Rivers"
-    },
-    {
-      "password": "leniSecret",
-      "inventory": {
-        "items": [
-        ],
-        "capacity": 5
-      },
-      "userID": "72441e6f-6071-4115-bb69-ca49634cec53",
-      "username": "Leni Rivers"
     }
   ]
 }
