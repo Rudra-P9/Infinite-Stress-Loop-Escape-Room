@@ -194,6 +194,11 @@ public class EscapeRoomFacade
         if (p != null) writer.saveProgress(p);
     }
 
+        /**
+         * Attempts to restore the current user's progress from a save file.
+         * If restore is successful, sets the progress instance variable to the restored progress.
+         * Does nothing if the user is not logged in.
+         */
     public void restoreProgressForCurrentUser() {
         ensureCore();
         if (currentUser == null) return;

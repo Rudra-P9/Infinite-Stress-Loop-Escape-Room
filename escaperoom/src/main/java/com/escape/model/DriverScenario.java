@@ -14,6 +14,20 @@ import java.util.Scanner;
 public class DriverScenario {
 
 
+    /**
+     * Driver scenario for testing the entire Escape Room application from start to finish.
+     * 
+     * This scenario tests the following:
+     *  1. Create an account with a duplicate username (should be rejected)
+     *  2. Create an account successfully
+     *  3. Interactive login
+     *  4. Enter an escape room and hear the story
+     *  5. Re-login and verify saved progress
+     *  6. Resume play to finish final puzzles
+     *  7. Show saved json snapshot
+     *  8. Finish game and update leaderboard
+     *  9. Certificate of completion
+     */
     public static void main(String[] args) throws Exception {
 
 
@@ -218,6 +232,16 @@ public class DriverScenario {
     }
 
 
+    /**
+     * Generates a certificate of completion for the user.
+     * The certificate is a text file containing the user's name, game title, date, difficulty, hints used, and final score.
+     * The file is named "certificate_<user>.txt".
+     * @param user the user's name
+     * @param game the game title
+     * @param score the final score
+     * @param diff the difficulty level
+     * @param hints the number of hints used
+     */
     private static void makeCertificate(String user, String game, long score, Difficulty diff, int hints) {
         String filename = "certificate_" + user.replace(' ', '_') + ".txt";
         String header = "*******************************************\n" +

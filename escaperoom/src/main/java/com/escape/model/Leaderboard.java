@@ -134,14 +134,25 @@ public class Leaderboard {
         return out;
     }
 
+    /**
+     * Removes all leaderboard entries.
+     */
     public void clear() {
         entries.clear();
     }
 
+    /**
+     * Returns the number of leaderboard entries.
+     * @return the number of leaderboard entries
+     */
     public int size() {
         return entries.size();
     }
 
+    /**
+     * Returns a string representation of the leaderboard, including the number of entries.
+     * @return a string representation of the leaderboard
+     */
     @Override
     public String toString() {
         return "Leaderboard{entries=" + entries.size() + "}";
@@ -149,6 +160,10 @@ public class Leaderboard {
 
     /* ----------------- Helpers ----------------- */
 
+    /**
+     * Sorts the leaderboard entries by their score in descending order.
+     * This ensures that the highest-scoring entries are always at the front of the list.
+     */
     private void sortByScoreDescending() {
         Collections.sort(entries, (Score a, Score b) -> {
             long av = (a == null ? Long.MIN_VALUE : a.getScore());
@@ -158,6 +173,11 @@ public class Leaderboard {
         });
     }
 
+    /**
+     * Returns the username associated with the given Score object, or null if
+     * unable to access the username (e.g. if the object is null, or if
+     * the object does not have a getUsername() method).
+     */
     private static String safeGetUsername(Score s) {
         if (s == null) return null;
         try {

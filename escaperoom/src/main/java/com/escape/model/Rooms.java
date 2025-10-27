@@ -128,6 +128,19 @@ public class Rooms {
 
 
     
+/**
+ * Plays a room, executing all puzzles in the room and providing feedback to the player.
+ * If the player chooses to quit (option 6), the function will return false to indicate that the room was not completed.
+ * If the player chooses to save and logout (option 8), the function will save the game and logout, and return false to indicate that the room was not completed.
+ * If the player completes all puzzles in the room, the function will return true to indicate that the room was completed.
+ * 
+ * @param room the room to play
+ * @param story the StoryElements object to use for story beats
+ * @param scanner the Scanner to use for user input
+ * @param progress the Progress object to use for tracking progress
+ * @param facade the EscapeRoomFacade object to use for saving and loading progress
+ * @return true if the room was completed, false otherwise
+ */
     private static boolean playRoom(
         Rooms room,
         StoryElements story,

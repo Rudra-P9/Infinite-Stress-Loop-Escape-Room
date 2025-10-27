@@ -60,7 +60,6 @@ public class GameDataLoader {
 // import org.json.simple.JSONObject;
 // import org.json.simple.JSONArray;
 // import org.json.simple.parser.JSONParser;
-
 @SuppressWarnings("unchecked")
 private static org.json.simple.JSONObject readJsonObject(String path) {
     try (java.io.FileReader r = new java.io.FileReader(path)) {
@@ -566,11 +565,27 @@ private static int parseIntSafe(Object v, int deflt) {
         }
     }
 
-    /* Safe getter helpers used for addEntry fallback (avoid reflection duplication) */
+    
+    /**
+     * Helper method to safely retrieve a string value from an object.
+     * Invokes a getter method with the given name and returns the result as a string.
+     * If an exception occurs while invoking the getter, null is returned.
+     * @param obj the object to retrieve the value from
+     * @param getterName the name of the getter method to invoke
+     * @return the retrieved value as a string, or null if an exception occurs
+     */
     private static String sSafe(Object obj, String getterName) {
         try { Object v = obj.getClass().getMethod(getterName).invoke(obj); return v == null ? null : v.toString(); }
         catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) { return null; }
     }
+    /**
+     * Helper method to safely retrieve a long value from an object.
+     * Invokes a getter method with the given name and returns the result as a long.
+     * If an exception occurs while invoking the getter, 0L is returned.
+     * @param obj the object to retrieve the value from
+     * @param getterName the name of the getter method to invoke
+     * @return the retrieved value as a long, or 0L if an exception occurs
+     */
     private static long nSafe(Object obj, String getterName) {
         try { Object v = obj.getClass().getMethod(getterName).invoke(obj); return toLong(v); }
         catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) { return 0L; }
