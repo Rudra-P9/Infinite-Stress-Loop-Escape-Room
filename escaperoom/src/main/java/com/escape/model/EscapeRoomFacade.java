@@ -10,6 +10,7 @@ import java.util.UUID;
  * @author Talan Kinard
  * @author Jacob kinard
  * @author Rudra Patel
+ * @author Kirtan Patel
  * @version 1.2
  */
 
@@ -250,29 +251,46 @@ public class EscapeRoomFacade
             long finalScore = calculateFinalScore();
             score.setScore(finalScore);
 
-            // persist: save score and leaderboard
+            //  persist: save score and leaderboard 
             if (writer == null) writer = new GameDataWriter();
-            writer.saveScore(score);
+            writer.saveScore(score); // keep your scores history if you need it
 
             if (loader == null) loader = new GameDataLoader();
-            Leaderboard lb = loader.getLeaderboard();
-            if (lb == null) lb = new Leaderboard();
+            Leaderboard existing = loader.getLeaderboard();
 
-            // remove any existing score by this username
-            try {
-                lb.removeByUsername(currentUser.getUsername()); // if you have this helper
-            } catch (Throwable ignored) {
-                // fallback: manual filter
-                java.util.List<Score> keep = new java.util.ArrayList<>();
-                for (Score s : lb.topN(1000)) {
-                    if (!currentUser.getUsername().equalsIgnoreCase(s.getUsername())) keep.add(s);
+            // Build a de-duplicated map keyed by lowercase username
+            java.util.LinkedHashMap<String, Score> byUser = new java.util.LinkedHashMap<>();
+
+            // keep what’s already on the board (latest wins for each username)
+            if (existing != null) {
+                try {
+                    for (Score s : existing.topN(Integer.MAX_VALUE)) {
+                        if (s == null || s.getUsername() == null) continue;
+                        byUser.put(s.getUsername().toLowerCase(), s);
+                    }
+                } catch (Throwable ignored) {
+                    // If your Leaderboard doesn't have topN(Integer.MAX_VALUE), fall back to a small number
+                    try {
+                        for (Score s : existing.topN(100)) {
+                            if (s == null || s.getUsername() == null) continue;
+                            byUser.put(s.getUsername().toLowerCase(), s);
+                        }
+                    } catch (Throwable ignored2) { /* OK if it doesn't exist */ }
                 }
-                lb.setLB(keep); // a setter if needed; otherwise rebuild LB class
             }
 
-            // add/replace and save
-            lb.addOrReplace(score);
-            writer.saveLeaderboard(lb);
+            // upsert the current user's score (this replaces any prior entry for that user)
+            if (currentUser != null && currentUser.getUsername() != null) {
+                byUser.put(currentUser.getUsername().toLowerCase(), score);
+            }
+
+            // write a fresh leaderboard object with one row per username
+            Leaderboard clean = new Leaderboard();
+            for (Score s : byUser.values()) {
+                try { clean.addScore(s); } catch (Throwable ignored) { /* if the method is named differently, ignore */ }
+            }
+            writer.saveLeaderboard(clean);
+
 
             System.out.println("Game ended. Final score: " + finalScore);
 
