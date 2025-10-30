@@ -378,7 +378,7 @@ public class Rooms {
      * @return the next letter in the order that is not already collected, or an empty string if all are collected
      */
     private static String getNextLetter(ArrayList<String> collectedLetters) {
-        String [] order = {"R","E","A","L","M"};
+        String [] order = {"E","A","M","R","L"};
         for(String letter : order) {
             if(!collectedLetters.contains(letter)) {
                 return letter;
