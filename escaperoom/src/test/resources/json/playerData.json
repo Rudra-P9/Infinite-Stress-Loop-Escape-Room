@@ -1,0 +1,222 @@
+{
+  "leaderboard": [
+    {
+      "difficulty": "HARD",
+      "date": "2025-04-16",
+      "score": 720,
+      "timeSeconds": 720,
+      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "timeLeftSec": 720,
+      "username": "iGitThis"
+    },
+    {
+      "difficulty": "MEDIUM",
+      "date": "2025-12-05",
+      "score": 480,
+      "timeSeconds": 480,
+      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "timeLeftSec": 480,
+      "username": "PushPioneer12"
+    },
+    {
+      "difficulty": "EASY",
+      "date": "2025-09-27",
+      "score": 300,
+      "timeSeconds": 300,
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "timeLeftSec": 300,
+      "username": "EscapeRoomLover"
+    },
+    {
+      "difficulty": "EASY",
+      "date": "2025-07-24",
+      "score": 260,
+      "timeSeconds": 260,
+      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "timeLeftSec": 260,
+      "username": "NullPointerHero"
+    }
+  ],
+  "userSessionTimer": {
+    "difficulty": "EASY",
+    "lastUpdated": "2025-09-27T17:42:00Z",
+    "remainingSeconds": 1800,
+    "initialSeconds": 1800
+  },
+  "scores": [
+    {
+      "scoreID": "0bd16cb2-430e-4d4a-923e-f777ebef5006",
+      "difficulty": "EASY",
+      "date": "2025-09-27",
+      "timeSeconds": 300,
+      "puzzlesSolved": 1,
+      "hintsUsed": 1,
+      "username": "EscapeRoomLover"
+    },
+    {
+      "scoreID": "9acfc9d7-bdfd-4fb6-b4aa-1869c0d41014",
+      "difficulty": "HARD",
+      "date": "2025-04-16",
+      "timeSeconds": 720,
+      "puzzlesSolved": 1,
+      "hintsUsed": 0,
+      "username": "iGitThis"
+    },
+    {
+      "scoreID": "c63c42e7-55a4-4cee-96df-e88bab355d19",
+      "difficulty": "MEDIUM",
+      "date": "2025-12-05",
+      "timeSeconds": 480,
+      "puzzlesSolved": 1,
+      "hintsUsed": 2,
+      "username": "PushPioneer12"
+    },
+    {
+      "scoreID": "f8836f88-c4c0-49f7-83db-7a15f6f092ef",
+      "difficulty": "EASY",
+      "date": "2025-07-24",
+      "timeSeconds": 260,
+      "puzzlesSolved": 1,
+      "hintsUsed": 0,
+      "username": "NullPointerHero"
+    }
+  ],
+  "progress": [
+    {
+      "c": 1,
+      "userUUID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "progressUUID": "prog-001"
+    },
+    {
+      "c": 3,
+      "userUUID": "a1dceaba-b9a9-4b95-9864-8fb80870e1df",
+      "progressUUID": "prog-002"
+    },
+    {
+      "c": 2,
+      "userUUID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "progressUUID": "prog-003"
+    },
+    {
+      "c": 0,
+      "userUUID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "progressUUID": "prog-004"
+    }
+  ],
+  "savedData": [
+    {
+      "score": 1325,
+      "inventoryItems": [
+        "key"
+      ],
+      "puzzleIDs": [
+        "0a7f2ae3-f096-4669-a81b-943573553b0c"
+      ],
+      "lastSavedAt": "2025-09-25T18:22:11Z",
+      "hintsUsed": 2,
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "timeLeftSec": 1580,
+      "roomID": "62343172-dd4c-4be6-ba73-22df6e77e802"
+    },
+    {
+      "score": 2100,
+      "inventoryItems": [
+      ],
+      "puzzleIDs": [
+        "c96f61f5-7255-4083-b8c2-106f6d350253"
+      ],
+      "lastSavedAt": "2025-04-15T09:03:47Z",
+      "hintsUsed": 0,
+      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "timeLeftSec": 900,
+      "roomID": "66f3e4a1-44c0-4956-9f19-d21b0a1151ce"
+    },
+    {
+      "score": 2050,
+      "inventoryItems": [
+      ],
+      "puzzleIDs": [
+        "f8836f88-c4c0-49f7-83db-7a15f6f092ef"
+      ],
+      "lastSavedAt": "2025-12-04T16:44:12Z",
+      "hintsUsed": 1,
+      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "timeLeftSec": 740,
+      "roomID": "c63c42e7-55a4-4cee-96df-e88bab355d19"
+    },
+    {
+      "score": 1500,
+      "inventoryItems": [
+        "key"
+      ],
+      "puzzleIDs": [
+        "c0fea17a-656a-4918-9c66-a03ce4d1b169"
+      ],
+      "lastSavedAt": "2025-07-23T21:10:05Z",
+      "hintsUsed": 0,
+      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "timeLeftSec": 1110,
+      "roomID": "ee77945b-67c9-4b65-8bf6-67e3f0478349"
+    },
+    {
+      "score": 0,
+      "hints": 0,
+      "puzzle": null,
+      "room": null
+    }
+  ],
+  "users": [
+    {
+      "password": "Whosjson91",
+      "inventory": {
+        "items": [
+          "key"
+        ],
+        "capacity": 7
+      },
+      "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "username": "EscapeRoomLover"
+    },
+    {
+      "password": "Albert291",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 3
+      },
+      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "username": "iGitThis"
+    },
+    {
+      "password": "cats1971",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "username": "PushPioneer12"
+    },
+    {
+      "password": "javaaws20",
+      "inventory": {
+        "items": [
+          "key"
+        ],
+        "capacity": 7
+      },
+      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "username": "NullPointerHero"
+    },
+    {
+      "password": "loganPass123",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "a369165b-b6cd-4e8c-b06a-c9cdcf7e3b33",
+      "username": "Logan Rivers"
+    }
+  ]
+}
