@@ -567,7 +567,7 @@ public void loadGame() {
     }
 
     private Difficulty currentDifficulty;
-    private ArrayList<String> collectedLetters;
+    private ArrayList<String> collectedLetters = new ArrayList<>();
     private ArrayList<Rooms> allRooms;
 
     
