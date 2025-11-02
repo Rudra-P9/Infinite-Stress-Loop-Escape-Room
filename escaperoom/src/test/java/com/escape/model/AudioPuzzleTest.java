@@ -1,11 +1,14 @@
 package com.escape.model;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import static org.junit.Assert.*;
+
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
 
 public class AudioPuzzleTest {
 
@@ -32,7 +35,7 @@ public class AudioPuzzleTest {
 
     @Test
     public void constructorShouldSetProvidedAudioPath() {
-        assertEquals("/audio/varenprojectescapeaudio.wav", puzzle.getAudioPath());
+        assertEquals("audio/varenprojectescapeaudio.wav", puzzle.getAudioPath());
     }
 
     @Test

@@ -1,7 +1,10 @@
 package com.escape.model;
-import org.junit.Test;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
+/**
+ * Test
+ */
 public class TestTesting {
     @Test
     public void testTesting() {
