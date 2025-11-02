@@ -53,11 +53,12 @@ public class RiddlePuzzle extends Puzzle {
         if (!riddles.isEmpty()) {
             Riddle chosen = riddles.get(random.nextInt(riddles.size()));
             this.setObjective(chosen.question);
-            this.riddleSolution = chosen.answer;
+            // use setSolution to ensure trimming/null-safety
             this.setSolution(chosen.answer);
         } else {
             this.setObjective("No riddles available!");
-            this.solution = "";
+            // ensure riddleSolution is initialized consistently
+            setSolution("");
         }
     }
 
@@ -66,7 +67,8 @@ public class RiddlePuzzle extends Puzzle {
      */
     public RiddlePuzzle(String id, String title, String objective, String solution, Difficulty difficulty) {
         super(id, title, objective, solution, false, difficulty, "Riddle", "RiddlePuzzle");
-        this.solution = solution;
+        // ensure riddleSolution is initialized consistently
+        setSolution(solution);
     }
 
     /**
@@ -88,7 +90,8 @@ public class RiddlePuzzle extends Puzzle {
                     line = line.trim();
                     if (line.isEmpty() || line.startsWith("#")) continue;
 
-                    String[] parts = line.split("::");
+                    // safer split: literal "::" and limit to 2 parts
+                    String[] parts = line.split(java.util.regex.Pattern.quote("::"), 2);
                     if (parts.length >= 2) {
                         String question = parts[0].trim();
                         String answer = parts[1].trim();
@@ -143,10 +146,31 @@ public class RiddlePuzzle extends Puzzle {
      */
     @Override
     public String toString() {
-        return "RiddlePuzzle{" +
-                "objective='" + getObjective() + '\'' +
-                ", solved=" + solved() +
-                ", solution='" + riddleSolution + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName()).append("{");
+
+        // Always include objective and solved state (we know these exist)
+        sb.append("objective='").append(getObjective()).append('\'');
+        sb.append(", solved=").append(solved());
+
+        // Try to include other common getters if they exist on the superclass.
+        String[] optionalGetters = {"getTitle", "getSolution", "getDifficulty", "getId"};
+        for (String name : optionalGetters) {
+            try {
+                java.lang.reflect.Method m = this.getClass().getMethod(name);
+                Object val = m.invoke(this);
+                sb.append(", ").append(name).append("='").append(val).append('\'');
+            } catch (NoSuchMethodException nsme) {
+                // getter not present — ignore
+            } catch (Exception e) {
+                // if invoking fails for any reason, include a placeholder rather than throwing
+                sb.append(", ").append(name).append("='<error>'");
+            }
+        }
+
+        // Always include the internal riddleSolution as a final fallback
+        sb.append(", riddleSolution='").append(riddleSolution).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
