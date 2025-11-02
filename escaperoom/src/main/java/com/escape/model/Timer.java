@@ -4,63 +4,82 @@ package com.escape.model;
  * Handles the countdown timer for the game.
  * Tracks how much time the player has to finish a room.
  * Supports starting, pausing, resuming, and reducing time.
- * Also checks whether time has expired.
- * 
- * @author Dylan Diaz
- * @author Kirtan Patel
+ *
+ * Uses a monotonic clock and an explicit accumulated-elapsed strategy
+ * so pause/resume arithmetic is simpler and deterministic.
  */
 public class Timer {
     private final int initialSeconds;
 
-    private long startedAtMs = 0L;        // when the game first started
-    private long pausedAtMs  = 0L;        // last time we paused
-    private long pausedTotalMs = 0L;      // total paused time accumulated
+    // monotonic nanosecond times
+    private long startedAtNs = 0L;           // when counting began (first start)
+    private long pausedAtNs = 0L;            // when last paused (if paused)
+    private long accumulatedElapsedNs = 0L;  // total elapsed time captured during pauses
     private boolean running = false;
 
     public Timer(int initialSeconds) {
         this.initialSeconds = Math.max(0, initialSeconds);
     }
 
-    // Start or resume the timer. Safe to call multiple times. 
+    // Start or resume the timer. Safe to call multiple times.
     public synchronized void start() {
-        if (startedAtMs == 0L) {
-            startedAtMs = System.currentTimeMillis();
+        long now = System.nanoTime();
+        if (startedAtNs == 0L) {
+            // first start: record base start time
+            startedAtNs = now;
             running = true;
+            pausedAtNs = 0L;
+            accumulatedElapsedNs = 0L;
             return;
         }
-        if (!running) { // resume after pause
-            pausedTotalMs += System.currentTimeMillis() - pausedAtMs;
+        if (!running) {
+            // resume: we already saved elapsed into accumulatedElapsedNs at pause,
+            // so just flip running on and clear pausedAt.
+            pausedAtNs = 0L;
             running = true;
         }
+        // if already running, do nothing
     }
 
     // Pause countdown (does not reset).
     public synchronized void pause() {
         if (!running) return;
-        pausedAtMs = System.currentTimeMillis();
+        // snapshot elapsed since startedAt into accumulatedElapsed and mark paused
+        long now = System.nanoTime();
+        accumulatedElapsedNs += now - startedAtNs;
+        pausedAtNs = now;
         running = false;
     }
 
     // Alias to start() for readability
     public synchronized void resume() { start(); }
 
-    // Seconds left, computed from wall clock (never negative)
+    // Seconds left, computed from monotonic clock (never negative)
     public synchronized int getRemainingSeconds() {
-        if (startedAtMs == 0L) return initialSeconds; // not started yet
+        if (startedAtNs == 0L) return initialSeconds; // not started yet
 
-        long now = System.currentTimeMillis();
-        long effectiveElapsedMs;
+        long now = System.nanoTime();
+        long elapsedNs;
 
         if (running) {
-            effectiveElapsedMs = now - startedAtMs - pausedTotalMs;
+            // elapsed = accumulated from earlier pauses + time since initial start (or last resumed)
+            elapsedNs = accumulatedElapsedNs + (now - startedAtNs);
         } else {
-            effectiveElapsedMs = pausedAtMs - startedAtMs - pausedTotalMs;
+            // when paused we already included the last running interval into accumulatedElapsedNs,
+            // so elapsed is exactly accumulatedElapsedNs
+            elapsedNs = accumulatedElapsedNs;
         }
 
-        long remaining = (long) initialSeconds - (effectiveElapsedMs / 1000L);
+        if (elapsedNs < 0) elapsedNs = 0L; // defensive
+
+        long elapsedSeconds = elapsedNs / 1_000_000_000L;
+        long remaining = (long) initialSeconds - elapsedSeconds;
         return (int) Math.max(0L, remaining);
     }
 
-    //for certificate / debugging. 
+    // for certificate / debugging.
     public int getInitialSeconds() { return initialSeconds; }
+
+    // helper useful in tests / external code
+    public synchronized boolean isRunning() { return running; }
 }
