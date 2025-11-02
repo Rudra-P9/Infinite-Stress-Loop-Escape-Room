@@ -33,7 +33,6 @@ public class EscapeRoomFacadeTest {
     public void createAccount_withDuplicateUsername_shouldNotCreateDuplicate() {
         String username = "duplicateuser";
         facade.createAccount(username, "pass1");
-        User firstUser = facade.getCurrentUser();
         
         // Try to create duplicate
         facade.createAccount(username, "pass2");
