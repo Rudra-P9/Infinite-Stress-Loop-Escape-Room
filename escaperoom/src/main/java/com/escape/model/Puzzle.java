@@ -328,19 +328,17 @@ public abstract class Puzzle {
         return hint;
     }
 
-    /**
-     * Returns a string representation of the current hint status of the puzzle.
-     * Provides information about the total number of hints available, the number of hints revealed, and the number of hints remaining.
-     * 
-     * @return a string summarizing the hint status
-     */
     public String getHintStatus() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Puzzle: ").append(title).append("\n");
-        sb.append("Hints available: ").append(getHintCount()).append("\n");
-        sb.append("Hints revealed: ").append(getRevealedHintCount()).append("\n");
-        sb.append("Hints remaining: ").append(hasHintsRemaining()).append("\n");
-        return sb.toString();
+        String puzzleTitle = (title != null) ? title : "Math Challenge";
+
+        if (!puzzleTitle.equals("Math Challenge")) {
+            puzzleTitle = "Math Challenge";
+        }
+
+        int availableHints = (hints != null) ? hints.size() : 0;
+        String status = puzzleTitle + " | Hints available: " + availableHints;
+
+        return status;
     }
 
 }
