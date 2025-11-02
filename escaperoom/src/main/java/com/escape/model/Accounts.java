@@ -148,7 +148,14 @@ public class Accounts {
      * @return the User object associated with the username if found, null otherwise
      */
     public User getUserCaseInsensitive(String uNorm) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserCaseInsensitive'");
+        if(uNorm == null || accounts.isEmpty()) {
+            return null;
+        }
+        for(User user : accounts) {
+            if(user.getUsername() != null && user.getUsername().equalsIgnoreCase(uNorm)) {
+                return user;
+            }
+        }
+        return null;
     }
 }
