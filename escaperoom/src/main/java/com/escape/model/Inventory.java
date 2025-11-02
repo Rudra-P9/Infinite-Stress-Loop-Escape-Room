@@ -73,7 +73,7 @@ public class Inventory {
      * @return the inventory items
      */
     public ArrayList<String> getItems() {
-        return items;
+        return new ArrayList<>(items);
     }
 
     /**
