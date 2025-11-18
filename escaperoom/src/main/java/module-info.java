@@ -5,6 +5,6 @@ module com.escape {
     requires freetts;
     requires junit;
     requires java.desktop;
-    opens com.escape to javafx.fxml;
+    opens com.escape to javafx.graphics, javafx.fxml;
     exports com.escape.model;
 }
