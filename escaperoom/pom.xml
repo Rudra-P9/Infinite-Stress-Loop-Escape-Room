@@ -9,6 +9,13 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
+    <repositories>
+        <repository>
+            <id>gluon</id>
+            <name>Gluon Releases</name>
+            <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
     <dependencies>
 
         <dependency>
@@ -17,11 +24,16 @@
             <version>4.13.2</version>
         </dependency>
 
-    <dependency>
+        <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
+<dependency>
+    <groupId>com.gluonhq</groupId>
+    <artifactId>charm-glisten</artifactId>
+    <version>6.0.2</version> <!-- or latest available -->
+</dependency>
 
         <dependency>
             <groupId>org.mobicents.external.freetts</groupId>

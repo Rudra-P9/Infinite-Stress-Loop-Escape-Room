@@ -6,5 +6,7 @@ module com.escape {
     requires junit;
     requires java.desktop;
     opens com.escape to javafx.graphics, javafx.fxml;
+    opens controllers to javafx.graphics, javafx.fxml;
     exports com.escape.model;
+    exports controllers;
 }
