@@ -30,11 +30,7 @@
             <version>1.1.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.gluonhq</groupId>
-            <artifactId>charm-glisten</artifactId>
-            <version>6.0.2</version> <!-- or latest available -->
-        </dependency>
+
 
         <dependency>
             <groupId>org.mobicents.external.freetts</groupId>
@@ -96,7 +92,7 @@
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.text.App</mainClass>
+                            <mainClass>com.escape.App</mainClass>
                         </configuration>
                     </execution>
                 </executions>
