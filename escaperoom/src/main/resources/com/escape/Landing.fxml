@@ -12,7 +12,7 @@
       <ButtonBar layoutX="258.0" layoutY="180.0" prefHeight="40.0" prefWidth="71.0" />
       <ImageView fitHeight="400.0" fitWidth="600.0">
          <image>
-            <Image url="@../../Gemini_Generated_Image_evgyqcevgyqcevgy.jpg" />
+            <Image url="@../../images/Gemini_Generated_Image_evgyqcevgyqcevgy.jpg" />
          </image>
       </ImageView>
       <Button fx:id="login_button" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#goToLogin" text="Login" />
