@@ -17,7 +17,6 @@ import com.escape.App;
 /**
  *
  * @author Rudra Patel
- * @author Jacob Kinard
  */
 public class TerminalMenuController implements Initializable {
 
