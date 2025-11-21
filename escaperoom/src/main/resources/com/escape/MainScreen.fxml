@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -23,6 +24,7 @@
              <javafx.scene.effect.DropShadow color="BLACK" radius="10.0" spread="0.6" />
          </effect>
       </Label>
-      <Rectangle fx:id="clickArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="58.0" layoutX="1348.0" layoutY="804.0" onMouseClicked="#goToLanding" stroke="#06ff27" strokeType="INSIDE" strokeWidth="3.0" width="66.0" />
+      <Rectangle fx:id="clickArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="58.0" layoutX="1348.0" layoutY="804.0" onMouseClicked="#goToLanding" stroke="#06ff27" strokeType="INSIDE" strokeWidth="5.0" width="66.0" />
+      <Button onMouseClicked="#goToLanding" layoutX="1347.0" layoutY="804.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="67.0" style="-fx-background-color: rgba(0,0,0,0);" textFill="WHITE" />
    </children>
 </AnchorPane>
