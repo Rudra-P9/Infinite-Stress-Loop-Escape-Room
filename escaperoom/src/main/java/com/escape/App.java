@@ -27,7 +27,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load the initial view wrapped in the scaler
-        Parent root = loadFXML("Landing");
+        Parent root = loadFXML("MainScreen");
 
         // Create scene with the scalable root
         scene = new Scene(root, 640, 480);
@@ -54,10 +54,10 @@ public class App extends Application {
     private static Parent makeScalable(Parent content) {
         // Ensure the content has the target size
         // If the FXML root is a Region (like AnchorPane), we can enforce pref size
-        if (content instanceof javafx.scene.layout.Region) {
-            ((javafx.scene.layout.Region) content).setPrefSize(TARGET_WIDTH, TARGET_HEIGHT);
-            ((javafx.scene.layout.Region) content).setMinSize(TARGET_WIDTH, TARGET_HEIGHT);
-            ((javafx.scene.layout.Region) content).setMaxSize(TARGET_WIDTH, TARGET_HEIGHT);
+        if (content instanceof javafx.scene.layout.Region region) {
+            region.setPrefSize(TARGET_WIDTH, TARGET_HEIGHT);
+            region.setMinSize(TARGET_WIDTH, TARGET_HEIGHT);
+            region.setMaxSize(TARGET_WIDTH, TARGET_HEIGHT);
         }
 
         // Wrap in a Group to isolate transformations
