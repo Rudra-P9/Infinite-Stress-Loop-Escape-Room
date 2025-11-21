@@ -20,9 +20,8 @@ public class LoginController implements Initializable {
 
     @FXML
     private void goBack(MouseEvent event) throws IOException {
-        App.setRoot("Landing");
+        App.setRoot("TerminalMenu");
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

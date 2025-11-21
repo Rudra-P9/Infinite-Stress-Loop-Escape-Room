@@ -77,7 +77,7 @@ public class MainScreenController implements Initializable {
     }
 
     @FXML
-    private void goToLanding(MouseEvent event) throws IOException {
-        App.setRoot("Landing");
+    private void goToTerminalMenu(MouseEvent event) throws IOException {
+        App.setRoot("TerminalMenu");
     }
 }

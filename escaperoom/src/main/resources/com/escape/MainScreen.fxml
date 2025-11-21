@@ -24,7 +24,12 @@
              <javafx.scene.effect.DropShadow color="BLACK" radius="10.0" spread="0.6" />
          </effect>
       </Label>
-      <Rectangle fx:id="clickArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="58.0" layoutX="1348.0" layoutY="804.0" onMouseClicked="#goToLanding" stroke="#06ff27" strokeType="INSIDE" strokeWidth="5.0" width="66.0" />
-      <Button onMouseClicked="#goToLanding" layoutX="1347.0" layoutY="804.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="67.0" style="-fx-background-color: rgba(0,0,0,0);" textFill="WHITE" />
+      <Rectangle fx:id="clickArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="58.0" layoutX="1348.0" layoutY="804.0" onMouseClicked="#goToTerminalMenu" stroke="#06ff27" strokeType="INSIDE" strokeWidth="5.0" width="66.0" />
+      <Button layoutX="1347.0" layoutY="804.0" mnemonicParsing="false" onMouseClicked="#goToTerminalMenu" prefHeight="58.0" prefWidth="67.0" style="-fx-background-color: rgba(0,0,0,0);" textFill="WHITE" />
+      <Label layoutX="1332.0" layoutY="661.0" prefHeight="172.0" prefWidth="138.0" text="CLICK&#10;ME!" textAlignment="CENTER" textFill="LIME">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
