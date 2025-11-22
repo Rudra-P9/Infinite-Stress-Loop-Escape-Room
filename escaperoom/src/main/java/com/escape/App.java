@@ -43,7 +43,18 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        java.net.URL fxmlUrl = App.class.getResource(fxml + ".fxml");
+        // Try absolute path fallback if relative lookup fails
+        if (fxmlUrl == null) {
+            fxmlUrl = App.class.getResource("/com/escape/" + fxml + ".fxml");
+        }
+
+        if (fxmlUrl == null) {
+            throw new IllegalStateException("FXML resource not found: '" + fxml + ".fxml' -- looked for: '" + fxml + ".fxml' relative to " + App.class.getName() + " and '/com/escape/" + fxml + ".fxml'.\n" +
+                    "Ensure the FXML file is located in 'src/main/resources/com/escape/' and is included on the module/classpath.");
+        }
+
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
         Parent content = fxmlLoader.load();
         return makeScalable(content);
     }
