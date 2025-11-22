@@ -5,8 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,24 +20,17 @@
             <Image url="@../../images/Main%20Screen.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="titleLabel" alignment="CENTER" layoutX="718.0" layoutY="58.0" prefHeight="668.0" prefWidth="477.0" text="Escape &#10;The &#10;Varen" textAlignment="CENTER" textFill="#5b00ff">
+      <Label fx:id="titleLabel" alignment="CENTER" layoutX="718.0" layoutY="58.0" prefHeight="668.0" prefWidth="477.0" text="Escape &#10;The &#10;Varen" textAlignment="CENTER" textFill="#dddddd8c">
          <font>
             <Font name="Impact" size="120.0" />
          </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
          <effect>
-            <DropShadow spread="0.6">
-               <input>
-                  <Lighting>
-                     <bumpInput>
-                        <Shadow />
-                     </bumpInput>
-                     <light>
-                        <Light.Distant />
-                     </light>
-                  </Lighting>
-               </input>
+            <DropShadow height="47.53" radius="48.3225" spread="0.05" width="147.76">
                <color>
-                  <Color green="1.0" />
+                  <Color red="0.8815789222717285" green="0.470379501581192" blue="0.24896442890167236" />
                </color>
             </DropShadow>
          </effect>
