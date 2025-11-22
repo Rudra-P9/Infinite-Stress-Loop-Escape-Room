@@ -53,7 +53,6 @@ public class App extends Application {
      */
     private static Parent makeScalable(Parent content) {
         // Ensure the content has the target size
-        // If the FXML root is a Region (like AnchorPane), we can enforce pref size
         if (content instanceof javafx.scene.layout.Region region) {
             region.setPrefSize(TARGET_WIDTH, TARGET_HEIGHT);
             region.setMinSize(TARGET_WIDTH, TARGET_HEIGHT);
@@ -68,7 +67,6 @@ public class App extends Application {
         stackPane.setStyle("-fx-background-color: black;"); // Optional: ensure background is black
 
         // Bind scale properties
-        // We need to bind the Group's scale to the StackPane's size
 
         // Calculate the scale factor
         DoubleProperty scaleFactor = new SimpleDoubleProperty();

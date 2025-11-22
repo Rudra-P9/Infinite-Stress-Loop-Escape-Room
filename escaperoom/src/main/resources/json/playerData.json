@@ -120,8 +120,7 @@
     },
     {
       "score": 2100,
-      "inventoryItems": [
-      ],
+      "inventoryItems": [],
       "puzzleIDs": [
         "c96f61f5-7255-4083-b8c2-106f6d350253"
       ],
@@ -133,8 +132,7 @@
     },
     {
       "score": 2050,
-      "inventoryItems": [
-      ],
+      "inventoryItems": [],
       "puzzleIDs": [
         "f8836f88-c4c0-49f7-83db-7a15f6f092ef"
       ],
@@ -180,8 +178,7 @@
     {
       "password": "Albert291",
       "inventory": {
-        "items": [
-        ],
+        "items": [],
         "capacity": 3
       },
       "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
@@ -190,8 +187,7 @@
     {
       "password": "cats1971",
       "inventory": {
-        "items": [
-        ],
+        "items": [],
         "capacity": 5
       },
       "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
@@ -211,12 +207,20 @@
     {
       "password": "loganPass123",
       "inventory": {
-        "items": [
-        ],
+        "items": [],
         "capacity": 5
       },
       "userID": "a369165b-b6cd-4e8c-b06a-c9cdcf7e3b33",
       "username": "Logan Rivers"
+    },
+    {
+      "password": "testpass",
+      "inventory": {
+        "items": [],
+        "capacity": 5
+      },
+      "userID": "test-user-uuid-1234",
+      "username": "testuser"
     }
   ]
 }

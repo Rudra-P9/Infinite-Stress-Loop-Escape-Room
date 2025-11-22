@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -21,15 +27,47 @@
             <Font name="Impact" size="120.0" />
          </font>
          <effect>
-             <javafx.scene.effect.DropShadow color="BLACK" radius="10.0" spread="0.6" />
+            <DropShadow spread="0.6">
+               <input>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </input>
+               <color>
+                  <Color green="1.0" />
+               </color>
+            </DropShadow>
          </effect>
       </Label>
-      <Rectangle fx:id="clickArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="58.0" layoutX="1348.0" layoutY="804.0" onMouseClicked="#goToTerminalMenu" stroke="#06ff27" strokeType="INSIDE" strokeWidth="5.0" width="66.0" />
-      <Button layoutX="1347.0" layoutY="804.0" mnemonicParsing="false" onMouseClicked="#goToTerminalMenu" prefHeight="58.0" prefWidth="67.0" style="-fx-background-color: rgba(0,0,0,0);" textFill="WHITE" />
+      <Rectangle fx:id="clickArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="54.0" layoutX="1348.0" layoutY="804.0" onMouseClicked="#goToTerminalMenu" stroke="#06ff27" strokeWidth="5.0" style="-fx-cursor: hand;" width="66.0">
+         <effect>
+            <Glow level="1.0">
+               <input>
+                  <Shadow blurType="ONE_PASS_BOX" height="44.58" radius="17.369999999999997" width="26.9">
+                     <color>
+                        <Color green="1.0" />
+                     </color>
+                  </Shadow>
+               </input>
+            </Glow>
+         </effect>
+      </Rectangle>
       <Label layoutX="1332.0" layoutY="661.0" prefHeight="172.0" prefWidth="138.0" text="CLICK&#10;ME!" textAlignment="CENTER" textFill="LIME">
          <font>
             <Font size="35.0" />
          </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <Glow level="1.0" />
+         </effect>
       </Label>
+      <Button layoutX="1342.0" layoutY="799.0" mnemonicParsing="false" onMouseClicked="#goToTerminalMenu" prefHeight="61.0" prefWidth="78.0" style="-fx-background-color: transparent; -fx-cursor: hand;" textFill="WHITE" />
    </children>
 </AnchorPane>

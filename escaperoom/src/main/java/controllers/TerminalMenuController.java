@@ -16,8 +16,10 @@ import com.escape.App;
 
 /**
  *
+ * 
  * @author Rudra Patel
  */
+
 public class TerminalMenuController implements Initializable {
 
     @FXML
@@ -46,7 +48,7 @@ public class TerminalMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        typeText(welcomeLabel, "[ Welcome To The Facility 67: Termalink ]", () -> {
+        typeText(welcomeLabel, "[ Welcome To The Facility 67 Termalink ]", () -> {
             typeText(loginLabel, "[ Login ]", () -> {
                 typeText(newUserLabel, "[ New User ]", () -> {
                     typeText(backLabel, "[ Back ]", null);
@@ -62,7 +64,7 @@ public class TerminalMenuController implements Initializable {
         for (int i = 0; i < text.length(); i++) {
             final int index = i;
             javafx.animation.KeyFrame keyFrame = new javafx.animation.KeyFrame(
-                    javafx.util.Duration.millis(80 * (i + 1)),
+                    javafx.util.Duration.millis(60 * (i + 1)),
                     event -> {
                         sb.append(text.charAt(index));
                         label.setText(sb.toString());

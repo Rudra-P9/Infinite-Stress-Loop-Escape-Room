@@ -17,22 +17,22 @@
             <Point3D />
          </rotationAxis>
       </ImageView>
-      <Label fx:id="loginLabel" alignment="CENTER" layoutX="833.0" layoutY="441.0" onMouseClicked="#goToLogin" prefHeight="70.0" prefWidth="325.0" text="" textFill="LIME">
+      <Label fx:id="loginLabel" alignment="CENTER" layoutX="833.0" layoutY="441.0" onMouseClicked="#goToLogin" pickOnBounds="true" prefHeight="70.0" prefWidth="325.0" style="-fx-cursor: hand;" text="" textFill="LIME">
          <font>
             <Font name="Monospaced Regular" size="50.0" />
          </font>
       </Label>
-      <Label fx:id="newUserLabel" alignment="CENTER" layoutX="777.0" layoutY="592.0" prefHeight="62.0" prefWidth="435.0" text="" textFill="LIME">
+      <Label fx:id="newUserLabel" alignment="CENTER" layoutX="777.0" layoutY="592.0" prefHeight="62.0" prefWidth="435.0" style="-fx-cursor: hand;" text="" textFill="LIME">
          <font>
             <Font name="Monospaced Regular" size="50.0" />
          </font>
       </Label>
-      <Label fx:id="backLabel" alignment="CENTER" layoutX="850.0" layoutY="861.0" onMouseClicked="#goToMainScreen" prefHeight="88.0" prefWidth="290.0" text="" textFill="LIME">
+      <Label fx:id="backLabel" alignment="CENTER" layoutX="850.0" layoutY="880.0" onMouseClicked="#goToMainScreen" pickOnBounds="true" prefHeight="88.0" prefWidth="290.0" style="-fx-cursor: hand;" text="" textFill="LIME">
          <font>
             <Font name="Monospaced Regular" size="50.0" />
          </font>
       </Label>
-      <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="351.0" layoutY="210.0" prefHeight="60.0" prefWidth="1287.0" text="" textFill="LIME">
+      <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="351.0" layoutY="190.0" prefHeight="60.0" prefWidth="1287.0" text="" textFill="LIME">
          <font>
             <Font name="Monospaced Regular" size="50.0" />
          </font>

@@ -9,10 +9,14 @@ import java.util.ArrayList;
  * @author Jacob Kinard
  */
 public class Accounts {
-    
+
     private ArrayList<User> accounts = new ArrayList<>();
     private static Accounts instance;
-    private Accounts() {}
+
+    private Accounts() {
+        GameDataLoader loader = new GameDataLoader();
+        this.accounts = loader.getUsers();
+    }
 
     /**
      * Returns the singleton instance of the Accounts manager.
@@ -48,13 +52,14 @@ public class Accounts {
                 }
             }
         } catch (Exception e) {
-            // If loader fails, continue with creation (we don't want to block account creation)
+            // If loader fails, continue with creation (we don't want to block account
+            // creation)
             // but log for visibility.
             System.out.println("Warning: could not check persisted users: " + e.getMessage());
         }
-        accounts.add(new User(Driver.getUUID(),username, password));
+        accounts.add(new User(Driver.getUUID(), username, password));
         Accounts.toString("Account created for username: " + username);
-        
+
     }
 
     /**
@@ -63,7 +68,7 @@ public class Accounts {
      * @param username the username of the account to delete
      */
     public void deleteAccount(String username) {
-    User userToRemove = getUser(username);
+        User userToRemove = getUser(username);
         if (userToRemove != null) {
             accounts.remove(userToRemove);
             System.out.println("Account deleted for username: " + username);
@@ -89,6 +94,7 @@ public class Accounts {
 
     /**
      * Returns a copy of the internal accounts list for external use (safe copy).
+     * 
      * @return list of users
      */
     public ArrayList<User> getAccounts() {
@@ -98,7 +104,7 @@ public class Accounts {
     /*
      * prints input values to console
      */
-    private static void toString(String input){
+    private static void toString(String input) {
         System.out.println(input);
     }
 
@@ -135,24 +141,26 @@ public class Accounts {
         accounts.createAccount(username, password);
         ArrayList<User> users = new ArrayList<>();
         User user = accounts.getUser(username);
-        if (user != null) users.add(user);
+        if (user != null)
+            users.add(user);
         GameDataWriter writer = new GameDataWriter();
         writer.saveUsers(users);
         System.out.println("Test user created and written to json/test.json");
-        
+
     }
 
     /**
      * Case-insensitive search for a user by username.
+     * 
      * @param uNorm the username to search for (case-insensitive)
      * @return the User object associated with the username if found, null otherwise
      */
     public User getUserCaseInsensitive(String uNorm) {
-        if(uNorm == null || accounts.isEmpty()) {
+        if (uNorm == null || accounts.isEmpty()) {
             return null;
         }
-        for(User user : accounts) {
-            if(user.getUsername() != null && user.getUsername().equalsIgnoreCase(uNorm)) {
+        for (User user : accounts) {
+            if (user.getUsername() != null && user.getUsername().equalsIgnoreCase(uNorm)) {
                 return user;
             }
         }
