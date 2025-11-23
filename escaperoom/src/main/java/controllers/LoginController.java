@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -15,10 +14,11 @@ import com.escape.model.Accounts;
 import com.escape.model.User;
 
 /**
- *
+ * Controller for the Login screen.
+ * Handles user input, validation, and account creation.
+ * 
  * @author Rudra Patel
  */
-
 public class LoginController implements Initializable {
 
     @FXML
@@ -32,7 +32,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void goToPrimary(MouseEvent event) throws IOException {
+    private void goToGateway(MouseEvent event) throws IOException {
         verifyAndLogin();
     }
 
@@ -49,7 +49,21 @@ public class LoginController implements Initializable {
 
         User user = Accounts.getInstance().getUser(username);
         if (user != null && user.getPassword().equals(password)) {
-            App.setRoot("primary");
+            // Login successful
+            enterButtonLabel.setText("[ Access Granted ]");
+            enterButtonLabel.setTextFill(javafx.scene.paint.Color.LIME);
+
+            // Navigate to Gateway after 1 second
+            javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
+                    javafx.util.Duration.seconds(1));
+            pause.setOnFinished(e -> {
+                try {
+                    App.setRoot("Gateway");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            pause.play();
         } else {
             // Login failed
             enterButtonLabel.setText("[ Invalid Credentials ]");
