@@ -16,35 +16,42 @@ import java.util.*;
 /**
  * Unit tests for {@link GameDataWriter}.
  *
- * <p>These tests create/overwrite JSON fixtures at the same relative paths the writer
- * uses so we can exercise real file I/O without changing production code.</p>
+ * <p>
+ * These tests create/overwrite JSON fixtures at the same relative paths the
+ * writer
+ * uses so we can exercise real file I/O without changing production code.
+ * </p>
  *
- * <p>Fixture roots (created per test):</p>
+ * <p>
+ * Fixture roots (created per test):
+ * </p>
  * <ul>
- *   <li>escaperoom/src/main/resources/json/playerData.json</li>
- *   <li>escaperoom/src/main/resources/json/game.json</li>
+ * <li>escaperoom/src/main/resources/json/playerData.json</li>
+ * <li>escaperoom/src/main/resources/json/game.json</li>
  * </ul>
  *
- * <p>We verify these writer guarantees:</p>
+ * <p>
+ * We verify these writer guarantees:
+ * </p>
  * <ul>
- *   <li>saveUser/saveUsers: append or replace (idempotent), preserve inventory</li>
- *   <li>saveScore: appends immutable history entries with required fields</li>
- *   <li>saveProgress: upsert by userUUID (one entry per user)</li>
- *   <li>saveLeaderboard: serializes current leaderboard entries</li>
- *   <li>saveRooms: emits minimal but coherent game.json structure</li>
+ * <li>saveUser/saveUsers: append or replace (idempotent), preserve
+ * inventory</li>
+ * <li>saveScore: appends immutable history entries with required fields</li>
+ * <li>saveProgress: upsert by userUUID (one entry per user)</li>
+ * <li>saveLeaderboard: serializes current leaderboard entries</li>
+ * <li>saveRooms: emits minimal but coherent game.json structure</li>
  * </ul>
  */
 public class GameDataWriterTest {
 
-    private static final Path JSON_DIR =
-            Path.of("escaperoom", "src", "main", "resources", "json");
+    private static final Path JSON_DIR = Path.of("escaperoom", "src", "main", "resources", "json");
     private static final Path PLAYER_JSON = JSON_DIR.resolve("playerData.json");
-    private static final Path GAME_JSON   = JSON_DIR.resolve("game.json");
+    private static final Path GAME_JSON = JSON_DIR.resolve("game.json");
 
     private final JSONParser parser = new JSONParser();
     private GameDataWriter writer;
 
-    // Build a clean JSON sandbox before each test. 
+    // Build a clean JSON sandbox before each test.
     @Before
     public void setUp() throws Exception {
         writer = new GameDataWriter();
@@ -53,11 +60,11 @@ public class GameDataWriterTest {
 
         // Minimal, empty playerData.json so writer can mutate/merge
         JSONObject player = new JSONObject();
-        player.put("users",       new JSONArray());
-        player.put("scores",      new JSONArray());
+        player.put("users", new JSONArray());
+        player.put("scores", new JSONArray());
         player.put("leaderboard", new JSONArray());
-        player.put("savedData",   new JSONArray());
-        player.put("progress",    new JSONArray());
+        player.put("savedData", new JSONArray());
+        player.put("progress", new JSONArray());
         try (FileWriter fw = new FileWriter(PLAYER_JSON.toFile())) {
             fw.write(player.toJSONString());
         }
@@ -70,7 +77,7 @@ public class GameDataWriterTest {
         }
     }
 
-    // Clean up generated files (kept shallow so git status stays clean). 
+    // Clean up generated files (kept shallow so git status stays clean).
     @After
     public void tearDown() throws Exception {
         // inspect the JSON after a run
@@ -94,9 +101,10 @@ public class GameDataWriterTest {
     }
 
     private static User makeUser(UUID id, String name, String pw, String... items) {
-        User u = new User(id, name, pw);
+        User u = new User(id, name, pw, "test@example.com");
         Inventory inv = new Inventory(26);
-        for (String it : items) inv.addItem(it);
+        for (String it : items)
+            inv.addItem(it);
         u.setInventory(inv);
         return u;
     }
@@ -107,7 +115,7 @@ public class GameDataWriterTest {
 
     // Users
 
-    // saveUser should append a new user and persist inventory. 
+    // saveUser should append a new user and persist inventory.
     @Test
     public void saveUser_appendsAndPersistsInventory() throws Exception {
         User u = makeUser(UUID.randomUUID(), "alice", "pw1", "A", "B", "C");
@@ -119,13 +127,13 @@ public class GameDataWriterTest {
 
         JSONObject one = (JSONObject) users.get(0);
         assertEquals("alice", one.get("username"));
-        assertEquals("pw1",   one.get("password"));
+        assertEquals("pw1", one.get("password"));
 
         JSONObject inv = (JSONObject) one.get("inventory");
         JSONArray items = (JSONArray) inv.get("items");
         assertEquals(3, items.size());
         assertTrue(items.contains("A"));
-        assertTrue(((Number)inv.get("capacity")).intValue() >= 3);
+        assertTrue(((Number) inv.get("capacity")).intValue() >= 3);
     }
 
     // saveUser twice with same username should replace
@@ -146,11 +154,11 @@ public class GameDataWriterTest {
         assertEquals("pw2", one.get("password"));
     }
 
-    // saveUsers should merge list by userID OR username. 
+    // saveUsers should merge list by userID OR username.
     @Test
     public void saveUsers_mergesByIdOrName() throws Exception {
         UUID id = UUID.randomUUID();
-        User byId   = makeUser(id, "charlie", "pw1");
+        User byId = makeUser(id, "charlie", "pw1");
         User byName = makeUser(null, "charlie", "pw2"); // same username, no id
         ArrayList<User> list = new ArrayList<>();
         list.add(byId);
@@ -163,15 +171,16 @@ public class GameDataWriterTest {
         assertEquals("Expected merge without duplication", 1, users.size());
         JSONObject one = (JSONObject) users.get(0);
         assertEquals("charlie", one.get("username"));
-        // Either pw1 or pw2 is fine (writer prefers last write), but must be one of them.
-        assertTrue(Set.of("pw1","pw2").contains(one.get("password")));
+        // Either pw1 or pw2 is fine (writer prefers last write), but must be one of
+        // them.
+        assertTrue(Set.of("pw1", "pw2").contains(one.get("password")));
         // Ensure a userID exists after merge (id preserved if present)
         assertNotNull(one.get("userID"));
     }
 
     // Scores
 
-    // saveScore should append a historical record with required fields. 
+    // saveScore should append a historical record with required fields.
     @Test
     public void saveScore_appendsHistoricalEntry() throws Exception {
         Score s = makeScore("dora", Difficulty.MEDIUM, 321L, 999L);
@@ -191,7 +200,8 @@ public class GameDataWriterTest {
 
     // Progress
 
-    // saveProgress should upsert by userUUID (single entry updated on repeated saves) 
+    // saveProgress should upsert by userUUID (single entry updated on repeated
+    // saves)
     @Test
     public void saveProgress_upsertsByUserUUID() throws Exception {
         UUID user = UUID.randomUUID();
@@ -221,12 +231,12 @@ public class GameDataWriterTest {
 
     // Leaderboard
 
-    // saveLeaderboard should serialize the current LB entries into playerData.json. 
+    // saveLeaderboard should serialize the current LB entries into playerData.json.
     @Test
     public void saveLeaderboard_serializesEntries() throws Exception {
         Leaderboard lb = new Leaderboard();
-        lb.addScore(makeScore("ella", Difficulty.HARD,   25,  500));
-        lb.addScore(makeScore("fred", Difficulty.EASY,  600, 1200));
+        lb.addScore(makeScore("ella", Difficulty.HARD, 25, 500));
+        lb.addScore(makeScore("fred", Difficulty.EASY, 600, 1200));
         writer.saveLeaderboard(lb);
 
         JSONObject root = readPlayerJson();
@@ -241,16 +251,17 @@ public class GameDataWriterTest {
             assertNotNull(e.get("score"));
             assertNotNull(e.get("timeLeftSec")); // writer uses timeLeftSec for leaderboard
         }
-        assertTrue(names.containsAll(Arrays.asList("ella","fred")));
+        assertTrue(names.containsAll(Arrays.asList("ella", "fred")));
     }
 
     // Rooms / game.json
 
-    // saveRooms should emit minimal, coherent game.json structure with our single room. 
+    // saveRooms should emit minimal, coherent game.json structure with our single
+    // room.
     @Test
     public void saveRooms_writesCoherentGameJson() throws Exception {
         Rooms r = new Rooms();
-        r.setPuzzles(new ArrayList<>());  // writer only reads puzzles list
+        r.setPuzzles(new ArrayList<>()); // writer only reads puzzles list
         ArrayList<Rooms> rooms = new ArrayList<>();
         rooms.add(r);
 
@@ -268,7 +279,7 @@ public class GameDataWriterTest {
 
     // SavedData
 
-    // saveSavedData should append snapshots to savedData array. 
+    // saveSavedData should append snapshots to savedData array.
     @Test
     public void saveSavedData_appends() throws Exception {
         SavedData sd = new SavedData();
@@ -286,7 +297,7 @@ public class GameDataWriterTest {
         JSONObject only = (JSONObject) arr.get(0);
         assertEquals("room1", only.get("room"));
         assertEquals(777, ((Number) only.get("score")).intValue());
-        assertEquals(2,   ((Number) only.get("hints")).intValue());
+        assertEquals(2, ((Number) only.get("hints")).intValue());
         assertEquals("p1", only.get("puzzle"));
     }
 }

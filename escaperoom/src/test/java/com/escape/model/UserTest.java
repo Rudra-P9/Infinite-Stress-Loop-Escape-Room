@@ -11,19 +11,24 @@ import static org.junit.Assert.*;
 /**
  * Unit tests for {@link User}.
  *
- * <p>Focus areas:
+ * <p>
+ * Focus areas:
  * <ul>
- *   <li>Identity & credentials accessors: username, password, userID.</li>
- *   <li>Inventory behaviors (default capacity, capacity limits, duplicates, null inventory).</li>
- *   <li>getCollectedLetters vs. addCollectedLetter interactions.</li>
- *   <li>Setter paths: setInventory, setScore.</li>
- *   <li>No-op methods don't throw (login/checkCredentials/changeUsername/logout are stubs).</li>
+ * <li>Identity & credentials accessors: username, password, userID.</li>
+ * <li>Inventory behaviors (default capacity, capacity limits, duplicates, null
+ * inventory).</li>
+ * <li>getCollectedLetters vs. addCollectedLetter interactions.</li>
+ * <li>Setter paths: setInventory, setScore.</li>
+ * <li>No-op methods don't throw (login/checkCredentials/changeUsername/logout
+ * are stubs).</li>
  * </ul>
  * </p>
  *
- * <p><b>Assumptions:</b> {@link Inventory} supports:
+ * <p>
+ * <b>Assumptions:</b> {@link Inventory} supports:
  * capacity via constructor, {@code addItem(String)} returns false when full,
- * {@code hasItem(String)}, and {@code getItems()} returns a mutable list.</p>
+ * {@code hasItem(String)}, and {@code getItems()} returns a mutable list.
+ * </p>
  */
 public class UserTest {
 
@@ -33,17 +38,18 @@ public class UserTest {
     @Before
     public void setUp() {
         uid = UUID.randomUUID();
-        user = new User(uid, "Leni", "leniSecret");
+        user = new User(uid, "testUser", "password123", "test@example.com");
     }
 
     // Identity & credential getters
 
     @Test
     public void constructor_setsUUIDUsernamePassword() {
-        assertEquals(uid, user.userID);        // public field in our class
-        assertEquals("Leni", user.getUsername());
-        assertEquals("Leni", user.getUser());  // alias to username
-        assertEquals("leniSecret", user.getPassword());
+        assertEquals(uid, user.userID); // public field in our class
+        assertEquals("testUser", user.getUsername());
+        assertEquals("testUser", user.getUser()); // alias to username
+        assertEquals("password123", user.getPassword());
+
     }
 
     @Test
@@ -125,21 +131,22 @@ public class UserTest {
         assertTrue(user.getCollectedLetters().contains("B"));
     }
 
-    // getCollectedLetters exposure semantics 
+    // getCollectedLetters exposure semantics
 
     @Test
-    public void getCollectedLetters_returnsBackedList_fromInventory() {
-        // This verifies current behavior (no defensive copy)
-        // If Inventory.getItems() returns a live list, external mutation will reflect back
+    public void getCollectedLetters_returnsCopy_fromInventory() {
+        // This verifies that we get a safe copy
         user.addCollectedLetter("R");
         ArrayList<String> list = user.getCollectedLetters();
-        list.add("E"); // mutate returned list directly
+        list.add("E"); // mutate returned list
 
-        // Because User delegates to Inventory.getItems(), we expect to see "E" now present
-        assertTrue(user.getCollectedLetters().contains("E"));
+        // The original inventory should NOT contain "E"
+        assertFalse(user.getCollectedLetters().contains("E"));
+        // The local list should contain "E"
+        assertTrue(list.contains("E"));
     }
 
-    // Score 
+    // Score
 
     @Test
     public void score_getterAndSetter() {
@@ -150,7 +157,7 @@ public class UserTest {
         assertEquals(-10, user.getScore());
     }
 
-    //  No-op methods shouldn’t throw
+    // No-op methods shouldn’t throw
 
     @Test
     public void login_noOp_doesNotThrow_andDoesNotChangeState() {
@@ -164,7 +171,7 @@ public class UserTest {
     @Test
     public void checkCredentials_noOp_doesNotThrow() {
         user.checkCredentials("Leni", "leniSecret"); // stub
-        user.checkCredentials(null, null);           // even nulls shouldn’t throw
+        user.checkCredentials(null, null); // even nulls shouldn’t throw
     }
 
     @Test

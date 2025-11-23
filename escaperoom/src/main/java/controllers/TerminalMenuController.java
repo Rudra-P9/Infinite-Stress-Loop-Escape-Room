@@ -42,7 +42,7 @@ public class TerminalMenuController implements Initializable {
     @FXML
     private javafx.scene.control.Label loginLabel;
     @FXML
-    private javafx.scene.control.Label newUserLabel;
+    private javafx.scene.control.Label createAccountLabel;
     @FXML
     private javafx.scene.control.Label backLabel;
 
@@ -50,7 +50,7 @@ public class TerminalMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         typeText(welcomeLabel, "[ Welcome To The Facility 67 Termalink ]", () -> {
             typeText(loginLabel, "[ Login ]", () -> {
-                typeText(newUserLabel, "[ New User ]", () -> {
+                typeText(createAccountLabel, "[ New User ]", () -> {
                     typeText(backLabel, "[ Back ]", null);
                 });
             });

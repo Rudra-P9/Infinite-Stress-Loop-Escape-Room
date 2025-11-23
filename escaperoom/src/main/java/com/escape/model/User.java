@@ -9,10 +9,12 @@ import java.util.UUID;
  * Extends the {@code Accounts} class to inherit account-related functionality.
  * 
  * @author Jacob Kinard
+ * @author Rudra Patel
  */
 public class User {
     /**
      * Returns the username of this user.
+     * 
      * @return the username
      */
     public String getUser() {
@@ -22,10 +24,12 @@ public class User {
     public UUID userID;
     private String username;
     private String password;
+    private String email;
     private Inventory inventory;
 
     /**
      * Returns the username (same as getUser but clearer name for writers/loaders).
+     * 
      * @return username
      */
     public String getUsername() {
@@ -33,7 +37,9 @@ public class User {
     }
 
     /**
-     * Returns the user's password (used by the writer; consider removing in production).
+     * Returns the user's password (used by the writer; consider removing in
+     * production).
+     * 
      * @return password
      */
     public String getPassword() {
@@ -41,17 +47,36 @@ public class User {
     }
 
     /**
+     * Returns the user's email.
+     * 
+     * @return email
+     */
+    public String getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Sets the user's email.
+     * 
+     * @param email the new email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
      * Constructs a new User with the specified credentials and inventory.
      *
-     * @param userID    the unique identifier for the user
-     * @param username  the username for login
-     * @param password  the password for login
-     * @param inventory the inventory associated with the user
+     * @param userID   the unique identifier for the user
+     * @param username the username for login
+     * @param password the password for login
+     * @param email    the email for the user
      */
-    public User(UUID userID, String username, String password) {
+    public User(UUID userID, String username, String password, String email) {
         this.password = password;
         this.username = username;
         this.userID = userID;
+        this.email = email;
         // Initialize a default inventory
         this.inventory = new Inventory(5);
     }
@@ -72,19 +97,22 @@ public class User {
      * @param username the username to verify
      * @param password the password to verify
      */
-    public void checkCredentials(String username, String password) {} // TODO
+    public void checkCredentials(String username, String password) {
+    } // TODO
 
     /**
      * Changes the user's username to the specified new value.
      *
      * @param newUsername the new username to assign
      */
-    public void changeUsername(String newUsername) {}
+    public void changeUsername(String newUsername) {
+    }
 
     /**
      * Logs the user out of the system.
      */
-    public void logout() {}
+    public void logout() {
+    }
 
     /*
      * Inventory accessors. We keep a convenience method named
@@ -119,12 +147,15 @@ public class User {
      * Returns true if the item was added (capacity permitting).
      */
     public boolean addCollectedLetter(String letter) {
-        if (letter == null) return false;
-        if (this.inventory == null) this.inventory = new Inventory(26);
-        if (this.inventory.hasItem(letter)) return false; // avoid duplicates
+        if (letter == null)
+            return false;
+        if (this.inventory == null)
+            this.inventory = new Inventory(26);
+        if (this.inventory.hasItem(letter))
+            return false; // avoid duplicates
         return this.inventory.addItem(letter);
     }
-    
+
     /**
      * TESTING THE USER CLASS CODE BELOW
      */
@@ -134,11 +165,11 @@ public class User {
      * 
      * @param args command-line arguments (not used)
      */
-     public static void main(String[] args){
-        
-     }
+    public static void main(String[] args) {
 
-     private int score;
+    }
+
+    private int score;
 
     /** Returns the user's current score. */
     public int getScore() {
@@ -147,6 +178,6 @@ public class User {
 
     /** Sets the user's score. */
     public void setScore(int score) {
-       this.score = score;
+        this.score = score;
     }
 }

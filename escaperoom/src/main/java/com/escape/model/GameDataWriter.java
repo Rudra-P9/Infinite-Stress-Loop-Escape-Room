@@ -10,19 +10,22 @@ import org.json.simple.JSONObject;
  * Persists game data back to JSON files.
  *
  * Scope:
- *  Users - playerData.json ("users" array)
- *  Scores - playerData.json ("scores" array)
- *  Leaderboard entries → playerData.json ("leaderboard" array)
- *  SavedData and Rooms in a minimal, schema-aligned way for our project
+ * Users - playerData.json ("users" array)
+ * Scores - playerData.json ("scores" array)
+ * Leaderboard entries → playerData.json ("leaderboard" array)
+ * SavedData and Rooms in a minimal, schema-aligned way for our project
  *
  * Design goals:
- *  Idempotent updates: if a user with same userID/username exists, update instead of duplicating.
- *  Pretty-printed output for readable diffs.
- *  Fail-quietly for missing files (create new JSON objects when needed).
+ * Idempotent updates: if a user with same userID/username exists, update
+ * instead of duplicating.
+ * Pretty-printed output for readable diffs.
+ * Fail-quietly for missing files (create new JSON objects when needed).
  *
- * Authors: Dylan Diaz, Rudra Patel
+ * Authors: Dylan Diaz
  * Tweaks: Kirtan Patel
- * Version: 5.0
+ * 
+ * @author Rudra Patel
+ *         Version: 6.0
  */
 public class GameDataWriter {
 
@@ -30,7 +33,8 @@ public class GameDataWriter {
 
     /**
      * Merge a list of users into playerData.json - "users".
-     * If an entry matches by userID or username, it is replaced/updated; otherwise, it is appended.
+     * If an entry matches by userID or username, it is replaced/updated; otherwise,
+     * it is appended.
      */
     public void saveUsers(ArrayList<User> users) {
         JSONObject root = readJsonObject("escaperoom/src/main/resources/json/playerData.json");
@@ -42,11 +46,13 @@ public class GameDataWriter {
             userObj.put("userID", user.userID == null ? null : user.userID.toString());
             userObj.put("username", user.getUsername());
             userObj.put("password", user.getPassword());
+            userObj.put("email", user.getEmail());
             // Inventory block (capacity + items)
             JSONObject invObj = new JSONObject();
             JSONArray items = new JSONArray();
             if (user.getInventory() != null && user.getInventory().getItems() != null) {
-                for (String it : user.getInventory().getItems()) items.add(it);
+                for (String it : user.getInventory().getItems())
+                    items.add(it);
                 invObj.put("capacity", user.getInventory().getCapacity());
             } else {
                 invObj.put("capacity", 0);
@@ -57,7 +63,8 @@ public class GameDataWriter {
             // Replace existing entry if same userID or username; else append
             boolean replaced = false;
             for (Object o : new ArrayList<>(usersArray)) {
-                if (!(o instanceof JSONObject)) continue;
+                if (!(o instanceof JSONObject))
+                    continue;
                 JSONObject existing = (JSONObject) o;
 
                 // Prefer to match by userID when available
@@ -82,7 +89,8 @@ public class GameDataWriter {
                 }
             }
 
-            if (!replaced) usersArray.add(userObj);
+            if (!replaced)
+                usersArray.add(userObj);
         }
 
         root.put("users", usersArray);
@@ -101,11 +109,13 @@ public class GameDataWriter {
         userObj.put("userID", user.userID == null ? null : user.userID.toString());
         userObj.put("username", user.getUsername());
         userObj.put("password", user.getPassword());
+        userObj.put("email", user.getEmail());
         // Persist inventory (capacity + items)
         JSONObject invObj = new JSONObject();
         JSONArray items = new JSONArray();
         if (user.getInventory() != null && user.getInventory().getItems() != null) {
-            for (String it : user.getInventory().getItems()) items.add(it);
+            for (String it : user.getInventory().getItems())
+                items.add(it);
             invObj.put("capacity", user.getInventory().getCapacity());
         } else {
             invObj.put("capacity", 0);
@@ -115,7 +125,8 @@ public class GameDataWriter {
 
         boolean replaced = false;
         for (Object o : new ArrayList<>(usersArray)) {
-            if (!(o instanceof JSONObject)) continue;
+            if (!(o instanceof JSONObject))
+                continue;
             JSONObject existing = (JSONObject) o;
 
             if (user.userID != null && user.userID.toString().equals(existing.get("userID"))) {
@@ -131,7 +142,8 @@ public class GameDataWriter {
                 break;
             }
         }
-        if (!replaced) usersArray.add(userObj);
+        if (!replaced)
+            usersArray.add(userObj);
 
         root.put("users", usersArray);
         writeFile("escaperoom/src/main/resources/json/playerData.json", root);
@@ -224,70 +236,72 @@ public class GameDataWriter {
         JSONArray scoresArray = (JSONArray) root.getOrDefault("scores", new JSONArray());
 
         JSONObject scoreObj = new JSONObject();
-        scoreObj.put("username",   score.getUsername());
+        scoreObj.put("username", score.getUsername());
         scoreObj.put("difficulty", score.getDifficulty() == null ? null : score.getDifficulty().toString());
         // Some models use "timeLeftSec", some "timeSeconds"; we persist "timeSeconds"
         scoreObj.put("timeSeconds", score.getTimeLeftSec());
-        scoreObj.put("score",       score.getScore());
-        scoreObj.put("date",        score.getDate() == null ? null : score.getDate().toString());
+        scoreObj.put("score", score.getScore());
+        scoreObj.put("date", score.getDate() == null ? null : score.getDate().toString());
 
         scoresArray.add(scoreObj);
         root.put("scores", scoresArray);
         writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
 
-            /**
-         * Upserts a progress snapshot into playerData.json under the "progress" array.
-         * One entry per userUUID is kept; new saves replace the old one.
-         *
-         * JSON shape per entry:
-         * {
-         *   "userUUID": "...",
-         *   "progressUUID": "...",
-         *   "c": 3,                 // story position
-         *   "answered": 3,          // questions answered
-         *   "hints": 2              // hints used
-         * }
-         */
-        public void saveProgress(Progress p) {
-            if (p == null) return;
+    /**
+     * Upserts a progress snapshot into playerData.json under the "progress" array.
+     * One entry per userUUID is kept; new saves replace the old one.
+     *
+     * JSON shape per entry:
+     * {
+     * "userUUID": "...",
+     * "progressUUID": "...",
+     * "c": 3, // story position
+     * "answered": 3, // questions answered
+     * "hints": 2 // hints used
+     * }
+     */
+    public void saveProgress(Progress p) {
+        if (p == null)
+            return;
 
-            final String PATH = "escaperoom/src/main/resources/json/playerData.json";
+        final String PATH = "escaperoom/src/main/resources/json/playerData.json";
 
-            // 1) Load or create root
-            org.json.simple.JSONObject root = readJsonObject(PATH);
-            if (root == null) root = new org.json.simple.JSONObject();
+        // 1) Load or create root
+        org.json.simple.JSONObject root = readJsonObject(PATH);
+        if (root == null)
+            root = new org.json.simple.JSONObject();
 
-            //  Resolve "progress" array
-            org.json.simple.JSONArray arr =
-                (org.json.simple.JSONArray) root.getOrDefault("progress", new org.json.simple.JSONArray());
+        // Resolve "progress" array
+        org.json.simple.JSONArray arr = (org.json.simple.JSONArray) root.getOrDefault("progress",
+                new org.json.simple.JSONArray());
 
-            //  Build entry for this user
-            org.json.simple.JSONObject jo = new org.json.simple.JSONObject();
-            jo.put("userUUID",      p.getUserUUID()     == null ? null : p.getUserUUID().toString());
-            jo.put("progressUUID",  p.getProgressUUID() == null ? null : p.getProgressUUID().toString());
-            jo.put("c",             Integer.valueOf(p.getStoryPos()));
-            jo.put("answered",      Integer.valueOf(p.getQuestionsAnswered()));
-            jo.put("hints",         Integer.valueOf(p.getHintsUsed()));
+        // Build entry for this user
+        org.json.simple.JSONObject jo = new org.json.simple.JSONObject();
+        jo.put("userUUID", p.getUserUUID() == null ? null : p.getUserUUID().toString());
+        jo.put("progressUUID", p.getProgressUUID() == null ? null : p.getProgressUUID().toString());
+        jo.put("c", Integer.valueOf(p.getStoryPos()));
+        jo.put("answered", Integer.valueOf(p.getQuestionsAnswered()));
+        jo.put("hints", Integer.valueOf(p.getHintsUsed()));
 
-            // Upsert by userUUID
-            boolean replaced = false;
-            for (int i = 0; i < arr.size(); i++) {
-                org.json.simple.JSONObject existing = (org.json.simple.JSONObject) arr.get(i);
-                Object uid = existing.get("userUUID");
-                if (uid != null && uid.equals(jo.get("userUUID"))) {
-                    arr.set(i, jo);
-                    replaced = true;
-                    break;
-                }
+        // Upsert by userUUID
+        boolean replaced = false;
+        for (int i = 0; i < arr.size(); i++) {
+            org.json.simple.JSONObject existing = (org.json.simple.JSONObject) arr.get(i);
+            Object uid = existing.get("userUUID");
+            if (uid != null && uid.equals(jo.get("userUUID"))) {
+                arr.set(i, jo);
+                replaced = true;
+                break;
             }
-            if (!replaced) arr.add(jo);
-
-            //  Write back
-            root.put("progress", arr);
-            writeFile(PATH, root);
         }
+        if (!replaced)
+            arr.add(jo);
 
+        // Write back
+        root.put("progress", arr);
+        writeFile(PATH, root);
+    }
 
     /**
      * Persist a simplified leaderboard to playerData.json -- "leaderboard".
@@ -295,34 +309,35 @@ public class GameDataWriter {
      * per-entry score/timing as your Leaderboard design stabilizes.
      */
     public void saveLeaderboard(Leaderboard leaderboard) {
-        //Read current data from playerData.json
+        // Read current data from playerData.json
         JSONObject root = readJsonObject("escaperoom/src/main/resources/json/playerData.json");
-        //rebuilds the leaderboard array from the  current leaderboard
+        // rebuilds the leaderboard array from the current leaderboard
         JSONArray leaderboardArray = (JSONArray) root.getOrDefault("leaderboard", new JSONArray());
-        
+
         if (leaderboard != null) {
             ArrayList<Score> scores = leaderboard.getLB();
             if (scores != null) {
                 for (Score s : scores) {
                     JSONObject entryObj = new JSONObject();
-                    entryObj.put("username",   s.getUsername());
+                    entryObj.put("username", s.getUsername());
                     entryObj.put("difficulty", (s.getDifficulty() == null) ? null : s.getDifficulty().toString());
 
-        
-                entryObj.put("timeLeftSec",  s.getTimeLeftSec());   
-                entryObj.put("score",      s.getScore());
-                entryObj.put("date",       (s.getDate() == null) ? null : s.getDate().toString());
+                    entryObj.put("timeLeftSec", s.getTimeLeftSec());
+                    entryObj.put("score", s.getScore());
+                    entryObj.put("date", (s.getDate() == null) ? null : s.getDate().toString());
 
-                leaderboardArray.add(entryObj);
+                    leaderboardArray.add(entryObj);
                 }
-            }   
+            }
         }
         root.put("leaderboard", leaderboardArray);
-            writeFile("escaperoom/src/main/resources/json/playerData.json", root);
+        writeFile("escaperoom/src/main/resources/json/playerData.json", root);
     }
-    /*SAVED DATA & ACCOUNTS
 
-    /**
+    /*
+     * SAVED DATA & ACCOUNTS
+     * 
+     * /**
      * Append a saved-game snapshot to playerData.json -- "savedData".
      * Fields mirror the SavedData structure we use in this project.
      */
@@ -331,9 +346,9 @@ public class GameDataWriter {
         JSONArray savedDataArray = (JSONArray) root.getOrDefault("savedData", new JSONArray());
 
         JSONObject saveObj = new JSONObject();
-        saveObj.put("room",   data.room);
-        saveObj.put("score",  data.score);
-        saveObj.put("hints",  data.hints);
+        saveObj.put("room", data.room);
+        saveObj.put("score", data.score);
+        saveObj.put("hints", data.hints);
         saveObj.put("puzzle", data.puzzle);
 
         savedDataArray.add(saveObj);
@@ -345,17 +360,20 @@ public class GameDataWriter {
      * Convenience method: persist all account users as a batch.
      */
     public void saveAccounts(Accounts accounts) {
-        if (accounts == null) return;
+        if (accounts == null)
+            return;
         ArrayList<User> list = accounts.getAccounts();
         if (list != null && !list.isEmpty()) {
             saveUsers(list);
         }
     }
 
-    /* I/O & PRINT HELPERS
-
-    /**
-     * Read JSON object from path. If file does not exist, return an empty JSON object.
+    /*
+     * I/O & PRINT HELPERS
+     * 
+     * /**
+     * Read JSON object from path. If file does not exist, return an empty JSON
+     * object.
      * This keeps writer calls simple: read; mutate; write.
      */
     private JSONObject readJsonObject(String path) {
@@ -385,29 +403,37 @@ public class GameDataWriter {
         }
     }
 
-    //pretty printing
+    // pretty printing
 
-    private String prettyPrint(Object json) { return prettyPrint(json, 0) + System.lineSeparator(); }
+    private String prettyPrint(Object json) {
+        return prettyPrint(json, 0) + System.lineSeparator();
+    }
 
     /**
      * Pretty-print a JSON object/array with stable, human-readable formatting.
-     * Preserves order within a single run and produces two-space indentation to keep diffs short.
+     * Preserves order within a single run and produces two-space indentation to
+     * keep diffs short.
      * 
      * @param json   the object to pretty-print
      * @param indent the number of spaces to indent the output
      * @return the pretty-printed string
      */
     private String prettyPrint(Object json, int indent) {
-        if (json == null) return "null";
-        if (json instanceof JSONObject) return prettyPrintObject((JSONObject) json, indent);
-        if (json instanceof JSONArray)  return prettyPrintArray((JSONArray)  json, indent);
-        if (json instanceof String)     return '"' + escapeJson((String) json) + '"';
+        if (json == null)
+            return "null";
+        if (json instanceof JSONObject)
+            return prettyPrintObject((JSONObject) json, indent);
+        if (json instanceof JSONArray)
+            return prettyPrintArray((JSONArray) json, indent);
+        if (json instanceof String)
+            return '"' + escapeJson((String) json) + '"';
         return json.toString();
     }
 
     /**
      * Pretty-print a JSON object with stable, human-readable formatting.
-     * Preserves order within a single run and produces two-space indentation to keep diffs short.
+     * Preserves order within a single run and produces two-space indentation to
+     * keep diffs short.
      * 
      * @param obj    the object to pretty-print
      * @param indent the number of spaces to indent the output
@@ -422,8 +448,9 @@ public class GameDataWriter {
             String key = keyObj == null ? "null" : keyObj.toString();
             Object val = obj.get(keyObj);
             sb.append(pad).append('"').append(escapeJson(key)).append('"').append(": ");
-            sb.append( prettyPrint(val, indent + 1) );
-            if (i < obj.size() - 1) sb.append(',');
+            sb.append(prettyPrint(val, indent + 1));
+            if (i < obj.size() - 1)
+                sb.append(',');
             sb.append('\n');
             i++;
         }
@@ -433,9 +460,10 @@ public class GameDataWriter {
 
     /**
      * Pretty-print a JSON array with stable, human-readable formatting.
-     * Preserves order within a single run and produces two-space indentation to keep diffs short.
+     * Preserves order within a single run and produces two-space indentation to
+     * keep diffs short.
      * 
-     * @param arr   the array to pretty-print
+     * @param arr    the array to pretty-print
      * @param indent the number of spaces to indent the output
      * @return the pretty-printed string
      */
@@ -444,8 +472,9 @@ public class GameDataWriter {
         sb.append('[').append('\n');
         String pad = "  ".repeat(indent + 1);
         for (int i = 0; i < arr.size(); i++) {
-            sb.append(pad).append( prettyPrint(arr.get(i), indent + 1) );
-            if (i < arr.size() - 1) sb.append(',');
+            sb.append(pad).append(prettyPrint(arr.get(i), indent + 1));
+            if (i < arr.size() - 1)
+                sb.append(',');
             sb.append('\n');
         }
         sb.append("  ".repeat(indent)).append(']');
@@ -455,103 +484,120 @@ public class GameDataWriter {
     /**
      * Escape a string according to JSON rules.
      * 
-     * All characters between 0x00 and 0x1F (inclusive) are escaped as well as the following characters: \", \, \b, \f, \n, \r, \t
+     * All characters between 0x00 and 0x1F (inclusive) are escaped as well as the
+     * following characters: \", \, \b, \f, \n, \r, \t
      * 
      * @param s the string to escape
      * @return the escaped string
      */
     private String escapeJson(String s) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             switch (c) {
-                case '"' : sb.append("\\\""); break;
-                case '\\': sb.append("\\\\"); break;
-                case '\b': sb.append("\\b");  break;
-                case '\f': sb.append("\\f");  break;
-                case '\n': sb.append("\\n");  break;
-                case '\r': sb.append("\\r");  break;
-                case '\t': sb.append("\\t");  break;
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
                 default:
                     if (c < 0x20 || c > 0x7F) {
                         sb.append(String.format("\\u%04x", (int) c));
-                    } else sb.append(c);
+                    } else
+                        sb.append(c);
             }
         }
         return sb.toString();
- 
- 
+
     }
+
     /**
-     * Quick test to verify that GameDataLoader and GameDataWriter interact correctly.
+     * Quick test to verify that GameDataLoader and GameDataWriter interact
+     * correctly.
      * Test sequence:
-     *  1. Load users from playerData.json
-     *  2. Append a unique user to playerData.json
-     *  3. Reload users from playerData.json
-     *  4. Quick cleanup of the user just written
+     * 1. Load users from playerData.json
+     * 2. Append a unique user to playerData.json
+     * 3. Reload users from playerData.json
+     * 4. Quick cleanup of the user just written
      * 
      */
     public static void main(String[] args) {
-    GameDataLoader loader = new GameDataLoader();
-    GameDataWriter writer = new GameDataWriter();
+        GameDataLoader loader = new GameDataLoader();
+        GameDataWriter writer = new GameDataWriter();
 
-    // Before
-    int before = loader.getUsers().size();
-    System.out.println("Before: users=" + before);
+        // Before
+        int before = loader.getUsers().size();
+        System.out.println("Before: users=" + before);
 
-    // Write a unique user
-    String uname = "TestUser_" + System.currentTimeMillis();
-    User u = new User(null, uname, "pw");
-    writer.saveUser(u);
-    System.out.println("Appended: " + uname);
+        // Write a unique user
+        String uname = "TestUser_" + System.currentTimeMillis();
+        User u = new User(null, uname, "pw", "test@example.com");
+        writer.saveUser(u);
+        System.out.println("Appended: " + uname);
 
-    // After
-    int after = loader.getUsers().size();
-    System.out.println("After: users=" + after + " (should be " + (before + 1) + ")");
+        // After
+        int after = loader.getUsers().size();
+        System.out.println("After: users=" + after + " (should be " + (before + 1) + ")");
 
-    // quick cleanup so we can re-run
-    try {
-        removeUserByUsername(uname); // helper below
-        System.out.println("Cleanup removed: " + uname);
-    } catch (Exception e) {
-        System.out.println("Cleanup skipped: " + e.getMessage());
-    }
-        
-}
-
-// minimal cleanup helper (same path our writer uses)
-private static final String PLAYER_PATH = "escaperoom/src/main/resources/json/playerData.json";
-
-/**
- * Helper to remove a user from playerData.json by username.
- * 
- * Quick-and-dirty removal of a user (by username) from playerData.json.
- * This is intended for temporary testing and debugging use only.
- * 
- * @param uname the username of the user to remove
- * @throws Exception if the file cannot be read, parsed, or written
- */
-@SuppressWarnings("unchecked")
-private static void removeUserByUsername(String uname) throws Exception {
-    var parser = new org.json.simple.parser.JSONParser();
-    org.json.simple.JSONObject root;
-    try (java.io.FileReader r = new java.io.FileReader(PLAYER_PATH)) {
-        root = (org.json.simple.JSONObject) parser.parse(r);
-    }
-    var users = (org.json.simple.JSONArray) root.getOrDefault("users", new org.json.simple.JSONArray());
-    java.util.Iterator<?> it = users.iterator();
-    while (it.hasNext()) {
-        Object o = it.next();
-        if (o instanceof org.json.simple.JSONObject) {
-            var jo = (org.json.simple.JSONObject) o;
-            if (uname.equals(String.valueOf(jo.get("username")))) it.remove();
+        // quick cleanup so we can re-run
+        try {
+            removeUserByUsername(uname); // helper below
+            System.out.println("Cleanup removed: " + uname);
+        } catch (Exception e) {
+            System.out.println("Cleanup skipped: " + e.getMessage());
         }
+
     }
-    root.put("users", users);
-    GameDataWriter gw = new GameDataWriter();
-    gw.writeFile(PLAYER_PATH, root);   // writeFile(...) already pretty-prints
+
+    // minimal cleanup helper (same path our writer uses)
+    private static final String PLAYER_PATH = "escaperoom/src/main/resources/json/playerData.json";
+
+    /**
+     * Helper to remove a user from playerData.json by username.
+     * 
+     * Quick-and-dirty removal of a user (by username) from playerData.json.
+     * This is intended for temporary testing and debugging use only.
+     * 
+     * @param uname the username of the user to remove
+     * @throws Exception if the file cannot be read, parsed, or written
+     */
+    @SuppressWarnings("unchecked")
+    private static void removeUserByUsername(String uname) throws Exception {
+        var parser = new org.json.simple.parser.JSONParser();
+        org.json.simple.JSONObject root;
+        try (java.io.FileReader r = new java.io.FileReader(PLAYER_PATH)) {
+            root = (org.json.simple.JSONObject) parser.parse(r);
+        }
+        var users = (org.json.simple.JSONArray) root.getOrDefault("users", new org.json.simple.JSONArray());
+        java.util.Iterator<?> it = users.iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof org.json.simple.JSONObject) {
+                var jo = (org.json.simple.JSONObject) o;
+                if (uname.equals(String.valueOf(jo.get("username"))))
+                    it.remove();
+            }
+        }
+        root.put("users", users);
+        GameDataWriter gw = new GameDataWriter();
+        gw.writeFile(PLAYER_PATH, root); // writeFile(...) already pretty-prints
     }
 }
-
-

@@ -35,8 +35,9 @@ public class Accounts {
      *
      * @param username the desired username
      * @param password the desired password
+     * @param email    the desired email
      */
-    public void createAccount(String username, String password) {
+    public void createAccount(String username, String password, String email) {
         if (getUser(username) != null) {
             System.out.println("Account already exists for username: " + username);
             return;
@@ -57,7 +58,7 @@ public class Accounts {
             // but log for visibility.
             System.out.println("Warning: could not check persisted users: " + e.getMessage());
         }
-        accounts.add(new User(Driver.getUUID(), username, password));
+        accounts.add(new User(Driver.getUUID(), username, password, email));
         Accounts.toString("Account created for username: " + username);
 
     }
@@ -85,8 +86,14 @@ public class Accounts {
      */
     public User getUser(String username) {
         for (User user : accounts) {
-            if (user.getUser().equals(username)) {
-                return user;
+            if (username == null) {
+                if (user.getUsername() == null) {
+                    return user;
+                }
+            } else {
+                if (username.equals(user.getUsername())) {
+                    return user;
+                }
             }
         }
         return null;
@@ -138,7 +145,7 @@ public class Accounts {
         }
 
         // Create and persist the user
-        accounts.createAccount(username, password);
+        accounts.createAccount(username, password, "test@example.com");
         ArrayList<User> users = new ArrayList<>();
         User user = accounts.getUser(username);
         if (user != null)
@@ -161,6 +168,24 @@ public class Accounts {
         }
         for (User user : accounts) {
             if (user.getUsername() != null && user.getUsername().equalsIgnoreCase(uNorm)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Case-insensitive search for a user by email.
+     * 
+     * @param email the email to search for (case-insensitive)
+     * @return the User object associated with the email if found, null otherwise
+     */
+    public User getUserByEmail(String email) {
+        if (email == null || accounts.isEmpty()) {
+            return null;
+        }
+        for (User user : accounts) {
+            if (user.getEmail() != null && user.getEmail().equalsIgnoreCase(email)) {
                 return user;
             }
         }

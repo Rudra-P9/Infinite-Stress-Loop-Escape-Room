@@ -173,6 +173,7 @@
         "capacity": 7
       },
       "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
+      "email": null,
       "username": "EscapeRoomLover"
     },
     {
@@ -182,6 +183,7 @@
         "capacity": 3
       },
       "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
+      "email": null,
       "username": "iGitThis"
     },
     {
@@ -191,6 +193,7 @@
         "capacity": 5
       },
       "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
+      "email": null,
       "username": "PushPioneer12"
     },
     {
@@ -202,6 +205,7 @@
         "capacity": 7
       },
       "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
+      "email": null,
       "username": "NullPointerHero"
     },
     {
@@ -211,6 +215,7 @@
         "capacity": 5
       },
       "userID": "a369165b-b6cd-4e8c-b06a-c9cdcf7e3b33",
+      "email": null,
       "username": "Logan Rivers"
     },
     {
@@ -220,6 +225,7 @@
         "capacity": 5
       },
       "userID": "test-user-uuid-1234",
+      "email": "test@example.com",
       "username": "testuser"
     }
   ]

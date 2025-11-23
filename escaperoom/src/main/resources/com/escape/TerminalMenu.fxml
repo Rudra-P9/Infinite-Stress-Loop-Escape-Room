@@ -22,14 +22,14 @@
             <Font name="Monospaced Regular" size="50.0" />
          </font>
       </Label>
-      <Label fx:id="newUserLabel" alignment="CENTER" layoutX="777.0" layoutY="592.0" prefHeight="62.0" prefWidth="435.0" style="-fx-cursor: hand;" text="" textFill="LIME">
+      <Label fx:id="createAccountLabel" alignment="CENTER" layoutX="777.0" layoutY="592.0" onMouseClicked="#goToCreateAccount" pickOnBounds="true" prefHeight="62.0" prefWidth="435.0" style="-fx-cursor: hand;" text="" textFill="LIME">
          <font>
             <Font name="Monospaced Regular" size="50.0" />
          </font>
       </Label>
-      <Label fx:id="backLabel" alignment="CENTER" layoutX="850.0" layoutY="880.0" onMouseClicked="#goToMainScreen" pickOnBounds="true" prefHeight="88.0" prefWidth="290.0" style="-fx-cursor: hand;" text="" textFill="LIME">
+      <Label fx:id="backLabel" alignment="CENTER" layoutX="358.0" layoutY="880.0" onMouseClicked="#goToMainScreen" pickOnBounds="true" prefHeight="60.0" prefWidth="226.0" style="-fx-cursor: hand;" text="" textFill="LIME">
          <font>
-            <Font name="Monospaced Regular" size="50.0" />
+            <Font name="Monospaced Regular" size="40.0" />
          </font>
       </Label>
       <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="351.0" layoutY="190.0" prefHeight="60.0" prefWidth="1287.0" text="" textFill="LIME">

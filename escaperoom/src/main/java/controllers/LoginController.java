@@ -54,7 +54,7 @@ public class LoginController implements Initializable {
             // Login failed
             enterButtonLabel.setText("[ Invalid Credentials ]");
             enterButtonLabel.setTextFill(javafx.scene.paint.Color.web("#ff0000"));
-            // Reset text after a delay (optional, but good UX)
+            // Reset text after a delay
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
