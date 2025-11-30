@@ -40,7 +40,7 @@
             <Font name="Monospaced Regular" size="25.0" />
          </font>
       </javafx.scene.control.PasswordField>
-      <Label fx:id="enterButtonLabel" alignment="CENTER" layoutX="358.0" layoutY="630.0" onMouseClicked="#goToGateway" pickOnBounds="true" prefHeight="60.0" prefWidth="1287.0" style="-fx-cursor: hand;" text="" textFill="LIME">
+      <Label fx:id="enterButtonLabel" alignment="CENTER" layoutX="358.0" layoutY="630.0" onMouseClicked="#goToDifficultyMenu" pickOnBounds="true" prefHeight="60.0" prefWidth="1287.0" style="-fx-cursor: hand;" text="" textFill="LIME">
          <font>
             <Font name="Monospaced Regular" size="40.0" />
          </font>

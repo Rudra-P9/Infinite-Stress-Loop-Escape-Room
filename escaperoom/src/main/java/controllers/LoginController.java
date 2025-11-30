@@ -32,7 +32,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void goToGateway(MouseEvent event) throws IOException {
+    private void goToDifficultyMenu(MouseEvent event) throws IOException {
         verifyAndLogin();
     }
 
@@ -53,12 +53,15 @@ public class LoginController implements Initializable {
             enterButtonLabel.setText("[ Access Granted ]");
             enterButtonLabel.setTextFill(javafx.scene.paint.Color.LIME);
 
-            // Navigate to Gateway after 1 second
+            // Set global user
+            App.currentUser = user;
+
+            // Navigate to DifficultyMenu after 1 second
             javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
                     javafx.util.Duration.seconds(1));
             pause.setOnFinished(e -> {
                 try {
-                    App.setRoot("Gateway");
+                    App.setRoot("DifficultyMenu");
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

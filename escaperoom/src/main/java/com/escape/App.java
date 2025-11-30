@@ -13,11 +13,16 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import com.escape.model.User;
+import com.escape.model.Difficulty;
 
 /**
  * JavaFX App
  */
 public class App extends Application {
+
+    public static User currentUser;
+    public static Difficulty currentDifficulty;
 
     private static Scene scene;
     // Define the target resolution (design resolution)
@@ -50,7 +55,8 @@ public class App extends Application {
         }
 
         if (fxmlUrl == null) {
-            throw new IllegalStateException("FXML resource not found: '" + fxml + ".fxml' -- looked for: '" + fxml + ".fxml' relative to " + App.class.getName() + " and '/com/escape/" + fxml + ".fxml'.\n" +
+            throw new IllegalStateException("FXML resource not found: '" + fxml + ".fxml' -- looked for: '" + fxml
+                    + ".fxml' relative to " + App.class.getName() + " and '/com/escape/" + fxml + ".fxml'.\n" +
                     "Ensure the FXML file is located in 'src/main/resources/com/escape/' and is included on the module/classpath.");
         }
 

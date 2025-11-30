@@ -31,7 +31,7 @@
             </DropShadow>
          </effect>
       </Label>
-      <Label fx:id="enterLabel" alignment="CENTER" layoutX="722.0" layoutY="995.0" prefHeight="48.0" prefWidth="485.0" text="[ PRESS ENTER TO CONTINUE ]" textFill="#ff8243db" wrapText="true">
+      <Label fx:id="enterLabel" alignment="CENTER" layoutX="722.0" layoutY="995.0" prefHeight="48.0" prefWidth="485.0" text="[ PRESS ENTER TO BEGIN ]" textFill="#ff8243db" wrapText="true">
          <font>
             <Font name="Marker Felt Thin" size="36.0" />
          </font>

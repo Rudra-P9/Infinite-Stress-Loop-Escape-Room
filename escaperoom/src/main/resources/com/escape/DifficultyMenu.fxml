@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DifficultyMenuController">
+   <children>
+      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="false" AnchorPane.rightAnchor="0.0">
+         <image>
+            <Image url="@../../images/login%20Screen.png" />
+         </image>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+      </ImageView>
+      <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="355.0" layoutY="190.0" prefHeight="60.0" prefWidth="1287.0" text="" textFill="LIME">
+         <font>
+            <Font name="Monospaced Regular" size="50.0" />
+         </font>
+      </Label>
+      <Label fx:id="easyLabel" alignment="CENTER" layoutX="782.0" layoutY="390.0" onMouseClicked="#goToEasy" pickOnBounds="true" prefHeight="62.0" prefWidth="435.0" style="-fx-cursor: hand;" text="" textFill="LIME">
+         <font>
+            <Font name="Monospaced Regular" size="50.0" />
+         </font>
+      </Label>
+      <Label fx:id="mediumLabel" alignment="CENTER" layoutX="782.0" layoutY="520.0" onMouseClicked="#goToMedium" pickOnBounds="true" prefHeight="62.0" prefWidth="435.0" style="-fx-cursor: hand;" text="" textFill="LIME">
+         <font>
+            <Font name="Monospaced Regular" size="50.0" />
+         </font>
+      </Label>
+      <Label fx:id="hardLabel" alignment="CENTER" layoutX="782.0" layoutY="650.0" onMouseClicked="#goToHard" pickOnBounds="true" prefHeight="62.0" prefWidth="435.0" style="-fx-cursor: hand;" text="" textFill="LIME">
+         <font>
+            <Font name="Monospaced Regular" size="50.0" />
+         </font>
+      </Label>
+      <Label fx:id="backLabel" alignment="CENTER" layoutX="358.0" layoutY="880.0" onMouseClicked="#goBack" pickOnBounds="true" prefHeight="60.0" prefWidth="226.0" style="-fx-cursor: hand;" text="" textFill="LIME">
+         <font>
+            <Font name="Monospaced Regular" size="40.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
