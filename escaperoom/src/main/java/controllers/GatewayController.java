@@ -57,7 +57,7 @@ public class GatewayController implements Initializable {
     @FXML
     private void handleKeyPressed(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.ENTER) {
-            App.setRoot("primary");
+            App.setRoot("GameIntro");
         }
     }
 }
