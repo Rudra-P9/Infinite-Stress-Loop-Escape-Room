@@ -151,11 +151,14 @@ public class GameintroController implements Initializable {
         }
     }
 
-    // Placeholder for door navigation
     @FXML
     private void handleDoor1(MouseEvent event) {
-        System.out.println("Door 1 clicked");
-        // App.setRoot("Room1"); // Example
+        try {
+            com.escape.App.setRoot("RoomOneIntro");
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load RoomOneIntro: " + e.getMessage());
+        }
     }
 
     @FXML
