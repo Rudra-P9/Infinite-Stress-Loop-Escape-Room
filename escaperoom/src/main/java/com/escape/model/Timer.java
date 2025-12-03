@@ -12,9 +12,9 @@ public class Timer {
     private final int initialSeconds;
 
     // monotonic nanosecond times
-    private long startedAtNs = 0L;           // when counting began (first start)
-    private long pausedAtNs = 0L;            // when last paused (if paused)
-    private long accumulatedElapsedNs = 0L;  // total elapsed time captured during pauses
+    private long startedAtNs = 0L; // when counting began (first start)
+    private long pausedAtNs = 0L; // when last paused (if paused)
+    private long accumulatedElapsedNs = 0L; // total elapsed time captured during pauses
     private boolean running = false;
 
     public Timer(int initialSeconds) {
@@ -37,13 +37,15 @@ public class Timer {
             // so just flip running on and clear pausedAt.
             pausedAtNs = 0L;
             running = true;
+            startedAtNs = now;
         }
         // if already running, do nothing
     }
 
     // Pause countdown (does not reset).
     public synchronized void pause() {
-        if (!running) return;
+        if (!running)
+            return;
         // snapshot elapsed since startedAt into accumulatedElapsed and mark paused
         long now = System.nanoTime();
         accumulatedElapsedNs += now - startedAtNs;
@@ -52,25 +54,31 @@ public class Timer {
     }
 
     // Alias to start() for readability
-    public synchronized void resume() { start(); }
+    public synchronized void resume() {
+        start();
+    }
 
     // Seconds left, computed from monotonic clock (never negative)
     public synchronized int getRemainingSeconds() {
-        if (startedAtNs == 0L) return initialSeconds; // not started yet
+        if (startedAtNs == 0L)
+            return initialSeconds; // not started yet
 
         long now = System.nanoTime();
         long elapsedNs;
 
         if (running) {
-            // elapsed = accumulated from earlier pauses + time since initial start (or last resumed)
+            // elapsed = accumulated from earlier pauses + time since initial start (or last
+            // resumed)
             elapsedNs = accumulatedElapsedNs + (now - startedAtNs);
         } else {
-            // when paused we already included the last running interval into accumulatedElapsedNs,
+            // when paused we already included the last running interval into
+            // accumulatedElapsedNs,
             // so elapsed is exactly accumulatedElapsedNs
             elapsedNs = accumulatedElapsedNs;
         }
 
-        if (elapsedNs < 0) elapsedNs = 0L; // defensive
+        if (elapsedNs < 0)
+            elapsedNs = 0L; // defensive
 
         long elapsedSeconds = elapsedNs / 1_000_000_000L;
         long remaining = (long) initialSeconds - elapsedSeconds;
@@ -78,8 +86,12 @@ public class Timer {
     }
 
     // for certificate / debugging.
-    public int getInitialSeconds() { return initialSeconds; }
+    public int getInitialSeconds() {
+        return initialSeconds;
+    }
 
     // helper useful in tests / external code
-    public synchronized boolean isRunning() { return running; }
+    public synchronized boolean isRunning() {
+        return running;
+    }
 }

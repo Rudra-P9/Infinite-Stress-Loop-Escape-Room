@@ -55,9 +55,14 @@ public class GatewayController implements Initializable {
     }
 
     @FXML
-    private void handleKeyPressed(KeyEvent event) throws IOException {
+    private void handleKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            App.setRoot("GameIntro");
+            try {
+                App.setRoot("Gameintro");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Failed to load Gameintro.fxml: " + e.getMessage());
+            }
         }
     }
 }

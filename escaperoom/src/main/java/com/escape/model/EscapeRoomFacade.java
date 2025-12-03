@@ -35,6 +35,10 @@ public class EscapeRoomFacade {
         return currentUser != null;
     }
 
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
     /**
      * Ensures that core components like loader, writer, and accounts are
      * initialized.
@@ -111,8 +115,28 @@ public class EscapeRoomFacade {
         }
         timer.start();
 
+        // Ensure rooms are loaded for the GUI
+        if (allRooms == null) {
+            if (loader == null)
+                loader = new GameDataLoader();
+            allRooms = loader.getRooms();
+        }
+
+        // Set current room to the first room if not set
+        if (currentRoom == null && allRooms != null && !allRooms.isEmpty()) {
+            // Default to "room1" or the first one
+            for (Rooms r : allRooms) {
+                if ("room1".equalsIgnoreCase(r.getRoomID())) {
+                    currentRoom = r;
+                    break;
+                }
+            }
+            if (currentRoom == null)
+                currentRoom = allRooms.get(0);
+        }
+
         // Launch the game
-        new Rooms().startGame(this);
+        // new Rooms().startGame(this); // DISABLE CONSOLE LOOP FOR GUI
     }
 
     /**
@@ -441,7 +465,7 @@ public class EscapeRoomFacade {
 
         // Now start the interactive game loop; Rooms.startGame will consult
         // facade.getProgress() and fast-forward puzzles to the saved storyPos.
-        new Rooms().startGame(this);
+        // new Rooms().startGame(this); // DISABLE CONSOLE LOOP FOR GUI
     }
 
     /**
@@ -630,16 +654,7 @@ public class EscapeRoomFacade {
      * @return the number of seconds remaining for the room
      */
     private int getSecondsForDifficulty(Difficulty diff) {
-        switch (diff) {
-            case EASY:
-                return 1800;
-            case MEDIUM:
-                return 1500;
-            case HARD:
-                return 1200;
-            default:
-                return 1800;
-        }
+        return diff != null ? diff.getTimeLimitSec() : Difficulty.EASY.getTimeLimitSec();
     }
 
     /**

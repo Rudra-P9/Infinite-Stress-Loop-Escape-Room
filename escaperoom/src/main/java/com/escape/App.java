@@ -51,7 +51,7 @@ public class App extends Application {
         java.net.URL fxmlUrl = App.class.getResource(fxml + ".fxml");
         // Try absolute path fallback if relative lookup fails
         if (fxmlUrl == null) {
-            fxmlUrl = App.class.getResource("/com/escape/" + fxml + ".fxml");
+            fxmlUrl = App.class.getResource("src/main/resources/com/escape/" + fxml + ".fxml");
         }
 
         if (fxmlUrl == null) {

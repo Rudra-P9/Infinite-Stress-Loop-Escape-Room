@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,35 +13,82 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GameintroController">
    <children>
       <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="false">
          <image>
             <Image url="@../../images/doors.jpg" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="768.0" layoutX="235.0" layoutY="162.0" opacity="0.8" strokeType="OUTSIDE" strokeWidth="5.0" width="1412.0">
-         <stroke>
-            <LinearGradient endX="0.8574821852731591" endY="0.828978622327791" startX="0.16627078384798105" startY="0.2850356294536817">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color red="0.6787808537483215" green="0.16203702986240387" blue="1.0" />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color red="0.18567252159118652" green="0.7894737124443054" blue="0.17543859779834747" />
-                     </color>
-                  </Stop>
-               </stops>
-            </LinearGradient>
-         </stroke>
-      </Rectangle>
-      <Text fill="WHITE" fontSmoothingType="LCD" layoutX="268.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="line 1&#10;line 2&#10;line 3&#10;line 4&#10;line 5&#10;line 1&#10;line 2&#10;line 3&#10;line 4&#10;line 5&#10;&#10;" wrappingWidth="1345.9990234375">
+      
+      <!-- Door Overlay (Initially Hidden) -->
+      <Group fx:id="doorOverlay">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
+             <!-- Timer Label (Top Left) -->
+             <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
+                <font>
+                   <Font name="Impact" size="40.0" />
+                </font>
+             </Label>
+
+             <!-- Door Name Label (Centered, initially empty) -->
+             <Label fx:id="doorNameLabel" alignment="CENTER" layoutX="530.0" layoutY="163.0" prefHeight="100.0" prefWidth="800.0" text="" textFill="#d7a920">
+                <font>
+                   <Font name="Impact" size="60.0" />
+                </font>
+             </Label>
+             
+             <!-- Invisible Buttons for Doors -->
+             <Button fx:id="door1Button" layoutX="367.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#handleDoor1" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="545.0" prefWidth="282.0" style="-fx-background-color: transparent;" text="" />
+             <Button fx:id="door2Button" layoutX="787.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#handleDoor2" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="544.0" prefWidth="293.0" style="-fx-background-color: transparent;" text="" />
+             <Button fx:id="door3Button" layoutX="1208.0" layoutY="387.0" mnemonicParsing="false" onMouseClicked="#handleDoor3" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="547.0" prefWidth="315.0" style="-fx-background-color: transparent;" text="" />
+         </children>
+      </Group>
+
+      <!-- Info Button (Bottom Right) -->
+      <Button fx:id="infoButton" layoutX="1800.0" layoutY="980.0" mnemonicParsing="false" onMouseClicked="#onInfo" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 30; -fx-cursor: hand;" text="?" visible="false">
          <font>
-            <Font name="Monospaced Regular" size="50.0" />
+            <Font name="System Bold" size="30.0" />
          </font>
-      </Text>
+      </Button>
+
+      <!-- Intro Overlay -->
+      <Group fx:id="introOverlay">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="768.0" layoutX="235.0" layoutY="162.0" opacity="0.9" strokeType="OUTSIDE" strokeWidth="5.0" width="1412.0">
+               <stroke>
+                  <LinearGradient endX="0.8574821852731591" endY="0.828978622327791" startX="0.16627078384798105" startY="0.2850356294536817">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.6787808537483215" green="0.16203702986240387" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.18567252159118652" green="0.7894737124443054" blue="0.17543859779834747" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+               <fill>
+                  <Color red="0.0" green="0.0" blue="0.0" opacity="0.8" />
+               </fill>
+            </Rectangle>
+            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="268.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Varen Research Complex - Day of Breach&#10;&#10;The Varen Project was supposed to be humanity's greatest achievement. Instead, it became our most dangerous secret. When the containment failed, they sealed the facility and walked away.&#10;&#10;But the core is still active... and it's breaking down.&#10;&#10;You've been sent in to stabilize the system before total collapse. The facility's security protocols are still active, you'll need to solve them to access the core terminal.&#10;&#10;Every mistake costs time. Every second counts.&#10;&#10;Good luck. You're going to need it." wrappingWidth="1345.9990234375">
+               <font>
+                  <Font name="American Typewriter" size="38.0" />
+               </font>
+            </Text>
+            <Button fx:id="acknowledgeButton" layoutX="1335.0" layoutY="856.0" mnemonicParsing="false" onMouseClicked="#onAcknowledge" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="ACKNOWLEDGE">
+               <font>
+                  <Font name="Impact" size="30.0" />
+               </font>
+            </Button>
+         </children>
+      </Group>
+
    </children>
 </AnchorPane>
