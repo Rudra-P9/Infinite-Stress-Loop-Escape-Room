@@ -1,5 +1,10 @@
 package com.escape;
 
+import java.io.IOException;
+
+import com.escape.model.Difficulty;
+import com.escape.model.User;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -11,10 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import com.escape.model.User;
-import com.escape.model.Difficulty;
 
 /**
  * JavaFX App
@@ -102,4 +103,5 @@ public class App extends Application {
         launch();
     }
 
+    
 }
