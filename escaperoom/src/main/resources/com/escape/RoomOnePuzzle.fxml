@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane prefWidth="1920" prefHeight="1080"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.RoomOnePuzzleController">
+
+    <!-- Background -->
+    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+        <image>
+            <Image url="@../../images/RoomOnePuzzle.png"/>
+        </image>
+    </ImageView>
+
+    <!-- Cursor Icon -->
+        <ImageView fx:id="cursor"
+                   layoutX="1150" layoutY="440"
+                   pickOnBounds="true"
+                   fitWidth="70" fitHeight="70"
+                   onMouseClicked="#goToNext">
+            <image>
+                <Image url="@../../images/CursorIcon.png"/>
+            </image>
+        </ImageView>
+
+</AnchorPane>

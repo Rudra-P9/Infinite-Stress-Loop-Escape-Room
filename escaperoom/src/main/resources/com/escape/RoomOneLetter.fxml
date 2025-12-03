@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+
+<AnchorPane prefWidth="1920" prefHeight="1080"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.RoomOneLetterController">
+
+    <!-- Background -->
+    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+        <image>
+            <Image url="@../../images/LetterRoom.png"/>
+        </image>
+    </ImageView>
+
+    <FlowPane fx:id="letterPane"
+          layoutX="600"
+          layoutY="300"
+          prefWidth="800"
+          prefHeight="600"
+          hgap="40" vgap="60">
+
+        <!-- Generate letters A–Z -->
+        <Label text="A" styleClass="letter"/>
+        <Label text="B" styleClass="letter"/>
+        <Label text="C" styleClass="letter"/>
+        <Label text="D" styleClass="letter"/>
+        <Label text="E" styleClass="letter"/>
+        <Label text="F" styleClass="letter"/>
+        <Label text="G" styleClass="letter"/>
+        <Label text="H" styleClass="letter"/>
+        <Label text="I" styleClass="letter"/>
+        <Label text="J" styleClass="letter"/>
+        <Label text="K" styleClass="letter"/>
+        <Label text="L" styleClass="letter"/>
+        <Label text="M" styleClass="letter"/>
+        <Label text="N" styleClass="letter"/>
+        <Label text="O" styleClass="letter"/>
+        <Label text="P" styleClass="letter"/>
+        <Label text="Q" styleClass="letter"/>
+        <Label text="R" styleClass="letter"/>
+        <Label text="S" styleClass="letter"/>
+        <Label text="T" styleClass="letter"/>
+        <Label text="U" styleClass="letter"/>
+        <Label text="V" styleClass="letter"/>
+        <Label text="W" styleClass="letter"/>
+        <Label text="X" styleClass="letter"/>
+        <Label text="Y" styleClass="letter"/>
+        <Label text="Z" styleClass="letter"/>
+
+    </FlowPane>
+
+    <!-- Arrow Right Icon -->
+    <ImageView fx:id="arrowright"
+                   layoutX="1800" layoutY="500"
+                   pickOnBounds="true"
+                   fitWidth="150" fitHeight="150"
+                   onMouseClicked="#goToNext">
+        <image>
+            <Image url="@../../images/ArrowR.jpg"/>
+        </image>
+    </ImageView>
+
+</AnchorPane>
