@@ -8,14 +8,13 @@ import javafx.scene.control.Label;
 
 public class FinalPuzzleController {
 
-    @FXML private ImageView hintIcon;    // the clickable hint icon
-    @FXML private AnchorPane hintPane;   // the overlay pane that appears when hint is shown
-    @FXML private Label hintText;        // the label inside the hint pane
-    @FXML private ImageView closeHint;   // the little close arrow
+    @FXML private ImageView hintIcon;    
+    @FXML private AnchorPane hintPane;   
+    @FXML private Label hintText;        
+    @FXML private ImageView closeHint;   
 
     @FXML
     private void initialize() {
-        // Make sure the hint panel starts hidden
         if (hintPane != null) {
             hintPane.setVisible(false);
         }
@@ -23,7 +22,6 @@ public class FinalPuzzleController {
 
     @FXML
     private void showHint(MouseEvent event) {
-        // Show the panel with the hint text
         if (hintPane != null) {
             hintPane.setVisible(true);
         }
@@ -31,7 +29,6 @@ public class FinalPuzzleController {
 
     @FXML
     private void hideHint(MouseEvent event) {
-        // Hide the hint panel again
         if (hintPane != null) {
             hintPane.setVisible(false);
         }

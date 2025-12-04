@@ -14,7 +14,6 @@
 
     <children>
 
-        <!-- Full-screen background (keeps same behavior as MainScreen) -->
         <ImageView fitWidth="1920.0" fitHeight="1080.0" preserveRatio="false"
                    pickOnBounds="true"
                    AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
@@ -24,7 +23,6 @@
             </image>
         </ImageView>
 
-        <!-- Hint icon as ImageView (no button skin; clickable) -->
         <ImageView fx:id="hintIcon"
                    layoutX="1800.0" layoutY="125.0"
                    pickOnBounds="true"
@@ -38,7 +36,6 @@
             </image>
         </ImageView>
 
-        <!-- Hidden hint overlay (visible when hintIcon clicked) -->
         <AnchorPane fx:id="hintPane"
                     layoutX="600.0" layoutY="250.0"
                     prefWidth="720.0" prefHeight="400.0"
