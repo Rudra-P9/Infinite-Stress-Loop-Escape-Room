@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="1083.0" fitWidth="1924.0">
+         <image>
+            <Image url="@../../images/Room2.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="MKey1" layoutX="426.0" layoutY="249.0" text="M" textFill="WHITE">
+         <font>
+            <Font size="96.0" />
+         </font>
+      </Label>
+      <Label fx:id="MKey2" layoutX="1106.0" layoutY="442.0" onMouseClicked="#MLetterClicked" prefHeight="147.0" prefWidth="90.0" text="M" textFill="WHITE">
+         <font>
+            <Font size="77.0" />
+         </font>
+      </Label>
+      <Button fx:id="MKey1B" layoutX="396.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#MLetterClicked" opacity="0.0" prefHeight="196.0" prefWidth="148.0" text="M2" textFill="TRANSPARENT" />
+      <Button fx:id="Mkey2B" layoutX="1094.0" layoutY="453.0" mnemonicParsing="false" onMouseClicked="#MLetterClicked" opacity="0.0" prefHeight="131.0" prefWidth="99.0" text="M" textFill="TRANSPARENT" />
+      <Label id="MShow" fx:id="M1Show" layoutX="549.0" layoutY="894.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE">
+         <font>
+            <Font size="100.0" />
+         </font>
+      </Label>
+      <Label id="EShow" fx:id="EShow" layoutX="700.0" layoutY="896.0" prefHeight="98.0" prefWidth="94.0" text="E" textFill="WHITE">
+         <font>
+            <Font size="100.0" />
+         </font>
+      </Label>
+      <Label id="M2Show" fx:id="M2Show" layoutX="818.0" layoutY="892.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE">
+         <font>
+            <Font size="100.0" />
+         </font>
+      </Label>
+      <Label id="OShow" fx:id="OShow" layoutX="969.0" layoutY="895.0" prefHeight="98.0" prefWidth="94.0" text="O" textFill="WHITE">
+         <font>
+            <Font size="100.0" />
+         </font>
+      </Label>
+      <Label id="RShow" fx:id="RShow" layoutX="1106.0" layoutY="897.0" prefHeight="98.0" prefWidth="94.0" text="R" textFill="WHITE">
+         <font>
+            <Font size="100.0" />
+         </font>
+      </Label>
+      <Label id="YShow" fx:id="YShow" layoutX="1225.0" layoutY="895.0" prefHeight="98.0" prefWidth="94.0" text="Y" textFill="WHITE">
+         <font>
+            <Font size="100.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
