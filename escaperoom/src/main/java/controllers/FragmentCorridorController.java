@@ -11,8 +11,8 @@ import java.util.ResourceBundle;
 
 /**
  * Controller for the Fragment Corridor screen.
- * Manages letter reveal logic where two M keys must be clicked in sequence
- * from different sources to reveal both M letters.
+ * Manages the MEMORY puzzle: letters must be clicked in the exact sequence M-E-M-O-R-Y.
+ * Clicking the wrong letter resets progress and shows an error message.
  * 
  * @author Jacob Kinard
  */
@@ -40,6 +40,12 @@ public class FragmentCorridorController implements Initializable {
     private Button Mkey2B;
 
     @FXML
+    private Label EKey1;
+
+    @FXML
+    private Button EKey;
+
+    @FXML
     private Label OShow;
 
     @FXML
@@ -48,14 +54,14 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Label YShow;
 
-    /** Tracks which M key revealed the first M (0 = none, 1 = left key, 2 = right key). */
-    private int firstMRevealedBy = 0;
+    @FXML
+    private Label IncorrectLable;
+
+    /** The target sequence to spell: MEMORY */
+    private static final String[] SEQUENCE = {"M", "E", "M", "O", "R", "Y"};
     
-    /** Whether the first M label has been revealed. */
-    private boolean m1Revealed = false;
-    
-    /** Whether the second M label has been revealed. */
-    private boolean m2Revealed = false;
+    /** Current position in the sequence (0-5, 6 = complete) */
+    private int sequencePosition = 0;
 
     /**
      * Initializes the controller by hiding letter labels and applying consistent styling.
@@ -65,13 +71,14 @@ public class FragmentCorridorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Ensure the M show labels are initially hidden
+        // Ensure all show labels are initially hidden
         if (M1Show != null) M1Show.setVisible(false);
         if (M2Show != null) M2Show.setVisible(false);
         if (YShow != null) YShow.setVisible(false);
         if (OShow != null) OShow.setVisible(false);
         if (EShow != null) EShow.setVisible(false);
         if (RShow != null) RShow.setVisible(false);
+        if (IncorrectLable != null) IncorrectLable.setVisible(false);
 
         // Apply consistent letter styling (matches other screens)
         try {
@@ -93,6 +100,15 @@ public class FragmentCorridorController implements Initializable {
                 MKey2.getStyleClass().add("letter");
                 MKey2.setFont(javafx.scene.text.Font.font("Times New Roman", 77));
             }
+            if (EShow != null) {
+                EShow.getStyleClass().add("letter");
+                EShow.setStyle("-fx-text-fill: white;");
+                EShow.setFont(javafx.scene.text.Font.font("Times New Roman", 100));
+            }
+            if (EKey1 != null) {
+                EKey1.getStyleClass().add("letter");
+                EKey1.setFont(javafx.scene.text.Font.font("Times New Roman", 77));
+            }
         } catch (Exception ignore) {
             // styling optional — ignore failures
         }
@@ -100,39 +116,119 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Handles M key click events.
-     * First click reveals M1, second click from a different key reveals M2.
-     * Prevents the same key from revealing both M letters.
+     * Checks if M is the correct letter in the MEMORY sequence.
      * 
      * @param event the mouse event triggered by clicking an M key
      */
     @FXML
     void MLetterClicked(MouseEvent event) {
-        Object src = event.getSource();
-        int sourceId = 0; // 1 = left M key, 2 = right M key
-        if (src == MKey1 || src == MKey1B) sourceId = 1;
-        else if (src == MKey2 || src == Mkey2B) sourceId = 2;
+        handleLetterClick("M", event.getSource());
+    }
 
-        if (sourceId == 0) return; // ignore unknown sources
+    /**
+     * Handles E key click events.
+     * Checks if E is the correct letter in the MEMORY sequence.
+     * 
+     * @param event the mouse event triggered by clicking the E key
+     */
+    @FXML
+    void ELetterClicked(MouseEvent event) {
+        handleLetterClick("E", event.getSource());
+    }
 
-        // First reveal: always reveal M1 and record which key triggered it
-        if (!m1Revealed) {
-            if (M1Show != null) M1Show.setVisible(true);
-            m1Revealed = true;
-            firstMRevealedBy = sourceId;
-            // disable the exact clickable area so it can't be spam-clicked
-            if (sourceId == 1 && MKey1B != null) MKey1B.setDisable(true);
-            if (sourceId == 2 && Mkey2B != null) Mkey2B.setDisable(true);
-            return;
+    /**
+     * Unified handler for all letter clicks.
+     * Validates the clicked letter against the expected sequence position.
+     * Reveals the correct show label if valid, or resets progress and shows error if invalid.
+     * 
+     * @param letter the letter that was clicked ("M", "E", "O", "R", "Y")
+     * @param source the UI element that triggered the click
+     */
+    private void handleLetterClick(String letter, Object source) {
+        // Check if we've completed the sequence
+        if (sequencePosition >= SEQUENCE.length) {
+            return; // puzzle already solved
         }
 
-        // Second reveal: only allow if clicked from the other key
-        if (!m2Revealed && sourceId != firstMRevealedBy) {
-            if (M2Show != null) M2Show.setVisible(true);
-            m2Revealed = true;
-            if (MKey1B != null) MKey1B.setDisable(true);
-            if (Mkey2B != null) Mkey2B.setDisable(true);
+        // Check if clicked letter matches expected position
+        if (letter.equals(SEQUENCE[sequencePosition])) {
+            // Correct letter - reveal the corresponding show label
+            revealLetter(sequencePosition);
+            sequencePosition++;
+            
+            // Optional: disable the clicked button/label
+            if (source instanceof Button) {
+                ((Button) source).setDisable(true);
+            }
+        } else {
+            // Wrong letter - reset progress and show error
+            resetProgress();
+            showError();
         }
-        // if same key clicked again, do nothing
+    }
+
+    /**
+     * Reveals the show label at the given sequence position.
+     * 
+     * @param position the position in the MEMORY sequence (0-5)
+     */
+    private void revealLetter(int position) {
+        switch (position) {
+            case 0: // First M
+                if (M1Show != null) M1Show.setVisible(true);
+                break;
+            case 1: // E
+                if (EShow != null) EShow.setVisible(true);
+                break;
+            case 2: // Second M
+                if (M2Show != null) M2Show.setVisible(true);
+                break;
+            case 3: // O
+                if (OShow != null) OShow.setVisible(true);
+                break;
+            case 4: // R
+                if (RShow != null) RShow.setVisible(true);
+                break;
+            case 5: // Y
+                if (YShow != null) YShow.setVisible(true);
+                break;
+        }
+    }
+
+    /**
+     * Resets the puzzle progress by hiding all show labels and re-enabling clickable areas.
+     */
+    private void resetProgress() {
+        sequencePosition = 0;
+        
+        // Hide all show labels
+        if (M1Show != null) M1Show.setVisible(false);
+        if (EShow != null) EShow.setVisible(false);
+        if (M2Show != null) M2Show.setVisible(false);
+        if (OShow != null) OShow.setVisible(false);
+        if (RShow != null) RShow.setVisible(false);
+        if (YShow != null) YShow.setVisible(false);
+        
+        // Re-enable all clickable areas
+        if (MKey1B != null) MKey1B.setDisable(false);
+        if (Mkey2B != null) Mkey2B.setDisable(false);
+        if (EKey != null) EKey.setDisable(false);
+    }
+
+    /**
+     * Shows an error message briefly when the user clicks the wrong letter.
+     */
+    private void showError() {
+        if (IncorrectLable != null) {
+            IncorrectLable.setVisible(true);
+            
+            // Hide error message after 2 seconds
+            javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2));
+            pause.setOnFinished(e -> {
+                if (IncorrectLable != null) IncorrectLable.setVisible(false);
+            });
+            pause.play();
+        }
     }
 
 }
