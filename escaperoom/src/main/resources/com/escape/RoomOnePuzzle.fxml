@@ -13,15 +13,15 @@
     <!-- Background -->
     <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
         <image>
-            <Image url="@../../images/RoomOnePuzzle.png"/>
+            <Image url="@../../images/RoomOnePuzzleBack.png"/>
         </image>
     </ImageView>
 
     <!-- Cursor Icon -->
         <ImageView fx:id="cursor"
-                   layoutX="1150" layoutY="440"
+                   layoutX="1325" layoutY="350"
                    pickOnBounds="true"
-                   fitWidth="70" fitHeight="70"
+                   fitWidth="150" fitHeight="150"
                    onMouseClicked="#goToNext">
             <image>
                 <Image url="@../../images/CursorIcon.png"/>

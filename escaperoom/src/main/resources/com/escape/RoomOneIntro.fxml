@@ -15,24 +15,29 @@
         <!-- BACKGROUND  -->
         <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
             <image>
-                <Image url="@../../images/RoomOneIntro.png" />
+                <Image url="@../../images/RoomOneIntroBack.png" />
             </image>
         </ImageView>
 
         <!-- INTRO TEXT -->
         <Label layoutX="40" layoutY="830"
-               prefWidth="1800" wrapText="true"
-               style="-fx-text-fill: #C9B2FF; -fx-font-size: 36px; -fx-font-weight: bold;"
-               text="ENTERING CALIBRATION HALL...
+            prefWidth="700"
+            wrapText="true"
+            style="-fx-text-fill: WHITE; -fx-font-size: 36px; -fx-font-weight: bold;">
+            <text>
+                ENTERING CALIBRATION HALL...
                 SYSTEM DIAGNOSTICS: INCOMPLETE
                 SECURITY PROTOCOL ENGAGED
-                MANUAL INPUT REQUIRED TO RESTORE CONTROL." />
+                MANUAL INPUT REQUIRED TO RESTORE CONTROL.
+            </text>
+        </Label>
+
 
         <!-- MAGNIFIER -->
         <ImageView fx:id="magnifier"
-                   layoutX="905" layoutY="460"
+                   layoutX="1025" layoutY="550"
                    pickOnBounds="true"
-                   fitWidth="110" fitHeight="110"
+                   fitWidth="70" fitHeight="70"
                    onMouseClicked="#goToNext">
             <image>
                 <Image url="@../../images/RoomOneZoomIn.png"/>
