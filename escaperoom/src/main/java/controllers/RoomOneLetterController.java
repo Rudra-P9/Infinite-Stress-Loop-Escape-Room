@@ -13,7 +13,11 @@ public class RoomOneLetterController {
     @FXML
     private FlowPane letterPane;
 
-    private final String[] allowed = {"E", "C", "H", "O"};
+    private StringBuilder selectedLetters = new StringBuilder();
+
+    @FXML
+    private Label noteText;
+
 
     @FXML
     public void initialize() {
@@ -40,12 +44,29 @@ public class RoomOneLetterController {
         Label clicked = (Label) event.getSource();
         String letter = clicked.getText();
 
-        // Only E C H O turn green
-        boolean isCorrect = java.util.Arrays.asList(allowed).contains(letter);
+    //removes letter on second click
+        if (clicked.getTextFill().equals(Color.BLACK)) {
 
-        if (isCorrect) {
-            clicked.setTextFill(Color.LIMEGREEN);
-            clicked.setStyle(clicked.getStyle() + "; -fx-effect: dropshadow(gaussian, limegreen, 20, 0.8, 0, 0);");
+            clicked.setTextFill(Color.WHITE);
+
+            removeLetterFromNote(letter);
+            return;
+        }
+
+        // Toggle ON
+        clicked.setTextFill(Color.BLACK);
+
+        selectedLetters.append(letter);
+        noteText.setText(selectedLetters.toString());
+    }
+
+    private void removeLetterFromNote(String letter) {
+        String current = selectedLetters.toString();
+
+        int index = current.indexOf(letter);
+        if (index != -1) {
+            selectedLetters.deleteCharAt(index);
+            noteText.setText(selectedLetters.toString());
         }
     }
 
@@ -55,4 +76,6 @@ public class RoomOneLetterController {
         App.setRoot("RoomOneBoard");
         System.out.println("Clicked");
     }
+
+
 }

@@ -14,7 +14,7 @@
     <!-- Background -->
     <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
         <image>
-            <Image url="@../../images/LetterRoom.png"/>
+            <Image url="@../../images/LetterRoomBack.jpeg"/>
         </image>
     </ImageView>
 
@@ -55,6 +55,18 @@
 
     </FlowPane>
 
+    <!---Note-->
+    <ImageView fx:id="hintNote"
+                        layoutX="635" layoutY="675"
+                        fitWidth="800"
+                        fitHeight="400"
+                        preserveRatio="true">
+        <image>
+            <Image url="@../../images/hintNote.png"/>
+        </image>
+    </ImageView>
+        
+
     <!-- Arrow Right Icon -->
     <ImageView fx:id="arrowright"
                    layoutX="1800" layoutY="500"
@@ -65,5 +77,13 @@
             <Image url="@../../images/ArrowR.jpg"/>
         </image>
     </ImageView>
+
+    <Label fx:id="noteText"
+       layoutX="760" layoutY="700"
+       prefWidth="470"
+       prefHeight="300"
+       wrapText="true"
+       style="-fx-font-size: 54px; -fx-text-fill: black; -fx-font-family: 'Bradley Hand';"
+       text="" />
 
 </AnchorPane>

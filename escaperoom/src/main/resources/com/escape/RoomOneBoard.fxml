@@ -13,7 +13,7 @@
     <!-- Background -->
     <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
         <image>
-            <Image url="@../../images/RoomOneBoard.png"/>
+            <Image url="@../../images/RoomOneBoardBack.png"/>
         </image>
     </ImageView>
 
