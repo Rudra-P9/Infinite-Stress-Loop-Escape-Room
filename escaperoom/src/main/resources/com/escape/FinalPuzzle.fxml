@@ -4,17 +4,26 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: black;"
-            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="1080.0" prefWidth="1920.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1">
 
     <children>
-        <!-- Match MainScreen's strategy: force the image to the screen size so it fills the window -->
-        <ImageView fitWidth="1920.0" fitHeight="1080.0" pickOnBounds="true" preserveRatio="false">
+        <ImageView
+                fitWidth="1920.0"
+                fitHeight="1080.0"
+                preserveRatio="false"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0"
+                AnchorPane.topAnchor="0.0">
+
             <image>
-                <Image url="@../../images/finalpuzzlebackground.png" />
+                <Image url="@../../images/FPBackground.png"/>
             </image>
         </ImageView>
-        <!-- add overlay nodes here later (buttons, hotspots, etc.) -->
     </children>
+
 </AnchorPane>
