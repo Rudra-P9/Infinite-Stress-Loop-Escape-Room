@@ -57,6 +57,9 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Label IncorrectLable;
 
+    @FXML
+    private Label SuccessLabel;
+
     /** The target sequence to spell: MEMORY */
     private static final String[] SEQUENCE = {"M", "E", "M", "O", "R", "Y"};
     
@@ -79,6 +82,7 @@ public class FragmentCorridorController implements Initializable {
         if (EShow != null) EShow.setVisible(false);
         if (RShow != null) RShow.setVisible(false);
         if (IncorrectLable != null) IncorrectLable.setVisible(false);
+        if (SuccessLabel != null) SuccessLabel.setVisible(false);
 
         // Apply consistent letter styling (matches other screens)
         try {
@@ -137,6 +141,39 @@ public class FragmentCorridorController implements Initializable {
     }
 
     /**
+     * Handles O key click events.
+     * Checks if O is the correct letter in the MEMORY sequence.
+     * 
+     * @param event the mouse event triggered by clicking the O key
+     */
+    @FXML
+    void OLetterClicked(MouseEvent event) {
+        handleLetterClick("O", event.getSource());
+    }
+
+    /**
+     * Handles R key click events.
+     * Checks if R is the correct letter in the MEMORY sequence.
+     * 
+     * @param event the mouse event triggered by clicking the R key
+     */
+    @FXML
+    void RLetterClicked(MouseEvent event) {
+        handleLetterClick("R", event.getSource());
+    }
+
+    /**
+     * Handles Y key click events.
+     * Checks if Y is the correct letter in the MEMORY sequence.
+     * 
+     * @param event the mouse event triggered by clicking the Y key
+     */
+    @FXML
+    void YLetterClicked(MouseEvent event) {
+        handleLetterClick("Y", event.getSource());
+    }
+
+    /**
      * Unified handler for all letter clicks.
      * Validates the clicked letter against the expected sequence position.
      * Reveals the correct show label if valid, or resets progress and shows error if invalid.
@@ -155,6 +192,11 @@ public class FragmentCorridorController implements Initializable {
             // Correct letter - reveal the corresponding show label
             revealLetter(sequencePosition);
             sequencePosition++;
+            
+            // Check if puzzle is complete
+            if (sequencePosition >= SEQUENCE.length) {
+                showSuccess();
+            }
             
             // Optional: disable the clicked button/label
             if (source instanceof Button) {
@@ -231,5 +273,13 @@ public class FragmentCorridorController implements Initializable {
         }
     }
 
-}
+    /**
+     * Shows a success message when the puzzle is solved.
+     */
+    private void showSuccess() {
+        if (SuccessLabel != null) {
+            SuccessLabel.setVisible(true);
+        }
+    }
 
+}

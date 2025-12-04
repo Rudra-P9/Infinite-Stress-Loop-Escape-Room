@@ -72,5 +72,28 @@
             <Font size="57.0" />
          </font>
       </Label>
+      <Label fx:id="SuccessLabel" layoutX="800.0" layoutY="816.0" prefHeight="84.0" prefWidth="320.0" text="Success!" textFill="#00FF00" visible="false">
+         <font>
+            <Font size="57.0" />
+         </font>
+      </Label>
+      <Button fx:id="MKey1B1" layoutX="1354.0" layoutY="93.0" mnemonicParsing="false" onMouseClicked="#RLetterClicked" opacity="0.0" prefHeight="398.0" prefWidth="240.0" text="R" textFill="TRANSPARENT" />
+      <Label fx:id="RKey" layoutX="1426.0" layoutY="195.0" prefHeight="206.0" prefWidth="136.0" text="R" textFill="WHITE">
+         <font>
+            <Font size="100.0" />
+         </font>
+      </Label>
+      <Label fx:id="YKey" layoutX="520.0" layoutY="607.0" prefHeight="108.0" prefWidth="59.0" text="Y" textFill="WHITE">
+         <font>
+            <Font size="77.0" />
+         </font>
+      </Label>
+      <Label fx:id="YKey1" layoutX="1260.0" layoutY="609.0" prefHeight="108.0" prefWidth="59.0" text="O" textFill="WHITE">
+         <font>
+            <Font size="55.0" />
+         </font>
+      </Label>
+      <Button fx:id="YKeyB" layoutX="495.0" layoutY="598.0" mnemonicParsing="false" onMouseClicked="#YLetterClicked" opacity="0.0" prefHeight="131.0" prefWidth="99.0" text="Y" textFill="TRANSPARENT" />
+      <Button fx:id="YKey2B" layoutX="1246.0" layoutY="609.0" mnemonicParsing="false" onMouseClicked="#OLetterClicked" opacity="0.0" prefHeight="93.0" prefWidth="71.0" text="Y" textFill="TRANSPARENT" />
    </children>
 </AnchorPane>
