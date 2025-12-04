@@ -40,13 +40,13 @@
              </Label>
              
              <!-- Invisible Buttons for Doors -->
-             <Button fx:id="door1Button" layoutX="367.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#handleDoor1" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="545.0" prefWidth="282.0" style="-fx-background-color: transparent;" text="" />
-             <Button fx:id="door2Button" layoutX="787.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#handleDoor2" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="544.0" prefWidth="293.0" style="-fx-background-color: transparent;" text="" />
-             <Button fx:id="door3Button" layoutX="1208.0" layoutY="387.0" mnemonicParsing="false" onMouseClicked="#handleDoor3" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="547.0" prefWidth="315.0" style="-fx-background-color: transparent;" text="" />
+             <Button fx:id="door1Button" layoutX="367.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#handleDoor1" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="545.0" prefWidth="282.0" style="-fx-cursor: hand; -fx-background-color: transparent;" text="" />
+             <Button fx:id="door2Button" layoutX="787.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#handleDoor2" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="544.0" prefWidth="293.0" style="-fx-cursor: hand; -fx-background-color: transparent;" text="" />
+             <Button fx:id="door3Button" layoutX="1208.0" layoutY="387.0" mnemonicParsing="false" onMouseClicked="#handleDoor3" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="547.0" prefWidth="315.0" style="-fx-cursor: hand; -fx-background-color: transparent;" text="" />
          </children>
       </Group>
 
-      <!-- Info Button (Bottom Right) -->
+      <!-- Info Button (Bottom Right)-->
       <Button fx:id="infoButton" layoutX="1800.0" layoutY="980.0" mnemonicParsing="false" onMouseClicked="#onInfo" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 30; -fx-cursor: hand;" text="?" visible="false">
          <font>
             <Font name="System Bold" size="30.0" />
