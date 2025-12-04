@@ -5,17 +5,16 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FragmentCorridorRoomTwoController">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="1307.0" fitWidth="1981.0" layoutX="-24.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/FregmentCorridorRoom2.png" />
          </image>
       </ImageView>
-      <Button id="UP" fx:id="UP" layoutX="387.0" layoutY="153.0" mnemonicParsing="false" onMouseClicked="#PressedUp" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="UP" />
-      <Button id="DOWN" fx:id="DOWN" layoutX="421.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#PressedDown" opacity="0.0" prefHeight="27.0" prefWidth="26.0" text="DOWN" />
-      <Button id="LEFT" fx:id="LEFT" layoutX="389.0" layoutY="190.0" mnemonicParsing="false" onMouseClicked="#PressedLeft" opacity="0.0" prefHeight="27.0" prefWidth="26.0" text="LEFT" />
-      <Button id="RIGHT" fx:id="RIGHT" layoutX="420.0" layoutY="154.0" mnemonicParsing="false" onMouseClicked="#PressedRight" opacity="0.0" prefHeight="30.0" prefWidth="28.0" text="RIGHT" />
+      <Button id="UP" fx:id="UP" layoutX="1273.0" layoutY="522.0" mnemonicParsing="false" onMouseClicked="#PressedUp" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="UP" />
+      <Button id="DOWN" fx:id="DOWN" layoutX="1378.0" layoutY="639.0" mnemonicParsing="false" onMouseClicked="#PressedDown" opacity="0.0" prefHeight="27.0" prefWidth="26.0" text="DOWN" />
+      <Button id="LEFT" fx:id="LEFT" layoutX="1273.0" layoutY="634.0" mnemonicParsing="false" onMouseClicked="#PressedLeft" opacity="0.0" prefHeight="27.0" prefWidth="26.0" text="LEFT" />
+      <Button id="RIGHT" fx:id="RIGHT" layoutX="1378.0" layoutY="526.0" mnemonicParsing="false" onMouseClicked="#PressedRight" opacity="0.0" prefHeight="30.0" prefWidth="28.0" text="RIGHT" />
    </children>
 </AnchorPane>
