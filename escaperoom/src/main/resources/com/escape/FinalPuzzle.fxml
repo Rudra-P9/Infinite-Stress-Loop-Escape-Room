@@ -3,27 +3,66 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="1080.0" prefWidth="1920.0"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.FinalPuzzleController"
+            prefWidth="1920.0" prefHeight="1080.0"
+            maxWidth="-Infinity" maxHeight="-Infinity"
+            minWidth="-Infinity" minHeight="-Infinity">
 
     <children>
-        <ImageView
-                fitWidth="1920.0"
-                fitHeight="1080.0"
-                preserveRatio="false"
-                AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
 
+        <!-- Full-screen background (keeps same behavior as MainScreen) -->
+        <ImageView fitWidth="1920.0" fitHeight="1080.0" preserveRatio="false"
+                   pickOnBounds="true"
+                   AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <image>
                 <Image url="@../../images/FPBackground.png"/>
             </image>
         </ImageView>
-    </children>
 
+        <!-- Hint icon as ImageView (no button skin; clickable) -->
+        <ImageView fx:id="hintIcon"
+                   layoutX="1800.0" layoutY="125.0"
+                   pickOnBounds="true"
+                   preserveRatio="true"
+                   fitWidth="100.0"
+                   fitHeight="100.0"
+                   style="-fx-cursor: hand;"
+                   onMouseClicked="#showHint">
+            <image>
+                <Image url="@../../images/HintIcon.png"/>
+            </image>
+        </ImageView>
+
+        <!-- Hidden hint overlay (visible when hintIcon clicked) -->
+        <AnchorPane fx:id="hintPane"
+                    layoutX="600.0" layoutY="250.0"
+                    prefWidth="720.0" prefHeight="400.0"
+                    visible="false"
+                    style="-fx-background-color: rgba(255,255,255,0.95); -fx-border-color: black; -fx-border-width: 2;">
+            <Label fx:id="hintText"
+                   layoutX="20.0" layoutY="20.0"
+                   prefWidth="680.0"
+                   wrapText="true"
+                   style="-fx-font-family: 'Bradley Hand'; -fx-text-fill: black; -fx-font-size: 28px;"
+                   text="Replace this with your hint text." />
+
+            <ImageView fx:id="closeHint"
+                       layoutX="670.0" layoutY="10.0"
+                       fitWidth="36.0" fitHeight="36.0"
+                       pickOnBounds="true"
+                       preserveRatio="true"
+                       onMouseClicked="#hideHint"
+                       style="-fx-cursor: hand;">
+                <image>
+                    <Image url="@../../images/ArrowLeft.png"/>
+                </image>
+            </ImageView>
+        </AnchorPane>
+
+    </children>
 </AnchorPane>
