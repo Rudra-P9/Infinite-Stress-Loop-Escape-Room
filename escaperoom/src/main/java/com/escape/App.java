@@ -33,7 +33,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load the initial view wrapped in the scaler
-        Parent root = loadFXML("RoomOneBoard");
+        Parent root = loadFXML("MainScreen");
 
         // Create scene with the scalable root
         scene = new Scene(root, 640, 480);
