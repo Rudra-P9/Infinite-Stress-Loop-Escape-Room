@@ -164,6 +164,12 @@ public class GameintroController implements Initializable {
     @FXML
     private void handleDoor2(MouseEvent event) {
         System.out.println("Door 2 clicked");
+        try {
+            com.escape.App.setRoot("FragmentCorridor");
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load FragmentCorridor: " + e.getMessage());
+        }
     }
 
     @FXML

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FragmentCorridorController">
    <children>
       <ImageView fitHeight="1083.0" fitWidth="1924.0">
          <image>
@@ -26,7 +26,7 @@
       </Label>
       <Button fx:id="MKey1B" layoutX="396.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#MLetterClicked" opacity="0.0" prefHeight="196.0" prefWidth="148.0" text="M2" textFill="TRANSPARENT" />
       <Button fx:id="Mkey2B" layoutX="1094.0" layoutY="453.0" mnemonicParsing="false" onMouseClicked="#MLetterClicked" opacity="0.0" prefHeight="131.0" prefWidth="99.0" text="M" textFill="TRANSPARENT" />
-      <Label id="MShow" fx:id="M1Show" layoutX="549.0" layoutY="894.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE">
+      <Label id="MShow" fx:id="M1Show" layoutX="549.0" layoutY="894.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE" visible="false">
          <font>
             <Font size="100.0" />
          </font>
@@ -36,7 +36,7 @@
             <Font size="100.0" />
          </font>
       </Label>
-      <Label id="M2Show" fx:id="M2Show" layoutX="818.0" layoutY="892.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE">
+      <Label id="M2Show" fx:id="M2Show" layoutX="818.0" layoutY="892.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE" visible="false">
          <font>
             <Font size="100.0" />
          </font>
