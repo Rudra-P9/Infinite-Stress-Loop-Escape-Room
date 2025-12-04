@@ -13,12 +13,12 @@ import javafx.util.Duration;
 import com.escape.App;
 
 /**
- * Controller for the Gateway screen.
+ * Controller for the StartGame screen.
  * Handles user input, validation, and account creation.
  * 
  * @author Rudra Patel
  */
-public class GatewayController implements Initializable {
+public class StartGameController implements Initializable {
 
     @FXML
     private javafx.scene.layout.AnchorPane rootPane;
@@ -58,10 +58,10 @@ public class GatewayController implements Initializable {
     private void handleKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             try {
-                App.setRoot("Gameintro");
+                App.setRoot("ChamberHall");
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err.println("Failed to load Gameintro.fxml: " + e.getMessage());
+                System.err.println("Failed to load ChamberHall.fxml: " + e.getMessage());
             }
         }
     }

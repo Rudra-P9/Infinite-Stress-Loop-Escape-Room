@@ -33,19 +33,19 @@ public class DifficultyMenuController implements Initializable {
     @FXML
     private void goToEasy(MouseEvent event) throws IOException {
         App.currentDifficulty = Difficulty.EASY;
-        App.setRoot("Gateway");
+        App.setRoot("StartGame");
     }
 
     @FXML
     private void goToMedium(MouseEvent event) throws IOException {
         App.currentDifficulty = Difficulty.MEDIUM;
-        App.setRoot("Gateway");
+        App.setRoot("StartGame");
     }
 
     @FXML
     private void goToHard(MouseEvent event) throws IOException {
         App.currentDifficulty = Difficulty.HARD;
-        App.setRoot("Gateway");
+        App.setRoot("StartGame");
     }
 
     @FXML

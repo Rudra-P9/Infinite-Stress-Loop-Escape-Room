@@ -19,7 +19,7 @@ import com.escape.model.EscapeRoomFacade;
  * 
  * @author Rudra Patel
  */
-public class GameintroController implements Initializable {
+public class ChamberHallController implements Initializable {
 
     @FXML
     private Group introOverlay;
@@ -74,7 +74,7 @@ public class GameintroController implements Initializable {
             showIntro();
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error initializing GameintroController: " + e.getMessage());
+            System.err.println("Error initializing ChamberHallController: " + e.getMessage());
         }
     }
 
