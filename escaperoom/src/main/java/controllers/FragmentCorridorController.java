@@ -9,6 +9,13 @@ import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the Fragment Corridor screen.
+ * Manages letter reveal logic where two M keys must be clicked in sequence
+ * from different sources to reveal both M letters.
+ * 
+ * @author Jacob Kinard
+ */
 public class FragmentCorridorController implements Initializable {
 
     @FXML
@@ -41,11 +48,21 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Label YShow;
 
-    // Track reveal state so the same key can't be used twice to reveal both M's
-    private int firstMRevealedBy = 0; // 0 = none, 1 = left key, 2 = right key
+    /** Tracks which M key revealed the first M (0 = none, 1 = left key, 2 = right key). */
+    private int firstMRevealedBy = 0;
+    
+    /** Whether the first M label has been revealed. */
     private boolean m1Revealed = false;
+    
+    /** Whether the second M label has been revealed. */
     private boolean m2Revealed = false;
 
+    /**
+     * Initializes the controller by hiding letter labels and applying consistent styling.
+     * 
+     * @param url the location used to resolve relative paths for the root object, or null
+     * @param resourceBundle the resources used to localize the root object, or null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Ensure the M show labels are initially hidden
@@ -81,6 +98,13 @@ public class FragmentCorridorController implements Initializable {
         }
     }
 
+    /**
+     * Handles M key click events.
+     * First click reveals M1, second click from a different key reveals M2.
+     * Prevents the same key from revealing both M letters.
+     * 
+     * @param event the mouse event triggered by clicking an M key
+     */
     @FXML
     void MLetterClicked(MouseEvent event) {
         Object src = event.getSource();
