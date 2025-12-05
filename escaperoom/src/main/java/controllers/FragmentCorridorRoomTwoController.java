@@ -189,6 +189,21 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      * Creates a pulsing scale animation to draw attention to the continue button.
      */
     private void showSuccess() {
+        // Award the letter "M" to the user's inventory (from game.json)
+        if (App.currentUser != null) {
+            // Check if user already has the letter before adding
+            if (!App.currentUser.getCollectedLetters().contains("M")) {
+                boolean added = App.currentUser.addCollectedLetter("M");
+                if (added) {
+                    System.out.println("Letter 'M' added to inventory.");
+                } else {
+                    System.out.println("Failed to add letter 'M' - inventory may be full.");
+                }
+            } else {
+                System.out.println("Letter 'M' already in inventory.");
+            }
+        }
+        
         if (ContinueLabel != null) ContinueLabel.setVisible(true);
         if (ContinueButton != null) ContinueButton.setVisible(true);
         

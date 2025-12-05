@@ -306,6 +306,21 @@ public class FragmentCorridorController implements Initializable {
      * Creates a pulsing scale animation to draw attention to the continue button.
      */
     private void showSuccess() {
+        // Award the letter "A" to the user's inventory (from game.json)
+        if (App.currentUser != null) {
+            // Check if user already has the letter before adding
+            if (!App.currentUser.getCollectedLetters().contains("A")) {
+                boolean added = App.currentUser.addCollectedLetter("A");
+                if (added) {
+                    System.out.println("Letter 'A' added to inventory.");
+                } else {
+                    System.out.println("Failed to add letter 'A' - inventory may be full.");
+                }
+            } else {
+                System.out.println("Letter 'A' already in inventory.");
+            }
+        }
+        
         if (ContinueLabel != null) ContinueLabel.setVisible(true);
         if (ContinueButton != null) ContinueButton.setVisible(true);
         
