@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.FinalPuzzleController"
-            prefWidth="1920.0" prefHeight="1080.0"
-            maxWidth="-Infinity" maxHeight="-Infinity"
-            minWidth="-Infinity" minHeight="-Infinity">
-
+            prefWidth="1920.0" prefHeight="1080.0">
     <children>
-
         <ImageView fitWidth="1920.0" fitHeight="1080.0" preserveRatio="false"
                    pickOnBounds="true"
                    AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
@@ -23,12 +19,11 @@
             </image>
         </ImageView>
 
-        <ImageView fx:id="hintIcon"
+        <ImageView fx:id="FPHintIcon"
                    layoutX="1800.0" layoutY="125.0"
                    pickOnBounds="true"
                    preserveRatio="true"
-                   fitWidth="100.0"
-                   fitHeight="100.0"
+                   fitWidth="100.0" fitHeight="100.0"
                    style="-fx-cursor: hand;"
                    onMouseClicked="#showHint">
             <image>
@@ -41,25 +36,24 @@
                     prefWidth="720.0" prefHeight="400.0"
                     visible="false"
                     style="-fx-background-color: rgba(255,255,255,0.95); -fx-border-color: black; -fx-border-width: 2;">
-            <Label fx:id="hintText"
-                   layoutX="20.0" layoutY="20.0"
-                   prefWidth="680.0"
-                   wrapText="true"
-                   style="-fx-font-family: 'Bradley Hand'; -fx-text-fill: black; -fx-font-size: 28px;"
-                   text="Replace this with your hint text." />
-
-            <ImageView fx:id="closeHint"
-                       layoutX="670.0" layoutY="10.0"
-                       fitWidth="36.0" fitHeight="36.0"
-                       pickOnBounds="true"
-                       preserveRatio="true"
-                       onMouseClicked="#hideHint"
-                       style="-fx-cursor: hand;">
-                <image>
-                    <Image url="@../../images/ArrowLeft.png"/>
-                </image>
-            </ImageView>
         </AnchorPane>
 
+        <TextFlow fx:id="hintBottomFlow"
+                  layoutX="620.0" layoutY="880.0"
+                  prefWidth="680.0" prefHeight="120.0"
+                  visible="false"
+                  style="-fx-text-alignment: center;">
+            <Text text="R" style="-fx-fill: red; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="eclaim " style="-fx-fill: white; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="E" style="-fx-fill: red; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="very " style="-fx-fill: white; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="A" style="-fx-fill: red; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="spect " style="-fx-fill: white; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="L" style="-fx-fill: red; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="ost " style="-fx-fill: white; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="to " style="-fx-fill: white; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="M" style="-fx-fill: red; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+            <Text text="emory" style="-fx-fill: white; -fx-font-family: 'Storm Gust'; -fx-font-size: 42px;"/>
+        </TextFlow>
     </children>
 </AnchorPane>
