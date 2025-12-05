@@ -661,6 +661,7 @@ public class EscapeRoomFacade {
     private int roomOneStage = 0;
     private String previousRiddle;
     private boolean roomOneIntroSeen = false;
+    private boolean room3IntroSeen = false;
 
     public boolean isRoomOneIntroSeen() {
         return roomOneIntroSeen;
@@ -668,6 +669,14 @@ public class EscapeRoomFacade {
 
     public void setRoomOneIntroSeen(boolean seen) {
         this.roomOneIntroSeen = seen;
+    }
+
+    public boolean isRoom3IntroSeen() {
+        return room3IntroSeen;
+    }
+
+    public void setRoom3IntroSeen(boolean seen) {
+        this.room3IntroSeen = seen;
     }
 
     public String getRoomOneRiddle() {

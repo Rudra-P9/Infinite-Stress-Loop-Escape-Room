@@ -259,6 +259,24 @@ public class Room3Puzzle5Controller implements Initializable {
 
             // optionally disable answer input to prevent further attempts
             answerFieldB.setDisable(true);
+
+            // Auto-navigate back to Room3Combined after 2 seconds
+            new Thread(() -> {
+                try {
+                    Thread.sleep(2000);
+                    javafx.application.Platform.runLater(() -> {
+                        try {
+                            com.escape.App.setRoot("Room3Combined");
+                            System.out.println("Auto-navigating to Room3Combined after puzzle completion.");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
         } else {
             feedbackLabelB.setText("Incorrect");
             feedbackLabelB.setStyle("-fx-text-fill: #ff6666; -fx-font-size:16px;");

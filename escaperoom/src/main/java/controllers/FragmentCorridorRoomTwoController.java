@@ -127,7 +127,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
         // Initialize Facade and Timer
         this.facade = App.gameFacade;
         startTimerUpdate();
-        
+
         // Update progress bar initially
         updateProgress();
     }
@@ -169,7 +169,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
                 // Handle game over if needed
             }
         }
-        
+
         // Update progress bar
         updateProgress();
     }
@@ -381,12 +381,12 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     private void showSuccess() {
         System.out.println("[FragmentCorridorRoomTwo] showSuccess() called");
         System.out.println("[FragmentCorridorRoomTwo] facade = " + facade);
-        
+
         // Award the letter "M" to the user's inventory (from game.json)
         if (facade != null && facade.getCurrentUser() != null) {
             com.escape.model.User user = facade.getCurrentUser();
             System.out.println("[FragmentCorridorRoomTwo] user = " + user);
-            
+
             // Check if user already has the letter before adding
             if (!user.getCollectedLetters().contains("M")) {
                 boolean added = user.addCollectedLetter("M");
@@ -417,15 +417,6 @@ public class FragmentCorridorRoomTwoController implements Initializable {
             scaleTransition.setCycleCount(Timeline.INDEFINITE);
             scaleTransition.setAutoReverse(true);
             scaleTransition.play();
-        }
-    }
-
-    @FXML
-    private void goBack() {
-        try {
-            App.setRoot("FragmentCorridor");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

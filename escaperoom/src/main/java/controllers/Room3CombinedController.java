@@ -51,13 +51,26 @@ public class Room3CombinedController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        if (dialogRoot != null) {
-            dialogRoot.setVisible(true);
-            dialogRoot.setMouseTransparent(false);
-        }
-
         this.facade = App.gameFacade;
         startTimerUpdate();
+
+        // Check if intro has been seen before
+        if (facade != null && facade.isRoom3IntroSeen()) {
+            // Hide intro, show hotspots
+            if (dialogRoot != null) {
+                dialogRoot.setVisible(false);
+                dialogRoot.setMouseTransparent(true);
+            }
+            if (hotspotGroup != null) {
+                hotspotGroup.toFront();
+            }
+        } else {
+            // Show intro on first visit
+            if (dialogRoot != null) {
+                dialogRoot.setVisible(true);
+                dialogRoot.setMouseTransparent(false);
+            }
+        }
 
         if (infoButtonRm3 != null) {
             infoButtonRm3.setVisible(true);
@@ -81,6 +94,11 @@ public class Room3CombinedController implements Initializable {
     @FXML
     private void onAcknowledgeRm3(MouseEvent event) {
         System.out.println("ACK pressed, hiding intro overlay.");
+
+        // Mark intro as seen
+        if (facade != null) {
+            facade.setRoom3IntroSeen(true);
+        }
 
         if (dialogRoot != null) {
             dialogRoot.setVisible(false);
