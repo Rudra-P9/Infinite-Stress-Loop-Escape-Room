@@ -103,7 +103,7 @@ public class EscapeRoomFacade {
 
         // Set difficulty and reset collected letters for this session
         this.currentDifficulty = (difficulty == null) ? Difficulty.EASY : difficulty;
-        this.collectedLetters = new ArrayList<>();
+        // Inventory is managed by User, no need to reset local list here
 
         // Initialize or reset the timer
         int seconds = getSecondsForDifficulty(
@@ -623,14 +623,18 @@ public class EscapeRoomFacade {
     }
 
     private Difficulty currentDifficulty;
-    private ArrayList<String> collectedLetters = new ArrayList<>();
+    // collectedLetters removed - delegated to User
 
     public boolean hasItem(String letter) {
-        if (collectedLetters == null)
+        if (currentUser == null)
+            return false;
+
+        ArrayList<String> userItems = currentUser.getCollectedLetters();
+        if (userItems == null)
             return false;
 
         // Case-insensitive check
-        for (String item : collectedLetters) {
+        for (String item : userItems) {
             if (item.equalsIgnoreCase(letter)) {
                 return true;
             }
@@ -639,12 +643,14 @@ public class EscapeRoomFacade {
     }
 
     public void addItem(String letter) {
-        if (collectedLetters == null) {
-            collectedLetters = new ArrayList<>();
+        if (currentUser == null) {
+            System.out.println("Cannot add item: No user logged in.");
+            return;
         }
+
         if (!hasItem(letter)) {
-            collectedLetters.add(letter);
-            System.out.println("Letter '" + letter + "' added to inventory.");
+            currentUser.addCollectedLetter(letter);
+            System.out.println("Letter '" + letter + "' added to user inventory.");
         }
     }
 
@@ -747,8 +753,8 @@ public class EscapeRoomFacade {
 
                     String rewardLetter = p.getRewardLetter();
                     if (rewardLetter != null && !rewardLetter.isEmpty()
-                            && !collectedLetters.contains(rewardLetter)) {
-                        collectedLetters.add(rewardLetter);
+                            && !hasItem(rewardLetter)) {
+                        addItem(rewardLetter);
                         System.out.println("Collected letter: " + rewardLetter);
                     }
 
@@ -886,7 +892,9 @@ public class EscapeRoomFacade {
      * @return a copy of the collected letters
      */
     public ArrayList<String> getCollectedLetters() {
-        return new ArrayList<>(collectedLetters);
+        if (currentUser == null)
+            return new ArrayList<>();
+        return currentUser.getCollectedLetters();
     }
 
     /**
@@ -896,14 +904,16 @@ public class EscapeRoomFacade {
      * @return progress percentage (0-100) as an integer
      */
     public int getProgressPercentage() {
-        if (currentUser == null) return 0;
+        if (currentUser == null)
+            return 0;
         ArrayList<String> letters = currentUser.getCollectedLetters();
-        if (letters == null || letters.isEmpty()) return 0;
-        
+        if (letters == null || letters.isEmpty())
+            return 0;
+
         // Total letters to collect: 5 (R, E, A, L, M)
         final int TOTAL_LETTERS = 5;
         int collected = letters.size();
-        
+
         // Calculate percentage and round to integer
         return (int) Math.round((collected * 100.0) / TOTAL_LETTERS);
     }
