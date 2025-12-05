@@ -65,7 +65,11 @@ public class RoomOneBoardController {
     @FXML
     public void initialize() {
         if (introOverlay != null) {
-            showIntro();
+            if (com.escape.App.gameFacade != null && !com.escape.App.gameFacade.isRoomOneIntroSeen()) {
+                showIntro();
+            } else {
+                showBoard();
+            }
         }
 
         if (hintPane != null)
@@ -95,6 +99,9 @@ public class RoomOneBoardController {
 
     @FXML
     private void onAcknowledge(MouseEvent event) {
+        if (com.escape.App.gameFacade != null) {
+            com.escape.App.gameFacade.setRoomOneIntroSeen(true);
+        }
         showBoard();
     }
 

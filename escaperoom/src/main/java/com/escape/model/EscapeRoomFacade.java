@@ -660,6 +660,15 @@ public class EscapeRoomFacade {
     private String roomOneHint;
     private int roomOneStage = 0;
     private String previousRiddle;
+    private boolean roomOneIntroSeen = false;
+
+    public boolean isRoomOneIntroSeen() {
+        return roomOneIntroSeen;
+    }
+
+    public void setRoomOneIntroSeen(boolean seen) {
+        this.roomOneIntroSeen = seen;
+    }
 
     public String getRoomOneRiddle() {
         return roomOneRiddle;
