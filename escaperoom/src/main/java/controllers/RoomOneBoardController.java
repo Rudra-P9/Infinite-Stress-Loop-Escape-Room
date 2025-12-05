@@ -10,7 +10,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-
+/**
+ * Controller for the Room One Board
+ * Handles the logic for the Room One Board
+ * 
+ * @author Talan
+ * @author Rudra Patel
+ */
 public class RoomOneBoardController {
 
     @FXML
@@ -22,7 +28,8 @@ public class RoomOneBoardController {
     @FXML
     private ImageView closeHintArrow;
 
-    @FXML private ImageView hintNote;
+    @FXML
+    private ImageView hintNote;
 
     @FXML
     public void initialize() {
@@ -47,14 +54,14 @@ public class RoomOneBoardController {
         hintPane.setVisible(true);
         hintText.setVisible(true);
         hintNote.setVisible(true);
-        closeHintArrow.setVisible(true);  
+        closeHintArrow.setVisible(true);
     }
 
     @FXML
-    private void goToNext(MouseEvent event) throws Exception{
-
-        App.setRoot("RoomOneLetter");
-        System.out.println("Clicked");
+    private void goToNext(MouseEvent event) throws Exception {
+        // Return to the main hall
+        App.setRoot("ChamberHall");
+        System.out.println("Returning to Chamber Hall from Room One");
     }
 
     private String loadHintFromJson() {
@@ -86,4 +93,3 @@ public class RoomOneBoardController {
     }
 
 }
-

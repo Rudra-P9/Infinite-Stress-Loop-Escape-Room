@@ -54,10 +54,12 @@ public class ChamberHallController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            facade = new EscapeRoomFacade();
+            // Check if we already have a running game
+            if (com.escape.App.gameFacade == null) {
+                // NEW GAME START
+                facade = new EscapeRoomFacade();
+                com.escape.App.gameFacade = facade; // Save to global state
 
-            // Start the game (and timer) immediately when this screen loads
-            if (facade != null) {
                 // Pass global state to the facade
                 if (com.escape.App.currentUser != null) {
                     facade.setCurrentUser(com.escape.App.currentUser);
@@ -65,13 +67,22 @@ public class ChamberHallController implements Initializable {
 
                 // Start with the selected difficulty
                 facade.startGame(com.escape.App.currentDifficulty);
+                System.out.println("New Game started. Timer running.");
 
-                System.out.println("Game started. Timer running.");
-                startTimerUpdate();
+                // Show intro, hide doors initially
+                showIntro();
+            } else {
+                // RESUMING GAME
+                facade = com.escape.App.gameFacade;
+                System.out.println("Resuming existing game. Timer continuing.");
+
+                // Skip intro, show doors immediately
+                showDoors();
             }
 
-            // Show intro, hide doors initially
-            showIntro();
+            // Always start the UI timer update (it reads from the facade)
+            startTimerUpdate();
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error initializing ChamberHallController: " + e.getMessage());

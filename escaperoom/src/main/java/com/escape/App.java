@@ -24,6 +24,7 @@ public class App extends Application {
 
     public static User currentUser;
     public static Difficulty currentDifficulty;
+    public static com.escape.model.EscapeRoomFacade gameFacade;
 
     private static Scene scene;
     // Define the target resolution (design resolution)
