@@ -16,7 +16,7 @@
             <Image url="@../../images/Main%20Gate.png" />
          </image>
       </ImageView>
-      <Label fx:id="introLabel" alignment="CENTER" layoutX="54.0" layoutY="65.0" prefHeight="107.0" prefWidth="1812.0" text="[ WARNING: VAREN CONTAINMENT HAS BEEN BREACHED ]&#10;[ PROCEED WITH CAUTION ]" textFill="#ff8243db" wrapText="true">
+      <Label fx:id="introLabel" alignment="CENTER" layoutX="54.0" layoutY="40.0" prefHeight="140.0" prefWidth="1812.0" text="[ WARNING: VAREN CONTAINMENT HAS BEEN BREACHED ]&#10;[ PROCEED WITH CAUTION ]" textFill="#ff8243db" wrapText="true">
          <font>
             <Font name="Marker Felt Thin" size="40.0" />
          </font>
