@@ -272,71 +272,69 @@ public class EscapeRoomFacade {
      * Ends a game session.
      */
     public void endGame() {
-    System.out.println("END GAME CALLED! User = " + 
-        (currentUser == null ? "NULL" : currentUser.getUsername()));
+        System.out.println("END GAME CALLED! User = " +
+                (currentUser == null ? "NULL" : currentUser.getUsername()));
 
-    ensureCore();
+        ensureCore();
 
-    if (!isLoggedIn()) {
-        System.out.println("ERROR: No user logged in. Nothing to end.");
-        return;
+        if (!isLoggedIn()) {
+            System.out.println("ERROR: No user logged in. Nothing to end.");
+            return;
+        }
+
+        // Pause timer
+        if (timer != null)
+            timer.pause();
+        long timeLeft = timer != null ? timer.getRemainingSeconds() : 0;
+
+        // Ensure score object exists
+        if (score == null) {
+            score = new Score(
+                    currentUser.getUsername(),
+                    currentDifficulty == null ? Difficulty.EASY : currentDifficulty,
+                    timeLeft,
+                    new java.util.Date(),
+                    progress != null ? progress.getHintsUsed() : 0);
+        }
+
+        // Update final score
+        score.setTimeLeftSec(timeLeft);
+        long finalScore = calculateFinalScore();
+        score.setScore(finalScore);
+
+        // Save score history
+        writer.saveScore(score);
+
+        Leaderboard lb = loader.getLeaderboard();
+        if (lb == null) {
+            lb = new Leaderboard();
+        }
+
+        // Build a clean dedupe map of username → best/latest score
+        LinkedHashMap<String, Score> cleanMap = new LinkedHashMap<>();
+
+        for (Score s : lb.getAllScores()) {
+            if (s == null || s.getUsername() == null)
+                continue;
+            cleanMap.put(s.getUsername().toLowerCase(), s);
+        }
+
+        // Overwrite the current user's entry
+        cleanMap.put(currentUser.getUsername().toLowerCase(), score);
+
+        // Build a fresh leaderboard
+        Leaderboard cleanLB = new Leaderboard();
+        cleanLB.setEntries(new ArrayList<>(cleanMap.values()));
+
+        // Save the cleaned leaderboard
+        writer.saveLeaderboard(cleanLB);
+
+        System.out.println("Leaderboard cleaned + updated.");
+        System.out.println("Game ended. Final score: " + finalScore);
+
+        // Cleanup
+        currentRoom = null;
     }
-
-    // Pause timer
-    if (timer != null) timer.pause();
-    long timeLeft = timer != null ? timer.getRemainingSeconds() : 0;
-
-    // Ensure score object exists
-    if (score == null) {
-        score = new Score(
-            currentUser.getUsername(),
-            currentDifficulty == null ? Difficulty.EASY : currentDifficulty,
-            timeLeft,
-            new java.util.Date(),
-            progress != null ? progress.getHintsUsed() : 0
-        );
-    }
-
-    // Update final score
-    score.setTimeLeftSec(timeLeft);
-    long finalScore = calculateFinalScore();
-    score.setScore(finalScore);
-
-    // Save score history
-    writer.saveScore(score);
-
-
-    Leaderboard lb = loader.getLeaderboard();
-    if (lb == null) {
-        lb = new Leaderboard();
-    }
-
-    // Build a clean dedupe map of username → best/latest score
-    LinkedHashMap<String, Score> cleanMap = new LinkedHashMap<>();
-
-    for (Score s : lb.getAllScores()) {
-        if (s == null || s.getUsername() == null) continue;
-        cleanMap.put(s.getUsername().toLowerCase(), s);
-    }
-
-    // Overwrite the current user's entry
-    cleanMap.put(currentUser.getUsername().toLowerCase(), score);
-
-    // Build a fresh leaderboard
-    Leaderboard cleanLB = new Leaderboard();
-    cleanLB.setEntries(new ArrayList<>(cleanMap.values()));
-
-    // Save the cleaned leaderboard
-    writer.saveLeaderboard(cleanLB);
-
-    System.out.println("Leaderboard cleaned + updated.");
-    System.out.println("Game ended. Final score: " + finalScore);
-
-    // Cleanup
-    currentRoom = null;
-}
-
-
 
     /**
      * Pauses a game session.
@@ -626,6 +624,30 @@ public class EscapeRoomFacade {
 
     private Difficulty currentDifficulty;
     private ArrayList<String> collectedLetters = new ArrayList<>();
+
+    public boolean hasItem(String letter) {
+        if (collectedLetters == null)
+            return false;
+
+        // Case-insensitive check
+        for (String item : collectedLetters) {
+            if (item.equalsIgnoreCase(letter)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addItem(String letter) {
+        if (collectedLetters == null) {
+            collectedLetters = new ArrayList<>();
+        }
+        if (!hasItem(letter)) {
+            collectedLetters.add(letter);
+            System.out.println("Letter '" + letter + "' added to inventory.");
+        }
+    }
+
     private ArrayList<Rooms> allRooms;
     private String roomOneRiddle;
     private String roomOneAnswer;
@@ -943,12 +965,9 @@ public class EscapeRoomFacade {
     }
 
     public Leaderboard getLeaderboard() {
-       if (loader == null)
-       loader = new GameDataLoader();
-       return loader.getLeaderboard();
-   }
-
-
-   
+        if (loader == null)
+            loader = new GameDataLoader();
+        return loader.getLeaderboard();
+    }
 
 }

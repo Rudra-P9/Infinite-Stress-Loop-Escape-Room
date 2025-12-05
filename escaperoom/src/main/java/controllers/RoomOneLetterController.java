@@ -10,9 +10,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-
 import javafx.animation.FadeTransition;
 
+/**
+ * Controller for the Room One Letter screen.
+ * Handles the letter display and timer.
+ * 
+ * @author Rudra Patel
+ */
 public class RoomOneLetterController {
 
     @FXML

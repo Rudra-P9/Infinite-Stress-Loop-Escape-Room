@@ -110,8 +110,9 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Hide hint pane initially
-        if (hintPane != null) hintPane.setVisible(false);
-        
+        if (hintPane != null)
+            hintPane.setVisible(false);
+
         // Hide Continue elements until puzzle is solved
         if (ContinueLabel != null)
             ContinueLabel.setVisible(false);
@@ -209,9 +210,12 @@ public class FragmentCorridorRoomTwoController implements Initializable {
             ft.play();
         }
 
-        if (hintText != null) hintText.setVisible(true);
-        if (hintNote != null) hintNote.setVisible(true);
-        if (closeHintArrow != null) closeHintArrow.setVisible(true);
+        if (hintText != null)
+            hintText.setVisible(true);
+        if (hintNote != null)
+            hintNote.setVisible(true);
+        if (closeHintArrow != null)
+            closeHintArrow.setVisible(true);
     }
 
     /**
@@ -221,8 +225,10 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     private void hideHint(MouseEvent event) {
-        if (hintPane != null) hintPane.setVisible(false);
-        if (closeHintArrow != null) closeHintArrow.setVisible(false);
+        if (hintPane != null)
+            hintPane.setVisible(false);
+        if (closeHintArrow != null)
+            closeHintArrow.setVisible(false);
     }
 
     /**

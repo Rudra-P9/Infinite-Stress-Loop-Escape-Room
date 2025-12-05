@@ -149,6 +149,10 @@ public class Room3Puzzle4Controller implements Initializable {
                         "-fx-font-family: 'Felix Titling'; -fx-font-size: 170px; " +
                                 "-fx-text-fill: #d2735d; -fx-font-weight: bold;");
                 rewardLetter.toFront();
+
+                if (facade != null) {
+                    facade.addItem("R");
+                }
             }
 
             answerFieldA.setDisable(true);

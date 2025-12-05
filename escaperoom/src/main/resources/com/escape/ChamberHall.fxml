@@ -58,6 +58,7 @@
              <Button fx:id="door1Button" layoutX="367.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#handleDoor1" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="545.0" prefWidth="282.0" style="-fx-cursor: hand; -fx-background-color: transparent;" text="" />
              <Button fx:id="door2Button" layoutX="787.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#handleDoor2" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="544.0" prefWidth="293.0" style="-fx-cursor: hand; -fx-background-color: transparent;" text="" />
              <Button fx:id="door3Button" layoutX="1208.0" layoutY="387.0" mnemonicParsing="false" onMouseClicked="#handleDoor3" onMouseEntered="#handleDoorHover" onMouseExited="#handleDoorExit" prefHeight="547.0" prefWidth="315.0" style="-fx-cursor: hand; -fx-background-color: transparent;" text="" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" />
          </children>
       </Group>
 
@@ -104,6 +105,44 @@
             </Button>
          </children>
       </Group>
+      <ImageView fx:id="Inventory" fitHeight="67.0" fitWidth="81.0" layoutX="1719.0" layoutY="27.0" onMouseClicked="#openInventory" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+         <image>
+            <Image url="@../../images/Inventory.png" />
+         </image>
+         <effect>
+            <Lighting diffuseConstant="0.0" specularConstant="2.0" specularExponent="0.0" surfaceScale="0.0">
+               <bumpInput>
+                  <Shadow height="0.0" radius="0.0" width="0.0" />
+               </bumpInput>
+               <light>
+                  <Light.Distant azimuth="0.0">
+                     <color>
+                        <Color red="0.46052631735801697" green="0.3944322466850281" blue="0.3944322466850281" />
+                     </color>
+                  </Light.Distant>
+               </light>
+            </Lighting>
+         </effect>
+      </ImageView>
+      <ImageView fx:id="EXIT" fitHeight="89.0" fitWidth="84.0" layoutX="1812.0" layoutY="17.0" onMouseClicked="#openInventory" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+         <image>
+            <Image url="@../../images/exit.png" />
+         </image>
+         <effect>
+            <Lighting diffuseConstant="0.0" specularConstant="2.0" specularExponent="0.0" surfaceScale="0.0">
+               <bumpInput>
+                  <Shadow height="0.0" radius="0.0" width="0.0" />
+               </bumpInput>
+               <light>
+                  <Light.Distant azimuth="0.0">
+                     <color>
+                        <Color red="0.46052631735801697" green="0.3944322466850281" blue="0.3944322466850281" />
+                     </color>
+                  </Light.Distant>
+               </light>
+            </Lighting>
+         </effect>
+      </ImageView>
 
    </children>
 </AnchorPane>

@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
  * Clicking the wrong letter resets progress and shows an error message.
  * 
  * @author Jacob Kinard
+ * @author Rudra Patel
  */
 public class FragmentCorridorController implements Initializable {
 

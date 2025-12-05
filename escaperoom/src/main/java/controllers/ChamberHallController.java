@@ -186,10 +186,10 @@ public class ChamberHallController implements Initializable {
     @FXML
     private void handleDoor1(MouseEvent event) {
         try {
-            com.escape.App.setRoot("RoomOneIntro");
+            com.escape.App.setRoot("RoomOneBoard");
         } catch (java.io.IOException e) {
             e.printStackTrace();
-            System.err.println("Failed to load RoomOneIntro: " + e.getMessage());
+            System.err.println("Failed to load RoomOneBoard: " + e.getMessage());
         }
     }
 
@@ -212,6 +212,16 @@ public class ChamberHallController implements Initializable {
         } catch (java.io.IOException e) {
             e.printStackTrace();
             System.err.println("Failed to load Room3Combined: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void openInventory(MouseEvent event) {
+        try {
+            com.escape.App.setRoot("Inventory");
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to open Inventory: " + e.getMessage());
         }
     }
 
