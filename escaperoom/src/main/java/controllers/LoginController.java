@@ -3,15 +3,16 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.escape.App;
+import com.escape.model.Accounts;
+import com.escape.model.User;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import com.escape.App;
-
-import com.escape.model.Accounts;
-import com.escape.model.User;
 
 /**
  * Controller for the Login screen.
@@ -54,7 +55,7 @@ public class LoginController implements Initializable {
             enterButtonLabel.setTextFill(javafx.scene.paint.Color.LIME);
 
             // Set global user
-            App.currentUser = user;
+            App.gameFacade.setCurrentUser(user);
 
             // Navigate to DifficultyMenu after 1 second
             javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(

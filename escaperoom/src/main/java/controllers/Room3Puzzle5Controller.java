@@ -153,4 +153,32 @@ public class Room3Puzzle5Controller implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private Label timerLabel;
+    private com.escape.model.EscapeRoomFacade facade;
+    private javafx.animation.Timeline timerTimeline;
+
+    private void startTimerUpdate() {
+        timerTimeline = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
+        timerTimeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        timerTimeline.play();
+        updateTimer();
+    }
+
+    private void updateTimer() {
+        if (facade != null && timerLabel != null) {
+            int remainingSeconds = facade.getTimeRemaining();
+            int minutes = remainingSeconds / 60;
+            int seconds = remainingSeconds % 60;
+            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+            if (remainingSeconds < 60) {
+                timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+            } else {
+                timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+            }
+        }
+    }
+
 }

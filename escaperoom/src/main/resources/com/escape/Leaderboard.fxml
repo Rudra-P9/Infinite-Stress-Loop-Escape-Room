@@ -48,7 +48,7 @@
        <!-- BACK BUTTON -->
        <Label text="BACK"
               onMouseClicked="#goBack"
-              layoutX="600" layoutY="725"
+              layoutX="600" layoutY="750"
               style="-fx-font-family: 'Orbitron';
                      -fx-font-size: 32px;
                      -fx-text-fill: WHITE;

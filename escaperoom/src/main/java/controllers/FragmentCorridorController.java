@@ -19,7 +19,8 @@ import java.util.ResourceBundle;
 
 /**
  * Controller for the Fragment Corridor screen.
- * Manages the MEMORY puzzle: letters must be clicked in the exact sequence M-E-M-O-R-Y.
+ * Manages the MEMORY puzzle: letters must be clicked in the exact sequence
+ * M-E-M-O-R-Y.
  * Clicking the wrong letter resets progress and shows an error message.
  * 
  * @author Jacob Kinard
@@ -114,36 +115,48 @@ public class FragmentCorridorController implements Initializable {
     private Timeline timerTimeline;
 
     /** The target sequence to spell: MEMORY */
-    private static final String[] SEQUENCE = {"M", "E", "M", "O", "R", "Y"};
-    
+    private static final String[] SEQUENCE = { "M", "E", "M", "O", "R", "Y" };
+
     /** Current position in the sequence (0-5, 6 = complete) */
     private int sequencePosition = 0;
 
     /**
-     * Initializes the controller by hiding letter labels and applying consistent styling.
+     * Initializes the controller by hiding letter labels and applying consistent
+     * styling.
      * Sets up initial visibility states and applies fonts to letter elements.
      * 
-     * @param url the location used to resolve relative paths for the root object, or null
+     * @param url            the location used to resolve relative paths for the
+     *                       root object, or null
      * @param resourceBundle the resources used to localize the root object, or null
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Hide hint pane initially
-        if (hintPane != null) hintPane.setVisible(false);
-        
+        if (hintPane != null)
+            hintPane.setVisible(false);
+
         // Start timer update
         startTimerUpdate();
-        
+
         // Ensure all show labels are initially hidden
-        if (M1Show != null) M1Show.setVisible(false);
-        if (M2Show != null) M2Show.setVisible(false);
-        if (YShow != null) YShow.setVisible(false);
-        if (OShow != null) OShow.setVisible(false);
-        if (EShow != null) EShow.setVisible(false);
-        if (RShow != null) RShow.setVisible(false);
-        if (IncorrectLable != null) IncorrectLable.setVisible(false);
-        if (ContinueLabel != null) ContinueLabel.setVisible(false);
-        if (ContinueButton != null) ContinueButton.setVisible(false);
+        if (M1Show != null)
+            M1Show.setVisible(false);
+        if (M2Show != null)
+            M2Show.setVisible(false);
+        if (YShow != null)
+            YShow.setVisible(false);
+        if (OShow != null)
+            OShow.setVisible(false);
+        if (EShow != null)
+            EShow.setVisible(false);
+        if (RShow != null)
+            RShow.setVisible(false);
+        if (IncorrectLable != null)
+            IncorrectLable.setVisible(false);
+        if (ContinueLabel != null)
+            ContinueLabel.setVisible(false);
+        if (ContinueButton != null)
+            ContinueButton.setVisible(false);
 
         // Apply consistent letter styling (matches other screens)
         try {
@@ -276,7 +289,8 @@ public class FragmentCorridorController implements Initializable {
     /**
      * Unified handler for all letter clicks.
      * Validates the clicked letter against the expected sequence position.
-     * Reveals the correct show label if valid, or resets progress and shows error if invalid.
+     * Reveals the correct show label if valid, or resets progress and shows error
+     * if invalid.
      * 
      * @param letter the letter that was clicked ("M", "E", "O", "R", "Y")
      * @param source the UI element that triggered the click
@@ -292,12 +306,12 @@ public class FragmentCorridorController implements Initializable {
             // Correct letter - reveal the corresponding show label
             revealLetter(sequencePosition);
             sequencePosition++;
-            
+
             // Check if puzzle is complete
             if (sequencePosition >= SEQUENCE.length) {
                 showSuccess();
             }
-            
+
             // Optional: disable the clicked button/label
             if (source instanceof Button) {
                 ((Button) source).setDisable(true);
@@ -318,45 +332,77 @@ public class FragmentCorridorController implements Initializable {
     private void revealLetter(int position) {
         switch (position) {
             case 0: // First M
-                if (M1Show != null) M1Show.setVisible(true);
+                if (M1Show != null)
+                    M1Show.setVisible(true);
                 break;
             case 1: // E
-                if (EShow != null) EShow.setVisible(true);
+                if (EShow != null)
+                    EShow.setVisible(true);
                 break;
             case 2: // Second M
-                if (M2Show != null) M2Show.setVisible(true);
+                if (M2Show != null)
+                    M2Show.setVisible(true);
                 break;
             case 3: // O
-                if (OShow != null) OShow.setVisible(true);
+                if (OShow != null)
+                    OShow.setVisible(true);
                 break;
             case 4: // R
-                if (RShow != null) RShow.setVisible(true);
+                if (RShow != null)
+                    RShow.setVisible(true);
                 break;
             case 5: // Y
-                if (YShow != null) YShow.setVisible(true);
+                if (YShow != null)
+                    YShow.setVisible(true);
                 break;
         }
     }
 
     /**
-     * Resets the puzzle progress by hiding all show labels and re-enabling clickable areas.
+     * Resets the puzzle progress by hiding all show labels and re-enabling
+     * clickable areas.
      * Called when the user clicks an incorrect letter.
      */
     private void resetProgress() {
         sequencePosition = 0;
-        
+
         // Hide all show labels
-        if (M1Show != null) M1Show.setVisible(false);
-        if (EShow != null) EShow.setVisible(false);
-        if (M2Show != null) M2Show.setVisible(false);
-        if (OShow != null) OShow.setVisible(false);
-        if (RShow != null) RShow.setVisible(false);
-        if (YShow != null) YShow.setVisible(false);
-        
+        if (M1Show != null)
+            M1Show.setVisible(false);
+        if (EShow != null)
+            EShow.setVisible(false);
+        if (M2Show != null)
+            M2Show.setVisible(false);
+        if (OShow != null)
+            OShow.setVisible(false);
+        if (RShow != null)
+            RShow.setVisible(false);
+        if (YShow != null)
+            YShow.setVisible(false);
+
         // Re-enable all clickable areas
-        if (MKey1B != null) MKey1B.setDisable(false);
-        if (Mkey2B != null) Mkey2B.setDisable(false);
-        if (EKey != null) EKey.setDisable(false);
+        if (MKey1B != null)
+            MKey1B.setDisable(false);
+        if (Mkey2B != null)
+            Mkey2B.setDisable(false);
+        if (EKey != null)
+            EKey.setDisable(false);
+
+        // Apply penalty for incorrect sequence
+        if (com.escape.App.gameFacade != null) {
+            com.escape.App.gameFacade.applyHintPenalty();
+            updateTimer(); // Update immediately
+        }
+
+        // Animate penalty label if present
+        if (penaltyLabel != null) {
+            penaltyLabel.setOpacity(1.0);
+            javafx.animation.FadeTransition fade = new javafx.animation.FadeTransition(
+                    javafx.util.Duration.seconds(2.0), penaltyLabel);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+            fade.play();
+        }
     }
 
     /**
@@ -366,11 +412,13 @@ public class FragmentCorridorController implements Initializable {
     private void showError() {
         if (IncorrectLable != null) {
             IncorrectLable.setVisible(true);
-            
+
             // Hide error message after 2 seconds
-            javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2));
+            javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
+                    javafx.util.Duration.seconds(2));
             pause.setOnFinished(e -> {
-                if (IncorrectLable != null) IncorrectLable.setVisible(false);
+                if (IncorrectLable != null)
+                    IncorrectLable.setVisible(false);
             });
             pause.play();
         }
@@ -395,10 +443,12 @@ public class FragmentCorridorController implements Initializable {
                 System.out.println("Letter 'A' already in inventory.");
             }
         }
-        
-        if (ContinueLabel != null) ContinueLabel.setVisible(true);
-        if (ContinueButton != null) ContinueButton.setVisible(true);
-        
+
+        if (ContinueLabel != null)
+            ContinueLabel.setVisible(true);
+        if (ContinueButton != null)
+            ContinueButton.setVisible(true);
+
         // Create breathing animation for Continue label
         if (ContinueLabel != null) {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueLabel);
@@ -452,9 +502,12 @@ public class FragmentCorridorController implements Initializable {
             ft.play();
         }
 
-        if (hintText != null) hintText.setVisible(true);
-        if (hintNote != null) hintNote.setVisible(true);
-        if (closeHintArrow != null) closeHintArrow.setVisible(true);
+        if (hintText != null)
+            hintText.setVisible(true);
+        if (hintNote != null)
+            hintNote.setVisible(true);
+        if (closeHintArrow != null)
+            closeHintArrow.setVisible(true);
     }
 
     /**
@@ -464,8 +517,10 @@ public class FragmentCorridorController implements Initializable {
      */
     @FXML
     private void hideHint(MouseEvent event) {
-        if (hintPane != null) hintPane.setVisible(false);
-        if (closeHintArrow != null) closeHintArrow.setVisible(false);
+        if (hintPane != null)
+            hintPane.setVisible(false);
+        if (closeHintArrow != null)
+            closeHintArrow.setVisible(false);
     }
 
     /**

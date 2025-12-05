@@ -1,38 +1,37 @@
 {
   "leaderboard": [
     {
+      "difficulty": "EASY",
+      "date": "Fri Dec 05 15:12:05 EST 2025",
+      "score": 1791,
+      "timeLeftSec": 1791,
+      "username": "tkinard06"
+    },
+    {
       "difficulty": "HARD",
-      "date": "2025-04-16",
+      "date": "Fri Dec 05 15:12:05 EST 2025",
       "score": 720,
-      "timeSeconds": 720,
-      "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
       "timeLeftSec": 720,
       "username": "iGitThis"
     },
     {
       "difficulty": "MEDIUM",
-      "date": "2025-12-05",
+      "date": "Fri Dec 05 15:12:05 EST 2025",
       "score": 480,
-      "timeSeconds": 480,
-      "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
       "timeLeftSec": 480,
       "username": "PushPioneer12"
     },
     {
       "difficulty": "EASY",
-      "date": "2025-09-27",
+      "date": "Fri Dec 05 15:12:05 EST 2025",
       "score": 300,
-      "timeSeconds": 300,
-      "userID": "24f05b3b-514d-444f-b6ac-b0e649d6fb6b",
       "timeLeftSec": 300,
       "username": "EscapeRoomLover"
     },
     {
       "difficulty": "EASY",
-      "date": "2025-07-24",
+      "date": "Fri Dec 05 15:12:05 EST 2025",
       "score": 260,
-      "timeSeconds": 260,
-      "userID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
       "timeLeftSec": 260,
       "username": "NullPointerHero"
     }
@@ -79,6 +78,20 @@
       "puzzlesSolved": 1,
       "hintsUsed": 0,
       "username": "NullPointerHero"
+    },
+    {
+      "difficulty": "EASY",
+      "date": "Fri Dec 05 15:06:39 EST 2025",
+      "score": 0,
+      "timeSeconds": 0,
+      "username": "tkinard06"
+    },
+    {
+      "difficulty": "EASY",
+      "date": "Fri Dec 05 15:12:05 EST 2025",
+      "score": 1791,
+      "timeSeconds": 1791,
+      "username": "tkinard06"
     }
   ],
   "progress": [
@@ -120,7 +133,8 @@
     },
     {
       "score": 2100,
-      "inventoryItems": [],
+      "inventoryItems": [
+      ],
       "puzzleIDs": [
         "c96f61f5-7255-4083-b8c2-106f6d350253"
       ],
@@ -132,7 +146,8 @@
     },
     {
       "score": 2050,
-      "inventoryItems": [],
+      "inventoryItems": [
+      ],
       "puzzleIDs": [
         "f8836f88-c4c0-49f7-83db-7a15f6f092ef"
       ],
@@ -179,7 +194,8 @@
     {
       "password": "Albert291",
       "inventory": {
-        "items": [],
+        "items": [
+        ],
         "capacity": 3
       },
       "userID": "a1dceaba-b9a9-4b95-9864-8fb80807e1df",
@@ -189,7 +205,8 @@
     {
       "password": "cats1971",
       "inventory": {
-        "items": [],
+        "items": [
+        ],
         "capacity": 5
       },
       "userID": "2514a407-44fd-4183-95c0-1f16f9968bfc",
@@ -211,7 +228,8 @@
     {
       "password": "loganPass123",
       "inventory": {
-        "items": [],
+        "items": [
+        ],
         "capacity": 5
       },
       "userID": "a369165b-b6cd-4e8c-b06a-c9cdcf7e3b33",
@@ -221,12 +239,24 @@
     {
       "password": "testpass",
       "inventory": {
-        "items": [],
+        "items": [
+        ],
         "capacity": 5
       },
       "userID": "test-user-uuid-1234",
       "email": "test@example.com",
       "username": "testuser"
+    },
+    {
+      "password": "tkinard06",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "62d5b129-ba42-49cd-98cd-87349d719191",
+      "email": "talankinard@gmail.com",
+      "username": "tkinard06"
     }
   ]
 }

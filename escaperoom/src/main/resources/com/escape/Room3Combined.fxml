@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,7 +23,6 @@
             
 
     <children>
-
         <!-- Background -->
         <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true">
             <image>
@@ -30,6 +30,13 @@
             </image>
         </ImageView>
 
+        <Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
+        <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
+            <font>
+                <Font name="Impact" size="40.0" />
+            </font>
+        </Label>
+        
         <!-- Hotspot Group -->
         <Group fx:id="hotspotGroup" layoutX="647.0" layoutY="536.0">
             <children>

@@ -14,15 +14,20 @@ import com.escape.App;
 
 /**
  * Controller for the Room 3 main menu.
- * Handles showing and hiding the intro dialog and opening the three vault hotspots.
+ * Handles showing and hiding the intro dialog and opening the three vault
+ * hotspots.
  * Author: Kirtan Patel
  */
 public class Room3CombinedController implements Initializable {
 
-    @FXML private ImageView bgImage;
-    @FXML private Group dialogRoot;
-    @FXML private Button infoButtonRm3;
-    @FXML private Button acknowledgeButtonRm3;
+    @FXML
+    private ImageView bgImage;
+    @FXML
+    private Group dialogRoot;
+    @FXML
+    private Button infoButtonRm3;
+    @FXML
+    private Button acknowledgeButtonRm3;
 
     @FXML
     private Button leftVaultBtn;
@@ -31,7 +36,8 @@ public class Room3CombinedController implements Initializable {
     @FXML
     private Button coreBtn;
 
-    @FXML private Group hotspotGroup;
+    @FXML
+    private Group hotspotGroup;
 
     /**
      * Runs when the scene first loads.
@@ -44,6 +50,9 @@ public class Room3CombinedController implements Initializable {
             dialogRoot.setVisible(true);
             dialogRoot.setMouseTransparent(false);
         }
+
+        this.facade = App.gameFacade;
+        startTimerUpdate();
 
         if (infoButtonRm3 != null) {
             infoButtonRm3.setVisible(true);
@@ -138,6 +147,33 @@ public class Room3CombinedController implements Initializable {
             com.escape.App.setRoot("FinalPuzzle");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private javafx.scene.control.Label timerLabel;
+    private com.escape.model.EscapeRoomFacade facade;
+    private javafx.animation.Timeline timerTimeline;
+
+    private void startTimerUpdate() {
+        timerTimeline = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
+        timerTimeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        timerTimeline.play();
+        updateTimer();
+    }
+
+    private void updateTimer() {
+        if (facade != null && timerLabel != null) {
+            int remainingSeconds = facade.getTimeRemaining();
+            int minutes = remainingSeconds / 60;
+            int seconds = remainingSeconds % 60;
+            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+            if (remainingSeconds < 60) {
+                timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+            } else {
+                timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+            }
         }
     }
 }

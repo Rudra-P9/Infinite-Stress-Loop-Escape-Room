@@ -1,5 +1,11 @@
 package controllers;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.escape.App;
+
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -10,12 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.escape.App;
 
 public class FinalPuzzleController {
 
@@ -35,33 +35,39 @@ public class FinalPuzzleController {
     @FXML private AnchorPane monitorPane;
     @FXML private Label missionLabel;
     @FXML private ImageView exitButton;
+    @FXML private Label penaltyLabel;
 
     @FXML private AnchorPane introPane;
     @FXML private Label introLabel;
     @FXML private ImageView introExitButton;
 
-    private final String[] order = {"UnclickedR","UnclickedE","UnclickedA","UnclickedL","UnclickedM"};
+    @FXML private Label timerLabel;
+
+    private final String[] order = {"UnclickedR", "UnclickedE", "UnclickedA", "UnclickedL", "UnclickedM"};
     private int index = 0;
 
-    private final Map<String,String> clickedMap = new HashMap<>();
-    private final Map<String,String> unclickedMap = new HashMap<>();
+    private final Map<String, String> clickedMap = new HashMap<>();
+    private final Map<String, String> unclickedMap = new HashMap<>();
+
+    private com.escape.model.EscapeRoomFacade facade;
+    private javafx.animation.Timeline timerTimeline;
 
     @FXML
     private void initialize() {
 
         Font.loadFont(getClass().getResourceAsStream("/fonts/Storm Gust.ttf"), 42);
 
-        clickedMap.put("UnclickedR","/images/ClickedR.png");
-        clickedMap.put("UnclickedE","/images/ClickedE.png");
-        clickedMap.put("UnclickedA","/images/ClickedA.png");
-        clickedMap.put("UnclickedL","/images/ClickedL.png");
-        clickedMap.put("UnclickedM","/images/ClickedM.png");
+        clickedMap.put("UnclickedR", "/images/ClickedR.png");
+        clickedMap.put("UnclickedE", "/images/ClickedE.png");
+        clickedMap.put("UnclickedA", "/images/ClickedA.png");
+        clickedMap.put("UnclickedL", "/images/ClickedL.png");
+        clickedMap.put("UnclickedM", "/images/ClickedM.png");
 
-        unclickedMap.put("UnclickedR","/images/UnclickedR.png");
-        unclickedMap.put("UnclickedE","/images/UnclickedE.png");
-        unclickedMap.put("UnclickedA","/images/UnclickedA.png");
-        unclickedMap.put("UnclickedL","/images/UnclickedL.png");
-        unclickedMap.put("UnclickedM","/images/UnclickedM.png");
+        unclickedMap.put("UnclickedR", "/images/UnclickedR.png");
+        unclickedMap.put("UnclickedE", "/images/UnclickedE.png");
+        unclickedMap.put("UnclickedA", "/images/UnclickedA.png");
+        unclickedMap.put("UnclickedL", "/images/UnclickedL.png");
+        unclickedMap.put("UnclickedM", "/images/UnclickedM.png");
 
         hintBottomFlow.setVisible(false);
         hintBottomFlow.setOpacity(0.0);
@@ -80,6 +86,9 @@ public class FinalPuzzleController {
         introPane.setManaged(true);
 
         setPuzzleVisible(false);
+
+        this.facade = App.gameFacade;
+        startTimerUpdate();
     }
 
     private void setPuzzleVisible(boolean visible) {
@@ -123,6 +132,19 @@ public class FinalPuzzleController {
     }
 
     private void resetAll() {
+        if (facade != null) {
+            facade.applyHintPenalty();
+            updateTimer();
+        }
+
+        if (penaltyLabel != null) {
+            penaltyLabel.setOpacity(1.0);
+            FadeTransition fade = new FadeTransition(Duration.seconds(2.0), penaltyLabel);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+            fade.play();
+        }
+
         setImage(UnclickedR, unclickedMap.get("UnclickedR"));
         setImage(UnclickedE, unclickedMap.get("UnclickedE"));
         setImage(UnclickedA, unclickedMap.get("UnclickedA"));
@@ -148,10 +170,11 @@ public class FinalPuzzleController {
 
     private void onComplete() {
         RealmImage.setVisible(true);
+        onCompleteFinalPuzzle(); // ← keep your logic
     }
 
     @FXML
-    private void onRealmClicked(MouseEvent event) {
+    private void onRealmClicked(MouseEvent event) throws IOException {
         AnchorPane parent = (AnchorPane) monitorPane.getParent();
         double parentH = parent.getHeight();
         double paneH = monitorPane.getPrefHeight() > 0 ? monitorPane.getPrefHeight() : 700.0;
@@ -200,5 +223,35 @@ public class FinalPuzzleController {
         ft.setOnFinished(e -> hintBottomFlow.setVisible(false));
         ft.play();
         FPHintIcon.setVisible(true);
+    }
+
+    /** TIMER SYSTEM */
+    private void startTimerUpdate() {
+        timerTimeline = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), e -> updateTimer()));
+        timerTimeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        timerTimeline.play();
+        updateTimer();
+    }
+
+    private void updateTimer() {
+        if (facade != null && timerLabel != null) {
+            int remainingSeconds = facade.getTimeRemaining();
+            int minutes = remainingSeconds / 60;
+            int seconds = remainingSeconds % 60;
+            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+
+            if (remainingSeconds < 60)
+                timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+            else
+                timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+        }
+    }
+
+    /** FINAL PUZZLE END GAME */
+    private void onCompleteFinalPuzzle() {
+        if (App.gameFacade != null) {
+            App.gameFacade.endGame();
+        }
     }
 }
