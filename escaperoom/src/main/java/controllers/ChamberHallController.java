@@ -197,4 +197,14 @@ public class ChamberHallController implements Initializable {
         }
     }
 
+    @FXML
+    private void openInventory(MouseEvent event) {
+        try {
+            com.escape.App.setRoot("Inventory");
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to open Inventory: " + e.getMessage());
+        }
+    }
+
 }

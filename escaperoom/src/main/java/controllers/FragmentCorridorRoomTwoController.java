@@ -91,8 +91,9 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Hide hint pane initially
-        if (hintPane != null) hintPane.setVisible(false);
-        
+        if (hintPane != null)
+            hintPane.setVisible(false);
+
         // Hide Continue elements until puzzle is solved
         if (ContinueLabel != null)
             ContinueLabel.setVisible(false);
@@ -134,9 +135,12 @@ public class FragmentCorridorRoomTwoController implements Initializable {
             ft.play();
         }
 
-        if (hintText != null) hintText.setVisible(true);
-        if (hintNote != null) hintNote.setVisible(true);
-        if (closeHintArrow != null) closeHintArrow.setVisible(true);
+        if (hintText != null)
+            hintText.setVisible(true);
+        if (hintNote != null)
+            hintNote.setVisible(true);
+        if (closeHintArrow != null)
+            closeHintArrow.setVisible(true);
     }
 
     /**
@@ -146,8 +150,10 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     private void hideHint(MouseEvent event) {
-        if (hintPane != null) hintPane.setVisible(false);
-        if (closeHintArrow != null) closeHintArrow.setVisible(false);
+        if (hintPane != null)
+            hintPane.setVisible(false);
+        if (closeHintArrow != null)
+            closeHintArrow.setVisible(false);
     }
 
     /**
@@ -299,18 +305,9 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     private void showSuccess() {
         // Award the letter "M" to the user's inventory (from game.json)
-        if (App.currentUser != null) {
-            // Check if user already has the letter before adding
-            if (!App.currentUser.getCollectedLetters().contains("M")) {
-                boolean added = App.currentUser.addCollectedLetter("M");
-                if (added) {
-                    System.out.println("Letter 'M' added to inventory.");
-                } else {
-                    System.out.println("Failed to add letter 'M' - inventory may be full.");
-                }
-            } else {
-                System.out.println("Letter 'M' already in inventory.");
-            }
+        // Award the letter "M" to the user's inventory (from game.json)
+        if (App.gameFacade != null) {
+            App.gameFacade.addItem("M");
         }
 
         if (ContinueLabel != null)

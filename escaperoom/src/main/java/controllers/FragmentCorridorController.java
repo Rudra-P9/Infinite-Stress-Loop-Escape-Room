@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
  * Clicking the wrong letter resets progress and shows an error message.
  * 
  * @author Jacob Kinard
+ * @author Rudra Patel
  */
 public class FragmentCorridorController implements Initializable {
 
@@ -430,18 +431,9 @@ public class FragmentCorridorController implements Initializable {
      */
     private void showSuccess() {
         // Award the letter "A" to the user's inventory (from game.json)
-        if (App.currentUser != null) {
-            // Check if user already has the letter before adding
-            if (!App.currentUser.getCollectedLetters().contains("A")) {
-                boolean added = App.currentUser.addCollectedLetter("A");
-                if (added) {
-                    System.out.println("Letter 'A' added to inventory.");
-                } else {
-                    System.out.println("Failed to add letter 'A' - inventory may be full.");
-                }
-            } else {
-                System.out.println("Letter 'A' already in inventory.");
-            }
+        // Award the letter "A" to the user's inventory (from game.json)
+        if (App.gameFacade != null) {
+            App.gameFacade.addItem("A");
         }
 
         if (ContinueLabel != null)

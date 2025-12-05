@@ -14,7 +14,8 @@ import java.util.ResourceBundle;
 
 /**
  * Controller for Room3 Puzzle 5 (Frequency Spectrum).
- * Simple puzzle screen with a play button, answer field, hint and back controls.
+ * Simple puzzle screen with a play button, answer field, hint and back
+ * controls.
  *
  * Author: Kirtan Patel
  *
@@ -26,13 +27,20 @@ import java.util.ResourceBundle;
 public class Room3Puzzle5Controller implements Initializable {
 
     // FXML-injected nodes (must match fx:id values in FXML)
-    @FXML private AnchorPane hintPaneB;
-    @FXML private Button playButtonB;
-    @FXML private Button hintButtonB;
-    @FXML private Button backButtonB;
-    @FXML private Label rewardLetterB;
-    @FXML private Label feedbackLabelB;
-    @FXML private TextField answerFieldB;
+    @FXML
+    private AnchorPane hintPaneB;
+    @FXML
+    private Button playButtonB;
+    @FXML
+    private Button hintButtonB;
+    @FXML
+    private Button backButtonB;
+    @FXML
+    private Label rewardLetterB;
+    @FXML
+    private Label feedbackLabelB;
+    @FXML
+    private TextField answerFieldB;
 
     // expected answer for puzzle 5 (change if needed)
     private static final String EXPECTED_ANSWER_B = "MIRROR";
@@ -40,7 +48,8 @@ public class Room3Puzzle5Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // start with hint and reward hidden (if present)
-        if (hintPaneB != null) hintPaneB.setVisible(false);
+        if (hintPaneB != null)
+            hintPaneB.setVisible(false);
         if (rewardLetterB != null) {
             rewardLetterB.setVisible(false);
             // ensure letter does not intercept mouse events (so Back still works)
@@ -52,8 +61,10 @@ public class Room3Puzzle5Controller implements Initializable {
         }
 
         // ensure play button and back are enabled
-        if (playButtonB != null) playButtonB.setDisable(false);
-        if (backButtonB != null) backButtonB.setDisable(false);
+        if (playButtonB != null)
+            playButtonB.setDisable(false);
+        if (backButtonB != null)
+            backButtonB.setDisable(false);
 
         // optional: set focus to answer field so Enter works immediately
         if (answerFieldB != null) {
@@ -68,10 +79,12 @@ public class Room3Puzzle5Controller implements Initializable {
      */
     @FXML
     private void onHintB(MouseEvent event) {
-        if (hintPaneB == null) return;
+        if (hintPaneB == null)
+            return;
         boolean now = !hintPaneB.isVisible();
         hintPaneB.setVisible(now);
-        if (now) hintPaneB.toFront();
+        if (now)
+            hintPaneB.toFront();
         System.out.println("Hint toggled -> " + now);
     }
 
@@ -91,10 +104,12 @@ public class Room3Puzzle5Controller implements Initializable {
      */
     @FXML
     private void onCheckB(ActionEvent event) {
-        if (answerFieldB == null || feedbackLabelB == null) return;
+        if (answerFieldB == null || feedbackLabelB == null)
+            return;
 
         String attempt = answerFieldB.getText();
-        if (attempt == null) attempt = "";
+        if (attempt == null)
+            attempt = "";
         attempt = attempt.trim();
 
         if (attempt.isEmpty()) {
@@ -115,14 +130,17 @@ public class Room3Puzzle5Controller implements Initializable {
                 rewardLetterB.setVisible(true);
                 // style to match the other puzzle letter appearance
                 rewardLetterB.setStyle(
-                    "-fx-font-family: 'Felix Titling'; " +
-                    "-fx-font-size: 200px; " +
-                    "-fx-text-fill: #d2735d; " +
-                    "-fx-font-weight: bold;"
-                );
+                        "-fx-font-family: 'Felix Titling'; " +
+                                "-fx-font-size: 200px; " +
+                                "-fx-text-fill: #d2735d; " +
+                                "-fx-font-weight: bold;");
                 // make sure it looks above background but does not intercept mouse clicks
                 rewardLetterB.toFront();
                 rewardLetterB.setMouseTransparent(true);
+
+                if (facade != null) {
+                    facade.addItem("L");
+                }
             }
 
             // re-enable Back button and bring it to front so user can click it
