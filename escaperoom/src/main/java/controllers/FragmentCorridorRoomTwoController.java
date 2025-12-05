@@ -8,7 +8,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import com.escape.App;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -108,8 +110,11 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void ContinueToNext(MouseEvent event) {
-        // Add navigation logic here
-        System.out.println("Continue to next screen");
+        try {
+            App.setRoot("ChamberHall");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
