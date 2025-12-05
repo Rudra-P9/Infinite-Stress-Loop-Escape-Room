@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -50,6 +51,10 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     @FXML
     private Label IncorrectLabel;
 
+    /** ImageView to hide the arrow sequence when user starts inputting */
+    @FXML
+    private ImageView ArrowHider;
+
     /** The target sequence: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT */
     private static final String[] SEQUENCE = {"UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT"};
     
@@ -69,6 +74,8 @@ public class FragmentCorridorRoomTwoController implements Initializable {
         if (ContinueLabel != null) ContinueLabel.setVisible(false);
         if (ContinueButton != null) ContinueButton.setVisible(false);
         if (IncorrectLabel != null) IncorrectLabel.setVisible(false);
+        // Hide arrow cover initially so user can see the sequence
+        if (ArrowHider != null) ArrowHider.setVisible(false);
     }
 
     /**
@@ -143,6 +150,11 @@ public class FragmentCorridorRoomTwoController implements Initializable {
             return; // puzzle already solved
         }
 
+        // Show arrow cover on first input to hide the sequence
+        if (sequencePosition == 0 && ArrowHider != null) {
+            ArrowHider.setVisible(true);
+        }
+
         // Check if clicked direction matches expected position
         if (direction.equals(SEQUENCE[sequencePosition])) {
             // Correct direction - advance sequence
@@ -161,10 +173,13 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Resets the puzzle progress.
-     * Sets the sequence position back to the beginning.
+     * Sets the sequence position back to the beginning and hides the arrow cover
+     * so the user can re-memorize the sequence.
      */
     private void resetProgress() {
         sequencePosition = 0;
+        // Hide arrow cover so user can see the sequence again
+        if (ArrowHider != null) ArrowHider.setVisible(false);
     }
 
     /**

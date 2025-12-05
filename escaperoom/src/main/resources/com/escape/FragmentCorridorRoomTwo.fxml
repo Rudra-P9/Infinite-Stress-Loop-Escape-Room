@@ -29,5 +29,10 @@
          </font>
       </Label>
       <Button fx:id="ContinueButton" layoutX="91.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#ContinueToNext" opacity="0.0" prefHeight="1054.0" prefWidth="692.0" text="Continue" />
+      <ImageView id="ArrowHider" fx:id="ArrowHider" fitHeight="338.0" fitWidth="1123.0" layoutX="798.0" layoutY="3.0">
+         <image>
+            <Image url="@../../images/FregmentCorridorRoom2ArrowCover.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
