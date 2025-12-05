@@ -180,5 +180,46 @@
             </children>
         </AnchorPane>
 
+        <!-- INTRO MESSAGE -->
+        <AnchorPane fx:id="introPane"
+                    layoutX="360.0"
+                    layoutY="190.0"
+                    prefWidth="1200.0"
+                    prefHeight="700.0"
+                    visible="true"
+                    managed="true"
+                    style="-fx-background-color: transparent;">
+            <children>
+                <ImageView fitWidth="1200.0"
+                           fitHeight="700.0"
+                           preserveRatio="false">
+                    <image>
+                        <Image url="@../../images/ScreenMonitor.png"/>
+                    </image>
+                </ImageView>
+
+                <Label fx:id="introLabel"
+                       layoutX="60.0" layoutY="80.0"
+                       prefWidth="1080.0"
+                       wrapText="true"
+                       style="-fx-font-family: 'Monospaced'; -fx-font-size: 56px;
+                              -fx-text-fill: white; -fx-alignment: center;">
+                    <text>FINAL CHAMBER ONLINE.&#10;THIS IS YOUR FINAL PUZZLE.&#10;USE WHAT YOU HAVE COLLECTED IN YOUR INVENTORY TO STABILIZE THE REACTOR AND UNLOCK YOUR FREEDOM.&#10;GOOD LUCK...&#10;</text>
+                </Label>
+
+                <ImageView fx:id="introExitButton"
+                           layoutX="1100.0" layoutY="40.0"
+                           fitWidth="50.0" fitHeight="50.0"
+                           onMouseClicked="#hideIntroPane"
+                           pickOnBounds="true"
+                           preserveRatio="true"
+                           style="-fx-cursor: hand;">
+                    <image>
+                        <Image url="@../../images/MonitorExit.png"/>
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+
     </children>
 </AnchorPane>

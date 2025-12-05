@@ -2,18 +2,20 @@ package controllers;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.TextFlow;
-import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.escape.App;
-import java.io.IOException;
 
 public class FinalPuzzleController {
 
@@ -33,6 +35,10 @@ public class FinalPuzzleController {
     @FXML private AnchorPane monitorPane;
     @FXML private Label missionLabel;
     @FXML private ImageView exitButton;
+
+    @FXML private AnchorPane introPane;
+    @FXML private Label introLabel;
+    @FXML private ImageView introExitButton;
 
     private final String[] order = {"UnclickedR","UnclickedE","UnclickedA","UnclickedL","UnclickedM"};
     private int index = 0;
@@ -69,6 +75,35 @@ public class FinalPuzzleController {
         bgImage.fitWidthProperty().bind(parent.widthProperty());
         bgImage.fitHeightProperty().bind(parent.heightProperty());
         bgImage.setPreserveRatio(false);
+
+        introPane.setVisible(true);
+        introPane.setManaged(true);
+
+        setPuzzleVisible(false);
+    }
+
+    private void setPuzzleVisible(boolean visible) {
+        FPHintIcon.setVisible(visible);
+        FPHintIcon.setDisable(!visible);
+
+        UnclickedR.setVisible(visible);
+        UnclickedE.setVisible(visible);
+        UnclickedA.setVisible(visible);
+        UnclickedL.setVisible(visible);
+        UnclickedM.setVisible(visible);
+
+        UnclickedR.setDisable(!visible);
+        UnclickedE.setDisable(!visible);
+        UnclickedA.setDisable(!visible);
+        UnclickedL.setDisable(!visible);
+        UnclickedM.setDisable(!visible);
+    }
+
+    @FXML
+    private void hideIntroPane(MouseEvent event) {
+        introPane.setVisible(false);
+        introPane.setManaged(false);
+        setPuzzleVisible(true);
     }
 
     @FXML
@@ -102,8 +137,6 @@ public class FinalPuzzleController {
 
         monitorPane.setVisible(false);
         monitorPane.setManaged(false);
-        monitorPane.setOpacity(1.0);
-
         RealmImage.setVisible(false);
 
         index = 0;
@@ -129,11 +162,11 @@ public class FinalPuzzleController {
         monitorPane.setLayoutY(finalY);
         monitorPane.setOpacity(0.0);
 
-        FadeTransition paneFade = new FadeTransition(Duration.millis(600), monitorPane);
-        paneFade.setFromValue(0.0);
-        paneFade.setToValue(1.0);
-        paneFade.setOnFinished(e -> monitorPane.setManaged(true));
-        paneFade.play();
+        FadeTransition fade = new FadeTransition(Duration.millis(600), monitorPane);
+        fade.setFromValue(0.0);
+        fade.setToValue(1.0);
+        fade.setOnFinished(e -> monitorPane.setManaged(true));
+        fade.play();
 
         missionLabel.setOpacity(0.0);
         FadeTransition ft = new FadeTransition(Duration.millis(700), missionLabel);
@@ -142,12 +175,11 @@ public class FinalPuzzleController {
         ft.setDelay(Duration.millis(200));
         ft.play();
     }
-    
+
     @FXML
     private void hideMonitor(MouseEvent event) throws IOException {
         App.setRoot("OpenDoor");
     }
-
 
     @FXML
     private void showHint(MouseEvent event) {
