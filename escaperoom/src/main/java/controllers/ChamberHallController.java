@@ -168,10 +168,10 @@ public class ChamberHallController implements Initializable {
     @FXML
     private void handleDoor1(MouseEvent event) {
         try {
-            com.escape.App.setRoot("RoomOneIntro");
+            com.escape.App.setRoot("RoomOneBoard");
         } catch (java.io.IOException e) {
             e.printStackTrace();
-            System.err.println("Failed to load RoomOneIntro: " + e.getMessage());
+            System.err.println("Failed to load RoomOneBoard: " + e.getMessage());
         }
     }
 
