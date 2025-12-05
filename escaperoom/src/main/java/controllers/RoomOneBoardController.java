@@ -81,11 +81,18 @@ public class RoomOneBoardController {
                         answerText = parts[1].trim();
                     }
 
+                    String hintText = "";
+                    if (parts.length > 2) {
+                        hintText = parts[2].trim();
+                    }
+
                     // Save to facade for persistence
                     if (com.escape.App.gameFacade != null) {
                         com.escape.App.gameFacade.setRoomOneRiddle(riddleText);
                         com.escape.App.gameFacade.setRoomOneAnswer(answerText);
-                        System.out.println("Riddle set: " + riddleText + " | Answer: " + answerText);
+                        com.escape.App.gameFacade.setRoomOneHint(hintText);
+                        System.out.println(
+                                "Riddle set: " + riddleText + " | Answer: " + answerText + " | Hint: " + hintText);
                     }
                 }
             }

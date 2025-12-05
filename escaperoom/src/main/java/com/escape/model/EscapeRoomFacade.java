@@ -646,6 +646,7 @@ public class EscapeRoomFacade {
     private ArrayList<Rooms> allRooms;
     private String roomOneRiddle;
     private String roomOneAnswer;
+    private String roomOneHint;
 
     public String getRoomOneRiddle() {
         return roomOneRiddle;
@@ -661,6 +662,14 @@ public class EscapeRoomFacade {
 
     public void setRoomOneAnswer(String answer) {
         this.roomOneAnswer = answer;
+    }
+
+    public String getRoomOneHint() {
+        return roomOneHint;
+    }
+
+    public void setRoomOneHint(String hint) {
+        this.roomOneHint = hint;
     }
 
     /**
