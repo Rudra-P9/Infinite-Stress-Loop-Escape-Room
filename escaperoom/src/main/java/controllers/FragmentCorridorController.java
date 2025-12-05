@@ -308,7 +308,7 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     void ContinueToNext(MouseEvent event) {
         try {
-            App.setRoot("ChamberHall");
+            App.setRoot("FragmentCorridorRoomTwo");
         } catch (IOException e) {
             e.printStackTrace();
         }
