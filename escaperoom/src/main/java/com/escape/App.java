@@ -37,7 +37,7 @@ public class App extends Application {
         gameFacade = new com.escape.model.EscapeRoomFacade();
 
         // Load the initial view wrapped in the scaler
-        Parent root = loadFXML("Leaderboard");
+        Parent root = loadFXML("MainScreen");
 
         // Create scene with the scalable root
         scene = new Scene(root, 640, 480);
