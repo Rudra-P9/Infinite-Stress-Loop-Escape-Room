@@ -121,13 +121,23 @@ public class Room3CombinedController implements Initializable {
     @FXML
     private void onRightVaultClicked(MouseEvent event) {
         System.out.println("Right vault clicked - open puzzle B");
+        try {
+            com.escape.App.setRoot("Room3Puzzle5");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Opens the final core puzzle when the center hotspot is clicked.
      */
     @FXML
-    private void onCoreClicked(MouseEvent event) throws IOException {
+    private void onCoreClicked(MouseEvent event) {
         System.out.println("Core clicked - open final puzzle");
+        try {
+            com.escape.App.setRoot("FinalPuzzle");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
