@@ -22,7 +22,7 @@
                    layoutX="25" layoutY="500"
                    pickOnBounds="true"
                    fitWidth="80" fitHeight="80"
-                   onMouseClicked="#goToNext">
+                   onMouseClicked="#goToLetter">
         <image>
             <Image url="@../../images/ArrowLeft.png"/>
         </image>

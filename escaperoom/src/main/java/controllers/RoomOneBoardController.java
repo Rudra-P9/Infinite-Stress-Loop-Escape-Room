@@ -59,9 +59,16 @@ public class RoomOneBoardController {
 
     @FXML
     private void goToNext(MouseEvent event) throws Exception {
-        // Return to the main hall
+        // Go to the main hall
         App.setRoot("ChamberHall");
         System.out.println("Returning to Chamber Hall from Room One");
+    }
+
+    @FXML
+    private void goToLetter(MouseEvent event) throws Exception {
+        // Go to the letter puzzle
+        App.setRoot("RoomOneLetter");
+        System.out.println("Going to Room One Letter from Room One Board");
     }
 
     private String loadHintFromJson() {
