@@ -14,6 +14,7 @@
             <Image url="@../../images/FragmentCorridorRoom2v2.png" />
          </image>
       </ImageView>
+      
       <Button id="UP" fx:id="UP" layoutX="1262.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#PressedUp" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="UP" />
       <Button id="DOWN" fx:id="DOWN" layoutX="1369.0" layoutY="509.0" mnemonicParsing="false" onMouseClicked="#PressedDown" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="DOWN" />
       <Button id="LEFT" fx:id="LEFT" layoutX="1262.0" layoutY="509.0" mnemonicParsing="false" onMouseClicked="#PressedLeft" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="LEFT" />
@@ -34,5 +35,29 @@
             <Image url="@../../images/FregmentCorridorRoom2ArrowCover.png" />
          </image>
       </ImageView>
+      
+      <!-- Hint Icon (placed after ArrowHider to be on top) -->
+      <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
+         <image>
+            <Image url="@../../images/HintIcon.png" />
+         </image>
+      </ImageView>
+      
+      <!-- HINT (hidden until clicked) -->
+      <AnchorPane fx:id="hintPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
+         <ImageView fx:id="hintNote" fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
+            <image>
+               <Image url="@../../images/hintNote.png" />
+            </image>
+         </ImageView>
+        
+         <Label id="hintText" fx:id="hintText" layoutX="15" layoutY="-100" prefWidth="650" style="-fx-font-family: 'Bradley Hand'; -fx-text-fill: black; -fx-font-size: 36px;" text="" wrapText="true" />
+
+         <ImageView fx:id="closeHintArrow" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideHint" pickOnBounds="true" preserveRatio="true" visible="false">
+            <image>
+               <Image url="@../../images/ArrowLeft.png" />
+            </image>
+         </ImageView>
+      </AnchorPane>
    </children>
 </AnchorPane>

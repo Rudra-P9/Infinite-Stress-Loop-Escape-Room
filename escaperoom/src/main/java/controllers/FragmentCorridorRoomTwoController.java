@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -55,6 +57,22 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     @FXML
     private ImageView ArrowHider;
 
+    /** Hint pane container */
+    @FXML
+    private AnchorPane hintPane;
+
+    /** Label displaying the hint text */
+    @FXML
+    private Label hintText;
+
+    /** ImageView for closing the hint */
+    @FXML
+    private ImageView closeHintArrow;
+
+    /** ImageView for the hint note background */
+    @FXML
+    private ImageView hintNote;
+
     /** The target sequence: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT */
     private static final String[] SEQUENCE = {"UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT"};
     
@@ -70,12 +88,56 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Hide hint pane initially
+        if (hintPane != null) hintPane.setVisible(false);
+        
         // Hide Continue elements until puzzle is solved
         if (ContinueLabel != null) ContinueLabel.setVisible(false);
         if (ContinueButton != null) ContinueButton.setVisible(false);
         if (IncorrectLabel != null) IncorrectLabel.setVisible(false);
         // Hide arrow cover initially so user can see the sequence
         if (ArrowHider != null) ArrowHider.setVisible(false);
+    }
+
+    /**
+     * Shows the hint for the directional arrow puzzle.
+     * Displays the sequence hint.
+     * 
+     * @param event the mouse event triggered by clicking the hint icon
+     */
+    @FXML
+    private void showHint(MouseEvent event) {
+        System.out.println("Hint clicked!");
+
+        // Set hint text
+        String hint = "The sequence is: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT";
+        if (hintText != null) {
+            hintText.setText(hint);
+        }
+
+        // Show hint pane with fade animation
+        if (hintPane != null) {
+            hintPane.setVisible(true);
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.6), hintPane);
+            hintPane.setOpacity(0);
+            ft.setToValue(1.0);
+            ft.play();
+        }
+
+        if (hintText != null) hintText.setVisible(true);
+        if (hintNote != null) hintNote.setVisible(true);
+        if (closeHintArrow != null) closeHintArrow.setVisible(true);
+    }
+
+    /**
+     * Hides the hint pane.
+     * 
+     * @param event the mouse event triggered by clicking the close arrow
+     */
+    @FXML
+    private void hideHint(MouseEvent event) {
+        if (hintPane != null) hintPane.setVisible(false);
+        if (closeHintArrow != null) closeHintArrow.setVisible(false);
     }
 
     /**
