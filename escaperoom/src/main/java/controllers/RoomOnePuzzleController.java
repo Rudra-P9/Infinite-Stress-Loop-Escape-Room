@@ -71,4 +71,9 @@ public class RoomOnePuzzleController {
     private void goToNext(MouseEvent event) throws Exception {
         App.setRoot("RoomOneBoard");
     }
+
+    @FXML
+    private void goBack(MouseEvent event) throws Exception {
+        App.setRoot("ChamberHall");
+    }
 }

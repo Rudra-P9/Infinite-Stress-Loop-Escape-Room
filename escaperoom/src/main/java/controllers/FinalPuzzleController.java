@@ -270,4 +270,13 @@ public class FinalPuzzleController {
             App.gameFacade.endGame();
         }
     }
+
+    @FXML
+    private void goBack() {
+        try {
+            App.setRoot("Room3Combined");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

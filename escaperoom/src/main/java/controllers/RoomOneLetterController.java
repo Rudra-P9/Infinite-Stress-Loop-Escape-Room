@@ -272,4 +272,10 @@ public class RoomOneLetterController {
         App.setRoot("RoomOneBoard");
         System.out.println("Returning to Board");
     }
+
+    @FXML
+    private void goBack(MouseEvent event) throws Exception {
+        App.setRoot("RoomOneBoard");
+        System.out.println("Going back to Board");
+    }
 }

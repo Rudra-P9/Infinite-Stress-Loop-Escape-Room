@@ -192,4 +192,13 @@ public class Room3CombinedController implements Initializable {
             progressLabel.setText(percentage + "%");
         }
     }
+
+    @FXML
+    private void goBack() {
+        try {
+            App.setRoot("ChamberHall");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

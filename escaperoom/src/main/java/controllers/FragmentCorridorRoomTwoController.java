@@ -420,4 +420,13 @@ public class FragmentCorridorRoomTwoController implements Initializable {
         }
     }
 
+    @FXML
+    private void goBack() {
+        try {
+            App.setRoot("FragmentCorridor");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

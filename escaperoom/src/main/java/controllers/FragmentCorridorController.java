@@ -616,4 +616,13 @@ public class FragmentCorridorController implements Initializable {
         }
     }
 
+    @FXML
+    private void goBack() {
+        try {
+            App.setRoot("ChamberHall");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

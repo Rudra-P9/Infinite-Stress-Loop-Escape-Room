@@ -51,7 +51,7 @@
         </effect>
     </Button>
 
-    <Button fx:id="backButtonB" layoutX="40.0" layoutY="980.0" onMouseClicked="#onBackB" text="Back" />
+    <Button fx:id="backButtonB" layoutX="40.0" layoutY="980.0" onMouseClicked="#onBackB" prefHeight="60.0" prefWidth="120.0" style="-fx-background-color: rgba(51, 51, 51, 0.85); -fx-text-fill: white; -fx-border-color: #d0c6c6; -fx-border-width: 3px; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-font-family: 'Impact'; -fx-font-size: 24px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0, 0, 3);" text="← BACK" />
 
     <!-- reward letter -->
     <Label fx:id="rewardLetterB" alignment="CENTER" layoutX="893.0" layoutY="700.0" prefHeight="220.0" prefWidth="200.0" style="-fx-font-size: 200px; -fx-text-fill: #c62828; -fx-font-weight: bold;                   -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.6), 8, 0, 4, 4);                   -fx-alignment: center;" text="L" visible="false">
