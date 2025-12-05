@@ -17,6 +17,11 @@ import java.util.Map;
 
 import com.escape.App;
 
+/**
+ * Controller for the final puzzle screen
+ *
+ * @author Dylan Diaz
+ */
 public class FinalPuzzleController {
 
     @FXML private ImageView bgImage;
@@ -46,6 +51,9 @@ public class FinalPuzzleController {
     private final Map<String,String> clickedMap = new HashMap<>();
     private final Map<String,String> unclickedMap = new HashMap<>();
 
+    /**
+     * Sets up images, font, bindings, and initial visibility.
+     */
     @FXML
     private void initialize() {
 
@@ -82,6 +90,11 @@ public class FinalPuzzleController {
         setPuzzleVisible(false);
     }
 
+    /**
+     * Shows or hides the puzzle elements and enables/disables them.
+     *
+     * @param visible true to show puzzle UI, false to hide it
+     */
     private void setPuzzleVisible(boolean visible) {
         FPHintIcon.setVisible(visible);
         FPHintIcon.setDisable(!visible);
@@ -99,6 +112,11 @@ public class FinalPuzzleController {
         UnclickedM.setDisable(!visible);
     }
 
+    /**
+     * Hides the intro monitor and starts the puzzle.
+     *
+     * @param event mouse click event on the intro exit button
+     */
     @FXML
     private void hideIntroPane(MouseEvent event) {
         introPane.setVisible(false);
@@ -106,6 +124,11 @@ public class FinalPuzzleController {
         setPuzzleVisible(true);
     }
 
+    /**
+     * Handles clicks on the letter images and checks the order.
+     *
+     * @param event mouse click on a letter image
+     */
     @FXML
     private void onLetterClicked(MouseEvent event) {
         ImageView iv = (ImageView) event.getSource();
@@ -122,6 +145,9 @@ public class FinalPuzzleController {
         resetAll();
     }
 
+    /**
+     * Resets all letters and hides completion UI.
+     */
     private void resetAll() {
         setImage(UnclickedR, unclickedMap.get("UnclickedR"));
         setImage(UnclickedE, unclickedMap.get("UnclickedE"));
@@ -142,14 +168,28 @@ public class FinalPuzzleController {
         index = 0;
     }
 
+    /**
+     * Sets the image of a given ImageView.
+     *
+     * @param iv   target ImageView
+     * @param path resource path to the image
+     */
     private void setImage(ImageView iv, String path) {
         iv.setImage(new Image(getClass().getResourceAsStream(path)));
     }
 
+    /**
+     * Called when the REALM sequence is completed.
+     */
     private void onComplete() {
         RealmImage.setVisible(true);
     }
 
+    /**
+     * Shows the final monitor overlay with a fade animation.
+     *
+     * @param event mouse click on the REALM image
+     */
     @FXML
     private void onRealmClicked(MouseEvent event) {
         AnchorPane parent = (AnchorPane) monitorPane.getParent();
@@ -176,11 +216,22 @@ public class FinalPuzzleController {
         ft.play();
     }
 
+    /**
+     * Handles the monitor exit and switches to the OpenDoor screen.
+     *
+     * @param event mouse click on the monitor exit button
+     * @throws IOException if scene loading fails
+     */
     @FXML
     private void hideMonitor(MouseEvent event) throws IOException {
         App.setRoot("OpenDoor");
     }
 
+    /**
+     * Shows the hint text at the bottom and hides the hint icon.
+     *
+     * @param event mouse click on the hint icon
+     */
     @FXML
     private void showHint(MouseEvent event) {
         hintBottomFlow.setOpacity(0.0);
@@ -192,6 +243,11 @@ public class FinalPuzzleController {
         FPHintIcon.setVisible(false);
     }
 
+    /**
+     * Hides the hint text and restores the hint icon.
+     *
+     * @param event mouse click used to close the hint
+     */
     @FXML
     private void hideHint(MouseEvent event) {
         FadeTransition ft = new FadeTransition(Duration.millis(300), hintBottomFlow);
