@@ -1,100 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0"
-            xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/25"
-            fx:controller="controllers.Room3Puzzle5Controller">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Room3Puzzle5Controller">
 
   <children>
 
-    <!-- background image for puzzle 5 -->
-    <ImageView fx:id="bgImageB"
-               fitHeight="1080.0" fitWidth="1920.0"
-               pickOnBounds="true" preserveRatio="false">
+    <!-- background -->
+    <ImageView fx:id="bgImageB" fitHeight="1080.0" fitWidth="1920.0" preserveRatio="false">
       <image>
-        <!-- adjust path if you keep images in resources/images -->
         <Image url="@../../images/Puzzle5Screen.jpg" />
       </image>
     </ImageView>
 
-    <!-- play button (center area) -->
-    <Button fx:id="playButtonB"
-            layoutX="900.0" layoutY="300.0"
-            prefWidth="120.0" prefHeight="50.0"
-            text="Play"
-            onMouseClicked="#onPlayB" />
+    <!-- circular glowy play button -->
+    <Button fx:id="playButtonB" layoutX="948.0" layoutY="501.0" onMouseClicked="#onPlayB" prefHeight="88.0" prefWidth="88.0" style="                 -fx-background-radius: 200;                 -fx-background-color: linear-gradient(#2a70a4, #0e2233);                 -fx-border-color: rgba(180, 220, 255, 0.85);                 -fx-border-width: 4;                 -fx-border-radius: 200;                 -fx-padding: 0;                 -fx-cursor: hand;             ">
+        <effect>
+            <Glow level="0.85" />
+        </effect>
+    </Button>
 
-    <!-- hint area (hidden by default) -->
-    <AnchorPane fx:id="hintPaneB"
-                layoutX="1430.0" layoutY="160.0"
-                prefWidth="360.0" prefHeight="480.0"
-                visible="false">
-      <children>
-        <ImageView fitWidth="360.0" fitHeight="480.0" preserveRatio="true">
-          <image>
-            <Image url="@../images/HintNoteFinal.png"/>
-          </image>
-        </ImageView>
-        <Label fx:id="hintTextLabelB"
-               layoutX="18.0" layoutY="28.0"
-               prefWidth="324.0" prefHeight="420.0"
-               wrapText="true"
-               style="-fx-text-fill: black; -fx-font-family: 'Georgia'; -fx-font-size: 16px;"/>
-      </children>
+    <!-- hint area -->
+    <AnchorPane fx:id="hintPaneB" layoutX="1430.0" layoutY="160.0" prefHeight="480.0" prefWidth="360.0" visible="false">
+        <children>
+            <ImageView fitHeight="480.0" fitWidth="360.0" preserveRatio="true">
+                <image>
+                    <Image url="@../images/HintNoteFinal.png" />
+                </image>
+            </ImageView>
+
+            <Label fx:id="hintTextLabelB" layoutX="18.0" layoutY="28.0" prefHeight="420.0" prefWidth="324.0" style="-fx-text-fill: black; -fx-font-family: 'Georgia'; -fx-font-size: 16px;" wrapText="true" />
+        </children>
     </AnchorPane>
 
-    <!-- top-right hint button -->
-    <Button fx:id="hintButtonB"
-            layoutX="1800.0" layoutY="40.0"
-            prefWidth="90.0"
-            text="HINT"
-            onMouseClicked="#onHintB"/>
+    <Button fx:id="hintButtonB" layoutX="1800.0" layoutY="40.0" text="HINT" />
+    <Button fx:id="backButtonB" layoutX="40.0" layoutY="980.0" text="Back" />
 
-    <!-- back button bottom left -->
-    <Button fx:id="backButtonB"
-            layoutX="40.0" layoutY="980.0"
-            prefWidth="120.0"
-            text="Back"
-            onMouseClicked="#onBackB"/>
-
-    <!-- big reward letter in the lower center, hidden by default -->
-    <Label fx:id="rewardLetterB"
-           layoutX="860.0" layoutY="700.0"
-           prefWidth="200.0" prefHeight="220.0"
-           text="L"
-           visible="false"
-           style="-fx-font-size: 200px; -fx-text-fill: #c62828; -fx-font-weight: bold; -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.6), 8, 0, 4, 4); -fx-alignment: center;">
-      <font>
-        <Font name="Felix Titling" size="200.0"/>
-      </font>
+    <!-- reward letter -->
+    <Label fx:id="rewardLetterB" alignment="CENTER" layoutX="893.0" layoutY="700.0" prefHeight="220.0" prefWidth="200.0" style="-fx-font-size: 200px; -fx-text-fill: #c62828; -fx-font-weight: bold;                   -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.6), 8, 0, 4, 4);                   -fx-alignment: center;" text="L" visible="false">
+        <font><Font name="Felix Titling" size="200.0" /></font>
     </Label>
 
-    <!-- feedback label to the right of the answer field -->
-    <Label fx:id="feedbackLabelB"
-           layoutX="1140.0" layoutY="565.0"
-           prefWidth="300.0"
-           style="-fx-text-fill: yellow; -fx-font-size:16px;" />
+    <!-- answer field -->
+    <TextField fx:id="answerFieldB" alignment="CENTER" layoutX="823.0" layoutY="950.0" onAction="#onCheckB" prefHeight="65.0" prefWidth="360.0" promptText="Type Answer Here" style="                     -fx-font-size: 28px;                     -fx-font-family: 'Copperplate Gothic Bold';                     -fx-background-radius: 12;                     -fx-background-color: #004e87;                     -fx-prompt-text-fill: rgba(200,200,200,0.75);                     -fx-text-fill: white;                " />
 
-    <!-- Answer field.
-         Press Enter while typing to submit the answer.
-         onAction wires Enter to onCheckB in controller -->
-    <TextField fx:id="answerFieldB"
-               layoutX="810.0" layoutY="560.0"
-               prefWidth="300.0" prefHeight="65.0"
-               promptText="Type Answer Here"
-               onAction="#onCheckB"
-               alignment="CENTER"
-               style="-fx-font-size: 28px; -fx-font-family: 'Copperplate Gothic Bold'; -fx-background-radius: 10; -fx-background-color: #fdbd5a;"/>
+    <!-- feedback placed EXACTLY beside the TextField -->
+    <Label fx:id="feedbackLabelB" layoutX="1195.0" layoutY="965.0" prefWidth="260.0" style="-fx-text-fill: yellow; -fx-font-size:20px; -fx-font-weight:bold; -fx-alignment:center-left;" />
 
   </children>
 </AnchorPane>
-
-            
-         
