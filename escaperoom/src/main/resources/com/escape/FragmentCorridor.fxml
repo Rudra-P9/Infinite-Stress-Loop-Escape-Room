@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FragmentCorridorController">
@@ -14,6 +15,28 @@
             <Image url="@../../images/Room2.jpg" />
          </image>
       </ImageView>
+      
+      <!-- Hint Icon -->
+      <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
+         <image>
+            <Image url="@../../images/HintIcon.png" />
+         </image>
+      </ImageView>
+
+      <!-- Timer (Top Left) -->
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
+      <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
+         <font>
+            <Font name="Impact" size="40.0" />
+         </font>
+      </Label>
+
+      <!-- Penalty Label (Initially Invisible) -->
+      <Label fx:id="penaltyLabel" layoutX="42.0" layoutY="120.0" opacity="0.0" text="-00:45" textFill="RED">
+         <font>
+            <Font name="Impact" size="40.0" />
+         </font>
+      </Label>
       <Label fx:id="MKey1" layoutX="426.0" layoutY="249.0" text="M" textFill="WHITE">
          <font>
             <Font size="96.0" />
@@ -96,5 +119,22 @@
          </font>
       </Label>
       <Button fx:id="ContinueButton" layoutX="878.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#ContinueToNext" opacity="0.0" prefHeight="340.0" prefWidth="148.0" text="Continue" visible="false" />
+      
+      <!-- HINT (hidden until clicked) -->
+      <AnchorPane fx:id="hintPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
+         <ImageView fx:id="hintNote" fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
+            <image>
+               <Image url="@../../images/hintNote.png" />
+            </image>
+         </ImageView>
+        
+         <Label id="hintText" fx:id="hintText" layoutX="15" layoutY="-100" prefWidth="650" style="-fx-font-family: 'Bradley Hand'; -fx-text-fill: black; -fx-font-size: 36px;" text="" wrapText="true" />
+
+         <ImageView fx:id="closeHintArrow" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideHint" pickOnBounds="true" preserveRatio="true" visible="false">
+            <image>
+               <Image url="@../../images/ArrowLeft.png" />
+            </image>
+         </ImageView>
+      </AnchorPane>
    </children>
 </AnchorPane>

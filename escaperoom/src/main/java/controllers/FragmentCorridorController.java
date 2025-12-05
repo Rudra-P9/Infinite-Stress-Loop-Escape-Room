@@ -4,7 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -83,6 +86,33 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Button ContinueButton;
 
+    /** Hint pane container */
+    @FXML
+    private AnchorPane hintPane;
+
+    /** Label displaying the hint text */
+    @FXML
+    private Label hintText;
+
+    /** ImageView for closing the hint */
+    @FXML
+    private ImageView closeHintArrow;
+
+    /** ImageView for the hint note background */
+    @FXML
+    private ImageView hintNote;
+
+    /** Label displaying the timer */
+    @FXML
+    private Label timerLabel;
+
+    /** Label displaying the penalty when hint is used */
+    @FXML
+    private Label penaltyLabel;
+
+    /** Timeline for updating the timer */
+    private Timeline timerTimeline;
+
     /** The target sequence to spell: MEMORY */
     private static final String[] SEQUENCE = {"M", "E", "M", "O", "R", "Y"};
     
@@ -98,6 +128,12 @@ public class FragmentCorridorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Hide hint pane initially
+        if (hintPane != null) hintPane.setVisible(false);
+        
+        // Start timer update
+        startTimerUpdate();
+        
         // Ensure all show labels are initially hidden
         if (M1Show != null) M1Show.setVisible(false);
         if (M2Show != null) M2Show.setVisible(false);
@@ -140,6 +176,45 @@ public class FragmentCorridorController implements Initializable {
             }
         } catch (Exception ignore) {
             // styling optional — ignore failures
+        }
+    }
+
+    /**
+     * Starts the timer update timeline.
+     * Creates a timeline that updates the timer display every second.
+     */
+    private void startTimerUpdate() {
+        timerTimeline = new Timeline(
+                new javafx.animation.KeyFrame(Duration.seconds(1), e -> updateTimer()));
+        timerTimeline.setCycleCount(javafx.animation.Animation.INDEFINITE);
+        timerTimeline.play();
+        updateTimer(); // Initial call
+    }
+
+    /**
+     * Updates the timer display with remaining time.
+     * Changes color to red if time is running low.
+     */
+    private void updateTimer() {
+        if (App.gameFacade != null) {
+            int remaining = App.gameFacade.getTimeRemaining();
+            int minutes = remaining / 60;
+            int seconds = remaining % 60;
+            if (timerLabel != null) {
+                timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+
+                // Change color if time is running low
+                if (remaining < 60) {
+                    timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+                } else {
+                    timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+                }
+            }
+            if (remaining <= 0) {
+                if (timerTimeline != null)
+                    timerTimeline.stop();
+                // Handle game over if needed
+            }
         }
     }
 
@@ -335,6 +410,62 @@ public class FragmentCorridorController implements Initializable {
             scaleTransition.setAutoReverse(true);
             scaleTransition.play();
         }
+    }
+
+    /**
+     * Shows the hint for the MEMORY puzzle.
+     * Applies a time penalty and displays the sequence hint.
+     * 
+     * @param event the mouse event triggered by clicking the hint icon
+     */
+    @FXML
+    private void showHint(MouseEvent event) {
+        System.out.println("Hint clicked!");
+
+        // Apply penalty
+        if (App.gameFacade != null) {
+            App.gameFacade.applyHintPenalty();
+            updateTimer(); // Update immediately
+        }
+
+        // Animate penalty label
+        if (penaltyLabel != null) {
+            penaltyLabel.setOpacity(1.0);
+            FadeTransition fade = new FadeTransition(Duration.seconds(2.0), penaltyLabel);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+            fade.play();
+        }
+
+        // Set hint text
+        String hint = "The sequence spells: M-E-M-O-R-Y";
+        if (hintText != null) {
+            hintText.setText(hint);
+        }
+
+        // Show hint pane with fade animation
+        if (hintPane != null) {
+            hintPane.setVisible(true);
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.6), hintPane);
+            hintPane.setOpacity(0);
+            ft.setToValue(1.0);
+            ft.play();
+        }
+
+        if (hintText != null) hintText.setVisible(true);
+        if (hintNote != null) hintNote.setVisible(true);
+        if (closeHintArrow != null) closeHintArrow.setVisible(true);
+    }
+
+    /**
+     * Hides the hint pane.
+     * 
+     * @param event the mouse event triggered by clicking the close arrow
+     */
+    @FXML
+    private void hideHint(MouseEvent event) {
+        if (hintPane != null) hintPane.setVisible(false);
+        if (closeHintArrow != null) closeHintArrow.setVisible(false);
     }
 
     /**
