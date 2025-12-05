@@ -123,8 +123,14 @@ public class RoomOneBoardController {
     private void showHint(MouseEvent event) {
         System.out.println("Hint clicked!");
 
-        // load hint directly from JSON
-        String hint = loadHintFromJson();
+        String hint = "Hint unavailable.";
+        if (com.escape.App.gameFacade != null) {
+            String storedHint = com.escape.App.gameFacade.getRoomOneHint();
+            if (storedHint != null && !storedHint.isEmpty()) {
+                hint = storedHint;
+            }
+        }
+
         hintText.setText(hint);
 
         hintPane.setVisible(true);
@@ -152,28 +158,6 @@ public class RoomOneBoardController {
         // Go to the letter puzzle
         App.setRoot("RoomOneLetter");
         System.out.println("Going to Room One Letter from Room One Board");
-    }
-
-    private String loadHintFromJson() {
-        try {
-            var stream = getClass().getResourceAsStream("/json/game.json");
-
-            org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
-            java.io.InputStreamReader reader = new java.io.InputStreamReader(stream);
-            org.json.simple.JSONObject json = (org.json.simple.JSONObject) parser.parse(reader);
-
-            org.json.simple.JSONArray rooms = (org.json.simple.JSONArray) json.get("rooms");
-            org.json.simple.JSONObject room1 = (org.json.simple.JSONObject) rooms.get(0);
-
-            org.json.simple.JSONArray puzzles = (org.json.simple.JSONArray) room1.get("puzzles");
-            org.json.simple.JSONObject puzzle1 = (org.json.simple.JSONObject) puzzles.get(0);
-
-            return puzzle1.get("hint").toString();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Hint unavailable.";
-        }
     }
 
     @FXML

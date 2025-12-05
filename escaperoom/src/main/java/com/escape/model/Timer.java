@@ -94,4 +94,10 @@ public class Timer {
     public synchronized boolean isRunning() {
         return running;
     }
+
+    public synchronized void reduceTime(int seconds) {
+        if (seconds <= 0)
+            return;
+        accumulatedElapsedNs += (long) seconds * 1_000_000_000L;
+    }
 }
