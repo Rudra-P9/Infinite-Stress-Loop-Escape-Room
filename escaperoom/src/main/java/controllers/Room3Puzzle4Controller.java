@@ -3,6 +3,7 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -15,6 +16,8 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import com.escape.App;
 
 /**
  * Controller for Puzzle 4.
@@ -44,6 +47,8 @@ public class Room3Puzzle4Controller implements Initializable {
     private ImageView hint;
     @FXML
     private ImageView hintNote;
+    @FXML
+    private Button backBtn;
 
     private static final String EXPECTED_ANSWER = "SIX";
     private static final String EXPECTED_ANSWER_NUM = "6";
@@ -86,27 +91,27 @@ public class Room3Puzzle4Controller implements Initializable {
     private void showHint(MouseEvent event) {
         if (hintPane == null)
             return;
-        
+
         System.out.println("Hint clicked!");
-        
+
         // Apply penalty
         if (com.escape.App.gameFacade != null) {
             com.escape.App.gameFacade.applyHintPenalty();
         }
-        
+
         // Set hint text
         String hint = "If there are six apples and you take away four, how many do you have?";
         if (hintTextLabel != null) {
             hintTextLabel.setText(hint);
         }
-        
+
         // Show hint pane with fade animation
         hintPane.setVisible(true);
         FadeTransition ft = new FadeTransition(Duration.seconds(0.6), hintPane);
         hintPane.setOpacity(0);
         ft.setToValue(1.0);
         ft.play();
-        
+
         if (hintTextLabel != null)
             hintTextLabel.setVisible(true);
         if (hintNote != null)
@@ -278,5 +283,12 @@ public class Room3Puzzle4Controller implements Initializable {
             progressBar.setProgress(percentage / 100.0);
             progressLabel.setText(percentage + "%");
         }
+    }
+
+    @FXML
+    private void onBack(MouseEvent event) throws Exception {
+        // Go to the main screen
+        App.setRoot("Room3Combined");
+        System.out.println("Returning to Room 3 Combined from Room 3 Puzzle 4");
     }
 }

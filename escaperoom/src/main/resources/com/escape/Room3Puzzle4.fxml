@@ -2,13 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.ProgressBar?>
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Room3Puzzle4Controller">
 
@@ -52,9 +52,6 @@
                 <Image url="@../../images/Puzzle4QuestionFinal1.png" />
             </image>
         </ImageView>
-
-        <!-- Back Button -->
-        <Button fx:id="backButtonA" layoutX="40.0" layoutY="980.0" onMouseClicked="#onBackA" prefHeight="60.0" prefWidth="120.0" style="-fx-background-color: rgba(51, 51, 51, 0.85); -fx-text-fill: white; -fx-border-color: #d0c6c6; -fx-border-width: 3px; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-font-family: 'Impact'; -fx-font-size: 24px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0, 0, 3);" text="← BACK" />
 
         <!-- Reward letter (hidden initially) -->
         <Label fx:id="rewardLetter" alignment="CENTER" layoutX="910.0" layoutY="715.0" prefHeight="220.0" prefWidth="200.0" style="-fx-font-size: 200px; -fx-text-fill: #c62828; -fx-font-weight: bold;                       -fx-effect: glow(0.5); -fx-font-family: Felix Titling;" text="R" visible="false">
@@ -100,6 +97,12 @@
             </children>
         </AnchorPane>
 
+        <!-- Back Button -->
+        <Button fx:id="backBtn" layoutX="7.0" layoutY="1010.0" mnemonicParsing="false" onMouseClicked="#onBack" prefHeight="62.0" prefWidth="171.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="BACK">
+            <font>
+                <Font name="Impact" size="30.0" />
+            </font>
+        </Button>
     </children>
 
 </AnchorPane>

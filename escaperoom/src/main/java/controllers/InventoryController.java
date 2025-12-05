@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import com.escape.App;
@@ -23,6 +24,8 @@ public class InventoryController {
     private Label R;
     @FXML
     private Label E;
+    @FXML
+    private Button backBtn;
 
     @FXML
     public void initialize() {
@@ -54,7 +57,9 @@ public class InventoryController {
     }
 
     @FXML
-    private void onBackClicked(MouseEvent event) throws IOException {
+    private void onBackBtnClicked(MouseEvent event) throws IOException {
         App.setRoot("ChamberHall");
+        System.out.println("Returning to Chamber Hall from Inventory");
     }
+
 }

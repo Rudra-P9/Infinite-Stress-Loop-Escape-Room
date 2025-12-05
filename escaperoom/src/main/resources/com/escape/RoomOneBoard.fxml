@@ -135,6 +135,11 @@
             </Button>
          </children>
       </Group>
+      <Button fx:id="Back" layoutX="7.0" layoutY="1010.0" mnemonicParsing="false" onMouseClicked="#onBack" prefHeight="62.0" prefWidth="171.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="BACK">
+         <font>
+            <Font name="Impact" size="30.0" />
+         </font>
+      </Button>
 
     </children>
 

@@ -134,6 +134,9 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Button infoButton;
 
+    @FXML
+    private Button backBtn;
+
     /** Timeline for updating the timer */
     private Timeline timerTimeline;
 
@@ -617,12 +620,10 @@ public class FragmentCorridorController implements Initializable {
     }
 
     @FXML
-    private void goBack() {
-        try {
-            App.setRoot("ChamberHall");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void onBack(MouseEvent event) throws Exception {
+        // Go to the main screen
+        App.setRoot("ChamberHall");
+        System.out.println("Returning to Chamber Hall from Fragment Corridor");
     }
 
 }

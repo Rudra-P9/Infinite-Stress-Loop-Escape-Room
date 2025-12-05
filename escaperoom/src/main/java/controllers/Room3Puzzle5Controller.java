@@ -16,6 +16,8 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.escape.App;
+
 /**
  * Controller for Room3 Puzzle 5 (Frequency Spectrum).
  * Simple puzzle screen with a play button, answer field, hint and back
@@ -41,7 +43,7 @@ public class Room3Puzzle5Controller implements Initializable {
     @FXML
     private Button hintButtonB;
     @FXML
-    private Button backButtonB;
+    private Button backBtn;
     @FXML
     private Label rewardLetterB;
     @FXML
@@ -78,8 +80,8 @@ public class Room3Puzzle5Controller implements Initializable {
         // ensure play button and back are enabled
         if (playButtonB != null)
             playButtonB.setDisable(false);
-        if (backButtonB != null)
-            backButtonB.setDisable(false);
+        if (backBtn != null)
+            backBtn.setDisable(false);
 
         // optional: set focus to answer field so Enter works immediately
         if (answerFieldB != null) {
@@ -99,27 +101,27 @@ public class Room3Puzzle5Controller implements Initializable {
     private void showHint(MouseEvent event) {
         if (hintPaneB == null)
             return;
-        
+
         System.out.println("Hint clicked!");
-        
+
         // Apply penalty
         if (com.escape.App.gameFacade != null) {
             com.escape.App.gameFacade.applyHintPenalty();
         }
-        
+
         // Set hint text
         String hint = "Listen carefully to the audio clip. The answer is a word that describes what you see when you look at yourself.";
         if (hintTextLabelB != null) {
             hintTextLabelB.setText(hint);
         }
-        
+
         // Show hint pane with fade animation
         hintPaneB.setVisible(true);
         FadeTransition ft = new FadeTransition(Duration.seconds(0.6), hintPaneB);
         hintPaneB.setOpacity(0);
         ft.setToValue(1.0);
         ft.play();
-        
+
         if (hintTextLabelB != null)
             hintTextLabelB.setVisible(true);
         if (hintNote != null)
@@ -250,9 +252,9 @@ public class Room3Puzzle5Controller implements Initializable {
             }
 
             // re-enable Back button and bring it to front so user can click it
-            if (backButtonB != null) {
-                backButtonB.setDisable(false);
-                backButtonB.toFront();
+            if (backBtn != null) {
+                backBtn.setDisable(false);
+                backBtn.toFront();
             }
 
             // optionally disable answer input to prevent further attempts
@@ -317,6 +319,13 @@ public class Room3Puzzle5Controller implements Initializable {
             progressBar.setProgress(percentage / 100.0);
             progressLabel.setText(percentage + "%");
         }
+    }
+
+    @FXML
+    private void onBack(MouseEvent event) throws Exception {
+        // Go to the main screen
+        App.setRoot("Room3Combined");
+        System.out.println("Returning to Room 3 Combined from Room 3 Puzzle 5");
     }
 
 }

@@ -60,6 +60,9 @@ public class RoomOneBoardController {
     @FXML
     private Label progressLabel;
 
+    @FXML
+    private Button backBtn;
+
     private javafx.animation.Timeline timerTimeline;
 
     @FXML
@@ -291,6 +294,13 @@ public class RoomOneBoardController {
     private void hideHint(MouseEvent e) {
         hintPane.setVisible(false);
         closeHintArrow.setVisible(false);
+    }
+
+    @FXML
+    private void onBack(MouseEvent event) throws Exception {
+        // Go to the main screen
+        App.setRoot("ChamberHall");
+        System.out.println("Returning to Chamber Hall from Room One Board");
     }
 
 }

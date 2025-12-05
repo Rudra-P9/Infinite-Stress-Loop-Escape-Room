@@ -117,6 +117,13 @@
                 <Font name="System Bold" size="30.0" />
             </font>
         </Button>
+        
+        <!-- Back Button -->
+        <Button fx:id="Back" layoutX="7.0" layoutY="1010.0" mnemonicParsing="false" onMouseClicked="#onBack" prefHeight="62.0" prefWidth="171.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="BACK">
+         <font>
+            <Font name="Impact" size="30.0" />
+         </font>
+      </Button>
 
         <!-- Back Button -->
         <Button layoutX="40.0" layoutY="980.0" mnemonicParsing="false" onMouseClicked="#goBack" prefHeight="60.0" prefWidth="120.0" style="-fx-background-color: rgba(51, 51, 51, 0.85); -fx-text-fill: white; -fx-border-color: #d0c6c6; -fx-border-width: 3px; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-font-family: 'Impact'; -fx-font-size: 24px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0, 0, 3);" text="← BACK" />

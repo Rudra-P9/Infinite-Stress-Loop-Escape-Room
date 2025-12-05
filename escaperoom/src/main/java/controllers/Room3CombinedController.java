@@ -41,6 +41,9 @@ public class Room3CombinedController implements Initializable {
     @FXML
     private Group hotspotGroup;
 
+    @FXML
+    private Button backBtn;
+
     /**
      * Runs when the scene first loads.
      * Makes the dialog visible and prints some debug information.
@@ -194,11 +197,9 @@ public class Room3CombinedController implements Initializable {
     }
 
     @FXML
-    private void goBack() {
-        try {
-            App.setRoot("ChamberHall");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void onBack(MouseEvent event) throws Exception {
+        // Go to the main screen
+        App.setRoot("ChamberHall");
+        System.out.println("Returning to Chamber Hall from Room 3 Combined");
     }
 }
