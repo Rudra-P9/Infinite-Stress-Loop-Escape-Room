@@ -28,4 +28,9 @@ public class OpenDoorController {
     private void goToMainMenu(MouseEvent event) throws IOException {
         App.setRoot("MainScreen");
     }
+
+     @FXML
+    private void goToLeaderboard(MouseEvent event) throws IOException {
+        App.setRoot("Leaderboard");
+    }
 }
