@@ -17,13 +17,16 @@ import java.util.ResourceBundle;
  * Controller for Room3 Puzzle 5 (Frequency Spectrum).
  * Simple puzzle screen with a play button, answer field, hint and back
  * controls.
- *
- * Author: Kirtan Patel
- *
- * Notes:
- * - Enter triggers onCheckB (wired via TextField onAction in FXML).
- * - When correct, shows a large 'L' in the centre (styled like Puzzle4).
- * - The displayed letter is mouse transparent so Back remains clickable.
+ * 
+ * @author Rudra Patel
+ * @author Kirtan Patel
+ * 
+ *         Notes:
+ *         - Enter triggers onCheckB (wired via TextField onAction in FXML).
+ *         - When correct, shows a large 'L' in the centre (styled like
+ *         Puzzle4).
+ *         - The displayed letter is mouse transparent so Back remains
+ *         clickable.
  */
 public class Room3Puzzle5Controller implements Initializable {
 
@@ -98,8 +101,52 @@ public class Room3Puzzle5Controller implements Initializable {
      */
     @FXML
     private void onPlayB(MouseEvent event) {
-        System.out.println("Play button clicked (puzzle 5). Add audio here if desired.");
-        // Example: play audio. Skipped per request.
+        System.out.println("Play button clicked - speaking puzzle text...");
+
+        // Run TTS in background thread to avoid blocking UI
+        new Thread(() -> {
+            try {
+                // Speak the intro
+                com.escape.model.Speek.speak("Traveler, the path ahead bends in ways the eye cannot follow.");
+                Thread.sleep(500);
+                com.escape.model.Speek.speak("What you seek is not seen, but reflected.");
+                Thread.sleep(500);
+                com.escape.model.Speek.speak("Listen closely. Clarity comes only through the smallest details.");
+                Thread.sleep(800);
+
+                // Speak the letter prompt
+                com.escape.model.Speek.speak("The letters reveal themselves as follows:");
+                Thread.sleep(600);
+
+                // Spell out MIRROR slowly with pauses
+                String[] letters = { "M", "I", "R", "R", "O", "R" };
+                for (String letter : letters) {
+                    com.escape.model.Speek.speak(letter);
+                    Thread.sleep(800); // 800ms pause between each letter
+                }
+
+                Thread.sleep(1000);
+
+                // Speak the middle section
+                com.escape.model.Speek.speak("But echoes deceive, and even truth can twist.");
+                Thread.sleep(500);
+                com.escape.model.Speek.speak("So hear it again, with certainty:");
+                Thread.sleep(600);
+
+                // Spell out MIRROR again slowly
+                for (String letter : letters) {
+                    com.escape.model.Speek.speak(letter);
+                    Thread.sleep(800);
+                }
+
+                Thread.sleep(1000);
+                com.escape.model.Speek
+                        .speak("Only when you enter the word exactly as it was spoken will the passage open.");
+
+            } catch (InterruptedException e) {
+                System.err.println("TTS interrupted: " + e.getMessage());
+            }
+        }).start();
     }
 
     /**
