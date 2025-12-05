@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -112,6 +113,18 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Label penaltyLabel;
 
+    @FXML
+    private Group introOverlay;
+
+    @FXML
+    private Group boardOverlay;
+
+    @FXML
+    private Button acknowledgeButton;
+
+    @FXML
+    private Button infoButton;
+
     /** Timeline for updating the timer */
     private Timeline timerTimeline;
 
@@ -132,6 +145,10 @@ public class FragmentCorridorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (introOverlay != null) {
+            showIntro();
+        }
+
         // Hide hint pane initially
         if (hintPane != null)
             hintPane.setVisible(false);
@@ -191,6 +208,35 @@ public class FragmentCorridorController implements Initializable {
         } catch (Exception ignore) {
             // styling optional — ignore failures
         }
+    }
+
+    private void showIntro() {
+        if (introOverlay != null)
+            introOverlay.setVisible(true);
+        if (boardOverlay != null)
+            boardOverlay.setVisible(false);
+        if (infoButton != null)
+            infoButton.setVisible(false);
+    }
+
+    private void showBoard() {
+        if (introOverlay != null)
+            introOverlay.setVisible(false);
+        if (boardOverlay != null)
+            boardOverlay.setVisible(true);
+        // Show info button when board is visible
+        if (infoButton != null)
+            infoButton.setVisible(true);
+    }
+
+    @FXML
+    private void onAcknowledge(MouseEvent event) {
+        showBoard();
+    }
+
+    @FXML
+    private void onInfo(MouseEvent event) {
+        showIntro();
     }
 
     /**

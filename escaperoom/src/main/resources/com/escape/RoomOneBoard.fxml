@@ -1,70 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RoomOneBoardController">
 
-    <!-- Background -->
-    <ImageView fitHeight="1080" fitWidth="1920" preserveRatio="false">
-        <image>
-            <Image url="@../../images/RoomOneBoardBack.png" />
-        </image>
-    </ImageView>
-
-     <!-- Arrow Left Icon -->
-    <ImageView fx:id="arrowleft" fitHeight="80" fitWidth="80" layoutX="25" layoutY="500" onMouseClicked="#goToLetter" pickOnBounds="true">
-        <image>
-            <Image url="@../../images/ArrowLeft.png" />
-        </image>
-    </ImageView>
-
-     <!-- Hint Icon -->
-    <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
-        <image>
-            <Image url="@../../images/HintIcon.png" />
-        </image>
-    </ImageView>
-
-    <!-- Riddle Label -->
-    <Label fx:id="riddleLabel" alignment="CENTER" layoutX="669.0" layoutY="173.0" prefHeight="568.0" prefWidth="891.0" style="-fx-font-family: 'Times New Roman'; -fx-font-size: 50px; -fx-text-fill: white; -fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);" text="Loading riddle..." textAlignment="CENTER" wrapText="true" />
-
-    <!-- Timer (Top Left) -->
-    <Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
-    <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
-        <font>
-            <Font name="Impact" size="40.0" />
-        </font>
-    </Label>
-
-    <!-- Penalty Label (Initially Invisible) -->
-    <Label fx:id="penaltyLabel" layoutX="42.0" layoutY="120.0" opacity="0.0" text="-00:45" textFill="RED">
-        <font>
-            <Font name="Impact" size="40.0" />
-        </font>
-    </Label>
-
-    <!-- HINT (hidden until clicked) -->
-    <AnchorPane fx:id="hintPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
-            <ImageView fx:id="hintNote" fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
-                <image>
-                    <Image url="@../../images/hintNote.png" />
-                </image>
-            </ImageView>
-        
-        <Label id="hintText" fx:id="hintText" layoutX="15" layoutY="-100" prefWidth="650" style="            -fx-font-family: 'Bradley Hand';             -fx-text-fill: black;             -fx-font-size: 36px;             " text="" wrapText="true" />
-
-        <ImageView fx:id="closeHintArrow" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideHint" pickOnBounds="true" preserveRatio="true" visible="false">
+    <children>
+        <!-- Background -->
+        <ImageView fitHeight="1080" fitWidth="1920" preserveRatio="false">
             <image>
-                <Image url="@../../images/ArrowLeft.png" />
+                <Image url="@../../images/RoomOneBoardBack.png" />
             </image>
         </ImageView>
-    </AnchorPane>
 
-    
+        <Group fx:id="boardOverlay">
+            <children>
+            
+                 <!-- Arrow Left Icon -->
+                <ImageView fx:id="arrowleft" fitHeight="80" fitWidth="80" layoutX="25" layoutY="500" onMouseClicked="#goToLetter" pickOnBounds="true">
+                    <image>
+                        <Image url="@../../images/ArrowLeft.png" />
+                    </image>
+                </ImageView>
+            
+                 <!-- Hint Icon -->
+                <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
+                    <image>
+                        <Image url="@../../images/HintIcon.png" />
+                    </image>
+                </ImageView>
+            
+                <!-- Riddle Label -->
+                <Label fx:id="riddleLabel" alignment="CENTER" layoutX="669.0" layoutY="173.0" prefHeight="568.0" prefWidth="891.0" style="-fx-font-family: 'Times New Roman'; -fx-font-size: 50px; -fx-text-fill: white; -fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);" text="Loading riddle..." textAlignment="CENTER" wrapText="true" />
+            
+                <!-- Timer (Top Left) -->
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
+                <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
+                    <font>
+                        <Font name="Impact" size="40.0" />
+                    </font>
+                </Label>
+            
+                <!-- Penalty Label (Initially Invisible) -->
+                <Label fx:id="penaltyLabel" layoutX="42.0" layoutY="120.0" opacity="0.0" text="-00:45" textFill="RED">
+                    <font>
+                        <Font name="Impact" size="40.0" />
+                    </font>
+                </Label>
+            
+                <!-- HINT (hidden until clicked) -->
+                <AnchorPane fx:id="hintPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
+                        <ImageView fx:id="hintNote" fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
+                            <image>
+                                <Image url="@../../images/hintNote.png" />
+                            </image>
+                        </ImageView>
+                    
+                    <Label id="hintText" fx:id="hintText" layoutX="15" layoutY="-100" prefWidth="650" style="            -fx-font-family: 'Bradley Hand';             -fx-text-fill: black;             -fx-font-size: 36px;             " text="" wrapText="true" />
+            
+                    <ImageView fx:id="closeHintArrow" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideHint" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../../images/ArrowLeft.png" />
+                        </image>
+                    </ImageView>
+                </AnchorPane>
+            </children>
+        </Group>
+
+      <!-- Info Button (Bottom Right)-->
+      <Button fx:id="infoButton" layoutX="1800.0" layoutY="980.0" mnemonicParsing="false" onMouseClicked="#onInfo" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 30; -fx-cursor: hand;" text="?" visible="false">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Button>
+
+      <!-- Intro Overlay -->
+      <Group fx:id="introOverlay">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="768.0" layoutX="235.0" layoutY="162.0" opacity="0.9" strokeType="OUTSIDE" strokeWidth="5.0" width="1412.0">
+               <stroke>
+                  <LinearGradient endX="0.8574821852731591" endY="0.828978622327791" startX="0.16627078384798105" startY="0.2850356294536817">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.6787808537483215" green="0.16203702986240387" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.18567252159118652" green="0.7894737124443054" blue="0.17543859779834747" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+               <fill>
+                  <Color red="0.0" green="0.0" blue="0.0" opacity="0.8" />
+               </fill>
+            </Rectangle>
+            <Text fx:id="introText" fill="WHITE" fontSmoothingType="LCD" layoutX="268.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room One: Calibration Hall&#10;&#10;Welcome to the Calibration Hall. As part of the security protocols, you must demonstrate your cognitive calibration.&#10;&#10;Solve the riddles provided to prove your mental acuity. The system will not allow you to proceed until you have demonstrated sufficient problem-solving capabilities.&#10;&#10;Pay attention to the details. Good luck." wrappingWidth="1345.9990234375">
+               <font>
+                  <Font name="American Typewriter" size="38.0" />
+               </font>
+            </Text>
+            <Button fx:id="acknowledgeButton" layoutX="1335.0" layoutY="856.0" mnemonicParsing="false" onMouseClicked="#onAcknowledge" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="ACKNOWLEDGE">
+               <font>
+                  <Font name="Impact" size="30.0" />
+               </font>
+            </Button>
+         </children>
+      </Group>
+
+    </children>
 
 </AnchorPane>

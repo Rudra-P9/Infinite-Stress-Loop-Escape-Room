@@ -4,6 +4,8 @@ import com.escape.App;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -39,13 +41,59 @@ public class RoomOneBoardController {
     @FXML
     private Label penaltyLabel;
 
+    @FXML
+    private Group introOverlay;
+
+    @FXML
+    private Group boardOverlay;
+
+    @FXML
+    private Button acknowledgeButton;
+
+    @FXML
+    private Button infoButton;
+
     private javafx.animation.Timeline timerTimeline;
 
     @FXML
     public void initialize() {
-        hintPane.setVisible(false);
+        if (introOverlay != null) {
+            showIntro();
+        }
+
+        if (hintPane != null)
+            hintPane.setVisible(false);
         loadRandomRiddle();
         startTimerUpdate();
+    }
+
+    private void showIntro() {
+        if (introOverlay != null)
+            introOverlay.setVisible(true);
+        if (boardOverlay != null)
+            boardOverlay.setVisible(false);
+        if (infoButton != null)
+            infoButton.setVisible(false);
+    }
+
+    private void showBoard() {
+        if (introOverlay != null)
+            introOverlay.setVisible(false);
+        if (boardOverlay != null)
+            boardOverlay.setVisible(true);
+        // Show info button when board is visible
+        if (infoButton != null)
+            infoButton.setVisible(true);
+    }
+
+    @FXML
+    private void onAcknowledge(MouseEvent event) {
+        showBoard();
+    }
+
+    @FXML
+    private void onInfo(MouseEvent event) {
+        showIntro();
     }
 
     private void startTimerUpdate() {
