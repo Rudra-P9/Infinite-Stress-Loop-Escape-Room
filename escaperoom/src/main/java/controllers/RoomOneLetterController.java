@@ -1,6 +1,7 @@
 package controllers;
 
 import com.escape.App;
+
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -90,94 +91,102 @@ public class RoomOneLetterController {
     }
 
     private void handleLetterClick(MouseEvent event) {
-        if (isResetting || targetAnswer.isEmpty())
-            return;
+    if (isResetting || targetAnswer.isEmpty())
+        return;
 
-        Label clicked = (Label) event.getSource();
-        String letter = clicked.getText().toUpperCase();
+    Label clicked = (Label) event.getSource();
+    String letter = clicked.getText().toUpperCase();
 
-        // Ignore if already clicked (Green)
-        if (clicked.getTextFill().equals(Color.LIME)) {
-            return;
-        }
+    // Ignore if already clicked
+    if (clicked.getTextFill().equals(Color.LIME))
+        return;
 
-        // Check if the clicked letter matches the expected character
-        char expectedChar = targetAnswer.charAt(currentIndex);
-        if (letter.charAt(0) == expectedChar) {
-            // CORRECT
-            clicked.setTextFill(Color.LIME); // Turn Green
-            currentIndex++;
+    char expectedChar = targetAnswer.charAt(currentIndex);
 
-            // Check if puzzle is complete
-            if (currentIndex >= targetAnswer.length()) {
-                System.out.println("Puzzle Solved!");
+    if (letter.charAt(0) == expectedChar) {
+        // correct LETTER
+        clicked.setTextFill(Color.LIME);
+        currentIndex++;
 
-                int currentStage = 0;
+        if (currentIndex >= targetAnswer.length()) {
+
+            int currentStage = (App.gameFacade != null)
+                    ? App.gameFacade.getRoomOneStage()
+                    : 0;
+
+            // first riddle done
+            if (currentStage == 0) {
+                noteText.setText("Correct! One last riddle...");
+                noteText.setTextFill(Color.BLACK);
+
                 if (App.gameFacade != null) {
-                    currentStage = App.gameFacade.getRoomOneStage();
+                    App.gameFacade.setRoomOneStage(1);
+                    App.gameFacade.setPreviousRiddle(App.gameFacade.getRoomOneRiddle());
+                    App.gameFacade.setRoomOneRiddle(null);
+                    App.gameFacade.setRoomOneAnswer(null);
+                    App.gameFacade.setRoomOneHint(null);
                 }
 
-                if (currentStage == 0) {
-                    // First riddle solved
-                    noteText.setText("Correct! One last riddle...");
-                    noteText.setTextFill(Color.LIME);
-
-                    if (App.gameFacade != null) {
-                        // Advance stage
-                        App.gameFacade.setRoomOneStage(1);
-                        // Store previous riddle to avoid repeat
-                        App.gameFacade.setPreviousRiddle(App.gameFacade.getRoomOneRiddle());
-                        // Clear current riddle so Board loads a new one
-                        App.gameFacade.setRoomOneRiddle(null);
-                        App.gameFacade.setRoomOneAnswer(null);
-                        App.gameFacade.setRoomOneHint(null);
-                    }
-
-                    // Delay before returning to Board for the second riddle
-                    PauseTransition delay = new PauseTransition(Duration.seconds(2.0));
-                    delay.setOnFinished(e -> {
-                        try {
-                            App.setRoot("RoomOneBoard");
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    });
-                    delay.play();
-
-                } else {
-                    // Second riddle solved (Stage 1 -> Complete)
-                    noteText.setText("Room Complete!");
-                    noteText.setTextFill(Color.LIME);
-
-                    if (App.gameFacade != null) {
-                        App.gameFacade.setRoomOneStage(2); // Mark as complete
-                    }
-
-                    // Delay before leaving to Hall
-                    PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-                    delay.setOnFinished(e -> {
-                        try {
-                            App.setRoot("ChamberHall");
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    });
-                    delay.play();
-                }
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(e -> {
+                    try {
+                        App.setRoot("RoomOneBoard");
+                    } catch (Exception ex) { ex.printStackTrace(); }
+                });
+                delay.play();
+                return;
             }
-        } else {
-            // INCORRECT
-            clicked.setTextFill(Color.RED); // Turn Red
-            noteText.setText("INCORRECT!");
-            noteText.setTextFill(Color.RED);
-            isResetting = true;
 
-            // Reset sequence after a short delay
-            PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
-            pause.setOnFinished(e -> resetPuzzle());
-            pause.play();
+            // second riddle complete
+            if (currentStage == 1) {
+                noteText.setText("Room Complete!");
+                noteText.setTextFill(Color.BLACK);
+
+                if (App.gameFacade != null) {
+                    App.gameFacade.setRoomOneStage(2);
+                    App.gameFacade.getCollectedLetters().add("E");
+                }
+
+                // Disable letters
+                for (var node : letterPane.getChildren())
+                    if (node instanceof Label lbl)
+                        lbl.setOnMouseClicked(null);
+
+                isResetting = true;
+
+                // Show the earned letter after 2 sec
+                PauseTransition showLetter = new PauseTransition(Duration.seconds(2));
+                showLetter.setOnFinished(ev -> {
+                    noteText.setText("You've Earned A Letter! 'E'");
+                    noteText.setTextFill(Color.BLACK);
+                });
+
+                // Leave the room after 5 sec
+                PauseTransition leave = new PauseTransition(Duration.seconds(7));
+                leave.setOnFinished(ev -> {
+                    try {
+                        App.setRoot("ChamberHall");
+                    } catch (Exception ex) { ex.printStackTrace(); }
+                });
+
+                showLetter.play();
+                leave.play();
+                return;
+            }
         }
+
+    } else {
+        // INCORRECT
+        clicked.setTextFill(Color.RED);
+        noteText.setText("INCORRECT!");
+        noteText.setTextFill(Color.RED);
+        isResetting = true;
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(e -> resetPuzzle());
+        pause.play();
     }
+}
 
     private void resetPuzzle() {
         currentIndex = 0;
