@@ -87,6 +87,7 @@ public class ChamberHallController implements Initializable {
             e.printStackTrace();
             System.err.println("Error initializing ChamberHallController: " + e.getMessage());
         }
+
     }
 
     private void startTimerUpdate() {
@@ -186,5 +187,12 @@ public class ChamberHallController implements Initializable {
     @FXML
     private void handleDoor3(MouseEvent event) {
         System.out.println("Door 3 clicked");
-    }
+        try {
+            com.escape.App.setRoot("Room3Combined"); // loads /com/escape/Room3Combined.fxml
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load Room3Combined: " + e.getMessage());
+        }
+}
+
 }
