@@ -1,0 +1,29 @@
+/* styles.css - put at src/main/resources/styles.css */
+.vault-button {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255,255,255,0.45);
+    -fx-border-width: 3px;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-opacity: 0.80;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.25), 12, 0.25, 0, 0);
+}
+
+.vault-button:hover {
+    -fx-border-color: rgba(255,255,255,0.90);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.85), 18, 0.45, 0, 0);
+    -fx-opacity: 1.0;
+    -fx-scale-x: 1.07;
+    -fx-scale-y: 1.07;
+}
+
+/* small helper styles you may want */
+.label {
+    -fx-text-fill: rgb(29,198,210);
+}
+
+.button {
+    -fx-text-fill: white;
+}
