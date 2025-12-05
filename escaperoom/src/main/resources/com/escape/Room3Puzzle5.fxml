@@ -51,21 +51,7 @@
         </effect>
     </Button>
 
-    <!-- hint area -->
-    <AnchorPane fx:id="hintPaneB" layoutX="1430.0" layoutY="160.0" prefHeight="480.0" prefWidth="360.0" visible="false">
-        <children>
-            <ImageView fitHeight="480.0" fitWidth="360.0" preserveRatio="true">
-                <image>
-                    <Image url="@../images/HintNoteFinal.png" />
-                </image>
-            </ImageView>
-
-            <Label fx:id="hintTextLabelB" layoutX="18.0" layoutY="28.0" prefHeight="420.0" prefWidth="324.0" style="-fx-text-fill: black; -fx-font-family: 'Georgia'; -fx-font-size: 16px;" wrapText="true" />
-        </children>
-    </AnchorPane>
-
-    <Button fx:id="hintButtonB" layoutX="1800.0" layoutY="40.0" text="HINT" />
-    <Button fx:id="backButtonB" layoutX="40.0" layoutY="980.0" text="Back" />
+    <Button fx:id="backButtonB" layoutX="40.0" layoutY="980.0" onMouseClicked="#onBackB" text="Back" />
 
     <!-- reward letter -->
     <Label fx:id="rewardLetterB" alignment="CENTER" layoutX="893.0" layoutY="700.0" prefHeight="220.0" prefWidth="200.0" style="-fx-font-size: 200px; -fx-text-fill: #c62828; -fx-font-weight: bold;                   -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.6), 8, 0, 4, 4);                   -fx-alignment: center;" text="L" visible="false">
@@ -77,6 +63,32 @@
 
     <!-- feedback placed EXACTLY beside the TextField -->
     <Label fx:id="feedbackLabelB" layoutX="1195.0" layoutY="965.0" prefWidth="260.0" style="-fx-text-fill: yellow; -fx-font-size:20px; -fx-font-weight:bold; -fx-alignment:center-left;" />
+
+    <!-- Hint Icon -->
+    <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
+        <image>
+            <Image url="@../../images/HintIcon.png" />
+        </image>
+    </ImageView>
+
+    <!-- hint area -->
+    <AnchorPane fx:id="hintPaneB" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
+        <children>
+            <ImageView fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
+                <image>
+                    <Image url="@../../images/hintNote.png" />
+                </image>
+            </ImageView>
+
+            <Label fx:id="hintTextLabelB" layoutX="15" layoutY="-100" prefWidth="650" style="-fx-font-family: 'Bradley Hand'; -fx-text-fill: black; -fx-font-size: 36px;" wrapText="true" />
+            
+            <ImageView fx:id="closeHintArrowB" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideHint" pickOnBounds="true" preserveRatio="true" visible="false">
+                <image>
+                    <Image url="@../../images/ArrowLeft.png" />
+                </image>
+            </ImageView>
+        </children>
+    </AnchorPane>
 
   </children>
 </AnchorPane>

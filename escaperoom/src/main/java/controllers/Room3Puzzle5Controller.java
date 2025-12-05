@@ -6,9 +6,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ProgressBar;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -45,6 +48,14 @@ public class Room3Puzzle5Controller implements Initializable {
     private Label feedbackLabelB;
     @FXML
     private TextField answerFieldB;
+    @FXML
+    private Label hintTextLabelB;
+    @FXML
+    private ImageView closeHintArrowB;
+    @FXML
+    private ImageView hint;
+    @FXML
+    private ImageView hintNote;
 
     // expected answer for puzzle 5 (change if needed)
     private static final String EXPECTED_ANSWER_B = "MIRROR";
@@ -81,18 +92,51 @@ public class Room3Puzzle5Controller implements Initializable {
     }
 
     /**
-     * Toggle the hint panel visible/hidden.
-     * Called from the Hint button onMouseClicked.
+     * Shows the hint panel when the user clicks the hint button.
+     * Applies penalty and sets the hint text with fade animation.
      */
     @FXML
-    private void onHintB(MouseEvent event) {
+    private void showHint(MouseEvent event) {
         if (hintPaneB == null)
             return;
-        boolean now = !hintPaneB.isVisible();
-        hintPaneB.setVisible(now);
-        if (now)
-            hintPaneB.toFront();
-        System.out.println("Hint toggled -> " + now);
+        
+        System.out.println("Hint clicked!");
+        
+        // Apply penalty
+        if (com.escape.App.gameFacade != null) {
+            com.escape.App.gameFacade.applyHintPenalty();
+        }
+        
+        // Set hint text
+        String hint = "Listen carefully to the audio clip. The answer is a word that describes what you see when you look at yourself.";
+        if (hintTextLabelB != null) {
+            hintTextLabelB.setText(hint);
+        }
+        
+        // Show hint pane with fade animation
+        hintPaneB.setVisible(true);
+        FadeTransition ft = new FadeTransition(Duration.seconds(0.6), hintPaneB);
+        hintPaneB.setOpacity(0);
+        ft.setToValue(1.0);
+        ft.play();
+        
+        if (hintTextLabelB != null)
+            hintTextLabelB.setVisible(true);
+        if (hintNote != null)
+            hintNote.setVisible(true);
+        if (closeHintArrowB != null)
+            closeHintArrowB.setVisible(true);
+    }
+
+    /**
+     * Hides the hint pane.
+     */
+    @FXML
+    private void hideHint(MouseEvent event) {
+        if (hintPaneB != null)
+            hintPaneB.setVisible(false);
+        if (closeHintArrowB != null)
+            closeHintArrowB.setVisible(false);
     }
 
     /**
