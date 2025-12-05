@@ -17,7 +17,8 @@ import java.util.ResourceBundle;
 
 /**
  * Controller for the Fragment Corridor Room Two screen.
- * Handles directional button puzzle: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT.
+ * Handles directional button puzzle: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP,
+ * LEFT.
  * 
  * @author Jacob Kinard
  */
@@ -56,8 +57,8 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     private ImageView ArrowHider;
 
     /** The target sequence: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT */
-    private static final String[] SEQUENCE = {"UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT"};
-    
+    private static final String[] SEQUENCE = { "UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT" };
+
     /** Current position in the sequence (0-7, 8 = complete) */
     private int sequencePosition = 0;
 
@@ -65,17 +66,26 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      * Initializes the controller.
      * Hides the Continue elements and error label until the puzzle is solved.
      * 
-     * @param url the location used to resolve relative paths for the root object, or null
+     * @param url            the location used to resolve relative paths for the
+     *                       root object, or null
      * @param resourceBundle the resources used to localize the root object, or null
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Hide Continue elements until puzzle is solved
-        if (ContinueLabel != null) ContinueLabel.setVisible(false);
-        if (ContinueButton != null) ContinueButton.setVisible(false);
-        if (IncorrectLabel != null) IncorrectLabel.setVisible(false);
+        if (ContinueLabel != null)
+            ContinueLabel.setVisible(false);
+        if (ContinueButton != null)
+            ContinueButton.setVisible(false);
+        if (IncorrectLabel != null)
+            IncorrectLabel.setVisible(false);
         // Hide arrow cover initially so user can see the sequence
-        if (ArrowHider != null) ArrowHider.setVisible(false);
+        if (ArrowHider != null)
+            ArrowHider.setVisible(false);
+
+        // Initialize Facade and Timer
+        this.facade = App.gameFacade;
+        startTimerUpdate();
     }
 
     /**
@@ -142,7 +152,8 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      * Validates the clicked direction against the expected sequence position.
      * Advances on correct input or resets and shows error on incorrect input.
      * 
-     * @param direction the direction that was clicked ("UP", "DOWN", "LEFT", "RIGHT")
+     * @param direction the direction that was clicked ("UP", "DOWN", "LEFT",
+     *                  "RIGHT")
      */
     private void handleDirectionClick(String direction) {
         // Check if we've completed the sequence
@@ -159,7 +170,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
         if (direction.equals(SEQUENCE[sequencePosition])) {
             // Correct direction - advance sequence
             sequencePosition++;
-            
+
             // Check if puzzle is complete
             if (sequencePosition >= SEQUENCE.length) {
                 showSuccess();
@@ -171,15 +182,35 @@ public class FragmentCorridorRoomTwoController implements Initializable {
         }
     }
 
+    @FXML
+    private Label penaltyLabel;
+
     /**
      * Resets the puzzle progress.
      * Sets the sequence position back to the beginning and hides the arrow cover
      * so the user can re-memorize the sequence.
      */
     private void resetProgress() {
+        // Apply penalty for incorrect direction
+        if (facade != null) {
+            facade.applyHintPenalty();
+            updateTimer();
+        }
+
+        // Animate penalty label if present
+        if (penaltyLabel != null) {
+            penaltyLabel.setOpacity(1.0);
+            javafx.animation.FadeTransition fade = new javafx.animation.FadeTransition(
+                    javafx.util.Duration.seconds(2.0), penaltyLabel);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+            fade.play();
+        }
+
         sequencePosition = 0;
         // Hide arrow cover so user can see the sequence again
-        if (ArrowHider != null) ArrowHider.setVisible(false);
+        if (ArrowHider != null)
+            ArrowHider.setVisible(false);
     }
 
     /**
@@ -189,11 +220,12 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     private void showError() {
         if (IncorrectLabel != null) {
             IncorrectLabel.setVisible(true);
-            
+
             // Hide error message after 2 seconds
             javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(Duration.seconds(2));
             pause.setOnFinished(e -> {
-                if (IncorrectLabel != null) IncorrectLabel.setVisible(false);
+                if (IncorrectLabel != null)
+                    IncorrectLabel.setVisible(false);
             });
             pause.play();
         }
@@ -218,10 +250,12 @@ public class FragmentCorridorRoomTwoController implements Initializable {
                 System.out.println("Letter 'M' already in inventory.");
             }
         }
-        
-        if (ContinueLabel != null) ContinueLabel.setVisible(true);
-        if (ContinueButton != null) ContinueButton.setVisible(true);
-        
+
+        if (ContinueLabel != null)
+            ContinueLabel.setVisible(true);
+        if (ContinueButton != null)
+            ContinueButton.setVisible(true);
+
         // Create breathing animation for Continue label
         if (ContinueLabel != null) {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueLabel);
@@ -232,6 +266,32 @@ public class FragmentCorridorRoomTwoController implements Initializable {
             scaleTransition.setCycleCount(Timeline.INDEFINITE);
             scaleTransition.setAutoReverse(true);
             scaleTransition.play();
+        }
+    }
+
+    @FXML
+    private Label timerLabel;
+    private com.escape.model.EscapeRoomFacade facade;
+    private Timeline timerTimeline;
+
+    private void startTimerUpdate() {
+        timerTimeline = new Timeline(new javafx.animation.KeyFrame(Duration.seconds(1), event -> updateTimer()));
+        timerTimeline.setCycleCount(Timeline.INDEFINITE);
+        timerTimeline.play();
+        updateTimer(); // Initial update
+    }
+
+    private void updateTimer() {
+        if (facade != null && timerLabel != null) {
+            int remainingSeconds = facade.getTimeRemaining();
+            int minutes = remainingSeconds / 60;
+            int seconds = remainingSeconds % 60;
+            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+            if (remainingSeconds < 60) {
+                timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+            } else {
+                timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+            }
         }
     }
 

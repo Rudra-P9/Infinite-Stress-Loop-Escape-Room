@@ -24,32 +24,50 @@ import com.escape.App;
  */
 public class FinalPuzzleController {
 
-    @FXML private ImageView bgImage;
-    @FXML private ImageView FPHintIcon;
-    @FXML private AnchorPane hintPane;
-    @FXML private TextFlow hintBottomFlow;
+    @FXML
+    private ImageView bgImage;
+    @FXML
+    private ImageView FPHintIcon;
+    @FXML
+    private AnchorPane hintPane;
+    @FXML
+    private TextFlow hintBottomFlow;
 
-    @FXML private ImageView UnclickedR;
-    @FXML private ImageView UnclickedE;
-    @FXML private ImageView UnclickedA;
-    @FXML private ImageView UnclickedL;
-    @FXML private ImageView UnclickedM;
+    @FXML
+    private ImageView UnclickedR;
+    @FXML
+    private ImageView UnclickedE;
+    @FXML
+    private ImageView UnclickedA;
+    @FXML
+    private ImageView UnclickedL;
+    @FXML
+    private ImageView UnclickedM;
 
-    @FXML private ImageView RealmImage;
+    @FXML
+    private ImageView RealmImage;
 
-    @FXML private AnchorPane monitorPane;
-    @FXML private Label missionLabel;
-    @FXML private ImageView exitButton;
+    @FXML
+    private AnchorPane monitorPane;
+    @FXML
+    private Label missionLabel;
+    @FXML
+    private ImageView exitButton;
+    @FXML
+    private Label penaltyLabel;
 
-    @FXML private AnchorPane introPane;
-    @FXML private Label introLabel;
-    @FXML private ImageView introExitButton;
+    @FXML
+    private AnchorPane introPane;
+    @FXML
+    private Label introLabel;
+    @FXML
+    private ImageView introExitButton;
 
-    private final String[] order = {"UnclickedR","UnclickedE","UnclickedA","UnclickedL","UnclickedM"};
+    private final String[] order = { "UnclickedR", "UnclickedE", "UnclickedA", "UnclickedL", "UnclickedM" };
     private int index = 0;
 
-    private final Map<String,String> clickedMap = new HashMap<>();
-    private final Map<String,String> unclickedMap = new HashMap<>();
+    private final Map<String, String> clickedMap = new HashMap<>();
+    private final Map<String, String> unclickedMap = new HashMap<>();
 
     /**
      * Sets up images, font, bindings, and initial visibility.
@@ -59,17 +77,17 @@ public class FinalPuzzleController {
 
         Font.loadFont(getClass().getResourceAsStream("/fonts/Storm Gust.ttf"), 42);
 
-        clickedMap.put("UnclickedR","/images/ClickedR.png");
-        clickedMap.put("UnclickedE","/images/ClickedE.png");
-        clickedMap.put("UnclickedA","/images/ClickedA.png");
-        clickedMap.put("UnclickedL","/images/ClickedL.png");
-        clickedMap.put("UnclickedM","/images/ClickedM.png");
+        clickedMap.put("UnclickedR", "/images/ClickedR.png");
+        clickedMap.put("UnclickedE", "/images/ClickedE.png");
+        clickedMap.put("UnclickedA", "/images/ClickedA.png");
+        clickedMap.put("UnclickedL", "/images/ClickedL.png");
+        clickedMap.put("UnclickedM", "/images/ClickedM.png");
 
-        unclickedMap.put("UnclickedR","/images/UnclickedR.png");
-        unclickedMap.put("UnclickedE","/images/UnclickedE.png");
-        unclickedMap.put("UnclickedA","/images/UnclickedA.png");
-        unclickedMap.put("UnclickedL","/images/UnclickedL.png");
-        unclickedMap.put("UnclickedM","/images/UnclickedM.png");
+        unclickedMap.put("UnclickedR", "/images/UnclickedR.png");
+        unclickedMap.put("UnclickedE", "/images/UnclickedE.png");
+        unclickedMap.put("UnclickedA", "/images/UnclickedA.png");
+        unclickedMap.put("UnclickedL", "/images/UnclickedL.png");
+        unclickedMap.put("UnclickedM", "/images/UnclickedM.png");
 
         hintBottomFlow.setVisible(false);
         hintBottomFlow.setOpacity(0.0);
@@ -87,7 +105,10 @@ public class FinalPuzzleController {
         introPane.setVisible(true);
         introPane.setManaged(true);
 
-        setPuzzleVisible(false);
+        setPuzzleVisible(false); // Remote change
+
+        this.facade = App.gameFacade; // My change
+        startTimerUpdate(); // My change
     }
 
     /**
@@ -115,7 +136,7 @@ public class FinalPuzzleController {
     /**
      * Hides the intro monitor and starts the puzzle.
      *
-     * @param event mouse click event on the intro exit button
+     * @param event mouse click on the intro exit button
      */
     @FXML
     private void hideIntroPane(MouseEvent event) {
@@ -149,6 +170,20 @@ public class FinalPuzzleController {
      * Resets all letters and hides completion UI.
      */
     private void resetAll() {
+        if (facade != null) {
+            facade.applyHintPenalty();
+            updateTimer();
+        }
+
+        // Animate penalty label if present
+        if (penaltyLabel != null) {
+            penaltyLabel.setOpacity(1.0);
+            FadeTransition fade = new FadeTransition(Duration.seconds(2.0), penaltyLabel);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+            fade.play();
+        }
+
         setImage(UnclickedR, unclickedMap.get("UnclickedR"));
         setImage(UnclickedE, unclickedMap.get("UnclickedE"));
         setImage(UnclickedA, unclickedMap.get("UnclickedA"));
@@ -256,5 +291,32 @@ public class FinalPuzzleController {
         ft.setOnFinished(e -> hintBottomFlow.setVisible(false));
         ft.play();
         FPHintIcon.setVisible(true);
+    }
+
+    @FXML
+    private Label timerLabel;
+    private com.escape.model.EscapeRoomFacade facade;
+    private javafx.animation.Timeline timerTimeline;
+
+    private void startTimerUpdate() {
+        timerTimeline = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
+        timerTimeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        timerTimeline.play();
+        updateTimer();
+    }
+
+    private void updateTimer() {
+        if (facade != null && timerLabel != null) {
+            int remainingSeconds = facade.getTimeRemaining();
+            int minutes = remainingSeconds / 60;
+            int seconds = remainingSeconds % 60;
+            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+            if (remainingSeconds < 60) {
+                timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+            } else {
+                timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+            }
+        }
     }
 }

@@ -4,6 +4,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefWidth="1920" prefHeight="1080"
             xmlns="http://javafx.com/javafx/25"
@@ -11,7 +13,6 @@
             fx:controller="controllers.RoomOneIntroController">
 
     <children>
-
         <!-- BACKGROUND  -->
         <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
             <image>
@@ -19,6 +20,12 @@
             </image>
         </ImageView>
 
+<Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
+        <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
+            <font>
+                <Font name="Impact" size="40.0" />
+            </font>
+        </Label>
         <!-- INTRO TEXT -->
         <Label layoutX="40" layoutY="830"
             prefWidth="700"
