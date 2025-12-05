@@ -9,6 +9,7 @@ import com.escape.App;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -42,6 +43,10 @@ public class FinalPuzzleController {
     @FXML private ImageView introExitButton;
 
     @FXML private Label timerLabel;
+
+    @FXML private ProgressBar progressBar;
+
+    @FXML private Label progressLabel;
 
     private final String[] order = {"UnclickedR", "UnclickedE", "UnclickedA", "UnclickedL", "UnclickedM"};
     private int index = 0;
@@ -245,6 +250,17 @@ public class FinalPuzzleController {
                 timerLabel.setTextFill(javafx.scene.paint.Color.RED);
             else
                 timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+        }
+        
+        // Update progress bar
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (facade != null && progressBar != null && progressLabel != null) {
+            int percentage = facade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
         }
     }
 

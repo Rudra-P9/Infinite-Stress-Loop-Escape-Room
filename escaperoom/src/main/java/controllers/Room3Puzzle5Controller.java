@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ProgressBar;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -71,6 +72,9 @@ public class Room3Puzzle5Controller implements Initializable {
             // do not forcibly steal focus if you don't want it; comment out if not desired
             // answerFieldB.requestFocus();
         }
+
+        this.facade = com.escape.App.gameFacade;
+        startTimerUpdate();
     }
 
     /**
@@ -123,6 +127,17 @@ public class Room3Puzzle5Controller implements Initializable {
             feedbackLabelB.setText("Correct");
             // same style as puzzle 4
             feedbackLabelB.setStyle("-fx-text-fill: #2fa4c6; -fx-font-size:20px;");
+
+            // Add collected letter to game state
+            if (facade != null && facade.getCurrentUser() != null) {
+                com.escape.model.User user = facade.getCurrentUser();
+                if (!user.getCollectedLetters().contains("L")) {
+                    user.addCollectedLetter("L");
+                    System.out.println("Letter 'L' added to inventory.");
+                    System.out.println("Current letters: " + user.getCollectedLetters());
+                    updateProgress();
+                }
+            }
 
             // show big "L" with same style as Puzzle4 'R'
             if (rewardLetterB != null) {
@@ -177,6 +192,11 @@ public class Room3Puzzle5Controller implements Initializable {
     private com.escape.model.EscapeRoomFacade facade;
     private javafx.animation.Timeline timerTimeline;
 
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Label progressLabel;
+
     private void startTimerUpdate() {
         timerTimeline = new javafx.animation.Timeline(
                 new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
@@ -196,6 +216,15 @@ public class Room3Puzzle5Controller implements Initializable {
             } else {
                 timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
             }
+        }
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (facade != null && progressBar != null && progressLabel != null) {
+            int percentage = facade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
         }
     }
 

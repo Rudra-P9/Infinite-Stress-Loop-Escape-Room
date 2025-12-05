@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -276,6 +277,20 @@ public class FragmentCorridorController implements Initializable {
                 // Handle game over if needed
             }
         }
+
+        // Update progress bar
+        updateProgress();
+    }
+
+    /**
+     * Updates the progress bar based on collected letters.
+     */
+    private void updateProgress() {
+        if (App.gameFacade != null && progressBar != null && progressLabel != null) {
+            int percentage = App.gameFacade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
+        }
     }
 
     /**
@@ -476,10 +491,27 @@ public class FragmentCorridorController implements Initializable {
      * Creates a pulsing scale animation to draw attention to the continue button.
      */
     private void showSuccess() {
+        System.out.println("[FragmentCorridor] showSuccess() called");
+        System.out.println("[FragmentCorridor] gameFacade = " + App.gameFacade);
+
         // Award the letter "A" to the user's inventory (from game.json)
-        // Award the letter "A" to the user's inventory (from game.json)
-        if (App.gameFacade != null) {
-            App.gameFacade.addItem("A");
+        if (App.gameFacade != null && App.gameFacade.getCurrentUser() != null) {
+            com.escape.model.User user = App.gameFacade.getCurrentUser();
+            System.out.println("[FragmentCorridor] user = " + user);
+
+            // Check if user already has the letter before adding
+            if (!user.getCollectedLetters().contains("A")) {
+                boolean added = user.addCollectedLetter("A");
+                if (added) {
+                    System.out.println("Letter 'A' added to inventory.");
+                    System.out.println("Current letters: " + user.getCollectedLetters());
+                    updateProgress();
+                } else {
+                    System.out.println("Failed to add letter 'A' - inventory may be full.");
+                }
+            } else {
+                System.out.println("Letter 'A' already in inventory.");
+            }
         }
 
         if (ContinueLabel != null)

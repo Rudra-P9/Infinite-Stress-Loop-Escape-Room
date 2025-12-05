@@ -5,6 +5,7 @@ import com.escape.App;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
@@ -30,6 +31,12 @@ public class RoomOneLetterController {
 
     @FXML
     private Label penaltyLabel;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label progressLabel;
 
     private String targetAnswer = "";
     private int currentIndex = 0;
@@ -98,6 +105,19 @@ public class RoomOneLetterController {
                 // Handle game over if needed
             }
         }
+        
+        // Update progress bar
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (com.escape.App.gameFacade != null && progressBar != null && progressLabel != null) {
+            int percentage = com.escape.App.gameFacade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
+            System.out.println("[RoomOneLetter] Progress updated: " + percentage + "% (" + 
+                (com.escape.App.gameFacade.getCurrentUser() != null ? com.escape.App.gameFacade.getCurrentUser().getCollectedLetters().size() : 0) + " letters)");
+        }
     }
 
     private void handleLetterClick(MouseEvent event) {
@@ -151,12 +171,29 @@ public class RoomOneLetterController {
 
                 // second riddle complete
                 if (currentStage == 1) {
+                    System.out.println("[RoomOneLetter] Room complete! Adding letter E");
+                    System.out.println("[RoomOneLetter] gameFacade = " + App.gameFacade);
+                    
                     noteText.setText("Room Complete!");
                     noteText.setTextFill(Color.BLACK);
 
                     if (App.gameFacade != null) {
                         App.gameFacade.setRoomOneStage(2);
-                        App.gameFacade.addItem("E");
+                    }
+                    
+                    // Add letter E to current user's inventory
+                    if (App.gameFacade != null && App.gameFacade.getCurrentUser() != null) {
+                        com.escape.model.User user = App.gameFacade.getCurrentUser();
+                        System.out.println("[RoomOneLetter] user = " + user);
+                        
+                        if (!user.getCollectedLetters().contains("E")) {
+                            boolean added = user.addCollectedLetter("E");
+                            if (added) {
+                                System.out.println("Letter 'E' added to inventory.");
+                                System.out.println("Current letters: " + user.getCollectedLetters());
+                                updateProgress();
+                            }
+                        }
                     }
 
                     // Disable letters

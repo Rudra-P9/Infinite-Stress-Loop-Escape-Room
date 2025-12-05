@@ -6,6 +6,8 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.URL;
@@ -155,6 +157,11 @@ public class Room3CombinedController implements Initializable {
     private com.escape.model.EscapeRoomFacade facade;
     private javafx.animation.Timeline timerTimeline;
 
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Label progressLabel;
+
     private void startTimerUpdate() {
         timerTimeline = new javafx.animation.Timeline(
                 new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
@@ -174,6 +181,15 @@ public class Room3CombinedController implements Initializable {
             } else {
                 timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
             }
+        }
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (facade != null && progressBar != null && progressLabel != null) {
+            int percentage = facade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
         }
     }
 }

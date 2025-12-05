@@ -55,6 +55,7 @@ public class LoginController implements Initializable {
             enterButtonLabel.setTextFill(javafx.scene.paint.Color.LIME);
 
             // Set global user
+            App.currentUser = user;
             App.gameFacade.setCurrentUser(user);
 
             // Navigate to DifficultyMenu after 1 second
