@@ -690,6 +690,13 @@ public class EscapeRoomFacade {
         this.previousRiddle = riddle;
     }
 
+    public void applyHintPenalty() {
+        if (timer != null) {
+            timer.reduceTime(45);
+            System.out.println("Hint penalty applied: -45 seconds");
+        }
+    }
+
     /**
      * Returns the number of seconds remaining for the current room based on the
      * difficulty.
