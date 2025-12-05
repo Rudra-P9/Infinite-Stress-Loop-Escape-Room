@@ -156,7 +156,7 @@ public class RoomOneBoardController {
                 }
             }
 
-            var stream = getClass().getResourceAsStream("/com/escape/model/riddles.txt");
+            var stream = getClass().getResourceAsStream("/riddles.txt");
             if (stream == null) {
                 System.err.println("Could not find riddles.txt");
                 riddleLabel.setText("Riddle unavailable.");
