@@ -114,6 +114,14 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Label penaltyLabel;
 
+    /** Progress bar showing game completion */
+    @FXML
+    private ProgressBar progressBar;
+
+    /** Label displaying progress percentage */
+    @FXML
+    private Label progressLabel;
+
     @FXML
     private Group introOverlay;
 
