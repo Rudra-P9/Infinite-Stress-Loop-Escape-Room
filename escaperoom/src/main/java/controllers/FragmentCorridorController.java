@@ -23,48 +23,63 @@ import java.util.ResourceBundle;
  */
 public class FragmentCorridorController implements Initializable {
 
+    /** Label showing the E letter when revealed */
     @FXML
     private Label EShow;
 
+    /** Label showing the first M letter when revealed */
     @FXML
     private Label M1Show;
 
+    /** Label showing the second M letter when revealed */
     @FXML
     private Label M2Show;
 
+    /** Label for the first M key (clickable area) */
     @FXML
     private Label MKey1;
 
+    /** Button for the first M key click event */
     @FXML
     private Button MKey1B;
 
+    /** Label for the second M key (clickable area) */
     @FXML
     private Label MKey2;
 
+    /** Button for the second M key click event */
     @FXML
     private Button Mkey2B;
 
+    /** Label for the E key (clickable area) */
     @FXML
     private Label EKey1;
 
+    /** Button for the E key click event */
     @FXML
     private Button EKey;
 
+    /** Label showing the O letter when revealed */
     @FXML
     private Label OShow;
 
+    /** Label showing the R letter when revealed */
     @FXML
     private Label RShow;
 
+    /** Label showing the Y letter when revealed */
     @FXML
     private Label YShow;
 
+    /** Label displayed when incorrect letter is clicked */
     @FXML
     private Label IncorrectLable;
 
+    /** Label for the continue button text */
     @FXML
     private Label ContinueLabel;
 
+    /** Button to continue to next screen after puzzle completion */
     @FXML
     private Button ContinueButton;
 
@@ -76,6 +91,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Initializes the controller by hiding letter labels and applying consistent styling.
+     * Sets up initial visibility states and applies fonts to letter elements.
      * 
      * @param url the location used to resolve relative paths for the root object, or null
      * @param resourceBundle the resources used to localize the root object, or null
@@ -220,6 +236,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Reveals the show label at the given sequence position.
+     * Makes the appropriate letter visible based on the current progress.
      * 
      * @param position the position in the MEMORY sequence (0-5)
      */
@@ -248,6 +265,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Resets the puzzle progress by hiding all show labels and re-enabling clickable areas.
+     * Called when the user clicks an incorrect letter.
      */
     private void resetProgress() {
         sequencePosition = 0;
@@ -268,6 +286,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Shows an error message briefly when the user clicks the wrong letter.
+     * Displays the error for 2 seconds then hides it automatically.
      */
     private void showError() {
         if (IncorrectLable != null) {
@@ -284,6 +303,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Shows the Continue button with breathing animation when puzzle is solved.
+     * Creates a pulsing scale animation to draw attention to the continue button.
      */
     private void showSuccess() {
         if (ContinueLabel != null) ContinueLabel.setVisible(true);
@@ -303,7 +323,10 @@ public class FragmentCorridorController implements Initializable {
     }
 
     /**
-     * Handles Continue button click to navigate to ChamberHall.
+     * Handles Continue button click to navigate to the next room.
+     * Navigates to FragmentCorridorRoomTwo after puzzle completion.
+     * 
+     * @param event the mouse event triggered by clicking Continue
      */
     @FXML
     void ContinueToNext(MouseEvent event) {

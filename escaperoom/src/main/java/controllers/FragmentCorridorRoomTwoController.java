@@ -22,24 +22,31 @@ import java.util.ResourceBundle;
  */
 public class FragmentCorridorRoomTwoController implements Initializable {
 
+    /** Button for UP direction input */
     @FXML
     private Button UP;
 
+    /** Button for DOWN direction input */
     @FXML
     private Button DOWN;
 
+    /** Button for LEFT direction input */
     @FXML
     private Button LEFT;
 
+    /** Button for RIGHT direction input */
     @FXML
     private Button RIGHT;
 
+    /** Label for continue button text */
     @FXML
     private Label ContinueLabel;
 
+    /** Button to continue to next screen after puzzle completion */
     @FXML
     private Button ContinueButton;
 
+    /** Label displayed when incorrect direction is clicked */
     @FXML
     private Label IncorrectLabel;
 
@@ -51,6 +58,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Initializes the controller.
+     * Hides the Continue elements and error label until the puzzle is solved.
      * 
      * @param url the location used to resolve relative paths for the root object, or null
      * @param resourceBundle the resources used to localize the root object, or null
@@ -65,6 +73,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Handles UP button click events.
+     * Validates if UP is the correct next direction in the sequence.
      * 
      * @param event the mouse event triggered by clicking the UP button
      */
@@ -75,6 +84,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Handles DOWN button click events.
+     * Validates if DOWN is the correct next direction in the sequence.
      * 
      * @param event the mouse event triggered by clicking the DOWN button
      */
@@ -85,6 +95,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Handles LEFT button click events.
+     * Validates if LEFT is the correct next direction in the sequence.
      * 
      * @param event the mouse event triggered by clicking the LEFT button
      */
@@ -95,6 +106,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Handles RIGHT button click events.
+     * Validates if RIGHT is the correct next direction in the sequence.
      * 
      * @param event the mouse event triggered by clicking the RIGHT button
      */
@@ -105,6 +117,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Handles Continue button click events.
+     * Navigates back to ChamberHall after puzzle completion.
      * 
      * @param event the mouse event triggered by clicking Continue
      */
@@ -120,6 +133,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     /**
      * Unified handler for all direction clicks.
      * Validates the clicked direction against the expected sequence position.
+     * Advances on correct input or resets and shows error on incorrect input.
      * 
      * @param direction the direction that was clicked ("UP", "DOWN", "LEFT", "RIGHT")
      */
@@ -147,6 +161,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Resets the puzzle progress.
+     * Sets the sequence position back to the beginning.
      */
     private void resetProgress() {
         sequencePosition = 0;
@@ -154,6 +169,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Shows an error message briefly when the user clicks the wrong direction.
+     * Displays the error for 2 seconds then hides it automatically.
      */
     private void showError() {
         if (IncorrectLabel != null) {
@@ -170,6 +186,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
 
     /**
      * Shows the Continue button with breathing animation when puzzle is solved.
+     * Creates a pulsing scale animation to draw attention to the continue button.
      */
     private void showSuccess() {
         if (ContinueLabel != null) ContinueLabel.setVisible(true);
