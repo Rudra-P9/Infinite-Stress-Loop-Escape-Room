@@ -3,14 +3,18 @@ package controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
  * Controller for the Fragment Corridor Room Two screen.
- * Handles directional button clicks (UP, DOWN, LEFT, RIGHT).
+ * Handles directional button puzzle: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT.
  * 
  * @author Jacob Kinard
  */
@@ -28,6 +32,21 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     @FXML
     private Button RIGHT;
 
+    @FXML
+    private Label ContinueLabel;
+
+    @FXML
+    private Button ContinueButton;
+
+    @FXML
+    private Label IncorrectLabel;
+
+    /** The target sequence: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT */
+    private static final String[] SEQUENCE = {"UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT"};
+    
+    /** Current position in the sequence (0-7, 8 = complete) */
+    private int sequencePosition = 0;
+
     /**
      * Initializes the controller.
      * 
@@ -36,7 +55,10 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialization logic if needed
+        // Hide Continue elements until puzzle is solved
+        if (ContinueLabel != null) ContinueLabel.setVisible(false);
+        if (ContinueButton != null) ContinueButton.setVisible(false);
+        if (IncorrectLabel != null) IncorrectLabel.setVisible(false);
     }
 
     /**
@@ -46,8 +68,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedUp(MouseEvent event) {
-        System.out.println("UP button pressed");
-        // Add your logic here
+        handleDirectionClick("UP");
     }
 
     /**
@@ -57,8 +78,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedDown(MouseEvent event) {
-        System.out.println("DOWN button pressed");
-        // Add your logic here
+        handleDirectionClick("DOWN");
     }
 
     /**
@@ -68,8 +88,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedLeft(MouseEvent event) {
-        System.out.println("LEFT button pressed");
-        // Add your logic here
+        handleDirectionClick("LEFT");
     }
 
     /**
@@ -79,8 +98,89 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedRight(MouseEvent event) {
-        System.out.println("RIGHT button pressed");
-        // Add your logic here
+        handleDirectionClick("RIGHT");
+    }
+
+    /**
+     * Handles Continue button click events.
+     * 
+     * @param event the mouse event triggered by clicking Continue
+     */
+    @FXML
+    void ContinueToNext(MouseEvent event) {
+        // Add navigation logic here
+        System.out.println("Continue to next screen");
+    }
+
+    /**
+     * Unified handler for all direction clicks.
+     * Validates the clicked direction against the expected sequence position.
+     * 
+     * @param direction the direction that was clicked ("UP", "DOWN", "LEFT", "RIGHT")
+     */
+    private void handleDirectionClick(String direction) {
+        // Check if we've completed the sequence
+        if (sequencePosition >= SEQUENCE.length) {
+            return; // puzzle already solved
+        }
+
+        // Check if clicked direction matches expected position
+        if (direction.equals(SEQUENCE[sequencePosition])) {
+            // Correct direction - advance sequence
+            sequencePosition++;
+            
+            // Check if puzzle is complete
+            if (sequencePosition >= SEQUENCE.length) {
+                showSuccess();
+            }
+        } else {
+            // Wrong direction - reset progress and show error
+            resetProgress();
+            showError();
+        }
+    }
+
+    /**
+     * Resets the puzzle progress.
+     */
+    private void resetProgress() {
+        sequencePosition = 0;
+    }
+
+    /**
+     * Shows an error message briefly when the user clicks the wrong direction.
+     */
+    private void showError() {
+        if (IncorrectLabel != null) {
+            IncorrectLabel.setVisible(true);
+            
+            // Hide error message after 2 seconds
+            javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(Duration.seconds(2));
+            pause.setOnFinished(e -> {
+                if (IncorrectLabel != null) IncorrectLabel.setVisible(false);
+            });
+            pause.play();
+        }
+    }
+
+    /**
+     * Shows the Continue button with breathing animation when puzzle is solved.
+     */
+    private void showSuccess() {
+        if (ContinueLabel != null) ContinueLabel.setVisible(true);
+        if (ContinueButton != null) ContinueButton.setVisible(true);
+        
+        // Create breathing animation for Continue label
+        if (ContinueLabel != null) {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueLabel);
+            scaleTransition.setFromX(1.0);
+            scaleTransition.setFromY(1.0);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.setCycleCount(Timeline.INDEFINITE);
+            scaleTransition.setAutoReverse(true);
+            scaleTransition.play();
+        }
     }
 
 }
