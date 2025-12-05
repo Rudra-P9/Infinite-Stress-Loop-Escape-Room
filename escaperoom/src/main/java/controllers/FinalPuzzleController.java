@@ -12,6 +12,8 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import com.escape.App;
+import java.io.IOException;
 
 public class FinalPuzzleController {
 
@@ -140,19 +142,12 @@ public class FinalPuzzleController {
         ft.setDelay(Duration.millis(200));
         ft.play();
     }
-
+    
     @FXML
-    private void hideMonitor(MouseEvent event) {
-        FadeTransition paneFade = new FadeTransition(Duration.millis(400), monitorPane);
-        paneFade.setFromValue(monitorPane.getOpacity());
-        paneFade.setToValue(0.0);
-        paneFade.setOnFinished(e -> {
-            monitorPane.setVisible(false);
-            monitorPane.setManaged(false);
-            monitorPane.setOpacity(1.0);
-        });
-        paneFade.play();
+    private void hideMonitor(MouseEvent event) throws IOException {
+        App.setRoot("OpenDoor");
     }
+
 
     @FXML
     private void showHint(MouseEvent event) {
