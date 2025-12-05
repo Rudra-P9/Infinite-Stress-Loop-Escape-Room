@@ -309,10 +309,11 @@ public class GameDataWriter {
      * per-entry score/timing as your Leaderboard design stabilizes.
      */
     public void saveLeaderboard(Leaderboard leaderboard) {
-        // Read current data from playerData.json
+    // Load full playerData.json
         JSONObject root = readJsonObject("escaperoom/src/main/resources/json/playerData.json");
-        // rebuilds the leaderboard array from the current leaderboard
-        JSONArray leaderboardArray = (JSONArray) root.getOrDefault("leaderboard", new JSONArray());
+
+    // ALWAYS create a fresh array 
+        JSONArray leaderboardArray = new JSONArray();
 
         if (leaderboard != null) {
             ArrayList<Score> scores = leaderboard.getLB();
@@ -320,8 +321,7 @@ public class GameDataWriter {
                 for (Score s : scores) {
                     JSONObject entryObj = new JSONObject();
                     entryObj.put("username", s.getUsername());
-                    entryObj.put("difficulty", (s.getDifficulty() == null) ? null : s.getDifficulty().toString());
-
+                    entryObj.put("difficulty", s.getDifficulty() == null ? null : s.getDifficulty().toString());
                     entryObj.put("timeLeftSec", s.getTimeLeftSec());
                     entryObj.put("score", s.getScore());
                     entryObj.put("date", (s.getDate() == null) ? null : s.getDate().toString());
@@ -330,9 +330,12 @@ public class GameDataWriter {
                 }
             }
         }
-        root.put("leaderboard", leaderboardArray);
-        writeFile("escaperoom/src/main/resources/json/playerData.json", root);
-    }
+
+    // REPLACE, not append
+    root.put("leaderboard", leaderboardArray);
+    writeFile("escaperoom/src/main/resources/json/playerData.json", root);
+}
+
 
     /*
      * SAVED DATA & ACCOUNTS

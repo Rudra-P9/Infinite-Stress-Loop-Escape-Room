@@ -242,4 +242,8 @@ public class Leaderboard {
         System.out.println("\n=== After updating Alice (expected: Alice, Bob, Charlie) ===");
         for (Score s : lb.getLB()) System.out.println(s.getUsername() + " -> " + s.getScore());
     }
+
+    public ArrayList<Score> getAllScores() {
+        return new ArrayList<>(entries);   // return a copy
+    }
 }

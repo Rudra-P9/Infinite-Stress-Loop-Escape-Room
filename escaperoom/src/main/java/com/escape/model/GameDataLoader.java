@@ -470,13 +470,6 @@ public class GameDataLoader {
             setIfPresent(s, "setDate", String.class, str(jo.get("date")));
             list.add(s);
 
-            // Fallback: if the Leaderboard exposes a variadic 'addEntry', call it safely
-            setIfPresent(
-                    lb,
-                    "addEntry",
-                    new Class<?>[] { String.class, String.class, long.class, long.class, String.class },
-                    new Object[] { sSafe(s, "getUsername"), sSafe(s, "getDifficulty"),
-                            nSafe(s, "getTimeSeconds"), nSafe(s, "getScore"), sSafe(s, "getDate") });
         }
 
         // Prefer a bulk setter; if not present we already tried addEntry above

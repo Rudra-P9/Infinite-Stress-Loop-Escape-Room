@@ -1,5 +1,11 @@
 package controllers;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.escape.App;
+
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,67 +17,41 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.escape.App;
-
-/**
- * Controller for the final puzzle screen
- *
- * @author Dylan Diaz
- */
 public class FinalPuzzleController {
 
-    @FXML
-    private ImageView bgImage;
-    @FXML
-    private ImageView FPHintIcon;
-    @FXML
-    private AnchorPane hintPane;
-    @FXML
-    private TextFlow hintBottomFlow;
+    @FXML private ImageView bgImage;
+    @FXML private ImageView FPHintIcon;
+    @FXML private AnchorPane hintPane;
+    @FXML private TextFlow hintBottomFlow;
 
-    @FXML
-    private ImageView UnclickedR;
-    @FXML
-    private ImageView UnclickedE;
-    @FXML
-    private ImageView UnclickedA;
-    @FXML
-    private ImageView UnclickedL;
-    @FXML
-    private ImageView UnclickedM;
+    @FXML private ImageView UnclickedR;
+    @FXML private ImageView UnclickedE;
+    @FXML private ImageView UnclickedA;
+    @FXML private ImageView UnclickedL;
+    @FXML private ImageView UnclickedM;
 
-    @FXML
-    private ImageView RealmImage;
+    @FXML private ImageView RealmImage;
 
-    @FXML
-    private AnchorPane monitorPane;
-    @FXML
-    private Label missionLabel;
-    @FXML
-    private ImageView exitButton;
-    @FXML
-    private Label penaltyLabel;
+    @FXML private AnchorPane monitorPane;
+    @FXML private Label missionLabel;
+    @FXML private ImageView exitButton;
+    @FXML private Label penaltyLabel;
 
-    @FXML
-    private AnchorPane introPane;
-    @FXML
-    private Label introLabel;
-    @FXML
-    private ImageView introExitButton;
+    @FXML private AnchorPane introPane;
+    @FXML private Label introLabel;
+    @FXML private ImageView introExitButton;
 
-    private final String[] order = { "UnclickedR", "UnclickedE", "UnclickedA", "UnclickedL", "UnclickedM" };
+    @FXML private Label timerLabel;
+
+    private final String[] order = {"UnclickedR", "UnclickedE", "UnclickedA", "UnclickedL", "UnclickedM"};
     private int index = 0;
 
     private final Map<String, String> clickedMap = new HashMap<>();
     private final Map<String, String> unclickedMap = new HashMap<>();
 
-    /**
-     * Sets up images, font, bindings, and initial visibility.
-     */
+    private com.escape.model.EscapeRoomFacade facade;
+    private javafx.animation.Timeline timerTimeline;
+
     @FXML
     private void initialize() {
 
@@ -105,17 +85,12 @@ public class FinalPuzzleController {
         introPane.setVisible(true);
         introPane.setManaged(true);
 
-        setPuzzleVisible(false); // Remote change
+        setPuzzleVisible(false);
 
-        this.facade = App.gameFacade; // My change
-        startTimerUpdate(); // My change
+        this.facade = App.gameFacade;
+        startTimerUpdate();
     }
 
-    /**
-     * Shows or hides the puzzle elements and enables/disables them.
-     *
-     * @param visible true to show puzzle UI, false to hide it
-     */
     private void setPuzzleVisible(boolean visible) {
         FPHintIcon.setVisible(visible);
         FPHintIcon.setDisable(!visible);
@@ -133,11 +108,6 @@ public class FinalPuzzleController {
         UnclickedM.setDisable(!visible);
     }
 
-    /**
-     * Hides the intro monitor and starts the puzzle.
-     *
-     * @param event mouse click on the intro exit button
-     */
     @FXML
     private void hideIntroPane(MouseEvent event) {
         introPane.setVisible(false);
@@ -145,11 +115,6 @@ public class FinalPuzzleController {
         setPuzzleVisible(true);
     }
 
-    /**
-     * Handles clicks on the letter images and checks the order.
-     *
-     * @param event mouse click on a letter image
-     */
     @FXML
     private void onLetterClicked(MouseEvent event) {
         ImageView iv = (ImageView) event.getSource();
@@ -166,16 +131,12 @@ public class FinalPuzzleController {
         resetAll();
     }
 
-    /**
-     * Resets all letters and hides completion UI.
-     */
     private void resetAll() {
         if (facade != null) {
             facade.applyHintPenalty();
             updateTimer();
         }
 
-        // Animate penalty label if present
         if (penaltyLabel != null) {
             penaltyLabel.setOpacity(1.0);
             FadeTransition fade = new FadeTransition(Duration.seconds(2.0), penaltyLabel);
@@ -203,30 +164,17 @@ public class FinalPuzzleController {
         index = 0;
     }
 
-    /**
-     * Sets the image of a given ImageView.
-     *
-     * @param iv   target ImageView
-     * @param path resource path to the image
-     */
     private void setImage(ImageView iv, String path) {
         iv.setImage(new Image(getClass().getResourceAsStream(path)));
     }
 
-    /**
-     * Called when the REALM sequence is completed.
-     */
     private void onComplete() {
         RealmImage.setVisible(true);
+        onCompleteFinalPuzzle(); // ← keep your logic
     }
 
-    /**
-     * Shows the final monitor overlay with a fade animation.
-     *
-     * @param event mouse click on the REALM image
-     */
     @FXML
-    private void onRealmClicked(MouseEvent event) {
+    private void onRealmClicked(MouseEvent event) throws IOException {
         AnchorPane parent = (AnchorPane) monitorPane.getParent();
         double parentH = parent.getHeight();
         double paneH = monitorPane.getPrefHeight() > 0 ? monitorPane.getPrefHeight() : 700.0;
@@ -251,22 +199,11 @@ public class FinalPuzzleController {
         ft.play();
     }
 
-    /**
-     * Handles the monitor exit and switches to the OpenDoor screen.
-     *
-     * @param event mouse click on the monitor exit button
-     * @throws IOException if scene loading fails
-     */
     @FXML
     private void hideMonitor(MouseEvent event) throws IOException {
         App.setRoot("OpenDoor");
     }
 
-    /**
-     * Shows the hint text at the bottom and hides the hint icon.
-     *
-     * @param event mouse click on the hint icon
-     */
     @FXML
     private void showHint(MouseEvent event) {
         hintBottomFlow.setOpacity(0.0);
@@ -278,11 +215,6 @@ public class FinalPuzzleController {
         FPHintIcon.setVisible(false);
     }
 
-    /**
-     * Hides the hint text and restores the hint icon.
-     *
-     * @param event mouse click used to close the hint
-     */
     @FXML
     private void hideHint(MouseEvent event) {
         FadeTransition ft = new FadeTransition(Duration.millis(300), hintBottomFlow);
@@ -293,14 +225,10 @@ public class FinalPuzzleController {
         FPHintIcon.setVisible(true);
     }
 
-    @FXML
-    private Label timerLabel;
-    private com.escape.model.EscapeRoomFacade facade;
-    private javafx.animation.Timeline timerTimeline;
-
+    /** TIMER SYSTEM */
     private void startTimerUpdate() {
         timerTimeline = new javafx.animation.Timeline(
-                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), e -> updateTimer()));
         timerTimeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
         timerTimeline.play();
         updateTimer();
@@ -312,11 +240,18 @@ public class FinalPuzzleController {
             int minutes = remainingSeconds / 60;
             int seconds = remainingSeconds % 60;
             timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
-            if (remainingSeconds < 60) {
+
+            if (remainingSeconds < 60)
                 timerLabel.setTextFill(javafx.scene.paint.Color.RED);
-            } else {
+            else
                 timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
-            }
+        }
+    }
+
+    /** FINAL PUZZLE END GAME */
+    private void onCompleteFinalPuzzle() {
+        if (App.gameFacade != null) {
+            App.gameFacade.endGame();
         }
     }
 }
