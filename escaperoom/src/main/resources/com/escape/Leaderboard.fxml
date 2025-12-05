@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+
+
+<AnchorPane prefWidth="1920" prefHeight="1080"
+           xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controllers.LeaderboardController">
+
+
+   <children>
+
+
+       <!-- BACKGROUND IMAGE -->
+       <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+           <image>
+               <Image url="@../../images/LeaderboardBack.png" />
+           </image>
+       </ImageView>
+
+
+       <!-- TITLE -->
+       <Label text="LEADERBOARD"
+              layoutX="690" layoutY="180"
+              style="-fx-font-family: 'Orbitron';
+                     -fx-font-size: 72px;
+                     -fx-text-fill: #7DF9FF;
+                     -fx-font-weight: bold;"/>
+
+
+        <VBox fx:id="scoresBox"
+           layoutX="575"
+           layoutY="325"
+           prefWidth="700"
+           spacing="20"
+           style="-fx-padding: 20;">
+       </VBox>
+
+
+       <!-- BACK BUTTON -->
+       <Label text="BACK"
+              onMouseClicked="#goBack"
+              layoutX="600" layoutY="725"
+              style="-fx-font-family: 'Orbitron';
+                     -fx-font-size: 32px;
+                     -fx-text-fill: WHITE;
+                     -fx-opacity: 0.9;
+                     -fx-cursor: hand;">
+       </Label>
+
+
+   </children>
+</AnchorPane>

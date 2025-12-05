@@ -347,6 +347,7 @@ public class EscapeRoomFacade {
                 /* if the method is named differently, ignore */ }
         }
         writer.saveLeaderboard(clean);
+        updateLeaderboard();
 
         System.out.println("Game ended. Final score: " + finalScore);
 
@@ -939,4 +940,33 @@ public class EscapeRoomFacade {
     public Score getCurrentScore() {
         return score;
     }
+
+    public Leaderboard getLeaderboard() {
+       if (loader == null)
+       loader = new GameDataLoader();
+       return loader.getLeaderboard();
+   }
+
+
+   private void updateLeaderboard() {
+       if (writer == null)
+           writer = new GameDataWriter();
+       if (loader == null)
+           loader = new GameDataLoader();
+
+
+       // Load existing LB
+       Leaderboard lb = loader.getLeaderboard();
+       if (lb == null)
+           lb = new Leaderboard();
+
+
+       // Replace or add your score
+       lb.addOrReplace(score);
+
+
+       // Save updated leaderboard
+       writer.saveLeaderboard(lb);
+   }
+
 }

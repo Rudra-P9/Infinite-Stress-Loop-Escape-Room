@@ -33,8 +33,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        gameFacade = new com.escape.model.EscapeRoomFacade();
+
         // Load the initial view wrapped in the scaler
-        Parent root = loadFXML("MainScreen");
+        Parent root = loadFXML("Leaderboard");
 
         // Create scene with the scalable root
         scene = new Scene(root, 640, 480);
