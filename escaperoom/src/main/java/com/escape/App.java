@@ -39,7 +39,7 @@ public class App extends Application {
         }
 
         // Load the initial view wrapped in the scaler
-        Parent root = loadFXML("FragmentCorridor");
+        Parent root = loadFXML("MainScreen");
 
         // Create scene with the scalable root
         scene = new Scene(root, 640, 480);
