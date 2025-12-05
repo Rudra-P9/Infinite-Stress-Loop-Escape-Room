@@ -1,82 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefWidth="1920" prefHeight="1080"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.RoomOneBoardController">
+<AnchorPane prefHeight="1080" prefWidth="1920" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RoomOneBoardController">
 
     <!-- Background -->
-    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="false">
+    <ImageView fitHeight="1080" fitWidth="1920" preserveRatio="false">
         <image>
-            <Image url="@../../images/RoomOneBoardBack.png"/>
+            <Image url="@../../images/RoomOneBoardBack.png" />
         </image>
     </ImageView>
 
      <!-- Arrow Left Icon -->
-    <ImageView fx:id="arrowleft"
-                   layoutX="25" layoutY="500"
-                   pickOnBounds="true"
-                   fitWidth="80" fitHeight="80"
-                   onMouseClicked="#goToLetter">
+    <ImageView fx:id="arrowleft" fitHeight="80" fitWidth="80" layoutX="25" layoutY="500" onMouseClicked="#goToLetter" pickOnBounds="true">
         <image>
-            <Image url="@../../images/ArrowLeft.png"/>
+            <Image url="@../../images/ArrowLeft.png" />
         </image>
     </ImageView>
 
      <!-- Hint Icon -->
-    <ImageView fx:id="hint"
-                   layoutX="1800" layoutY="125"
-                   pickOnBounds="true"
-                   fitWidth="100" fitHeight="100"
-                   onMouseClicked="#showHint">
+    <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
         <image>
-            <Image url="@../../images/HintIcon.png"/>
+            <Image url="@../../images/HintIcon.png" />
         </image>
     </ImageView>
 
-   
+    <!-- Riddle Label -->
+    <Label fx:id="riddleLabel" alignment="CENTER" layoutX="669.0" layoutY="173.0" prefHeight="568.0" prefWidth="891.0" style="-fx-font-family: 'Times New Roman'; -fx-font-size: 50px; -fx-text-fill: white; -fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);" text="Loading riddle..." textAlignment="CENTER" wrapText="true" />
 
     <!-- HINT (hidden until clicked) -->
-    <AnchorPane fx:id="hintPane"
-                layoutX="700" layoutY="600"
-                prefWidth="700" prefHeight="300"
-                visible="false">
-            <ImageView fx:id="hintNote"
-                        layoutX="-200" layoutY="-300"
-                        fitWidth="1000"
-                        fitHeight="900"
-                        preserveRatio="true">
+    <AnchorPane fx:id="hintPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
+            <ImageView fx:id="hintNote" fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
                 <image>
-                    <Image url="@../../images/hintNote.png"/>
+                    <Image url="@../../images/hintNote.png" />
                 </image>
             </ImageView>
         
-        <Label fx:id="hintText"
-            id="hintText"
-            layoutX="15" layoutY="-100"
-            prefWidth="650"
-            wrapText="true"
-            style="
-           -fx-font-family: 'Bradley Hand';
-            -fx-text-fill: black;
-            -fx-font-size: 36px;
-            "
-            text=""/>
+        <Label id="hintText" fx:id="hintText" layoutX="15" layoutY="-100" prefWidth="650" style="            -fx-font-family: 'Bradley Hand';             -fx-text-fill: black;             -fx-font-size: 36px;             " text="" wrapText="true" />
 
-        <ImageView fx:id="closeHintArrow"
-           layoutX="-30" layoutY="180"
-           fitWidth="30" fitHeight="30"
-           preserveRatio="true"
-           pickOnBounds="true"
-           visible="false"
-           onMouseClicked="#hideHint">
+        <ImageView fx:id="closeHintArrow" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideHint" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
-                <Image url="@../../images/ArrowLeft.png"/>
+                <Image url="@../../images/ArrowLeft.png" />
             </image>
         </ImageView>
     </AnchorPane>

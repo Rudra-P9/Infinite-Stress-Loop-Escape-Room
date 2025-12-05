@@ -1,81 +1,124 @@
 package controllers;
 
 import com.escape.App;
-
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class RoomOneLetterController {
 
     @FXML
     private FlowPane letterPane;
 
-    private StringBuilder selectedLetters = new StringBuilder();
-
     @FXML
     private Label noteText;
 
+    private String targetAnswer = "";
+    private int currentIndex = 0;
+    private boolean isResetting = false;
 
     @FXML
     public void initialize() {
+        // Retrieve the answer from the global facade
+        if (App.gameFacade != null) {
+            String ans = App.gameFacade.getRoomOneAnswer();
+            if (ans != null) {
+                targetAnswer = ans.toUpperCase();
+            }
+        }
+        System.out.println("Target Answer: " + targetAnswer);
+
         for (var node : letterPane.getChildren()) {
             if (node instanceof Label label) {
-
-                 label.setStyle(
-                "-fx-font-size: 75px;" +
-                "-fx-text-fill: white;" +
-                "-fx-font-family: 'Times New Roman';"
-                );
+                label.setStyle(
+                        "-fx-font-size: 75px;" +
+                                "-fx-text-fill: white;" +
+                                "-fx-font-family: 'Times New Roman';");
 
                 // Make letters clickable
                 label.setOnMouseClicked(this::handleLetterClick);
 
                 // Optional hover highlight
-                label.setOnMouseEntered(e -> label.setOpacity(1.0));
-                label.setOnMouseExited(e -> label.setOpacity(0.9));
+                label.setOnMouseEntered(e -> {
+                    if (!isResetting && label.getTextFill().equals(Color.WHITE)) {
+                        label.setOpacity(0.8);
+                    }
+                });
+                label.setOnMouseExited(e -> label.setOpacity(1.0));
             }
         }
     }
 
     private void handleLetterClick(MouseEvent event) {
+        if (isResetting || targetAnswer.isEmpty())
+            return;
+
         Label clicked = (Label) event.getSource();
-        String letter = clicked.getText();
+        String letter = clicked.getText().toUpperCase();
 
-    //removes letter on second click
-        if (clicked.getTextFill().equals(Color.BLACK)) {
-
-            clicked.setTextFill(Color.WHITE);
-
-            removeLetterFromNote(letter);
+        // Ignore if already clicked (Green)
+        if (clicked.getTextFill().equals(Color.LIME)) {
             return;
         }
 
-        // Toggle ON
-        clicked.setTextFill(Color.BLACK);
+        // Check if the clicked letter matches the expected character
+        char expectedChar = targetAnswer.charAt(currentIndex);
+        if (letter.charAt(0) == expectedChar) {
+            // CORRECT
+            clicked.setTextFill(Color.LIME); // Turn Green
+            currentIndex++;
 
-        selectedLetters.append(letter);
-        noteText.setText(selectedLetters.toString());
-    }
+            // Check if puzzle is complete
+            if (currentIndex >= targetAnswer.length()) {
+                System.out.println("Puzzle Solved!");
+                noteText.setText("CORRECT!");
+                noteText.setTextFill(Color.LIME);
 
-    private void removeLetterFromNote(String letter) {
-        String current = selectedLetters.toString();
+                // Delay before leaving
+                PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+                delay.setOnFinished(e -> {
+                    try {
+                        App.setRoot("ChamberHall");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+                delay.play();
+            }
+        } else {
+            // INCORRECT
+            clicked.setTextFill(Color.RED); // Turn Red
+            noteText.setText("INCORRECT!");
+            noteText.setTextFill(Color.RED);
+            isResetting = true;
 
-        int index = current.indexOf(letter);
-        if (index != -1) {
-            selectedLetters.deleteCharAt(index);
-            noteText.setText(selectedLetters.toString());
+            // Reset sequence after a short delay
+            PauseTransition pause = new PauseTransition(Duration.seconds(1.0));
+            pause.setOnFinished(e -> resetPuzzle());
+            pause.play();
         }
     }
 
-    @FXML
-    private void goToNext(MouseEvent event) throws Exception{
+    private void resetPuzzle() {
+        currentIndex = 0;
+        noteText.setText("");
+        noteText.setTextFill(Color.WHITE);
 
-        App.setRoot("RoomOneBoard");
-        System.out.println("Clicked");
+        for (var node : letterPane.getChildren()) {
+            if (node instanceof Label label) {
+                label.setTextFill(Color.WHITE);
+            }
+        }
+        isResetting = false;
     }
 
-
+    @FXML
+    private void goToNext(MouseEvent event) throws Exception {
+        App.setRoot("RoomOneBoard");
+        System.out.println("Returning to Board");
+    }
 }

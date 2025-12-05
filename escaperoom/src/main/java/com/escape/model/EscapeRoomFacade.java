@@ -644,6 +644,24 @@ public class EscapeRoomFacade {
     private Difficulty currentDifficulty;
     private ArrayList<String> collectedLetters = new ArrayList<>();
     private ArrayList<Rooms> allRooms;
+    private String roomOneRiddle;
+    private String roomOneAnswer;
+
+    public String getRoomOneRiddle() {
+        return roomOneRiddle;
+    }
+
+    public void setRoomOneRiddle(String riddle) {
+        this.roomOneRiddle = riddle;
+    }
+
+    public String getRoomOneAnswer() {
+        return roomOneAnswer;
+    }
+
+    public void setRoomOneAnswer(String answer) {
+        this.roomOneAnswer = answer;
+    }
 
     /**
      * Returns the number of seconds remaining for the current room based on the

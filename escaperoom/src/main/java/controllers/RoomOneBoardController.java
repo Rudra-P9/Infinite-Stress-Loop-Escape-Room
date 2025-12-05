@@ -32,8 +32,68 @@ public class RoomOneBoardController {
     private ImageView hintNote;
 
     @FXML
+    private Label riddleLabel;
+
+    @FXML
     public void initialize() {
         hintPane.setVisible(false);
+        loadRandomRiddle();
+    }
+
+    private void loadRandomRiddle() {
+        try {
+            // Checks if we already have a riddle for this session
+            if (com.escape.App.gameFacade != null) {
+                String existingRiddle = com.escape.App.gameFacade.getRoomOneRiddle();
+                if (existingRiddle != null && !existingRiddle.isEmpty()) {
+                    riddleLabel.setText(existingRiddle);
+                    return;
+                }
+            }
+
+            var stream = getClass().getResourceAsStream("/com/escape/model/riddles.txt");
+            if (stream == null) {
+                System.err.println("Could not find riddles.txt");
+                riddleLabel.setText("Riddle unavailable.");
+                return;
+            }
+
+            java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(stream));
+            java.util.List<String> lines = new java.util.ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    lines.add(line);
+                }
+            }
+
+            if (!lines.isEmpty()) {
+                java.util.Random rand = new java.util.Random();
+                String randomLine = lines.get(rand.nextInt(lines.size()));
+                // Split by "::" and take the first part
+                String[] parts = randomLine.split("::");
+                if (parts.length > 0) {
+                    String riddleText = parts[0].trim();
+                    riddleLabel.setText(riddleText);
+
+                    String answerText = "";
+                    if (parts.length > 1) {
+                        answerText = parts[1].trim();
+                    }
+
+                    // Save to facade for persistence
+                    if (com.escape.App.gameFacade != null) {
+                        com.escape.App.gameFacade.setRoomOneRiddle(riddleText);
+                        com.escape.App.gameFacade.setRoomOneAnswer(answerText);
+                        System.out.println("Riddle set: " + riddleText + " | Answer: " + answerText);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            riddleLabel.setText("Error loading riddle.");
+        }
     }
 
     @FXML
