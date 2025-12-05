@@ -62,4 +62,10 @@ public class InventoryController {
         System.out.println("Returning to Chamber Hall from Inventory");
     }
 
+    @FXML
+    private void onBack() throws IOException {
+        App.setRoot("ChamberHall");
+        System.out.println("Returning to Chamber Hall from Inventory");
+    }
+
 }
