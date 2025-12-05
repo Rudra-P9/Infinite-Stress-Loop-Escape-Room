@@ -7,8 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import com.escape.App;
 
 /**
  * Controller for the Room 3 main menu.
@@ -22,9 +24,12 @@ public class Room3CombinedController implements Initializable {
     @FXML private Button infoButtonRm3;
     @FXML private Button acknowledgeButtonRm3;
 
-    @FXML private Button leftVaultBtn;
-    @FXML private Button rightVaultBtn;
-    @FXML private Button coreBtn;
+    @FXML
+    private Button leftVaultBtn;
+    @FXML
+    private Button rightVaultBtn;
+    @FXML
+    private Button coreBtn;
 
     @FXML private Group hotspotGroup;
 
@@ -122,7 +127,7 @@ public class Room3CombinedController implements Initializable {
      * Opens the final core puzzle when the center hotspot is clicked.
      */
     @FXML
-    private void onCoreClicked(MouseEvent event) {
+    private void onCoreClicked(MouseEvent event) throws IOException {
         System.out.println("Core clicked - open final puzzle");
     }
 }

@@ -5,7 +5,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import com.escape.App;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -18,47 +23,65 @@ import java.util.ResourceBundle;
  */
 public class FragmentCorridorController implements Initializable {
 
+    /** Label showing the E letter when revealed */
     @FXML
     private Label EShow;
 
+    /** Label showing the first M letter when revealed */
     @FXML
     private Label M1Show;
 
+    /** Label showing the second M letter when revealed */
     @FXML
     private Label M2Show;
 
+    /** Label for the first M key (clickable area) */
     @FXML
     private Label MKey1;
 
+    /** Button for the first M key click event */
     @FXML
     private Button MKey1B;
 
+    /** Label for the second M key (clickable area) */
     @FXML
     private Label MKey2;
 
+    /** Button for the second M key click event */
     @FXML
     private Button Mkey2B;
 
+    /** Label for the E key (clickable area) */
     @FXML
     private Label EKey1;
 
+    /** Button for the E key click event */
     @FXML
     private Button EKey;
 
+    /** Label showing the O letter when revealed */
     @FXML
     private Label OShow;
 
+    /** Label showing the R letter when revealed */
     @FXML
     private Label RShow;
 
+    /** Label showing the Y letter when revealed */
     @FXML
     private Label YShow;
 
+    /** Label displayed when incorrect letter is clicked */
     @FXML
     private Label IncorrectLable;
 
+    /** Label for the continue button text */
     @FXML
-    private Label SuccessLabel;
+    private Label ContinueLabel;
+
+    /** Button to continue to next screen after puzzle completion */
+    @FXML
+    private Button ContinueButton;
 
     /** The target sequence to spell: MEMORY */
     private static final String[] SEQUENCE = {"M", "E", "M", "O", "R", "Y"};
@@ -68,6 +91,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Initializes the controller by hiding letter labels and applying consistent styling.
+     * Sets up initial visibility states and applies fonts to letter elements.
      * 
      * @param url the location used to resolve relative paths for the root object, or null
      * @param resourceBundle the resources used to localize the root object, or null
@@ -82,7 +106,8 @@ public class FragmentCorridorController implements Initializable {
         if (EShow != null) EShow.setVisible(false);
         if (RShow != null) RShow.setVisible(false);
         if (IncorrectLable != null) IncorrectLable.setVisible(false);
-        if (SuccessLabel != null) SuccessLabel.setVisible(false);
+        if (ContinueLabel != null) ContinueLabel.setVisible(false);
+        if (ContinueButton != null) ContinueButton.setVisible(false);
 
         // Apply consistent letter styling (matches other screens)
         try {
@@ -211,6 +236,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Reveals the show label at the given sequence position.
+     * Makes the appropriate letter visible based on the current progress.
      * 
      * @param position the position in the MEMORY sequence (0-5)
      */
@@ -239,6 +265,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Resets the puzzle progress by hiding all show labels and re-enabling clickable areas.
+     * Called when the user clicks an incorrect letter.
      */
     private void resetProgress() {
         sequencePosition = 0;
@@ -259,6 +286,7 @@ public class FragmentCorridorController implements Initializable {
 
     /**
      * Shows an error message briefly when the user clicks the wrong letter.
+     * Displays the error for 2 seconds then hides it automatically.
      */
     private void showError() {
         if (IncorrectLable != null) {
@@ -274,11 +302,53 @@ public class FragmentCorridorController implements Initializable {
     }
 
     /**
-     * Shows a success message when the puzzle is solved.
+     * Shows the Continue button with breathing animation when puzzle is solved.
+     * Creates a pulsing scale animation to draw attention to the continue button.
      */
     private void showSuccess() {
-        if (SuccessLabel != null) {
-            SuccessLabel.setVisible(true);
+        // Award the letter "A" to the user's inventory (from game.json)
+        if (App.currentUser != null) {
+            // Check if user already has the letter before adding
+            if (!App.currentUser.getCollectedLetters().contains("A")) {
+                boolean added = App.currentUser.addCollectedLetter("A");
+                if (added) {
+                    System.out.println("Letter 'A' added to inventory.");
+                } else {
+                    System.out.println("Failed to add letter 'A' - inventory may be full.");
+                }
+            } else {
+                System.out.println("Letter 'A' already in inventory.");
+            }
+        }
+        
+        if (ContinueLabel != null) ContinueLabel.setVisible(true);
+        if (ContinueButton != null) ContinueButton.setVisible(true);
+        
+        // Create breathing animation for Continue label
+        if (ContinueLabel != null) {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueLabel);
+            scaleTransition.setFromX(1.0);
+            scaleTransition.setFromY(1.0);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.setCycleCount(Timeline.INDEFINITE);
+            scaleTransition.setAutoReverse(true);
+            scaleTransition.play();
+        }
+    }
+
+    /**
+     * Handles Continue button click to navigate to the next room.
+     * Navigates to FragmentCorridorRoomTwo after puzzle completion.
+     * 
+     * @param event the mouse event triggered by clicking Continue
+     */
+    @FXML
+    void ContinueToNext(MouseEvent event) {
+        try {
+            App.setRoot("FragmentCorridorRoomTwo");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
