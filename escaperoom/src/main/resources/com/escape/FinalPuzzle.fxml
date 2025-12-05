@@ -164,7 +164,7 @@
                        prefWidth="1080.0"
                        wrapText="true"
                        style="-fx-font-family: 'Monospaced'; -fx-font-size: 56px; -fx-text-fill: white; -fx-alignment: center;">
-                    <text>MISSION COMPLETE.&#10;ALL RIDDLES RESOLVED.&#10;VAREN SYSTEM: TERMINATED.&#10;EXIT SEQUENCE INITIATED...&#10;</text>
+                    <text>MISSION COMPLETE.&#10;ALL PUZZLES SOLVED.&#10;VAREN SYSTEM: TERMINATED.&#10;EXIT SEQUENCE INITIATED...&#10;</text>
                 </Label>
                 <ImageView fx:id="exitButton"
                            layoutX="1100.0" layoutY="40.0"
