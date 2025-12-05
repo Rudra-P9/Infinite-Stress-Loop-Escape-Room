@@ -5,7 +5,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import com.escape.App;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -58,7 +63,10 @@ public class FragmentCorridorController implements Initializable {
     private Label IncorrectLable;
 
     @FXML
-    private Label SuccessLabel;
+    private Label ContinueLabel;
+
+    @FXML
+    private Button ContinueButton;
 
     /** The target sequence to spell: MEMORY */
     private static final String[] SEQUENCE = {"M", "E", "M", "O", "R", "Y"};
@@ -82,7 +90,8 @@ public class FragmentCorridorController implements Initializable {
         if (EShow != null) EShow.setVisible(false);
         if (RShow != null) RShow.setVisible(false);
         if (IncorrectLable != null) IncorrectLable.setVisible(false);
-        if (SuccessLabel != null) SuccessLabel.setVisible(false);
+        if (ContinueLabel != null) ContinueLabel.setVisible(false);
+        if (ContinueButton != null) ContinueButton.setVisible(false);
 
         // Apply consistent letter styling (matches other screens)
         try {
@@ -274,11 +283,34 @@ public class FragmentCorridorController implements Initializable {
     }
 
     /**
-     * Shows a success message when the puzzle is solved.
+     * Shows the Continue button with breathing animation when puzzle is solved.
      */
     private void showSuccess() {
-        if (SuccessLabel != null) {
-            SuccessLabel.setVisible(true);
+        if (ContinueLabel != null) ContinueLabel.setVisible(true);
+        if (ContinueButton != null) ContinueButton.setVisible(true);
+        
+        // Create breathing animation for Continue label
+        if (ContinueLabel != null) {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueLabel);
+            scaleTransition.setFromX(1.0);
+            scaleTransition.setFromY(1.0);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.setCycleCount(Timeline.INDEFINITE);
+            scaleTransition.setAutoReverse(true);
+            scaleTransition.play();
+        }
+    }
+
+    /**
+     * Handles Continue button click to navigate to ChamberHall.
+     */
+    @FXML
+    void ContinueToNext(MouseEvent event) {
+        try {
+            App.setRoot("ChamberHall");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -67,11 +67,6 @@
             <Font size="57.0" />
          </font>
       </Label>
-      <Label fx:id="SuccessLabel" layoutX="800.0" layoutY="816.0" prefHeight="84.0" prefWidth="320.0" text="Success!" textFill="#00FF00" visible="false">
-         <font>
-            <Font size="57.0" />
-         </font>
-      </Label>
       <Button fx:id="MKey1B1" layoutX="1326.0" layoutY="93.0" mnemonicParsing="false" onMouseClicked="#RLetterClicked" opacity="0.0" prefHeight="398.0" prefWidth="268.0" text="R" textFill="TRANSPARENT" />
       <Label id="RShow" fx:id="RShow" layoutX="1120.0" layoutY="878.0" prefHeight="98.0" prefWidth="94.0" text="R" textFill="WHITE">
          <font>
@@ -95,5 +90,11 @@
             <Font size="62.0" />
          </font>
       </Label>
+      <Label fx:id="ContinueLabel" layoutX="886.0" layoutY="474.0" prefHeight="84.0" prefWidth="148.0" text="Continue..." textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Button fx:id="ContinueButton" layoutX="878.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#ContinueToNext" opacity="0.0" prefHeight="340.0" prefWidth="148.0" text="Continue" visible="false" />
    </children>
 </AnchorPane>
