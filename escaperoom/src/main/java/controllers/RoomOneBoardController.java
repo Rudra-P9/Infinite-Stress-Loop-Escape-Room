@@ -65,7 +65,11 @@ public class RoomOneBoardController {
     @FXML
     public void initialize() {
         if (introOverlay != null) {
-            showIntro();
+            if (com.escape.App.gameFacade != null && !com.escape.App.gameFacade.isRoomOneIntroSeen()) {
+                showIntro();
+            } else {
+                showBoard();
+            }
         }
 
         if (hintPane != null)
@@ -95,6 +99,9 @@ public class RoomOneBoardController {
 
     @FXML
     private void onAcknowledge(MouseEvent event) {
+        if (com.escape.App.gameFacade != null) {
+            com.escape.App.gameFacade.setRoomOneIntroSeen(true);
+        }
         showBoard();
     }
 
@@ -156,7 +163,7 @@ public class RoomOneBoardController {
                 }
             }
 
-            var stream = getClass().getResourceAsStream("/com/escape/model/riddles.txt");
+            var stream = getClass().getResourceAsStream("/riddles.txt");
             if (stream == null) {
                 System.err.println("Could not find riddles.txt");
                 riddleLabel.setText("Riddle unavailable.");

@@ -39,15 +39,14 @@ public class RiddlePuzzle extends Puzzle {
      */
     public RiddlePuzzle() {
         super(
-            "riddle-" + System.currentTimeMillis(),
-            "Random Riddle",
-            "Solve the riddle below.",
-            "",
-            false,
-            Difficulty.EASY,
-            "Riddle",
-            "RiddlePuzzle"
-        );
+                "riddle-" + System.currentTimeMillis(),
+                "Random Riddle",
+                "Solve the riddle below.",
+                "",
+                false,
+                Difficulty.EASY,
+                "Riddle",
+                "RiddlePuzzle");
 
         loadRiddlesIfNeeded();
         if (!riddles.isEmpty()) {
@@ -75,7 +74,8 @@ public class RiddlePuzzle extends Puzzle {
      * Loads riddles from the text file once and caches them.
      */
     private static synchronized void loadRiddlesIfNeeded() {
-        if (riddlesLoaded) return;
+        if (riddlesLoaded)
+            return;
 
         try (InputStream in = RiddlePuzzle.class.getResourceAsStream(RIDDLE_FILE)) {
             if (in == null) {
@@ -88,7 +88,8 @@ public class RiddlePuzzle extends Puzzle {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();
-                    if (line.isEmpty() || line.startsWith("#")) continue;
+                    if (line.isEmpty() || line.startsWith("#"))
+                        continue;
 
                     // safer split: literal "::" and limit to 2 parts
                     String[] parts = line.split(java.util.regex.Pattern.quote("::"), 2);
@@ -108,6 +109,7 @@ public class RiddlePuzzle extends Puzzle {
 
     /**
      * Returns the solution to the riddle as a string.
+     * 
      * @return the solution as a string
      */
     @Override
@@ -119,6 +121,7 @@ public class RiddlePuzzle extends Puzzle {
      * Sets the solution to the riddle.
      * If the solution is null, it is set to an empty string.
      * Otherwise, it is trimmed to remove leading and trailing whitespace.
+     * 
      * @param solution the solution to set
      */
     @Override
@@ -132,15 +135,18 @@ public class RiddlePuzzle extends Puzzle {
      */
     @Override
     public boolean checkAnswer(String input) {
-        if (input == null || riddleSolution == null) return false;
+        if (input == null || riddleSolution == null)
+            return false;
         boolean correct = riddleSolution.trim().equalsIgnoreCase(input.trim());
-        if (correct) setSolved(true);
+        if (correct)
+            setSolved(true);
         return correct;
     }
 
     /**
      * Returns a string representation of the RiddlePuzzle object.
-     * The string representation includes the objective, solved status, and solution.
+     * The string representation includes the objective, solved status, and
+     * solution.
      * 
      * @return a string representation of the RiddlePuzzle object
      */
@@ -154,7 +160,7 @@ public class RiddlePuzzle extends Puzzle {
         sb.append(", solved=").append(solved());
 
         // Try to include other common getters if they exist on the superclass.
-        String[] optionalGetters = {"getTitle", "getSolution", "getDifficulty", "getId"};
+        String[] optionalGetters = { "getTitle", "getSolution", "getDifficulty", "getId" };
         for (String name : optionalGetters) {
             try {
                 java.lang.reflect.Method m = this.getClass().getMethod(name);
