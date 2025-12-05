@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FragmentCorridorRoomTwoController">
@@ -14,7 +15,18 @@
             <Image url="@../../images/FragmentCorridorRoom2v2.png" />
          </image>
       </ImageView>
-      
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
+      <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
+         <font>
+            <Font name="Impact" size="40.0" />
+         </font>
+      </Label>
+      <!-- Penalty Label (Initially Invisible) -->
+      <Label fx:id="penaltyLabel" layoutX="42.0" layoutY="120.0" opacity="0.0" text="-00:45" textFill="RED">
+         <font>
+            <Font name="Impact" size="40.0" />
+         </font>
+      </Label>
       <Button id="UP" fx:id="UP" layoutX="1262.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#PressedUp" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="UP" />
       <Button id="DOWN" fx:id="DOWN" layoutX="1369.0" layoutY="509.0" mnemonicParsing="false" onMouseClicked="#PressedDown" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="DOWN" />
       <Button id="LEFT" fx:id="LEFT" layoutX="1262.0" layoutY="509.0" mnemonicParsing="false" onMouseClicked="#PressedLeft" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="LEFT" />

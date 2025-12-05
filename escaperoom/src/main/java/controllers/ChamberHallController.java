@@ -74,7 +74,7 @@ public class ChamberHallController implements Initializable {
             } else {
                 // RESUMING GAME
                 facade = com.escape.App.gameFacade;
-                System.out.println("Resuming existing game. Timer continuing.");
+                System.out.println("Resuming existing game. Timer continuing. Remaining: " + facade.getTimeRemaining());
 
                 // Skip intro, show doors immediately
                 showDoors();
@@ -100,6 +100,8 @@ public class ChamberHallController implements Initializable {
     private void updateTimer() {
         if (facade != null && timerLabel != null) {
             int remainingSeconds = facade.getTimeRemaining();
+            // System.out.println("DEBUG: updateTimer remaining=" + remainingSeconds); //
+            // excessive logging, maybe only once?
             int minutes = remainingSeconds / 60;
             int seconds = remainingSeconds % 60;
             timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
@@ -193,6 +195,6 @@ public class ChamberHallController implements Initializable {
             e.printStackTrace();
             System.err.println("Failed to load Room3Combined: " + e.getMessage());
         }
-}
+    }
 
 }

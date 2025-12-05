@@ -58,6 +58,17 @@ public class StartGameController implements Initializable {
     private void handleKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             try {
+                System.out.println("DEBUG: ENTER pressed in StartGameController");
+                if (App.gameFacade != null) {
+                    System.out.println("DEBUG: Calling facade.startGame()");
+                    // Ensure the facade knows the current user
+                    if (App.currentUser != null) {
+                        App.gameFacade.setCurrentUser(App.currentUser);
+                    }
+                    App.gameFacade.startGame(App.currentDifficulty);
+                } else {
+                    System.out.println("DEBUG: App.gameFacade is null!");
+                }
                 App.setRoot("ChamberHall");
             } catch (IOException e) {
                 e.printStackTrace();

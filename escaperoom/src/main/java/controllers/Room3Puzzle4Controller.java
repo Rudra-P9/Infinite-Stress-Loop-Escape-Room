@@ -21,13 +21,20 @@ import java.util.ResourceBundle;
  */
 public class Room3Puzzle4Controller implements Initializable {
 
-    @FXML private ImageView bgImageA;
-    @FXML private Label questionLabel;
-    @FXML private TextField answerFieldA;
-    @FXML private AnchorPane hintPane;
-    @FXML private Label rewardLetter;
-    @FXML private Label feedbackLabel;
-    @FXML private Label hintTextLabel;
+    @FXML
+    private ImageView bgImageA;
+    @FXML
+    private Label questionLabel;
+    @FXML
+    private TextField answerFieldA;
+    @FXML
+    private AnchorPane hintPane;
+    @FXML
+    private Label rewardLetter;
+    @FXML
+    private Label feedbackLabel;
+    @FXML
+    private Label hintTextLabel;
 
     private static final String EXPECTED_ANSWER = "SIX";
     private static final String EXPECTED_ANSWER_NUM = "6";
@@ -42,6 +49,8 @@ public class Room3Puzzle4Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         System.out.println("Room3Puzzle4Controller initialized.");
+        this.facade = com.escape.App.gameFacade;
+        startTimerUpdate();
 
         if (hintPane != null) {
             hintPane.setVisible(false);
@@ -65,7 +74,8 @@ public class Room3Puzzle4Controller implements Initializable {
      */
     @FXML
     private void onHintA(MouseEvent event) {
-        if (hintPane == null) return;
+        if (hintPane == null)
+            return;
         boolean now = !hintPane.isVisible();
         hintPane.setVisible(now);
         hintPane.toFront();
@@ -94,7 +104,8 @@ public class Room3Puzzle4Controller implements Initializable {
      */
     private void checkAnswer() {
 
-        if (answerFieldA == null) return;
+        if (answerFieldA == null)
+            return;
 
         String attempt = answerFieldA.getText();
         if (attempt == null) {
@@ -124,8 +135,7 @@ public class Room3Puzzle4Controller implements Initializable {
                 rewardLetter.setVisible(true);
                 rewardLetter.setStyle(
                         "-fx-font-family: 'Felix Titling'; -fx-font-size: 170px; " +
-                        "-fx-text-fill: #d2735d; -fx-font-weight: bold;"
-                );
+                                "-fx-text-fill: #d2735d; -fx-font-weight: bold;");
                 rewardLetter.toFront();
             }
 
@@ -135,9 +145,27 @@ public class Room3Puzzle4Controller implements Initializable {
             if (feedbackLabel != null) {
                 feedbackLabel.setText("Incorrect! Try again.");
             }
+            if (facade != null) {
+                facade.applyHintPenalty();
+                updateTimer();
+            }
+
+            // Animate penalty label if present
+            if (penaltyLabel != null) {
+                penaltyLabel.setOpacity(1.0);
+                javafx.animation.FadeTransition fade = new javafx.animation.FadeTransition(
+                        javafx.util.Duration.seconds(2.0), penaltyLabel);
+                fade.setFromValue(1.0);
+                fade.setToValue(0.0);
+                fade.play();
+            }
+
             System.out.println("Puzzle4: wrong attempt -> " + attempt);
         }
     }
+
+    @FXML
+    private Label penaltyLabel;
 
     /**
      * Returns to the Room 3 main menu when Back is clicked.
@@ -149,6 +177,33 @@ public class Room3Puzzle4Controller implements Initializable {
             com.escape.App.setRoot("Room3Combined");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private Label timerLabel;
+    private com.escape.model.EscapeRoomFacade facade;
+    private javafx.animation.Timeline timerTimeline;
+
+    private void startTimerUpdate() {
+        timerTimeline = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
+        timerTimeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        timerTimeline.play();
+        updateTimer();
+    }
+
+    private void updateTimer() {
+        if (facade != null && timerLabel != null) {
+            int remainingSeconds = facade.getTimeRemaining();
+            int minutes = remainingSeconds / 60;
+            int seconds = remainingSeconds % 60;
+            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+            if (remainingSeconds < 60) {
+                timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+            } else {
+                timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+            }
         }
     }
 }
