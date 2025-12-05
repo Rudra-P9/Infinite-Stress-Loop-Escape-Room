@@ -30,15 +30,15 @@
         </font>
     </Label>
 
-    <!-- Progress Bar (Top Right) -->
-    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#333333" height="74.0" layoutX="1620.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="280.0" />
-    <Label layoutX="1650.0" layoutY="48.0" text="Progress:" textFill="#ffffff">
+    <!-- Progress Bar (Top Center) -->
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#333333" height="74.0" layoutX="820.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="280.0" />
+    <Label layoutX="865.0" layoutY="48.0" text="Progress:" textFill="#ffffff">
         <font>
             <Font name="Impact" size="20.0" />
         </font>
     </Label>
-    <ProgressBar fx:id="progressBar" layoutX="1650.0" layoutY="72.0" prefHeight="25.0" prefWidth="220.0" progress="0.0" style="-fx-accent: #4CAF50;" />
-    <Label fx:id="progressLabel" layoutX="1800.0" layoutY="48.0" text="0%" textFill="#4CAF50">
+    <ProgressBar fx:id="progressBar" layoutX="850.0" layoutY="72.0" prefHeight="25.0" prefWidth="220.0" progress="0.0" style="-fx-accent: #4CAF50;" />
+    <Label fx:id="progressLabel" layoutX="985.0" layoutY="48.0" text="0%" textFill="#4CAF50">
         <font>
             <Font name="Impact" size="20.0" />
         </font>
