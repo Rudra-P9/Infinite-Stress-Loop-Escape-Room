@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Room3Puzzle4Controller">
+
+    <children>
+
+        <!-- full-bleed background -->
+        <ImageView fx:id="bgImageA" fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="false">
+            <image>
+                <Image url="@../../images/Puzzle4Screen.jpg" />
+            </image>
+        </ImageView>
+
+        <!-- question artwork placed inside the glowing screen -->
+        <ImageView fx:id="questionImage" fitHeight="240.0" fitWidth="1000.0" layoutX="615.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/Puzzle4QuestionFinal1.png" />
+            </image>
+        </ImageView>
+
+        <!-- Hint / papyrus area -->
+        <AnchorPane fx:id="hintPane" layoutX="1430.0" layoutY="160.0" prefHeight="480.0" prefWidth="360.0" style="-fx-background-color: transparent;" visible="false">
+            <children>
+                <ImageView fx:id="hintImage" fitHeight="480.0" fitWidth="360.0" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/HintNoteFinal.png" />
+                    </image>
+                </ImageView>
+
+                <Label fx:id="hintTextLabel" layoutX="16.0" layoutY="28.0" prefHeight="420.0" prefWidth="328.0" style="-fx-text-fill: black; -fx-font-size: 18px; -fx-font-family: 'Georgia';" wrapText="true" />
+            </children>
+        </AnchorPane>
+
+        <!-- Hint Button -->
+        <Button fx:id="hintButtonA" layoutX="1800.0" layoutY="40.0" onMouseClicked="#onHintA" prefWidth="90.0" text="HINT" />
+
+        <!-- Back Button -->
+        <Button fx:id="backButtonA" layoutX="40.0" layoutY="980.0" onMouseClicked="#onBackA" prefWidth="120.0" text="Back" />
+
+        <!-- Reward letter (hidden initially) -->
+        <Label fx:id="rewardLetter" layoutX="910.0" layoutY="715.0" prefHeight="220.0" prefWidth="200.0" style="-fx-font-size: 200px; -fx-text-fill: #c62828; -fx-font-weight: bold;                       -fx-effect: glow(0.5); -fx-font-family: Felix Titling;" text="R" visible="false">
+            <font>
+                <Font name="Lucida Handwriting Italic" size="36.0" />
+            </font>
+        </Label>
+
+        <!-- Feedback label -->
+        <Label fx:id="feedbackLabel"
+         layoutX="1130.0"
+         layoutY="585.0"
+         prefWidth="300.0"
+         style="-fx-text-fill: yellow; -fx-font-size: 20px; -fx-font-family: 'Copperplate Gothic Bold';"/>
+
+
+        <!-- Answer Field -->
+        <TextField fx:id="answerFieldA" alignment="CENTER" layoutX="817.0" layoutY="565.0" maxHeight="65.0" prefHeight="65.0" prefWidth="300.0" promptText="Type Answer Here" style="-fx-font-size: 28px; -fx-font-family: Copperplate Gothic Bold;                           -fx-background-radius: 10; -fx-background-color: #fdbd5a;">
+            <font>
+                <Font name="Bookman Old Style Bold" size="96.0" />
+            </font>
+        </TextField>
+
+    </children>
+
+</AnchorPane>

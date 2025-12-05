@@ -1,8 +1,8 @@
-package controllers;   // <- make this EXACTLY match your folder/package
+package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;                // correct Group class
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -10,28 +10,40 @@ import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the Room 3 main menu.
+ * Handles showing and hiding the intro dialog and opening the three vault hotspots.
+ * Author: Kirtan Patel
+ */
 public class Room3CombinedController implements Initializable {
 
-    @FXML private ImageView bgImage;            // optional debug
-    @FXML private Group dialogRoot;             // <Group fx:id="dialogRoot"> in FXML
-    @FXML private Button infoButtonRm3;         // ? button (must be outside dialog)
-    @FXML private Button acknowledgeButtonRm3;  // ACK inside dialog
+    @FXML private ImageView bgImage;
+    @FXML private Group dialogRoot;
+    @FXML private Button infoButtonRm3;
+    @FXML private Button acknowledgeButtonRm3;
 
     @FXML private Button leftVaultBtn;
     @FXML private Button rightVaultBtn;
     @FXML private Button coreBtn;
 
-    @FXML private Group hotspotGroup;           // if you used Group for hotspots
+    @FXML private Group hotspotGroup;
 
+    /**
+     * Runs when the scene first loads.
+     * Makes the dialog visible and prints some debug information.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // start with dialog visible (intro shown)
-        if (dialogRoot != null) dialogRoot.setVisible(true);
 
-        // info button should always be visible (top-right)
-        if (infoButtonRm3 != null) infoButtonRm3.setVisible(true);
+        if (dialogRoot != null) {
+            dialogRoot.setVisible(true);
+            dialogRoot.setMouseTransparent(false);
+        }
 
-        // Debug prints so you can see actual nodes injected
+        if (infoButtonRm3 != null) {
+            infoButtonRm3.setVisible(true);
+        }
+
         System.out.println("Room3CombinedController initialized.");
         System.out.println(" dialogRoot = " + (dialogRoot != null));
         System.out.println(" infoButtonRm3 = " + (infoButtonRm3 != null));
@@ -43,41 +55,74 @@ public class Room3CombinedController implements Initializable {
         System.out.println(" dialog visible = " + (dialogRoot != null && dialogRoot.isVisible()));
     }
 
-    // ACK - hide the intro overlay
+    /**
+     * Called when the user clicks the ACKNOWLEDGE button.
+     * Hides the intro dialog and enables the hotspots behind it.
+     */
     @FXML
     private void onAcknowledgeRm3(MouseEvent event) {
-        System.out.println("ACK pressed ? hiding intro overlay.");
-        if (dialogRoot != null) dialogRoot.setVisible(false);
-        // make sure info is visible so user can reopen dialog
-        if (infoButtonRm3 != null) infoButtonRm3.setVisible(true);
+        System.out.println("ACK pressed, hiding intro overlay.");
+
+        if (dialogRoot != null) {
+            dialogRoot.setVisible(false);
+            dialogRoot.setMouseTransparent(true);
+        }
+
+        if (infoButtonRm3 != null) {
+            infoButtonRm3.setVisible(true);
+        }
+
+        if (hotspotGroup != null) {
+            hotspotGroup.toFront();
+        }
     }
 
-    // question mark - show the intro overlay
+    /**
+     * Called when the user clicks the ? button.
+     * Shows the intro dialog again.
+     */
     @FXML
     private void onInfoRm3(MouseEvent event) {
-        System.out.println("Info pressed ? showing intro overlay.");
-        if (dialogRoot != null) dialogRoot.setVisible(true);
-        if (infoButtonRm3 != null) infoButtonRm3.setVisible(true);
+        System.out.println("Info pressed, showing intro overlay.");
+
+        if (dialogRoot != null) {
+            dialogRoot.setVisible(true);
+            dialogRoot.setMouseTransparent(false);
+            dialogRoot.toFront();
+        }
+
+        if (infoButtonRm3 != null) {
+            infoButtonRm3.setVisible(true);
+        }
     }
 
-    // Left vault clicked
+    /**
+     * Opens Puzzle 4 when the left vault hotspot is clicked.
+     */
     @FXML
     private void onLeftVaultClicked(MouseEvent event) {
         System.out.println("Left vault clicked - open puzzle A");
-        // TODO: navigate, e.g. com.escape.App.setRoot("RoomThreeLeft");
+        try {
+            com.escape.App.setRoot("Room3Puzzle4");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // Right vault clicked
+    /**
+     * Opens Puzzle 5 when the right vault hotspot is clicked.
+     * (Navigation added when Puzzle 5 is finished.)
+     */
     @FXML
     private void onRightVaultClicked(MouseEvent event) {
         System.out.println("Right vault clicked - open puzzle B");
-        // TODO: navigate
     }
 
-    // Core clicked
+    /**
+     * Opens the final core puzzle when the center hotspot is clicked.
+     */
     @FXML
     private void onCoreClicked(MouseEvent event) {
         System.out.println("Core clicked - open final puzzle");
-        // TODO: navigate
     }
 }
