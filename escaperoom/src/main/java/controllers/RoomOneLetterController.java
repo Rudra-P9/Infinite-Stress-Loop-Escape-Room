@@ -75,19 +75,59 @@ public class RoomOneLetterController {
             // Check if puzzle is complete
             if (currentIndex >= targetAnswer.length()) {
                 System.out.println("Puzzle Solved!");
-                noteText.setText("CORRECT!");
-                noteText.setTextFill(Color.LIME);
 
-                // Delay before leaving
-                PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-                delay.setOnFinished(e -> {
-                    try {
-                        App.setRoot("ChamberHall");
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                int currentStage = 0;
+                if (App.gameFacade != null) {
+                    currentStage = App.gameFacade.getRoomOneStage();
+                }
+
+                if (currentStage == 0) {
+                    // First riddle solved
+                    noteText.setText("Correct! One last riddle...");
+                    noteText.setTextFill(Color.LIME);
+
+                    if (App.gameFacade != null) {
+                        // Advance stage
+                        App.gameFacade.setRoomOneStage(1);
+                        // Store previous riddle to avoid repeat
+                        App.gameFacade.setPreviousRiddle(App.gameFacade.getRoomOneRiddle());
+                        // Clear current riddle so Board loads a new one
+                        App.gameFacade.setRoomOneRiddle(null);
+                        App.gameFacade.setRoomOneAnswer(null);
+                        App.gameFacade.setRoomOneHint(null);
                     }
-                });
-                delay.play();
+
+                    // Delay before returning to Board for the second riddle
+                    PauseTransition delay = new PauseTransition(Duration.seconds(2.0));
+                    delay.setOnFinished(e -> {
+                        try {
+                            App.setRoot("RoomOneBoard");
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                    delay.play();
+
+                } else {
+                    // Second riddle solved (Stage 1 -> Complete)
+                    noteText.setText("Room Complete!");
+                    noteText.setTextFill(Color.LIME);
+
+                    if (App.gameFacade != null) {
+                        App.gameFacade.setRoomOneStage(2); // Mark as complete
+                    }
+
+                    // Delay before leaving to Hall
+                    PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+                    delay.setOnFinished(e -> {
+                        try {
+                            App.setRoot("ChamberHall");
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                    delay.play();
+                }
             }
         } else {
             // INCORRECT

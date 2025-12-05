@@ -647,6 +647,8 @@ public class EscapeRoomFacade {
     private String roomOneRiddle;
     private String roomOneAnswer;
     private String roomOneHint;
+    private int roomOneStage = 0;
+    private String previousRiddle;
 
     public String getRoomOneRiddle() {
         return roomOneRiddle;
@@ -670,6 +672,22 @@ public class EscapeRoomFacade {
 
     public void setRoomOneHint(String hint) {
         this.roomOneHint = hint;
+    }
+
+    public int getRoomOneStage() {
+        return roomOneStage;
+    }
+
+    public void setRoomOneStage(int stage) {
+        this.roomOneStage = stage;
+    }
+
+    public String getPreviousRiddle() {
+        return previousRiddle;
+    }
+
+    public void setPreviousRiddle(String riddle) {
+        this.previousRiddle = riddle;
     }
 
     /**

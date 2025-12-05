@@ -69,22 +69,38 @@ public class RoomOneBoardController {
 
             if (!lines.isEmpty()) {
                 java.util.Random rand = new java.util.Random();
-                String randomLine = lines.get(rand.nextInt(lines.size()));
-                // Split by "::" and take the first part
-                String[] parts = randomLine.split("::");
-                if (parts.length > 0) {
-                    String riddleText = parts[0].trim();
+                String randomLine = "";
+                String riddleText = "";
+                String answerText = "";
+                String hintText = "";
+
+                // Get previous riddle to avoid repeat
+                String previousRiddle = null;
+                if (com.escape.App.gameFacade != null) {
+                    previousRiddle = com.escape.App.gameFacade.getPreviousRiddle();
+                }
+
+                // Try to find a unique riddle (max 10 attempts to avoid infinite loop)
+                for (int i = 0; i < 10; i++) {
+                    randomLine = lines.get(rand.nextInt(lines.size()));
+                    String[] parts = randomLine.split("::");
+                    if (parts.length > 0) {
+                        riddleText = parts[0].trim();
+                        // If it matches previous, try again
+                        if (previousRiddle != null && riddleText.equals(previousRiddle)) {
+                            continue;
+                        }
+
+                        if (parts.length > 1)
+                            answerText = parts[1].trim();
+                        if (parts.length > 2)
+                            hintText = parts[2].trim();
+                        break; // Found a valid one
+                    }
+                }
+
+                if (!riddleText.isEmpty()) {
                     riddleLabel.setText(riddleText);
-
-                    String answerText = "";
-                    if (parts.length > 1) {
-                        answerText = parts[1].trim();
-                    }
-
-                    String hintText = "";
-                    if (parts.length > 2) {
-                        hintText = parts[2].trim();
-                    }
 
                     // Save to facade for persistence
                     if (com.escape.App.gameFacade != null) {
