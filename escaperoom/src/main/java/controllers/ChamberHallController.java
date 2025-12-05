@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import com.escape.model.EscapeRoomFacade;
@@ -47,6 +48,12 @@ public class ChamberHallController implements Initializable {
 
     @FXML
     private Button door3Button;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label progressLabel;
 
     private EscapeRoomFacade facade;
     private Timeline timerTimeline;
@@ -112,6 +119,17 @@ public class ChamberHallController implements Initializable {
             } else {
                 timerLabel.setTextFill(javafx.scene.paint.Color.LIME); // Or whatever default color
             }
+        }
+        
+        // Update progress bar
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (facade != null && progressBar != null && progressLabel != null) {
+            int percentage = facade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
         }
     }
 

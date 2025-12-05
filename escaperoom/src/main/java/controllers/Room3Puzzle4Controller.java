@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ProgressBar;
 
 import java.net.URL;
 import java.util.Locale;
@@ -130,6 +131,17 @@ public class Room3Puzzle4Controller implements Initializable {
 
             System.out.println("Puzzle4: correct answer entered.");
 
+            // Add collected letter to game state
+            if (facade != null && facade.getCurrentUser() != null) {
+                com.escape.model.User user = facade.getCurrentUser();
+                if (!user.getCollectedLetters().contains("R")) {
+                    user.addCollectedLetter("R");
+                    System.out.println("Letter 'R' added to inventory.");
+                    System.out.println("Current letters: " + user.getCollectedLetters());
+                    updateProgress();
+                }
+            }
+
             if (rewardLetter != null) {
                 rewardLetter.setText(REWARD);
                 rewardLetter.setVisible(true);
@@ -185,6 +197,11 @@ public class Room3Puzzle4Controller implements Initializable {
     private com.escape.model.EscapeRoomFacade facade;
     private javafx.animation.Timeline timerTimeline;
 
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Label progressLabel;
+
     private void startTimerUpdate() {
         timerTimeline = new javafx.animation.Timeline(
                 new javafx.animation.KeyFrame(javafx.util.Duration.seconds(1), event -> updateTimer()));
@@ -204,6 +221,15 @@ public class Room3Puzzle4Controller implements Initializable {
             } else {
                 timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
             }
+        }
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (facade != null && progressBar != null && progressLabel != null) {
+            int percentage = facade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
         }
     }
 }

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -74,6 +75,24 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     @FXML
     private ImageView hintNote;
 
+    /** Progress bar showing game completion */
+    @FXML
+    private ProgressBar progressBar;
+
+    /** Label showing progress percentage */
+    @FXML
+    private Label progressLabel;
+
+    /** Label for displaying the timer */
+    @FXML
+    private Label timerLabel;
+
+    /** Facade reference for game state */
+    private com.escape.model.EscapeRoomFacade facade;
+
+    /** Timeline for updating the timer */
+    private Timeline timerTimeline;
+
     /** The target sequence: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT */
     private static final String[] SEQUENCE = { "UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT" };
 
@@ -107,6 +126,62 @@ public class FragmentCorridorRoomTwoController implements Initializable {
         // Initialize Facade and Timer
         this.facade = App.gameFacade;
         startTimerUpdate();
+        
+        // Update progress bar initially
+        updateProgress();
+    }
+
+    /**
+     * Starts the timer update timeline.
+     * Creates a timeline that updates the timer display every second.
+     */
+    private void startTimerUpdate() {
+        timerTimeline = new Timeline(
+                new javafx.animation.KeyFrame(Duration.seconds(1), e -> updateTimer()));
+        timerTimeline.setCycleCount(javafx.animation.Animation.INDEFINITE);
+        timerTimeline.play();
+        updateTimer(); // Initial call
+    }
+
+    /**
+     * Updates the timer display with remaining time.
+     * Changes color to red if time is running low.
+     */
+    private void updateTimer() {
+        if (App.gameFacade != null) {
+            int remaining = App.gameFacade.getTimeRemaining();
+            int minutes = remaining / 60;
+            int seconds = remaining % 60;
+            if (timerLabel != null) {
+                timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+
+                // Change color if time is running low
+                if (remaining < 60) {
+                    timerLabel.setTextFill(javafx.scene.paint.Color.RED);
+                } else {
+                    timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
+                }
+            }
+            if (remaining <= 0) {
+                if (timerTimeline != null)
+                    timerTimeline.stop();
+                // Handle game over if needed
+            }
+        }
+        
+        // Update progress bar
+        updateProgress();
+    }
+
+    /**
+     * Updates the progress bar based on collected letters.
+     */
+    private void updateProgress() {
+        if (App.gameFacade != null && progressBar != null && progressLabel != null) {
+            int percentage = App.gameFacade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
+        }
     }
 
     /**
@@ -298,13 +373,21 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      * Creates a pulsing scale animation to draw attention to the continue button.
      */
     private void showSuccess() {
+        System.out.println("[FragmentCorridorRoomTwo] showSuccess() called");
+        System.out.println("[FragmentCorridorRoomTwo] facade = " + facade);
+        
         // Award the letter "M" to the user's inventory (from game.json)
-        if (App.currentUser != null) {
+        if (facade != null && facade.getCurrentUser() != null) {
+            com.escape.model.User user = facade.getCurrentUser();
+            System.out.println("[FragmentCorridorRoomTwo] user = " + user);
+            
             // Check if user already has the letter before adding
-            if (!App.currentUser.getCollectedLetters().contains("M")) {
-                boolean added = App.currentUser.addCollectedLetter("M");
+            if (!user.getCollectedLetters().contains("M")) {
+                boolean added = user.addCollectedLetter("M");
                 if (added) {
                     System.out.println("Letter 'M' added to inventory.");
+                    System.out.println("Current letters: " + user.getCollectedLetters());
+                    updateProgress();
                 } else {
                     System.out.println("Failed to add letter 'M' - inventory may be full.");
                 }
@@ -328,32 +411,6 @@ public class FragmentCorridorRoomTwoController implements Initializable {
             scaleTransition.setCycleCount(Timeline.INDEFINITE);
             scaleTransition.setAutoReverse(true);
             scaleTransition.play();
-        }
-    }
-
-    @FXML
-    private Label timerLabel;
-    private com.escape.model.EscapeRoomFacade facade;
-    private Timeline timerTimeline;
-
-    private void startTimerUpdate() {
-        timerTimeline = new Timeline(new javafx.animation.KeyFrame(Duration.seconds(1), event -> updateTimer()));
-        timerTimeline.setCycleCount(Timeline.INDEFINITE);
-        timerTimeline.play();
-        updateTimer(); // Initial update
-    }
-
-    private void updateTimer() {
-        if (facade != null && timerLabel != null) {
-            int remainingSeconds = facade.getTimeRemaining();
-            int minutes = remainingSeconds / 60;
-            int seconds = remainingSeconds % 60;
-            timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
-            if (remainingSeconds < 60) {
-                timerLabel.setTextFill(javafx.scene.paint.Color.RED);
-            } else {
-                timerLabel.setTextFill(javafx.scene.paint.Color.LIME);
-            }
         }
     }
 

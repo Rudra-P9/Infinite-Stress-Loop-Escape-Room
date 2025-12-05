@@ -868,6 +868,25 @@ public class EscapeRoomFacade {
     }
 
     /**
+     * Calculates the game progress as a percentage based on collected letters.
+     * The total expected letters is 5 (R, E, A, L, M).
+     * 
+     * @return progress percentage (0-100) as an integer
+     */
+    public int getProgressPercentage() {
+        if (currentUser == null) return 0;
+        ArrayList<String> letters = currentUser.getCollectedLetters();
+        if (letters == null || letters.isEmpty()) return 0;
+        
+        // Total letters to collect: 5 (R, E, A, L, M)
+        final int TOTAL_LETTERS = 5;
+        int collected = letters.size();
+        
+        // Calculate percentage and round to integer
+        return (int) Math.round((collected * 100.0) / TOTAL_LETTERS);
+    }
+
+    /**
      * Returns the current difficulty level of the game.
      * 
      * @return the current difficulty level of the game

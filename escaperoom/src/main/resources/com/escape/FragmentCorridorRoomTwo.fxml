@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -27,6 +28,7 @@
             <Font name="Impact" size="40.0" />
          </font>
       </Label>
+      
       <Button id="UP" fx:id="UP" layoutX="1262.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#PressedUp" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="UP" />
       <Button id="DOWN" fx:id="DOWN" layoutX="1369.0" layoutY="509.0" mnemonicParsing="false" onMouseClicked="#PressedDown" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="DOWN" />
       <Button id="LEFT" fx:id="LEFT" layoutX="1262.0" layoutY="509.0" mnemonicParsing="false" onMouseClicked="#PressedLeft" opacity="0.0" prefHeight="91.0" prefWidth="82.0" text="LEFT" />
@@ -54,6 +56,20 @@
             <Image url="@../../images/HintIcon.png" />
          </image>
       </ImageView>
+      
+      <!-- Progress Bar (Top Right) - placed after ArrowHider to be on top -->
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#333333" height="74.0" layoutX="1620.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="280.0" />
+      <Label layoutX="1665.0" layoutY="45.0" text="Progress:" textFill="#d0c6c6">
+         <font>
+            <Font name="Impact" size="20.0" />
+         </font>
+      </Label>
+      <ProgressBar fx:id="progressBar" layoutX="1650.0" layoutY="72.0" prefHeight="25.0" prefWidth="220.0" progress="0.0" style="-fx-accent: #4CAF50;" />
+      <Label fx:id="progressLabel" alignment="CENTER" layoutX="1785.0" layoutY="45.0" prefWidth="60.0" text="0%" textFill="#4CAF50">
+         <font>
+            <Font name="Impact" size="20.0" />
+         </font>
+      </Label>
       
       <!-- HINT (hidden until clicked) -->
       <AnchorPane fx:id="hintPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">

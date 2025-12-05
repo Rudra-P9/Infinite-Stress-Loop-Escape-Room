@@ -3,13 +3,20 @@ package controllers;
 import com.escape.App;
 
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.input.MouseEvent;
 
 public class RoomOnePuzzleController {
 
     @FXML
     private Label timerLabel;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label progressLabel;
 
     private javafx.animation.Timeline timerTimeline;
 
@@ -46,6 +53,17 @@ public class RoomOnePuzzleController {
                     timerTimeline.stop();
                 // Handle game over if needed
             }
+        }
+        
+        // Update progress bar
+        updateProgress();
+    }
+
+    private void updateProgress() {
+        if (com.escape.App.gameFacade != null && progressBar != null && progressLabel != null) {
+            int percentage = com.escape.App.gameFacade.getProgressPercentage();
+            progressBar.setProgress(percentage / 100.0);
+            progressLabel.setText(percentage + "%");
         }
     }
 
