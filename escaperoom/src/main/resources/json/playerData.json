@@ -2,35 +2,35 @@
   "leaderboard": [
     {
       "difficulty": "EASY",
-      "date": "Fri Dec 05 15:12:05 EST 2025",
-      "score": 1791,
-      "timeLeftSec": 1791,
+      "date": "Fri Dec 05 16:29:58 EST 2025",
+      "score": 1793,
+      "timeLeftSec": 1793,
       "username": "tkinard06"
     },
     {
       "difficulty": "HARD",
-      "date": "Fri Dec 05 15:12:05 EST 2025",
+      "date": "Fri Dec 05 16:29:58 EST 2025",
       "score": 720,
       "timeLeftSec": 720,
       "username": "iGitThis"
     },
     {
       "difficulty": "MEDIUM",
-      "date": "Fri Dec 05 15:12:05 EST 2025",
+      "date": "Fri Dec 05 16:29:58 EST 2025",
       "score": 480,
       "timeLeftSec": 480,
       "username": "PushPioneer12"
     },
     {
       "difficulty": "EASY",
-      "date": "Fri Dec 05 15:12:05 EST 2025",
+      "date": "Fri Dec 05 16:29:58 EST 2025",
       "score": 300,
       "timeLeftSec": 300,
       "username": "EscapeRoomLover"
     },
     {
       "difficulty": "EASY",
-      "date": "Fri Dec 05 15:12:05 EST 2025",
+      "date": "Fri Dec 05 16:29:58 EST 2025",
       "score": 260,
       "timeLeftSec": 260,
       "username": "NullPointerHero"
@@ -91,6 +91,13 @@
       "date": "Fri Dec 05 15:12:05 EST 2025",
       "score": 1791,
       "timeSeconds": 1791,
+      "username": "tkinard06"
+    },
+    {
+      "difficulty": "EASY",
+      "date": "Fri Dec 05 16:29:58 EST 2025",
+      "score": 1793,
+      "timeSeconds": 1793,
       "username": "tkinard06"
     }
   ],

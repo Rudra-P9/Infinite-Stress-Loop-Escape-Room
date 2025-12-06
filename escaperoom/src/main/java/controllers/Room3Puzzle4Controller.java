@@ -1,23 +1,21 @@
 package controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.ProgressBar;
-import javafx.animation.FadeTransition;
-import javafx.util.Duration;
-
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.escape.App;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Controller for Puzzle 4.
@@ -81,54 +79,6 @@ public class Room3Puzzle4Controller implements Initializable {
         if (answerFieldA != null) {
             answerFieldA.setOnAction(this::onCheckAAction);
         }
-    }
-
-    /**
-     * Shows the hint panel when the user clicks the hint button.
-     * Applies penalty and sets the hint text with fade animation.
-     */
-    @FXML
-    private void showHint(MouseEvent event) {
-        if (hintPane == null)
-            return;
-
-        System.out.println("Hint clicked!");
-
-        // Apply penalty
-        if (com.escape.App.gameFacade != null) {
-            com.escape.App.gameFacade.applyHintPenalty();
-        }
-
-        // Set hint text
-        String hint = "If there are six apples and you take away four, how many do you have?";
-        if (hintTextLabel != null) {
-            hintTextLabel.setText(hint);
-        }
-
-        // Show hint pane with fade animation
-        hintPane.setVisible(true);
-        FadeTransition ft = new FadeTransition(Duration.seconds(0.6), hintPane);
-        hintPane.setOpacity(0);
-        ft.setToValue(1.0);
-        ft.play();
-
-        if (hintTextLabel != null)
-            hintTextLabel.setVisible(true);
-        if (hintNote != null)
-            hintNote.setVisible(true);
-        if (closeHintArrow != null)
-            closeHintArrow.setVisible(true);
-    }
-
-    /**
-     * Hides the hint pane.
-     */
-    @FXML
-    private void hideHint(MouseEvent event) {
-        if (hintPane != null)
-            hintPane.setVisible(false);
-        if (closeHintArrow != null)
-            closeHintArrow.setVisible(false);
     }
 
     /**
