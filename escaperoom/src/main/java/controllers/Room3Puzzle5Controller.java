@@ -110,7 +110,7 @@ public class Room3Puzzle5Controller implements Initializable {
         }
 
         // Set hint text
-        String hint = "Start at the start of every word and then assemble";
+        String hint = "You see this object every time you look at your own reflection.";
         if (hintTextLabelB != null) {
             hintTextLabelB.setText(hint);
         }
@@ -143,7 +143,7 @@ public class Room3Puzzle5Controller implements Initializable {
 
     /**
      * Handle the "Play" button click.
-     * You can add media playback logic here later.
+     * Speaks the riddle clues for the word MIRROR.
      */
     @FXML
     private void onPlayB(MouseEvent event) {
@@ -152,42 +152,21 @@ public class Room3Puzzle5Controller implements Initializable {
         // Run TTS in background thread to avoid blocking UI
         new Thread(() -> {
             try {
-                // Speak the intro
-                com.escape.model.Speek.speak("Traveler, the path ahead bends in ways the eye cannot follow.");
-                Thread.sleep(500);
-                com.escape.model.Speek.speak("What you seek is not seen, but reflected.");
-                Thread.sleep(500);
-                com.escape.model.Speek.speak("Listen closely. Clarity comes only through the smallest details.");
+                // Speak the riddle
+                com.escape.model.Speek.speak("Look into what reflects you.");
                 Thread.sleep(800);
 
-                // Speak the letter prompt
-                com.escape.model.Speek.speak("The letters reveal themselves as follows:");
-                Thread.sleep(600);
-
-                // Spell out MIRROR slowly with pauses
-                String[] letters = { "M", "I", "R", "R", "O", "R" };
-                for (String letter : letters) {
-                    com.escape.model.Speek.speak(letter);
-                    Thread.sleep(800); // 800ms pause between each letter
-                }
-
+                com.escape.model.Speek.speak("Its name begins with M… then I…");
                 Thread.sleep(1000);
 
-                // Speak the middle section
-                com.escape.model.Speek.speak("But echoes deceive, and even truth can twist.");
+                com.escape.model.Speek.speak("In the center, two identical letters stand side-by-side.");
+                Thread.sleep(1000);
+
+                com.escape.model.Speek.speak("It ends with O… then R.");
+                Thread.sleep(1000);
+
+                com.escape.model.Speek.speak("Put the pieces together to find the word.");
                 Thread.sleep(500);
-                com.escape.model.Speek.speak("So hear it again, with certainty:");
-                Thread.sleep(600);
-
-                // Spell out MIRROR again slowly
-                for (String letter : letters) {
-                    com.escape.model.Speek.speak(letter);
-                    Thread.sleep(800);
-                }
-
-                Thread.sleep(1000);
-                com.escape.model.Speek
-                        .speak("Only when you enter the word exactly as it was spoken will the passage open.");
 
             } catch (InterruptedException e) {
                 System.err.println("TTS interrupted: " + e.getMessage());
