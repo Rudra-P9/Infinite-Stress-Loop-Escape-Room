@@ -27,3 +27,16 @@
 .button {
     -fx-text-fill: white;
 }
+
+/* Universal glow for all hint icons (ImageView) */
+.hint-icon {
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.85), 20, 0.5, 0, 0);
+    -fx-cursor: hand;
+}
+
+/* Stronger glow on hover */
+.hint-icon:hover {
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,1.0), 30, 0.75, 0, 0);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}

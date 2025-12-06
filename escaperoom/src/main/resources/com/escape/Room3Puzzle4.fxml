@@ -10,7 +10,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Room3Puzzle4Controller">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.Room3Puzzle4Controller"
+            stylesheets="@/styles.css">
 
     <children>
         <!-- full-bleed background -->
@@ -72,7 +76,12 @@
         </TextField>
 
         <!-- Hint Icon -->
-        <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
+        <ImageView fx:id="hint"
+                fitHeight="100" fitWidth="100"
+                layoutX="1800" layoutY="125"
+                onMouseClicked="#showHint"
+                pickOnBounds="true"
+                styleClass="hint-icon">
             <image>
                 <Image url="@../../images/HintIcon.png" />
             </image>

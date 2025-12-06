@@ -14,10 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="1080.0" prefWidth="1920.0"
-            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.FragmentCorridorController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.FragmentCorridorController"
+            stylesheets="@/styles.css">
 
     <children>
 
@@ -32,12 +33,16 @@
             <children>
 
                 <!-- Hint Icon -->
-                <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125"
-                           onMouseClicked="#showHint" pickOnBounds="true">
-                    <image>
-                        <Image url="@../../images/HintIcon.png" />
-                    </image>
-                </ImageView>
+              <ImageView fx:id="hint"
+                     fitHeight="100" fitWidth="100"
+                     layoutX="1800" layoutY="125"
+                     onMouseClicked="#showHint"
+                     pickOnBounds="true"
+                     styleClass="hint-icon">
+                     <image>
+                     <Image url="@../../images/HintIcon.png" />
+                     </image>
+              </ImageView>
 
                 <!-- Timer -->
                 <Rectangle arcHeight="5" arcWidth="5" height="74" width="145" layoutX="23" layoutY="38"

@@ -9,7 +9,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FragmentCorridorRoomTwoController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.FragmentCorridorRoom2Controller"
+            stylesheets="@/styles.css">
    <children>
       <ImageView fitHeight="1307.0" fitWidth="1981.0" layoutX="-24.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -55,12 +59,17 @@
          </image>
       </ImageView>
       
-      <!-- Hint Icon (placed after ArrowHider to be on top) -->
-      <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
-         <image>
-            <Image url="@../../images/HintIcon.png" />
-         </image>
-      </ImageView>
+      <!-- Hint Icon -->
+         <ImageView fx:id="hint"
+                  fitHeight="100" fitWidth="100"
+                  layoutX="1800" layoutY="125"
+                  onMouseClicked="#showHint"
+                  pickOnBounds="true"
+                  styleClass="hint-icon">
+            <image>
+                  <Image url="@../../images/HintIcon.png" />
+            </image>
+         </ImageView>
       
       <!-- Progress Bar (Top Center) - placed after ArrowHider to be on top -->
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#333333" height="74.0" layoutX="820.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="280.0" />
