@@ -62,6 +62,9 @@ public class Room3Puzzle5Controller implements Initializable {
     // expected answer for puzzle 5 (change if needed)
     private static final String EXPECTED_ANSWER_B = "MIRROR";
 
+    // Track the audio thread so we can interrupt it when navigating away
+    private Thread audioThread = null;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // start with hint and reward hidden (if present)
@@ -110,7 +113,7 @@ public class Room3Puzzle5Controller implements Initializable {
         }
 
         // Set hint text
-        String hint = "Start at the start of every word and then assemble";
+        String hint = "You see this object every time you look at your own reflection.";
         if (hintTextLabelB != null) {
             hintTextLabelB.setText(hint);
         }
@@ -143,56 +146,60 @@ public class Room3Puzzle5Controller implements Initializable {
 
     /**
      * Handle the "Play" button click.
-     * You can add media playback logic here later.
+     * Speaks the riddle clues for the word MIRROR.
      */
     @FXML
     private void onPlayB(MouseEvent event) {
         System.out.println("Play button clicked - speaking puzzle text...");
 
+        // Stop any existing audio first
+        stopAudio();
+
+        // Reset the stop flag to allow new audio to play
+        com.escape.model.Speek.resetStopFlag();
+
         // Run TTS in background thread to avoid blocking UI
-        new Thread(() -> {
+        audioThread = new Thread(() -> {
             try {
-                // Speak the intro
-                com.escape.model.Speek.speak("Traveler, the path ahead bends in ways the eye cannot follow.");
+                // Speak the riddle - check for interruption before each speak call
+                if (Thread.interrupted())
+                    return;
+                com.escape.model.Speek.speak("Look into what reflects you.");
+                if (Thread.interrupted())
+                    return;
+                Thread.sleep(1200);
+
+                if (Thread.interrupted())
+                    return;
+                com.escape.model.Speek.speak("Its name begins with, M, then, I.");
+                if (Thread.interrupted())
+                    return;
+                Thread.sleep(1500);
+
+                if (Thread.interrupted())
+                    return;
+                com.escape.model.Speek.speak("In the center, two identical letters stand side by side.");
+                if (Thread.interrupted())
+                    return;
+                Thread.sleep(1500);
+
+                if (Thread.interrupted())
+                    return;
+                com.escape.model.Speek.speak("It ends with, O, then, R.");
+                if (Thread.interrupted())
+                    return;
+                Thread.sleep(1500);
+
+                if (Thread.interrupted())
+                    return;
+                com.escape.model.Speek.speak("Put the pieces together to find the word.");
                 Thread.sleep(500);
-                com.escape.model.Speek.speak("What you seek is not seen, but reflected.");
-                Thread.sleep(500);
-                com.escape.model.Speek.speak("Listen closely. Clarity comes only through the smallest details.");
-                Thread.sleep(800);
-
-                // Speak the letter prompt
-                com.escape.model.Speek.speak("The letters reveal themselves as follows:");
-                Thread.sleep(600);
-
-                // Spell out MIRROR slowly with pauses
-                String[] letters = { "M", "I", "R", "R", "O", "R" };
-                for (String letter : letters) {
-                    com.escape.model.Speek.speak(letter);
-                    Thread.sleep(800); // 800ms pause between each letter
-                }
-
-                Thread.sleep(1000);
-
-                // Speak the middle section
-                com.escape.model.Speek.speak("But echoes deceive, and even truth can twist.");
-                Thread.sleep(500);
-                com.escape.model.Speek.speak("So hear it again, with certainty:");
-                Thread.sleep(600);
-
-                // Spell out MIRROR again slowly
-                for (String letter : letters) {
-                    com.escape.model.Speek.speak(letter);
-                    Thread.sleep(800);
-                }
-
-                Thread.sleep(1000);
-                com.escape.model.Speek
-                        .speak("Only when you enter the word exactly as it was spoken will the passage open.");
 
             } catch (InterruptedException e) {
-                System.err.println("TTS interrupted: " + e.getMessage());
+                System.out.println("Audio thread interrupted - stopping playback");
             }
-        }).start();
+        });
+        audioThread.start();
     }
 
     /**
@@ -266,6 +273,7 @@ public class Room3Puzzle5Controller implements Initializable {
                     Thread.sleep(2000);
                     javafx.application.Platform.runLater(() -> {
                         try {
+                            stopAudio(); // Stop any ongoing audio before navigating
                             com.escape.App.setRoot("Room3Combined");
                             System.out.println("Auto-navigating to Room3Combined after puzzle completion.");
                         } catch (Exception e) {
@@ -290,6 +298,7 @@ public class Room3Puzzle5Controller implements Initializable {
     @FXML
     private void onBackB(MouseEvent event) {
         System.out.println("Back clicked - return to Room3Combined");
+        stopAudio(); // Stop any ongoing audio
         try {
             // call your app helper to change the root scene
             com.escape.App.setRoot("Room3Combined");
@@ -341,9 +350,22 @@ public class Room3Puzzle5Controller implements Initializable {
 
     @FXML
     private void onBack(MouseEvent event) throws Exception {
+        stopAudio(); // Stop any ongoing audio
         // Go to the main screen
         App.setRoot("Room3Combined");
         System.out.println("Returning to Room 3 Combined from Room 3 Puzzle 5");
+    }
+
+    /**
+     * Stop any ongoing audio playback.
+     */
+    private void stopAudio() {
+        if (audioThread != null && audioThread.isAlive()) {
+            System.out.println("Stopping audio playback...");
+            com.escape.model.Speek.stopSpeaking();
+            audioThread.interrupt();
+            audioThread = null;
+        }
     }
 
 }

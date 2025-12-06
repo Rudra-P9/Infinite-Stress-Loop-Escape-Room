@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StartGameController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyPressed" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StartGameController">
    <children>
       <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="false">
          <image>
@@ -33,7 +33,7 @@
       </Label>
       <Label fx:id="enterLabel" alignment="CENTER" layoutX="722.0" layoutY="995.0" prefHeight="48.0" prefWidth="485.0" text="[ PRESS ENTER TO BEGIN ]" textFill="#ff8243db" wrapText="true">
          <font>
-            <Font name="Marker Felt Thin" size="36.0" />
+            <Font name="System Bold" size="36.0" />
          </font>
          <opaqueInsets>
             <Insets />
