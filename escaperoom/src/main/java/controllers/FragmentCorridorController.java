@@ -111,6 +111,10 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private ImageView hintNote;
 
+    /** ImageView for hint icon */
+    @FXML
+    private ImageView hint;
+
     /** Label displaying the timer */
     @FXML
     private Label timerLabel;
