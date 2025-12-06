@@ -162,7 +162,7 @@
       "answered": 0,
       "hints": 0,
       "currentRoomID": "room1",
-      "timeRemainingSeconds": 1702,
+      "timeRemainingSeconds": 1695,
       "userUUID": "62d5b129-ba42-49cd-98cd-87349d719191",
       "progressUUID": "7e665a9b-a1d5-4321-9b2f-7c018f1b9012"
     }
@@ -359,6 +359,17 @@
       "userID": "971674a7-b7b2-4816-a938-cba8581a6a7b",
       "email": "t",
       "username": "t"
+    },
+    {
+      "password": "c",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "8ba8cb14-bfbd-41fd-987d-c82c375038bf",
+      "email": "c",
+      "username": "c"
     }
   ]
 }
