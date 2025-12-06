@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.escape.App;
+import com.escape.model.Difficulty;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
-
-import com.escape.App;
-import com.escape.model.Difficulty;
 
 /**
  * Controller for the difficulty menu.
@@ -30,29 +30,63 @@ public class DifficultyMenuController implements Initializable {
     @FXML
     private javafx.scene.control.Label backLabel;
 
+    /**
+     * Handles selecting Easy difficulty.
+     * Sets global difficulty and loads the StartGame screen.
+     *
+     * @param event mouse click
+     * @throws IOException if StartGame.fxml fails to load
+     */
     @FXML
     private void goToEasy(MouseEvent event) throws IOException {
         App.currentDifficulty = Difficulty.EASY;
         App.setRoot("StartGame");
     }
 
+    /**
+     * Handles selecting Medium difficulty.
+     * Sets global difficulty and loads the StartGame screen.
+     *
+     * @param event mouse click
+     * @throws IOException if StartGame.fxml fails to load
+     */
     @FXML
     private void goToMedium(MouseEvent event) throws IOException {
         App.currentDifficulty = Difficulty.MEDIUM;
         App.setRoot("StartGame");
     }
 
+    /**
+     * Handles selecting Hard difficulty.
+     * Sets global difficulty and loads the StartGame screen.
+     *
+     * @param event mouse click
+     * @throws IOException if StartGame.fxml fails to load
+     */
     @FXML
     private void goToHard(MouseEvent event) throws IOException {
         App.currentDifficulty = Difficulty.HARD;
         App.setRoot("StartGame");
     }
 
+    /**
+     * Navigates back to the TerminalMenu screen.
+     *
+     * @param event mouse click
+     * @throws IOException if TerminalMenu.fxml fails to load
+     */
     @FXML
     private void goBack(MouseEvent event) throws IOException {
         App.setRoot("TerminalMenu");
     }
 
+    /**
+     * Initializes the difficulty menu with a Terminal-style
+     * animated sequence revealing each label one after another.
+     *
+     * @param url ignored
+     * @param rb ignored
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         typeText(welcomeLabel, "[ Facility 67 Termalink: Difficulty ]", () -> {
@@ -66,6 +100,14 @@ public class DifficultyMenuController implements Initializable {
         });
     }
 
+    /**
+     * Utility method that applies a typewriter effect to a label.
+     * Characters appear one at a time to mimic a retro terminal.
+     *
+     * @param label the label to animate
+     * @param text the full text to reveal
+     * @param onFinished optional callback after animation completes
+     */
     private void typeText(javafx.scene.control.Label label, String text, Runnable onFinished) {
         javafx.animation.Timeline timeline = new javafx.animation.Timeline();
         final StringBuilder sb = new StringBuilder();
