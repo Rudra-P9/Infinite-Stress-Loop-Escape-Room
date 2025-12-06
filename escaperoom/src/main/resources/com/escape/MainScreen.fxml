@@ -20,7 +20,7 @@
             <Image url="@../../images/Main%20Screen.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="titleLabel" alignment="CENTER" layoutX="718.0" layoutY="58.0" prefHeight="668.0" prefWidth="477.0" text="Escape &#10;The &#10;Varen" textAlignment="CENTER" textFill="#dddddd8c">
+      <Label fx:id="titleLabel" alignment="CENTER" layoutX="718.0" layoutY="58.0" prefHeight="668.0" prefWidth="477.0" text="Escape &#10;The &#10;Varen &#10;Project" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Impact" size="120.0" />
          </font>
@@ -30,7 +30,7 @@
          <effect>
             <DropShadow height="47.53" radius="48.3225" spread="0.05" width="147.76">
                <color>
-                  <Color red="0.8815789222717285" green="0.470379501581192" blue="0.24896442890167236" />
+                  BLACK
                </color>
             </DropShadow>
          </effect>
@@ -41,7 +41,7 @@
                <input>
                   <Shadow blurType="ONE_PASS_BOX" height="44.58" radius="17.369999999999997" width="26.9">
                      <color>
-                        #E87638
+                        GREEN
                      </color>
                   </Shadow>
                </input>

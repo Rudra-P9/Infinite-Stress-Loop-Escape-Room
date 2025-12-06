@@ -1,36 +1,36 @@
 {
   "leaderboard": [
     {
-      "difficulty": "MEDIUM",
-      "date": "Fri Dec 05 21:49:45 EST 2025",
-      "score": 816,
-      "timeLeftSec": 544,
+      "difficulty": "EASY",
+      "date": "Fri Dec 05 22:32:47 EST 2025",
+      "score": 1622,
+      "timeLeftSec": 1622,
       "username": "tkinard06"
     },
     {
       "difficulty": "HARD",
-      "date": "Fri Dec 05 21:49:45 EST 2025",
+      "date": "Fri Dec 05 22:32:47 EST 2025",
       "score": 720,
       "timeLeftSec": 720,
       "username": "iGitThis"
     },
     {
       "difficulty": "MEDIUM",
-      "date": "Fri Dec 05 21:49:45 EST 2025",
+      "date": "Fri Dec 05 22:32:47 EST 2025",
       "score": 480,
       "timeLeftSec": 480,
       "username": "PushPioneer12"
     },
     {
       "difficulty": "EASY",
-      "date": "Fri Dec 05 21:49:45 EST 2025",
+      "date": "Fri Dec 05 22:32:47 EST 2025",
       "score": 300,
       "timeLeftSec": 300,
       "username": "EscapeRoomLover"
     },
     {
       "difficulty": "EASY",
-      "date": "Fri Dec 05 21:49:45 EST 2025",
+      "date": "Fri Dec 05 22:32:47 EST 2025",
       "score": 260,
       "timeLeftSec": 260,
       "username": "NullPointerHero"
@@ -106,6 +106,13 @@
       "score": 816,
       "timeSeconds": 544,
       "username": "tkinard06"
+    },
+    {
+      "difficulty": "EASY",
+      "date": "Fri Dec 05 22:32:47 EST 2025",
+      "score": 1622,
+      "timeSeconds": 1622,
+      "username": "tkinard06"
     }
   ],
   "progress": [
@@ -148,6 +155,16 @@
       "timeRemainingSeconds": 1644,
       "userUUID": "9470fa91-5c63-479c-b399-0efc974db7fc",
       "progressUUID": "20627f54-cdfc-483d-8ae1-5a0ac1eea9c9"
+    },
+    {
+      "difficulty": "EASY",
+      "c": 0,
+      "answered": 0,
+      "hints": 0,
+      "currentRoomID": "room1",
+      "timeRemainingSeconds": 1702,
+      "userUUID": "62d5b129-ba42-49cd-98cd-87349d719191",
+      "progressUUID": "7e665a9b-a1d5-4321-9b2f-7c018f1b9012"
     }
   ],
   "savedData": [
@@ -219,6 +236,18 @@
     },
     {
       "score": 0,
+      "hints": 0,
+      "puzzle": null,
+      "room": "room1"
+    },
+    {
+      "score": 0,
+      "hints": 0,
+      "puzzle": null,
+      "room": "room1"
+    },
+    {
+      "score": 1622,
       "hints": 0,
       "puzzle": null,
       "room": "room1"
@@ -297,6 +326,11 @@
       "password": "tkinard06",
       "inventory": {
         "items": [
+          "L",
+          "R",
+          "A",
+          "M",
+          "E"
         ],
         "capacity": 5
       },
@@ -314,6 +348,17 @@
       "userID": "82c925ee-f0b7-474d-8e59-08a02ad59128",
       "email": "rp",
       "username": "rp"
+    },
+    {
+      "password": "t",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "971674a7-b7b2-4816-a938-cba8581a6a7b",
+      "email": "t",
+      "username": "t"
     }
   ]
 }
