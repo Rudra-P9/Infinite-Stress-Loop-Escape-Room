@@ -19,10 +19,6 @@
     -fx-scale-y: 1.07;
 }
 
-/* small helper styles you may want */
-.label {
-    -fx-text-fill: rgb(29,198,210);
-}
 
 .button {
     -fx-text-fill: white;
