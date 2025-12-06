@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 /**
  * Controller for the Create Account screen.
@@ -47,6 +46,13 @@ public class CreateAccountController implements Initializable {
     @FXML
     private Label backLabel;
 
+     /**
+     * Initializes the screen using animated typewriter effects for each label
+     * and reveals input fields as the animation progresses.
+     *
+     * @param url ignored
+     * @param rb ignored
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         typeText(welcomeCreateAccountLabel, "[ Facility 67 Termalink: Create Account ]", () -> {
@@ -68,11 +74,23 @@ public class CreateAccountController implements Initializable {
         });
     }
 
+     /**
+     * Click handler for the Enter button.
+     * Attempts to create a new account.
+     *
+     * @param event mouse click event
+     */
     @FXML
     private void handleCreateAccount(MouseEvent event) {
         createAccount();
     }
 
+      /**
+     * Handles pressing Enter on the keyboard.
+     * Allows account creation without clicking.
+     *
+     * @param event key press event
+     */
     @FXML
     private void handleEnterKey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -80,6 +98,16 @@ public class CreateAccountController implements Initializable {
         }
     }
 
+     /**
+     * Core logic for creating a user account:
+     * <ul>
+     *     <li>Validates email, username, and password</li>
+     *     <li>Checks for duplicate accounts</li>
+     *     <li>Creates and saves a new account</li>
+     *     <li>Displays success message</li>
+     *     <li>Redirects to Login screen after delay</li>
+     * </ul>
+     */
     private void createAccount() {
         String email = emailField.getText().trim();
         String username = usernameField.getText().trim();
@@ -128,16 +156,37 @@ public class CreateAccountController implements Initializable {
         pause.play();
     }
 
+    /**
+     * Navigates back to the Terminal Menu screen.
+     *
+     * @param event mouse click event
+     * @throws IOException if FXML fails to load
+     */
     @FXML
     private void goBack(MouseEvent event) throws IOException {
         App.setRoot("TerminalMenu");
     }
 
+    /**
+     * Navigates to the Login screen.
+     *
+     * @param event mouse click event
+     * @throws IOException if FXML fails to load
+     */
     @FXML
     private void goToLogin(MouseEvent event) throws IOException {
         App.setRoot("Login");
     }
 
+
+    /**
+     * Typewriter-style text animation for labels.
+     * Used to produce Terminal-style sequential label reveal.
+     *
+     * @param label label to animate
+     * @param text text to reveal
+     * @param onFinished callback after animation completes
+     */
     private void typeText(Label label, String text, Runnable onFinished) {
         javafx.animation.Timeline timeline = new javafx.animation.Timeline();
         final StringBuilder sb = new StringBuilder();
