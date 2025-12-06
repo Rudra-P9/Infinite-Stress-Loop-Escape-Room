@@ -392,6 +392,13 @@ public class EscapeRoomFacade {
         // Save progress with all state
         saveProgressSnapshot();
         
+        // Save user data including collected letters in inventory
+        if (currentUser != null && writer != null) {
+            writer.saveUser(currentUser);
+            System.out.println("[SaveGame] User inventory saved (collected letters: " + 
+                (currentUser.getCollectedLetters() != null ? currentUser.getCollectedLetters().size() : 0) + ")");
+        }
+        
         // persist minimal saved data via writer for backward compatibility
         if (writer == null)
             writer = new GameDataWriter();

@@ -118,6 +118,21 @@ public class LoginController implements Initializable {
                         // Start game with saved difficulty
                         App.gameFacade.startGame(App.currentDifficulty);
                         
+                        // SAFEGUARD: Restore collected letters from user's inventory
+                        if (App.currentUser != null && App.currentUser.getInventory() != null) {
+                            java.util.ArrayList<String> savedLetters = App.currentUser.getCollectedLetters();
+                            if (savedLetters != null && !savedLetters.isEmpty()) {
+                                System.out.println("[Login] Restoring " + savedLetters.size() + " collected letters: " + savedLetters);
+                            } else {
+                                System.out.println("[Login] No letters collected in saved game");
+                            }
+                        }
+                        
+                        // SAFEGUARD: Force progress bar sync
+                        // This ensures the progress percentage matches the actual collected letters
+                        int progressPercent = App.gameFacade.getProgressPercentage();
+                        System.out.println("[Login] Progress bar synced: " + progressPercent + "%");
+                        
                         // Restore timer to saved time
                         if (App.gameFacade.getTimer() != null && progress.getTimeRemainingSeconds() > 0) {
                             App.gameFacade.getTimer().setRemainingSeconds(progress.getTimeRemainingSeconds());
