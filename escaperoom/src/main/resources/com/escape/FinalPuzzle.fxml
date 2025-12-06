@@ -10,10 +10,12 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.ProgressBar?>
+
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.FinalPuzzleController">
+            fx:controller="controllers.FinalPuzzleController"
+            stylesheets="@/styles.css">
 
     <children>
 
@@ -55,16 +57,16 @@
             </font>
         </Label>
         <ImageView fx:id="FPHintIcon"
-                   fitHeight="100.0" fitWidth="100.0"
-                   layoutX="1800.0" layoutY="125.0"
-                   onMouseClicked="#showHint"
-                   pickOnBounds="true"
-                   preserveRatio="true"
-                   style="-fx-cursor: hand;">
-            <image>
-                <Image url="@../../images/HintIcon.png"/>
-            </image>
-        </ImageView>
+            fitHeight="100.0" fitWidth="100.0"
+            layoutX="1800.0" layoutY="125.0"
+            onMouseClicked="#showHint"
+            pickOnBounds="true"
+            preserveRatio="true"
+            styleClass="hint-icon">
+        <image>
+            <Image url="@../../images/HintIcon.png"/>
+        </image>
+    </ImageView>
 
         <AnchorPane fx:id="hintPane"
                     layoutX="600.0" layoutY="250.0"
