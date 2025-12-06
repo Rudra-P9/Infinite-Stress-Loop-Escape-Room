@@ -115,6 +115,22 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private ImageView hint;
 
+    /** Letter reward pane container */
+    @FXML
+    private AnchorPane letterRewardPane;
+
+    /** Label displaying the letter reward message */
+    @FXML
+    private Label letterRewardText;
+
+    /** ImageView for the letter reward note background */
+    @FXML
+    private ImageView letterRewardNote;
+
+    /** ImageView for closing the letter reward */
+    @FXML
+    private ImageView closeLetterRewardArrow;
+
     /** Label displaying the timer */
     @FXML
     private Label timerLabel;
@@ -173,6 +189,10 @@ public class FragmentCorridorController implements Initializable {
         // Hide hint pane initially
         if (hintPane != null)
             hintPane.setVisible(false);
+
+        // Hide letter reward pane initially
+        if (letterRewardPane != null)
+            letterRewardPane.setVisible(false);
 
         // Start timer update
         startTimerUpdate();
@@ -539,21 +559,12 @@ public class FragmentCorridorController implements Initializable {
         if (ContinueLabel != null)
             ContinueLabel.setVisible(false);
         if (ContinueButton != null)
-            ContinueButton.setVisible(true);
+            ContinueButton.setVisible(false);
         if (ContinueIcon != null)
-            ContinueIcon.setVisible(true);
+            ContinueIcon.setVisible(false);
 
-        // Create breathing animation for Continue icon
-        if (ContinueIcon != null) {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueIcon);
-            scaleTransition.setFromX(1.0);
-            scaleTransition.setFromY(1.0);
-            scaleTransition.setToX(1.1);
-            scaleTransition.setToY(1.1);
-            scaleTransition.setCycleCount(Timeline.INDEFINITE);
-            scaleTransition.setAutoReverse(true);
-            scaleTransition.play();
-        }
+        // Show letter reward notification instead of continue button
+        showLetterReward("A");
     }
 
     /**
@@ -615,6 +626,71 @@ public class FragmentCorridorController implements Initializable {
             hintPane.setVisible(false);
         if (closeHintArrow != null)
             closeHintArrow.setVisible(false);
+    }
+
+    /**
+     * Shows the letter reward notification.
+     * Displays which letter was collected.
+     * 
+     * @param letter the letter that was collected
+     */
+    private void showLetterReward(String letter) {
+        System.out.println("Letter reward notification: " + letter);
+
+        // Set letter reward text
+        String message = "You found the letter: " + letter + "!\n\nClick the arrow to continue.";
+        if (letterRewardText != null) {
+            letterRewardText.setText(message);
+        }
+
+        // Show letter reward pane with fade animation
+        if (letterRewardPane != null) {
+            letterRewardPane.setVisible(true);
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.6), letterRewardPane);
+            letterRewardPane.setOpacity(0);
+            ft.setToValue(1.0);
+            ft.play();
+        }
+
+        if (letterRewardText != null)
+            letterRewardText.setVisible(true);
+        if (letterRewardNote != null)
+            letterRewardNote.setVisible(true);
+        if (closeLetterRewardArrow != null)
+            closeLetterRewardArrow.setVisible(true);
+    }
+
+    /**
+     * Hides the letter reward pane and shows continue button.
+     * 
+     * @param event the mouse event triggered by clicking the close arrow
+     */
+    @FXML
+    private void hideLetterReward(MouseEvent event) {
+        if (letterRewardPane != null)
+            letterRewardPane.setVisible(false);
+        if (closeLetterRewardArrow != null)
+            closeLetterRewardArrow.setVisible(false);
+
+        // Show continue button after acknowledging letter
+        if (ContinueLabel != null)
+            ContinueLabel.setVisible(false);
+        if (ContinueButton != null)
+            ContinueButton.setVisible(true);
+        if (ContinueIcon != null)
+            ContinueIcon.setVisible(true);
+
+        // Create breathing animation for Continue icon
+        if (ContinueIcon != null) {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueIcon);
+            scaleTransition.setFromX(1.0);
+            scaleTransition.setFromY(1.0);
+            scaleTransition.setToX(1.1);
+            scaleTransition.setToY(1.1);
+            scaleTransition.setCycleCount(Timeline.INDEFINITE);
+            scaleTransition.setAutoReverse(true);
+            scaleTransition.play();
+        }
     }
 
     /**

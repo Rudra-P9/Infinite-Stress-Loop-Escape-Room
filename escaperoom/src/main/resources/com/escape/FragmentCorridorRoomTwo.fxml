@@ -92,5 +92,22 @@
             </image>
          </ImageView>
       </AnchorPane>
+
+      <!-- LETTER REWARD PANEL -->
+      <AnchorPane fx:id="letterRewardPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
+         <ImageView fx:id="letterRewardNote" fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
+            <image>
+               <Image url="@../../images/hintNote.png" />
+            </image>
+         </ImageView>
+        
+         <Label fx:id="letterRewardText" layoutX="15" layoutY="-100" prefWidth="650" style="-fx-font-family: 'Bradley Hand'; -fx-text-fill: black; -fx-font-size: 36px;" text="" wrapText="true" />
+
+         <ImageView fx:id="closeLetterRewardArrow" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideLetterReward" pickOnBounds="true" preserveRatio="true" visible="false" style="-fx-cursor: hand;">
+            <image>
+               <Image url="@../../images/ArrowLeft.png" />
+            </image>
+         </ImageView>
+      </AnchorPane>
    </children>
 </AnchorPane>
