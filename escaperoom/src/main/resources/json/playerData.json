@@ -264,6 +264,17 @@
       "userID": "62d5b129-ba42-49cd-98cd-87349d719191",
       "email": "talankinard@gmail.com",
       "username": "tkinard06"
+    },
+    {
+      "password": "rp",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "82c925ee-f0b7-474d-8e59-08a02ad59128",
+      "email": "rp",
+      "username": "rp"
     }
   ]
 }
