@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.escape.model.Difficulty;
 import com.escape.model.User;
 
+import controllers.AudioController;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -28,6 +29,9 @@ public class App extends Application {
     public static User currentUser;
     public static Difficulty currentDifficulty;
     public static com.escape.model.EscapeRoomFacade gameFacade;
+    
+    // Track if player has reached ChamberHall to enable screen transition sounds
+    private static boolean transitionSoundsEnabled = false;
 
     private static Scene scene;
     // Define the target resolution (design resolution)
@@ -54,6 +58,26 @@ public class App extends Application {
     }
 
     public static void setRoot(String fxml) throws IOException {
+        // Play woosh sound if transition sounds are enabled and not going back to main menu/login
+        if (transitionSoundsEnabled && !fxml.equals("MainScreen") && !fxml.equals("Login")) {
+            // Play deep woosh for Room3Combined (Synchronization Core), regular woosh for others
+            if (fxml.equals("Room3Combined")) {
+                AudioController.getInstance().playSoundEffect("audio/deep-woosh.wav");
+            } else {
+                AudioController.getInstance().playSoundEffect("audio/woosh-mark_diangelo-4778593.wav");
+            }
+        }
+        
+        // Enable transition sounds once ChamberHall is reached
+        if (fxml.equals("ChamberHall")) {
+            transitionSoundsEnabled = true;
+        }
+        
+        // Disable transition sounds when returning to main menu or login
+        if (fxml.equals("MainScreen") || fxml.equals("Login")) {
+            transitionSoundsEnabled = false;
+        }
+        
         scene.setRoot(loadFXML(fxml));
     }
 
