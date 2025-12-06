@@ -34,7 +34,7 @@ public class MainScreenController implements Initializable {
         try {
             String fontPath = "/fonts/Storm Gust.ttf";
             if (getClass().getResource(fontPath) != null) {
-                Font customFont = Font.loadFont(getClass().getResourceAsStream(fontPath), 150);
+                Font customFont = Font.loadFont(getClass().getResourceAsStream(fontPath), 120);
                 if (customFont != null) {
                     titleLabel.setFont(customFont);
                 }
