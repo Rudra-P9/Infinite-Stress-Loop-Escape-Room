@@ -23,7 +23,9 @@ import javafx.util.Duration;
  * Controller for Puzzle 4.
  * Manages the answer checking, hint toggle, reward letter display,
  * and returning to the Room 3 main menu.
- * Author: Kirtan Patel
+ * 
+ * @author Rudra Patel
+ * @author Kirtan Patel
  */
 public class Room3Puzzle4Controller implements Initializable {
 

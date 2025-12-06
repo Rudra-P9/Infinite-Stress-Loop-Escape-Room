@@ -15,7 +15,8 @@ import javafx.scene.input.MouseEvent;
 import com.escape.App;
 
 /**
- *
+ * Controller for the terminal menu.
+ * Handles navigation to login, create account, and main screen.
  * 
  * @author Rudra Patel
  */

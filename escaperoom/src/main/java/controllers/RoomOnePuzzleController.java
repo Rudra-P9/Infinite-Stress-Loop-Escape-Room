@@ -7,6 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * Controller for Puzzle 4.
+ * Manages the answer checking, hint toggle, reward letter display,
+ * and returning to the Room 3 main menu.
+ * 
+ * @author Rudra Patel
+ */
 public class RoomOnePuzzleController {
 
     @FXML
@@ -54,7 +61,7 @@ public class RoomOnePuzzleController {
                 // Handle game over if needed
             }
         }
-        
+
         // Update progress bar
         updateProgress();
     }

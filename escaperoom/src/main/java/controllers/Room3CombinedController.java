@@ -18,7 +18,8 @@ import com.escape.App;
  * Controller for the Room 3 main menu.
  * Handles showing and hiding the intro dialog and opening the three vault
  * hotspots.
- * Author: Kirtan Patel
+ * @author Rudra Patel
+ * @author Kirtan Patel
  */
 public class Room3CombinedController implements Initializable {
 
