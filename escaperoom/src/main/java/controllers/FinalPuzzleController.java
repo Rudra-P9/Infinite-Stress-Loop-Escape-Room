@@ -18,6 +18,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
+/**
+ * Controller for the final puzzle room
+ * @author Dylan Diaz
+ */
+
 public class FinalPuzzleController {
 
     @FXML private ImageView bgImage;
