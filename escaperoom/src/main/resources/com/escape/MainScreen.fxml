@@ -41,24 +41,13 @@
                <input>
                   <Shadow blurType="ONE_PASS_BOX" height="44.58" radius="17.369999999999997" width="26.9">
                      <color>
-                        <Color green="1.0" />
+                        #E87638
                      </color>
                   </Shadow>
                </input>
             </Glow>
          </effect>
       </Rectangle>
-      <Label layoutX="1332.0" layoutY="661.0" prefHeight="172.0" prefWidth="138.0" text="CLICK&#10;ME!" textAlignment="CENTER" textFill="LIME">
-         <font>
-            <Font size="35.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <effect>
-            <Glow level="1.0" />
-         </effect>
-      </Label>
       <Button layoutX="1342.0" layoutY="799.0" mnemonicParsing="false" onMouseClicked="#goToTerminalMenu" prefHeight="61.0" prefWidth="78.0" style="-fx-background-color: transparent; -fx-cursor: hand;" textFill="WHITE" />
    </children>
 </AnchorPane>
