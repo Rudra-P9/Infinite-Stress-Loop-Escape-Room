@@ -2,6 +2,10 @@ package controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.escape.model.EscapeRoomFacade;
+import com.escape.util.SaveAndQuitHandler;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -12,8 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
-import com.escape.model.EscapeRoomFacade;
-import com.escape.util.SaveAndQuitHandler;
 
 /**
  * Controller for the Game Intro screen.
@@ -59,6 +61,17 @@ public class ChamberHallController implements Initializable {
     private EscapeRoomFacade facade;
     private Timeline timerTimeline;
 
+
+     /**
+     * Initializes the Chamber Hall:
+     * - Starts a new game OR resumes existing one
+     * - Starts the UI timer
+     * - Determines whether to show the intro screen
+     * - Updates the visual lock state of doors
+     *
+     * @param url ignored
+     * @param rb ignored
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -100,6 +113,10 @@ public class ChamberHallController implements Initializable {
         updateDoorLockStates();
     }
 
+     /**
+     * Starts the visual timer updater.
+     * This does not control the countdown itself — only displays it.
+     */
     private void startTimerUpdate() {
         timerTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimer()));
         timerTimeline.setCycleCount(Timeline.INDEFINITE);
@@ -107,6 +124,10 @@ public class ChamberHallController implements Initializable {
         updateTimer(); // Initial update
     }
 
+     /**
+     * Updates the timer label every second.
+     * Also updates timer color and progress bar.
+     */
     private void updateTimer() {
         if (facade != null && timerLabel != null) {
             int remainingSeconds = facade.getTimeRemaining();
@@ -128,6 +149,9 @@ public class ChamberHallController implements Initializable {
         updateProgress();
     }
 
+     /**
+     * Updates the progress bar and percentage text from the facade.
+     */
     private void updateProgress() {
         if (facade != null && progressBar != null && progressLabel != null) {
             int percentage = facade.getProgressPercentage();
@@ -170,16 +194,27 @@ public class ChamberHallController implements Initializable {
         // Door 3 - Always accessible (leads to Room3Combined)
     }
 
+     /**
+     * Triggered when clicking the "Acknowledge" button.
+     * Hides the intro and shows the doors.
+     */
     @FXML
     private void onAcknowledge(MouseEvent event) {
         showDoors();
     }
 
+    /**
+     * Triggered when clicking the info button.
+     * Shows the intro overlay again.
+     */
     @FXML
     private void onInfo(MouseEvent event) {
         showIntro();
     }
 
+    /**
+     * Shows the intro overlay and hides the doors.
+     */
     private void showIntro() {
         if (introOverlay != null)
             introOverlay.setVisible(true);
@@ -189,6 +224,9 @@ public class ChamberHallController implements Initializable {
             infoButton.setVisible(false); // Hide info button while intro is up
     }
 
+    /**
+     * Shows the door selection overlay and hides the intro.
+     */
     private void showDoors() {
         if (introOverlay != null)
             introOverlay.setVisible(false);
@@ -198,6 +236,9 @@ public class ChamberHallController implements Initializable {
             infoButton.setVisible(true); // Show info button when doors are visible
     }
 
+    /**
+     * Displays the name of the hovered door.
+     */
     @FXML
     private void handleDoorHover(MouseEvent event) {
         Button source = (Button) event.getSource();
@@ -224,6 +265,9 @@ public class ChamberHallController implements Initializable {
         }
     }
 
+    /**
+     * Clears door name on mouse exit.
+     */
     @FXML
     private void handleDoorExit(MouseEvent event) {
         if (doorNameLabel != null) {
@@ -231,6 +275,10 @@ public class ChamberHallController implements Initializable {
         }
     }
 
+    /**
+     * Handles clicking on Door 1.
+     * Loads RoomOneBoard if unlocked.
+     */
     @FXML
     private void handleDoor1(MouseEvent event) {
         if (facade != null && facade.isDoorOneLocked()) {
@@ -245,6 +293,10 @@ public class ChamberHallController implements Initializable {
         }
     }
 
+     /**
+     * Handles clicking on Door 2.
+     * Loads FragmentCorridor if unlocked.
+     */
     @FXML
     private void handleDoor2(MouseEvent event) {
         if (facade != null && facade.isDoorTwoLocked()) {
@@ -260,6 +312,10 @@ public class ChamberHallController implements Initializable {
         }
     }
 
+    /**
+     * Handles clicking on Door 3.
+     * Always accessible. Loads Room3Combined.
+     */
     @FXML
     private void handleDoor3(MouseEvent event) {
         System.out.println("Door 3 clicked");
@@ -271,6 +327,9 @@ public class ChamberHallController implements Initializable {
         }
     }
 
+     /**
+     * Opens the inventory screen.
+     */
     @FXML
     private void openInventory(MouseEvent event) {
         try {
@@ -281,6 +340,10 @@ public class ChamberHallController implements Initializable {
         }
     }
     
+     /**
+     * Saves the game and exits to desktop.
+     * Triggered by the EXIT button.
+     */
     @FXML
     private void saveAndExit(MouseEvent event) {
         System.out.println("EXIT button clicked - initiating save and quit");
