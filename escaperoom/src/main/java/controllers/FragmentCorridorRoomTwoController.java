@@ -93,6 +93,9 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     /** Timeline for updating the timer */
     private Timeline timerTimeline;
 
+    /** Audio controller for sound effects */
+    private AudioController audio;
+
     /** The target sequence: UP, LEFT, DOWN, RIGHT, RIGHT, DOWN, UP, LEFT */
     private static final String[] SEQUENCE = { "UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT" };
 
@@ -109,6 +112,9 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Initialize audio controller
+        audio = AudioController.getInstance();
+
         // Hide hint pane initially
         if (hintPane != null)
             hintPane.setVisible(false);
@@ -239,6 +245,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedUp(MouseEvent event) {
+        if (audio != null) audio.playButtonClick();
         handleDirectionClick("UP");
     }
 
@@ -250,6 +257,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedDown(MouseEvent event) {
+        if (audio != null) audio.playButtonClick();
         handleDirectionClick("DOWN");
     }
 
@@ -261,6 +269,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedLeft(MouseEvent event) {
+        if (audio != null) audio.playButtonClick();
         handleDirectionClick("LEFT");
     }
 
@@ -272,6 +281,7 @@ public class FragmentCorridorRoomTwoController implements Initializable {
      */
     @FXML
     void PressedRight(MouseEvent event) {
+        if (audio != null) audio.playButtonClick();
         handleDirectionClick("RIGHT");
     }
 
@@ -381,6 +391,11 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     private void showSuccess() {
         System.out.println("[FragmentCorridorRoomTwo] showSuccess() called");
         System.out.println("[FragmentCorridorRoomTwo] facade = " + facade);
+
+        // Play door unlock sound
+        if (audio != null) {
+            audio.playSoundEffect("audio/heavy-door-lock-unlocking-1-www.wav");
+        }
 
         // Award the letter "M" to the user's inventory (from game.json)
         if (facade != null && facade.getCurrentUser() != null) {

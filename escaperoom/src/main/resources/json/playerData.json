@@ -121,6 +121,26 @@
       "c": 0,
       "userUUID": "b287f426-a9d3-4d49-a738-3e03de9f4d60",
       "progressUUID": "prog-004"
+    },
+    {
+      "difficulty": "EASY",
+      "c": 0,
+      "answered": 0,
+      "hints": 0,
+      "currentRoomID": "room1",
+      "timeRemainingSeconds": 1729,
+      "userUUID": "5c29330f-2361-498f-914b-b97cb473a5d5",
+      "progressUUID": "6a2c8844-9735-42e0-b63c-b8bb54be1857"
+    },
+    {
+      "difficulty": "EASY",
+      "c": 0,
+      "answered": 0,
+      "hints": 0,
+      "currentRoomID": "room1",
+      "timeRemainingSeconds": 1644,
+      "userUUID": "9470fa91-5c63-479c-b399-0efc974db7fc",
+      "progressUUID": "20627f54-cdfc-483d-8ae1-5a0ac1eea9c9"
     }
   ],
   "savedData": [
@@ -183,6 +203,18 @@
       "hints": 0,
       "puzzle": null,
       "room": null
+    },
+    {
+      "score": 0,
+      "hints": 0,
+      "puzzle": null,
+      "room": "room1"
+    },
+    {
+      "score": 0,
+      "hints": 0,
+      "puzzle": null,
+      "room": "room1"
     }
   ],
   "users": [
@@ -264,6 +296,54 @@
       "userID": "62d5b129-ba42-49cd-98cd-87349d719191",
       "email": "talankinard@gmail.com",
       "username": "tkinard06"
+    },
+    {
+      "password": "t",
+      "inventory": {
+        "items": [
+          "A",
+          "M"
+        ],
+        "capacity": 5
+      },
+      "userID": "5c29330f-2361-498f-914b-b97cb473a5d5",
+      "email": "t",
+      "username": "t"
+    },
+    {
+      "password": "r",
+      "inventory": {
+        "items": [
+          "A",
+          "M"
+        ],
+        "capacity": 5
+      },
+      "userID": "9470fa91-5c63-479c-b399-0efc974db7fc",
+      "email": "r",
+      "username": "r"
+    },
+    {
+      "password": "g",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "ee0302d2-34fa-4977-a3ea-407d7accc1cd",
+      "email": "g",
+      "username": "g"
+    },
+    {
+      "password": "j",
+      "inventory": {
+        "items": [
+        ],
+        "capacity": 5
+      },
+      "userID": "4e9ba5e2-f9f2-4889-835a-12b3af49af3a",
+      "email": "j",
+      "username": "j"
     }
   ]
 }
