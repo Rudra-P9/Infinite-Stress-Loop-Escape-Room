@@ -105,7 +105,7 @@ public class RoomOneLetterController {
                 // Handle game over if needed
             }
         }
-        
+
         // Update progress bar
         updateProgress();
     }
@@ -115,8 +115,6 @@ public class RoomOneLetterController {
             int percentage = com.escape.App.gameFacade.getProgressPercentage();
             progressBar.setProgress(percentage / 100.0);
             progressLabel.setText(percentage + "%");
-            System.out.println("[RoomOneLetter] Progress updated: " + percentage + "% (" + 
-                (com.escape.App.gameFacade.getCurrentUser() != null ? com.escape.App.gameFacade.getCurrentUser().getCollectedLetters().size() : 0) + " letters)");
         }
     }
 
@@ -173,19 +171,19 @@ public class RoomOneLetterController {
                 if (currentStage == 1) {
                     System.out.println("[RoomOneLetter] Room complete! Adding letter E");
                     System.out.println("[RoomOneLetter] gameFacade = " + App.gameFacade);
-                    
+
                     noteText.setText("Room Complete!");
                     noteText.setTextFill(Color.BLACK);
 
                     if (App.gameFacade != null) {
                         App.gameFacade.setRoomOneStage(2);
                     }
-                    
+
                     // Add letter E to current user's inventory
                     if (App.gameFacade != null && App.gameFacade.getCurrentUser() != null) {
                         com.escape.model.User user = App.gameFacade.getCurrentUser();
                         System.out.println("[RoomOneLetter] user = " + user);
-                        
+
                         if (!user.getCollectedLetters().contains("E")) {
                             boolean added = user.addCollectedLetter("E");
                             if (added) {

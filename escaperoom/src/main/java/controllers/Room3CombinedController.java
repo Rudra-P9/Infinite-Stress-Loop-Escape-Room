@@ -166,9 +166,15 @@ public class Room3CombinedController implements Initializable {
     @FXML
     private void onCoreClicked(MouseEvent event) {
         System.out.println("Core clicked - open final puzzle");
+        System.out.println("Event source: " + event.getSource());
+        System.out.println("Event target: " + event.getTarget());
+
         try {
+            System.out.println("Attempting to navigate to FinalPuzzle...");
             com.escape.App.setRoot("FinalPuzzle");
+            System.out.println("Navigation successful!");
         } catch (Exception e) {
+            System.err.println("ERROR: Failed to navigate to FinalPuzzle!");
             e.printStackTrace();
         }
     }
