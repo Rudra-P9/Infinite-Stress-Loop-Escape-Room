@@ -9,5 +9,3 @@ Escape The Varen Project Application YouTube Link: https://youtu.be/DhgokPhCjug
 Prototype GitHub Link: https://rudra-p9.github.io/Infinite-Stress-Loop-Escape-Room/
 
 YouTube Link to Infinite Stress Loop Escape Room Presentation: https://www.youtube.com/watch?v=8z9kc37HaFE
-
-YouTube Link: https://youtu.be/DhgokPhCjug
