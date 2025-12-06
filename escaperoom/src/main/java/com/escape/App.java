@@ -30,6 +30,8 @@ public class App extends Application {
     public static com.escape.model.EscapeRoomFacade gameFacade;
 
     private static Scene scene;
+    private static boolean transitionSoundsEnabled = false;
+    
     // Define the target resolution (design resolution)
     private static final double TARGET_WIDTH = 1920;
     private static final double TARGET_HEIGHT = 1080;
@@ -40,6 +42,12 @@ public class App extends Application {
         if (gameFacade == null) {
             gameFacade = new com.escape.model.EscapeRoomFacade();
         }
+
+        // Initialize audio controller and ensure SFX is enabled
+        controllers.AudioController audio = controllers.AudioController.getInstance();
+        audio.setSfxEnabled(true);
+        audio.setMusicEnabled(true);
+        System.out.println("[App] Audio initialized - SFX: " + audio.isSfxEnabled() + ", Music: " + audio.isMusicEnabled());
 
         // Load the initial view wrapped in the scaler
         Parent root = loadFXML("MainScreen");
@@ -54,6 +62,28 @@ public class App extends Application {
     }
 
     public static void setRoot(String fxml) throws IOException {
+        // Play woosh sound on screen transitions (after reaching ChamberHall)
+        controllers.AudioController audio = controllers.AudioController.getInstance();
+        
+        if (transitionSoundsEnabled && !fxml.equals("MainScreen") && !fxml.equals("Login")) {
+            // Special case for Room3Combined - play deep woosh
+            if (fxml.equals("Room3Combined")) {
+                audio.playSoundEffect("audio/deep-woosh.wav");
+            } else {
+                audio.playSoundEffect("audio/woosh-mark_diangelo-4778593.wav");
+            }
+        }
+        
+        // Enable transition sounds once we reach ChamberHall
+        if (fxml.equals("ChamberHall")) {
+            transitionSoundsEnabled = true;
+        }
+        
+        // Disable when returning to main menu or login
+        if (fxml.equals("MainScreen") || fxml.equals("Login")) {
+            transitionSoundsEnabled = false;
+        }
+        
         scene.setRoot(loadFXML(fxml));
     }
 
