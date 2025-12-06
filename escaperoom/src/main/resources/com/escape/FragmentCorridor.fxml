@@ -35,10 +35,9 @@
                 <!-- Hint Icon -->
               <ImageView fx:id="hint"
                      fitHeight="100" fitWidth="100"
-                     layoutX="1800" layoutY="125"
+                     layoutX="1795" layoutY="125"
                      onMouseClicked="#showHint"
-                     pickOnBounds="true"
-                     styleClass="hint-icon">
+                     pickOnBounds="false">
                      <image>
                      <Image url="@../../images/HintIcon.png" />
                      </image>
