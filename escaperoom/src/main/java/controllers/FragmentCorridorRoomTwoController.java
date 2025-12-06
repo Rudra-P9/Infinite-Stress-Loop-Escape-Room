@@ -51,6 +51,10 @@ public class FragmentCorridorRoomTwoController implements Initializable {
     @FXML
     private Button ContinueButton;
 
+    /** ImageView for the continue cursor icon */
+    @FXML
+    private ImageView ContinueIcon;
+
     /** Label displayed when incorrect direction is clicked */
     @FXML
     private Label IncorrectLabel;
@@ -124,6 +128,8 @@ public class FragmentCorridorRoomTwoController implements Initializable {
             ContinueLabel.setVisible(false);
         if (ContinueButton != null)
             ContinueButton.setVisible(false);
+        if (ContinueIcon != null)
+            ContinueIcon.setVisible(false);
         if (IncorrectLabel != null)
             IncorrectLabel.setVisible(false);
         // Hide arrow cover initially so user can see the sequence
@@ -418,13 +424,15 @@ public class FragmentCorridorRoomTwoController implements Initializable {
         }
 
         if (ContinueLabel != null)
-            ContinueLabel.setVisible(true);
+            ContinueLabel.setVisible(false);
         if (ContinueButton != null)
             ContinueButton.setVisible(true);
+        if (ContinueIcon != null)
+            ContinueIcon.setVisible(true);
 
-        // Create breathing animation for Continue label
-        if (ContinueLabel != null) {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueLabel);
+        // Create breathing animation for Continue icon
+        if (ContinueIcon != null) {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueIcon);
             scaleTransition.setFromX(1.0);
             scaleTransition.setFromY(1.0);
             scaleTransition.setToX(1.1);

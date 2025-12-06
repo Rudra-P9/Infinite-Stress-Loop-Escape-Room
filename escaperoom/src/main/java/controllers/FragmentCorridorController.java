@@ -91,6 +91,10 @@ public class FragmentCorridorController implements Initializable {
     @FXML
     private Button ContinueButton;
 
+    /** ImageView for the continue cursor icon */
+    @FXML
+    private ImageView ContinueIcon;
+
     /** Hint pane container */
     @FXML
     private AnchorPane hintPane;
@@ -188,35 +192,37 @@ public class FragmentCorridorController implements Initializable {
             ContinueLabel.setVisible(false);
         if (ContinueButton != null)
             ContinueButton.setVisible(false);
+        if (ContinueIcon != null)
+            ContinueIcon.setVisible(false);
 
         // Apply consistent letter styling (matches other screens)
         try {
             if (M1Show != null) {
                 M1Show.getStyleClass().add("letter");
-                M1Show.setStyle("-fx-text-fill: white;");
-                M1Show.setFont(javafx.scene.text.Font.font("Times New Roman", 100));
+                M1Show.setStyle("-fx-text-fill: white; -fx-effect: dropshadow(gaussian, black, 10, 0, 0, 0);");
+                M1Show.setFont(javafx.scene.text.Font.font("Impact", 100));
             }
             if (M2Show != null) {
                 M2Show.getStyleClass().add("letter");
-                M2Show.setStyle("-fx-text-fill: white;");
-                M2Show.setFont(javafx.scene.text.Font.font("Times New Roman", 100));
+                M2Show.setStyle("-fx-text-fill: white; -fx-effect: dropshadow(gaussian, black, 10, 0, 0, 0);");
+                M2Show.setFont(javafx.scene.text.Font.font("Impact", 100));
             }
             if (MKey1 != null) {
                 MKey1.getStyleClass().add("letter");
-                MKey1.setFont(javafx.scene.text.Font.font("Times New Roman", 96));
+                MKey1.setFont(javafx.scene.text.Font.font("Impact", 96));
             }
             if (MKey2 != null) {
                 MKey2.getStyleClass().add("letter");
-                MKey2.setFont(javafx.scene.text.Font.font("Times New Roman", 77));
+                MKey2.setFont(javafx.scene.text.Font.font("Impact", 77));
             }
             if (EShow != null) {
                 EShow.getStyleClass().add("letter");
-                EShow.setStyle("-fx-text-fill: white;");
-                EShow.setFont(javafx.scene.text.Font.font("Times New Roman", 100));
+                EShow.setStyle("-fx-text-fill: white; -fx-effect: dropshadow(gaussian, black, 10, 0, 0, 0);");
+                EShow.setFont(javafx.scene.text.Font.font("Impact", 100));
             }
             if (EKey1 != null) {
                 EKey1.getStyleClass().add("letter");
-                EKey1.setFont(javafx.scene.text.Font.font("Times New Roman", 77));
+                EKey1.setFont(javafx.scene.text.Font.font("Impact", 77));
             }
         } catch (Exception ignore) {
             // styling optional — ignore failures
@@ -527,13 +533,15 @@ public class FragmentCorridorController implements Initializable {
         }
 
         if (ContinueLabel != null)
-            ContinueLabel.setVisible(true);
+            ContinueLabel.setVisible(false);
         if (ContinueButton != null)
             ContinueButton.setVisible(true);
+        if (ContinueIcon != null)
+            ContinueIcon.setVisible(true);
 
-        // Create breathing animation for Continue label
-        if (ContinueLabel != null) {
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueLabel);
+        // Create breathing animation for Continue icon
+        if (ContinueIcon != null) {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1.5), ContinueIcon);
             scaleTransition.setFromX(1.0);
             scaleTransition.setFromY(1.0);
             scaleTransition.setToX(1.1);
