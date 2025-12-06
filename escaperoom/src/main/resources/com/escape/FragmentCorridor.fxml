@@ -14,205 +14,150 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FragmentCorridorController">
-   <children>
-       <!-- Background -->
-       <ImageView fitHeight="1083.0" fitWidth="1924.0">
-          <image>
-             <Image url="@../../images/Room2.jpg" />
-          </image>
-       </ImageView>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="1080.0" prefWidth="1920.0"
+            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.FragmentCorridorController">
 
-      <Group fx:id="boardOverlay">
-         <children>
-            
-            <!-- Hint Icon -->
-            <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125" onMouseClicked="#showHint" pickOnBounds="true">
-               <image>
-                  <Image url="@../../images/HintIcon.png" />
-               </image>
-            </ImageView>
+    <children>
 
-            <!-- Timer (Top Left) -->
-            <Rectangle arcHeight="5.0" arcWidth="5.0" height="74.0" layoutX="23.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="145.0" />
-            <Label fx:id="timerLabel" layoutX="50.0" layoutY="50.0" text="00:00" textFill="RED">
-               <font>
-                  <Font name="Impact" size="40.0" />
-               </font>
-            </Label>
+        <!-- Background -->
+        <ImageView fitHeight="1083.0" fitWidth="1924.0">
+            <image>
+                <Image url="@../../images/Room2.jpg" />
+            </image>
+        </ImageView>
 
-            <!-- Penalty Label (Initially Invisible) -->
-            <Label fx:id="penaltyLabel" layoutX="42.0" layoutY="120.0" opacity="0.0" text="-00:45" textFill="RED">
-               <font>
-                  <Font name="Impact" size="40.0" />
-               </font>
-            </Label>
-      
-      <!-- Progress Bar (Top Center) -->
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#333333" height="74.0" layoutX="820.0" layoutY="38.0" stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4.0" width="280.0" />
-      <Label layoutX="865.0" layoutY="45.0" text="Progress:" textFill="#d0c6c6">
-         <font>
-            <Font name="Impact" size="20.0" />
-         </font>
-      </Label>
-      <ProgressBar fx:id="progressBar" layoutX="850.0" layoutY="72.0" prefHeight="25.0" prefWidth="220.0" progress="0.0" style="-fx-accent: #4CAF50;" />
-      <Label fx:id="progressLabel" alignment="CENTER" layoutX="985.0" layoutY="45.0" prefWidth="60.0" text="0%" textFill="#4CAF50">
-         <font>
-            <Font name="Impact" size="20.0" />
-         </font>
-      </Label>
-      
-            <Label fx:id="MKey1" layoutX="426.0" layoutY="249.0" text="M" textFill="WHITE">
-               <font>
-                  <Font size="96.0" />
-               </font>
-            </Label>
-            <Label fx:id="MKey2" layoutX="1106.0" layoutY="442.0" onMouseClicked="#MLetterClicked" prefHeight="147.0" prefWidth="90.0" text="M" textFill="WHITE">
-               <font>
-                  <Font size="77.0" />
-               </font>
-            </Label>
-            <Button fx:id="MKey1B" layoutX="396.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#MLetterClicked" opacity="0.0" prefHeight="196.0" prefWidth="148.0" text="M2" textFill="TRANSPARENT" />
-            <Button fx:id="Mkey2B" layoutX="1094.0" layoutY="453.0" mnemonicParsing="false" onMouseClicked="#MLetterClicked" opacity="0.0" prefHeight="131.0" prefWidth="99.0" text="M" textFill="TRANSPARENT" />
-            <Label id="MShow" fx:id="M1Show" layoutX="600.0" layoutY="895.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Label>
-            <Label id="EShow" fx:id="EShow" layoutX="740.0" layoutY="895.0" prefHeight="98.0" prefWidth="94.0" text="E" textFill="WHITE">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Label>
-            <Label id="M2Show" fx:id="M2Show" layoutX="850.0" layoutY="895.0" prefHeight="98.0" prefWidth="94.0" text="M" textFill="WHITE">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Label>
-            <Label id="OShow" fx:id="OShow" layoutX="990.0" layoutY="878.0" prefHeight="98.0" prefWidth="94.0" text="O" textFill="WHITE">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Label>
-            <Label id="YShow" fx:id="YShow" layoutX="1250.0" layoutY="878.0" prefHeight="98.0" prefWidth="94.0" text="Y" textFill="WHITE">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Label>
-            <Button fx:id="EKey" layoutX="680.0" layoutY="447.0" mnemonicParsing="false" onMouseClicked="#ELetterClicked" opacity="0.0" prefHeight="241.0" prefWidth="148.0" text="E" textFill="TRANSPARENT" />
-            <Label fx:id="EKey1" layoutX="738.0" layoutY="491.0" onMouseClicked="#ELetterClicked" prefHeight="147.0" prefWidth="90.0" text="E" textFill="WHITE">
-               <font>
-                  <Font size="77.0" />
-               </font>
-            </Label>
-            <Label fx:id="errorLabel" layoutX="760.0" layoutY="500.0" prefHeight="50.0" prefWidth="400.0" textFill="RED" visible="false">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="IncorrectLable" layoutX="833.0" layoutY="816.0" prefHeight="84.0" prefWidth="248.0" text="Incorrect!" textFill="RED">
-               <font>
-                  <Font size="57.0" />
-               </font>
-            </Label>
-            <Button fx:id="MKey1B1" layoutX="1326.0" layoutY="93.0" mnemonicParsing="false" onMouseClicked="#RLetterClicked" opacity="0.0" prefHeight="398.0" prefWidth="268.0" text="R" textFill="TRANSPARENT" />
-            <Label id="RShow" fx:id="RShow" layoutX="1120.0" layoutY="878.0" prefHeight="98.0" prefWidth="94.0" text="R" textFill="WHITE">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Label>
-            <Label fx:id="RKey" layoutX="1426.0" layoutY="195.0" onMouseClicked="#RLetterClicked" prefHeight="131.0" prefWidth="59.0" text="R" textFill="WHITE">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Label>
-            <Button fx:id="YKeyB" layoutX="471.0" layoutY="584.0" mnemonicParsing="false" onMouseClicked="#YLetterClicked" opacity="0.0" prefHeight="161.0" prefWidth="148.0" text="Y" textFill="TRANSPARENT" />
-            <Label fx:id="YKey1" layoutX="1260.0" layoutY="609.0" onMouseClicked="#OLetterClicked" prefHeight="108.0" prefWidth="59.0" text="O" textFill="WHITE">
-               <font>
-                  <Font size="55.0" />
-               </font>
-            </Label>
-            <Button fx:id="YKey2B" layoutX="1227.0" layoutY="598.0" mnemonicParsing="false" onMouseClicked="#OLetterClicked" opacity="0.0" prefHeight="125.0" prefWidth="111.0" text="O" textFill="TRANSPARENT" />
-            <Label fx:id="YKey" layoutX="523.0" layoutY="619.0" onMouseClicked="#YLetterClicked" prefHeight="92.0" prefWidth="43.0" text="Y" textFill="WHITE">
-               <font>
-                  <Font size="62.0" />
-               </font>
-            </Label>
-            <Label fx:id="ContinueLabel" layoutX="886.0" layoutY="474.0" prefHeight="84.0" prefWidth="148.0" text="Continue..." textFill="WHITE">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-            <Button fx:id="ContinueButton" layoutX="878.0" layoutY="469.0" mnemonicParsing="false" onMouseClicked="#ContinueToNext" opacity="0.0" prefHeight="340.0" prefWidth="148.0" text="Continue" visible="false" />
-            
-            <!-- HINT (hidden until clicked) -->
-            <AnchorPane fx:id="hintPane" layoutX="700" layoutY="600" prefHeight="300" prefWidth="700" visible="false">
-               <ImageView fx:id="hintNote" fitHeight="900" fitWidth="1000" layoutX="-200" layoutY="-300" preserveRatio="true">
-                  <image>
-                     <Image url="@../../images/hintNote.png" />
-                  </image>
-               </ImageView>
-              
-               <Label id="hintText" fx:id="hintText" layoutX="15" layoutY="-100" prefWidth="650" style="-fx-font-family: 'Bradley Hand'; -fx-text-fill: black; -fx-font-size: 36px;" text="" wrapText="true" />
+        <Group fx:id="boardOverlay">
+            <children>
 
-               <ImageView fx:id="closeHintArrow" fitHeight="30" fitWidth="30" layoutX="-30" layoutY="180" onMouseClicked="#hideHint" pickOnBounds="true" preserveRatio="true" visible="false">
-                  <image>
-                     <Image url="@../../images/ArrowLeft.png" />
-                  </image>
-               </ImageView>
-            </AnchorPane>
-         </children>
-      </Group>
+                <!-- Hint Icon -->
+                <ImageView fx:id="hint" fitHeight="100" fitWidth="100" layoutX="1800" layoutY="125"
+                           onMouseClicked="#showHint" pickOnBounds="true">
+                    <image>
+                        <Image url="@../../images/HintIcon.png" />
+                    </image>
+                </ImageView>
 
-      <!-- Info Button (Bottom Right)-->
-      <Button fx:id="infoButton" layoutX="1800.0" layoutY="980.0" mnemonicParsing="false" onMouseClicked="#onInfo" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 30; -fx-cursor: hand;" text="?" visible="false">
-         <font>
-            <Font name="System Bold" size="30.0" />
-         </font>
-      </Button>
+                <!-- Timer -->
+                <Rectangle arcHeight="5" arcWidth="5" height="74" width="145" layoutX="23" layoutY="38"
+                           stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4"/>
+                <Label fx:id="timerLabel" layoutX="50" layoutY="50" text="00:00" textFill="RED">
+                    <font><Font name="Impact" size="40"/></font>
+                </Label>
 
-      <!-- Intro Overlay -->
-      <Group fx:id="introOverlay">
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" height="768.0" layoutX="235.0" layoutY="162.0" opacity="0.9" strokeType="OUTSIDE" strokeWidth="5.0" width="1412.0">
-               <stroke>
-                  <LinearGradient endX="0.8574821852731591" endY="0.828978622327791" startX="0.16627078384798105" startY="0.2850356294536817">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="0.6787808537483215" green="0.16203702986240387" blue="1.0" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color red="0.18567252159118652" green="0.7894737124443054" blue="0.17543859779834747" />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </stroke>
-               <fill>
-                  <Color red="0.0" green="0.0" blue="0.0" opacity="0.8" />
-               </fill>
-            </Rectangle>
-            <Text fx:id="introText" fill="WHITE" fontSmoothingType="LCD" layoutX="268.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room Two: Fragment Corridor&#10;&#10;Access to this sector is restricted. The path forward requires recalling the correct sequence.&#10;&#10;The system is unstable. Fragments of the code are scattered.&#10;&#10;Reconstruct the sequence to unlock the next door.&#10;&#10;Focus and remember." wrappingWidth="1345.9990234375">
-               <font>
-                  <Font name="American Typewriter" size="38.0" />
-               </font>
-            </Text>
-            <Button fx:id="acknowledgeButton" layoutX="1335.0" layoutY="856.0" mnemonicParsing="false" onMouseClicked="#onAcknowledge" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="ACKNOWLEDGE">
-               <font>
-                  <Font name="Impact" size="30.0" />
-               </font>
-            </Button>
-         </children>
-      </Group>
+                <!-- Penalty -->
+                <Label fx:id="penaltyLabel" layoutX="42" layoutY="120" opacity="0" text="-00:45" textFill="RED">
+                    <font><Font name="Impact" size="40"/></font>
+                </Label>
 
-      <!-- Back Button -->
-      <Button fx:id="Back" layoutX="7.0" layoutY="1010.0" mnemonicParsing="false" onMouseClicked="#onBack" prefHeight="62.0" prefWidth="171.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="BACK">
-         <font>
-            <Font name="Impact" size="30.0" />
-         </font>
-      </Button>
-   </children>
+                <!-- Progress Bar -->
+                <Rectangle arcHeight="5" arcWidth="5" fill="#333" height="74" width="280"
+                           layoutX="820" layoutY="38"
+                           stroke="#d0c6c6" strokeType="INSIDE" strokeWidth="4"/>
+                <Label layoutX="865" layoutY="45" text="Progress:" textFill="#d0c6c6">
+                    <font><Font name="Impact" size="20"/></font>
+                </Label>
+                <ProgressBar fx:id="progressBar" layoutX="850" layoutY="72"
+                             prefHeight="25" prefWidth="220" progress="0"
+                             style="-fx-accent:#4CAF50;"/>
+                <Label fx:id="progressLabel" layoutX="985" layoutY="45" prefWidth="60"
+                       text="0%" textFill="#4CAF50">
+                    <font><Font name="Impact" size="20"/></font>
+                </Label>
+
+                <!--- bottom letters -->
+
+                <Label fx:id="M1Show" layoutX="600" layoutY="895" prefHeight="98" prefWidth="94"
+                       text="M" textFill="WHITE"
+                       style="-fx-font-family:'Times New Roman'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+
+                <Label fx:id="EShow" layoutX="740" layoutY="895" prefHeight="98" prefWidth="94"
+                       text="E" textFill="WHITE"
+                       style="-fx-font-family:'Times New Roman'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+
+                <Label fx:id="M2Show" layoutX="850" layoutY="895" prefHeight="98" prefWidth="94"
+                       text="M" textFill="WHITE"
+                       style="-fx-font-family:'Times New Roman'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+
+                <Label fx:id="OShow" layoutX="990" layoutY="895" prefHeight="98" prefWidth="94"
+                       text="O" textFill="WHITE"
+                       style="-fx-font-family:'Times New Roman'; -fx-font-size:100px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+
+                <Label fx:id="YShow" layoutX="1250" layoutY="895" prefHeight="98" prefWidth="94"
+                       text="Y" textFill="WHITE"
+                       style="-fx-font-family:'Times New Roman'; -fx-font-size:100px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+
+                <Label fx:id="RShow" layoutX="1120" layoutY="895" prefHeight="98" prefWidth="94"
+                       text="R" textFill="WHITE"
+                       style="-fx-font-family:'Times New Roman'; -fx-font-size:100px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+
+                <!--- frag letters -->
+
+                <!-- M -->
+                <Label fx:id="MKey1" layoutX="426" layoutY="249" text="M" textFill="WHITE"
+                       style="-fx-font-family:'Impact'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+                <Button fx:id="MKey1B" layoutX="396" layoutY="217" opacity="0"
+                        onMouseClicked="#MLetterClicked" prefWidth="148" prefHeight="196"/>
+
+                <Label fx:id="MKey2" layoutX="1115" layoutY="470" text="M" textFill="WHITE"
+                       onMouseClicked="#MLetterClicked"
+                       style="-fx-font-family:'Impact'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+                <Button fx:id="Mkey2B" layoutX="1094" layoutY="453" opacity="0"
+                        onMouseClicked="#MLetterClicked" prefWidth="99" prefHeight="131"/>
+
+                <!-- E -->
+                <Label fx:id="EKey1" layoutX="738" layoutY="491" text="E" textFill="WHITE"
+                       onMouseClicked="#ELetterClicked"
+                       style="-fx-font-family:'Impact'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+                <Button fx:id="EKey" layoutX="680" layoutY="447" opacity="0"
+                        onMouseClicked="#ELetterClicked" prefWidth="148" prefHeight="241"/>
+
+                <!-- R -->
+                <Label fx:id="RKey" layoutX="1426" layoutY="195" text="R" textFill="WHITE"
+                       onMouseClicked="#RLetterClicked"
+                       style="-fx-font-family:'Impact'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+                <Button fx:id="MKey1B1" layoutX="1326" layoutY="93" opacity="0"
+                        onMouseClicked="#RLetterClicked" prefWidth="268" prefHeight="398"/>
+
+                <!-- O -->
+                <Label fx:id="YKey1" layoutX="1260" layoutY="600" text="O" textFill="WHITE"
+                       onMouseClicked="#OLetterClicked"
+                       style="-fx-font-family:'Impact'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+                <Button fx:id="YKey2B" layoutX="1227" layoutY="598" opacity="0"
+                        onMouseClicked="#OLetterClicked" prefWidth="111" prefHeight="125"/>
+
+                <!-- Y -->
+                <Label fx:id="YKey" layoutX="523" layoutY="619" text="Y" textFill="WHITE"
+                       onMouseClicked="#YLetterClicked"
+                       style="-fx-font-family:'Impact'; -fx-font-size:70px;
+                              -fx-effect:dropshadow(gaussian,black,10,0,0,0);"/>
+                <Button fx:id="YKeyB" layoutX="471" layoutY="584" opacity="0"
+                        onMouseClicked="#YLetterClicked" prefWidth="148" prefHeight="161"/>
+
+                <!-- Continue -->
+                <Label fx:id="ContinueLabel" layoutX="886" layoutY="474"
+                       text="Continue..." textFill="WHITE">
+                    <font><Font size="30"/></font>
+                </Label>
+                <Button fx:id="ContinueButton" layoutX="878" layoutY="469"
+                        opacity="0" visible="false"
+                        onMouseClicked="#ContinueToNext"
+                        prefWidth="148" prefHeight="340"/>
+                
+                <!-- HINT PANEL remains unchanged -->
+            </children>
+        </Group>
+    </children>
 </AnchorPane>
