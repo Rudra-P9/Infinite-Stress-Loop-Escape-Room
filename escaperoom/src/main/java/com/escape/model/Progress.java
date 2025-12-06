@@ -18,6 +18,11 @@ public class Progress {
     private int questionsAnswered;
     private int hintsUsed;
     private java.util.List<String> hintedPuzzles = new java.util.ArrayList<>();
+    
+    // Save/restore game state fields
+    private String currentRoomID;        // Which room the player is in
+    private long timeRemainingSeconds;   // How much time is left on the timer
+    private String difficulty;           // Game difficulty level
 
     public Progress(UUID progressUUID, UUID userUUID) {
         if (progressUUID == null) progressUUID = UUID.randomUUID();
@@ -107,6 +112,30 @@ public class Progress {
             this.hintedPuzzles = (titles == null) ? new java.util.ArrayList<>() : new java.util.ArrayList<>(titles);
         }
 
+    // Getters and setters for save/restore state
+    public String getCurrentRoomID() {
+        return currentRoomID;
+    }
+
+    public void setCurrentRoomID(String currentRoomID) {
+        this.currentRoomID = currentRoomID;
+    }
+
+    public long getTimeRemainingSeconds() {
+        return timeRemainingSeconds;
+    }
+
+    public void setTimeRemainingSeconds(long timeRemainingSeconds) {
+        this.timeRemainingSeconds = timeRemainingSeconds;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
 
 /**
  * Returns a string representation of the Progress object.

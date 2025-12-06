@@ -13,6 +13,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import com.escape.model.EscapeRoomFacade;
+import com.escape.util.SaveAndQuitHandler;
 
 /**
  * Controller for the Game Intro screen.
@@ -223,6 +224,12 @@ public class ChamberHallController implements Initializable {
             e.printStackTrace();
             System.err.println("Failed to open Inventory: " + e.getMessage());
         }
+    }
+    
+    @FXML
+    private void saveAndExit(MouseEvent event) {
+        System.out.println("EXIT button clicked - initiating save and quit");
+        SaveAndQuitHandler.saveAndQuit();
     }
 
 }

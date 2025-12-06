@@ -363,17 +363,55 @@ public class EscapeRoomFacade {
             System.out.println("ERROR: No user logged in. Cannot save.");
             return;
         }
-        // persist minimal saved data via writer
+        
+        // Ensure progress exists
+        ensureProgressExists();
+        
+        // Capture current game state before saving
+        if (progress != null) {
+            // Save current room
+            if (currentRoom != null) {
+                progress.setCurrentRoomID(currentRoom.getRoomID());
+                System.out.println("[SaveGame] Saving room: " + currentRoom.getRoomID());
+            }
+            
+            // Save time remaining
+            if (timer != null) {
+                long remainingSeconds = timer.getRemainingSeconds();
+                progress.setTimeRemainingSeconds(remainingSeconds);
+                System.out.println("[SaveGame] Saving time remaining: " + remainingSeconds + " seconds");
+            }
+            
+            // Save difficulty
+            if (currentDifficulty != null) {
+                progress.setDifficulty(currentDifficulty.toString());
+                System.out.println("[SaveGame] Saving difficulty: " + currentDifficulty);
+            }
+        }
+        
+        // Save progress with all state
+        saveProgressSnapshot();
+        
+        // persist minimal saved data via writer for backward compatibility
         if (writer == null)
             writer = new GameDataWriter();
         SavedData sd = new SavedData();
         sd.room = (currentRoom == null ? null : currentRoom.getRoomID());
         sd.score = (score == null ? 0 : (int) score.getScore());
-        sd.hints = 0; // not tracked centrally yet
+        sd.hints = (progress == null ? 0 : progress.getHintsUsed());
         sd.puzzle = null;
         writer.saveSavedData(sd);
-        saveProgressSnapshot();
-
+        
+        System.out.println("[SaveGame] Complete game state saved successfully");
+    }
+    
+    /**
+     * Get the current timer instance.
+     * 
+     * @return the timer, or null if not initialized
+     */
+    public Timer getTimer() {
+        return timer;
     }
 
     /**

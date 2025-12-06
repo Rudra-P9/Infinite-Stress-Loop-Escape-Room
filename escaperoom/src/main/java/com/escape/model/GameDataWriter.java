@@ -283,6 +283,11 @@ public class GameDataWriter {
         jo.put("c", Integer.valueOf(p.getStoryPos()));
         jo.put("answered", Integer.valueOf(p.getQuestionsAnswered()));
         jo.put("hints", Integer.valueOf(p.getHintsUsed()));
+        
+        // Save complete game state for save/restore functionality
+        jo.put("currentRoomID", p.getCurrentRoomID());
+        jo.put("timeRemainingSeconds", Long.valueOf(p.getTimeRemainingSeconds()));
+        jo.put("difficulty", p.getDifficulty());
 
         // Upsert by userUUID
         boolean replaced = false;

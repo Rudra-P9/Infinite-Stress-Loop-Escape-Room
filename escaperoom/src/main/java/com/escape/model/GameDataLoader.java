@@ -420,6 +420,16 @@ public class GameDataLoader {
                 p.setStoryPos(c);
                 p.setQuestionsAnswered(answered);
                 p.setHintsUsed(hints);
+                
+                // Restore complete game state
+                String roomID = jo.get("currentRoomID") == null ? null : jo.get("currentRoomID").toString();
+                long timeRemaining = parseLongSafe(jo.get("timeRemainingSeconds"), 0);
+                String diff = jo.get("difficulty") == null ? null : jo.get("difficulty").toString();
+                
+                p.setCurrentRoomID(roomID);
+                p.setTimeRemainingSeconds(timeRemaining);
+                p.setDifficulty(diff);
+                
                 return p;
             }
         }
@@ -434,6 +444,19 @@ public class GameDataLoader {
             if (v instanceof Number)
                 return ((Number) v).intValue();
             return Integer.parseInt(v.toString());
+        } catch (Exception e) {
+            return deflt;
+        }
+    }
+
+    /** Small helper: parse long from JSON value, with default. */
+    private static long parseLongSafe(Object v, long deflt) {
+        if (v == null)
+            return deflt;
+        try {
+            if (v instanceof Number)
+                return ((Number) v).longValue();
+            return Long.parseLong(v.toString());
         } catch (Exception e) {
             return deflt;
         }

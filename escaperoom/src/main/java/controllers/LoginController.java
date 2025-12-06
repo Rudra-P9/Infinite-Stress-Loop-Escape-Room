@@ -56,16 +56,94 @@ public class LoginController implements Initializable {
 
             // Set global user
             App.currentUser = user;
+            
+            // Ensure gameFacade exists
+            if (App.gameFacade == null) {
+                App.gameFacade = new com.escape.model.EscapeRoomFacade();
+            }
+            
             App.gameFacade.setCurrentUser(user);
+            
+            // Restore user's progress to check if they have a saved game
+            App.gameFacade.restoreProgressForCurrentUser();
+            com.escape.model.Progress progress = App.gameFacade.getProgress();
+            
+            System.out.println("[Login] User logged in: " + username);
+            if (progress != null) {
+                System.out.println("[Login] Progress found - StoryPos: " + progress.getStoryPos() 
+                    + ", Room: " + progress.getCurrentRoomID() 
+                    + ", Difficulty: " + progress.getDifficulty()
+                    + ", TimeRemaining: " + progress.getTimeRemainingSeconds());
+            } else {
+                System.out.println("[Login] No progress found for user");
+            }
 
-            // Navigate to DifficultyMenu after 1 second
+            // Navigate after 1 second
             javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
                     javafx.util.Duration.seconds(1));
             pause.setOnFinished(e -> {
                 try {
-                    App.setRoot("DifficultyMenu");
+                    // Check if user has saved progress
+                    // Consider saved game if: has room ID, difficulty, or non-default time
+                    // (Don't rely solely on storyPos since user might save before solving puzzles)
+                    boolean hasSavedGame = progress != null && (
+                        (progress.getCurrentRoomID() != null && !progress.getCurrentRoomID().isEmpty()) ||
+                        (progress.getDifficulty() != null && !progress.getDifficulty().isEmpty()) ||
+                        progress.getTimeRemainingSeconds() > 0
+                    );
+                    
+                    System.out.println("[Login] hasSavedGame check: " + hasSavedGame);
+                    
+                    if (hasSavedGame) {
+                        // User has saved game - restore everything and skip difficulty menu
+                        System.out.println("[Login] *** RESTORING SAVED GAME ***");
+                        System.out.println("  Story Position: " + progress.getStoryPos());
+                        System.out.println("  Room: " + progress.getCurrentRoomID());
+                        System.out.println("  Time Remaining: " + progress.getTimeRemainingSeconds() + " seconds");
+                        System.out.println("  Difficulty: " + progress.getDifficulty());
+                        
+                        // Restore difficulty from saved progress
+                        String savedDifficulty = progress.getDifficulty();
+                        if (savedDifficulty != null && !savedDifficulty.isEmpty()) {
+                            try {
+                                App.currentDifficulty = com.escape.model.Difficulty.valueOf(savedDifficulty);
+                            } catch (IllegalArgumentException ex) {
+                                System.err.println("[Login] Invalid difficulty: " + savedDifficulty);
+                                App.currentDifficulty = com.escape.model.Difficulty.EASY;
+                            }
+                        } else {
+                            App.currentDifficulty = com.escape.model.Difficulty.EASY;
+                        }
+                        
+                        // Start game with saved difficulty
+                        App.gameFacade.startGame(App.currentDifficulty);
+                        
+                        // Restore timer to saved time
+                        if (App.gameFacade.getTimer() != null && progress.getTimeRemainingSeconds() > 0) {
+                            App.gameFacade.getTimer().setRemainingSeconds(progress.getTimeRemainingSeconds());
+                            App.gameFacade.getTimer().start();
+                            System.out.println("[Login] Timer restored to " + progress.getTimeRemainingSeconds() + " seconds");
+                        }
+                        
+                        // Navigate to the saved room or ChamberHall if no specific room saved
+                        String savedRoom = progress.getCurrentRoomID();
+                        if (savedRoom != null && !savedRoom.isEmpty()) {
+                            // Map room IDs to their FXML files
+                            String fxmlFile = mapRoomIDToFXML(savedRoom);
+                            System.out.println("[Login] Navigating to saved room: " + fxmlFile);
+                            App.setRoot(fxmlFile);
+                        } else {
+                            System.out.println("[Login] No saved room, going to ChamberHall");
+                            App.setRoot("ChamberHall");
+                        }
+                    } else {
+                        // No saved game - new game, go to difficulty selection
+                        System.out.println("[Login] No saved game found - going to difficulty selection");
+                        App.setRoot("DifficultyMenu");
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                    System.err.println("[Login] Navigation failed: " + ex.getMessage());
                 }
             });
             pause.play();
@@ -85,6 +163,26 @@ public class LoginController implements Initializable {
                         }
                     },
                     2000);
+        }
+    }
+    
+    /**
+     * Maps room IDs to their corresponding FXML file names.
+     * Extend this method as you add more rooms to your game.
+     */
+    private String mapRoomIDToFXML(String roomID) {
+        if (roomID == null) return "ChamberHall";
+        
+        switch (roomID.toLowerCase()) {
+            case "room1":
+            case "room2":
+            case "room3":
+            case "final":
+                // For all saved rooms, return to ChamberHall (Calibration Hall)
+                return "ChamberHall";
+            default:
+                System.out.println("[Login] Unknown room ID: " + roomID + ", defaulting to ChamberHall");
+                return "ChamberHall";
         }
     }
 

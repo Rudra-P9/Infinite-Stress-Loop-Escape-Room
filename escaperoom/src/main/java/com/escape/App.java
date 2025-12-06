@@ -41,7 +41,7 @@ public class App extends Application {
         }
 
         // Load the initial view wrapped in the scaler
-        Parent root = loadFXML("Room3Puzzle5");
+        Parent root = loadFXML("MainScreen");
 
         // Create scene with the scalable root
         scene = new Scene(root, 640, 480);

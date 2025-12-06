@@ -95,6 +95,25 @@ public class Timer {
         return running;
     }
 
+    /**
+     * Sets the remaining time directly (used when restoring from save).
+     * Calculates the elapsed time and updates internal state accordingly.
+     * @param seconds the number of seconds remaining
+     */
+    public synchronized void setRemainingSeconds(long seconds) {
+        if (seconds < 0) seconds = 0;
+        if (seconds > initialSeconds) seconds = initialSeconds;
+        
+        // Calculate elapsed time from remaining time
+        long elapsedSeconds = initialSeconds - seconds;
+        this.accumulatedElapsedNs = elapsedSeconds * 1_000_000_000L;
+        
+        // Reset the start time if running
+        if (running) {
+            this.startedAtNs = System.nanoTime();
+        }
+    }
+
     public synchronized void reduceTime(int seconds) {
         if (seconds <= 0)
             return;

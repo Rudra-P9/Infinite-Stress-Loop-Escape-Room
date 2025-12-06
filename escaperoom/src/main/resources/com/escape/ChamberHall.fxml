@@ -131,7 +131,7 @@
       </ImageView>
 
       <!-- Exit Button -->
-      <ImageView fx:id="EXIT" fitHeight="89.0" fitWidth="84.0" layoutX="1812.0" layoutY="17.0" onMouseClicked="#openInventory" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+      <ImageView fx:id="EXIT" fitHeight="89.0" fitWidth="84.0" layoutX="1812.0" layoutY="17.0" onMouseClicked="#saveAndExit" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
          <image>
             <Image url="@../../images/exit.png" />
          </image>
