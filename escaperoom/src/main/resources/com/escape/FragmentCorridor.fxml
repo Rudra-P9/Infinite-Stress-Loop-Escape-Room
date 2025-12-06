@@ -29,6 +29,47 @@
             </image>
         </ImageView>
 
+        <Group fx:id="introOverlay">
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="768.0" layoutX="235.0" layoutY="162.0" opacity="0.9" strokeType="OUTSIDE" strokeWidth="5.0" width="1412.0">
+                    <stroke>
+                        <LinearGradient endX="0.8574821852731591" endY="0.828978622327791" startX="0.16627078384798105" startY="0.2850356294536817">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.6787808537483215" green="0.16203702986240387" blue="1.0" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="0.18567252159118652" green="0.7894737124443054" blue="0.17543859779834747" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </stroke>
+                    <fill>
+                        <Color red="0.0" green="0.0" blue="0.0" opacity="0.8" />
+                    </fill>
+                </Rectangle>
+                <Text fill="WHITE" fontSmoothingType="LCD" layoutX="268.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fragment Corridor&#10;&#10;You step into a corridor lined with fractured screens, each one flickering with partial data streams. The walls pulse with a faint hum - the system is trying to remember itself.&#10;&#10;In the center, a console displays six glowing symbols. They appear random at first, but patterns emerge from the chaos. The facility's memory is fragmented, but not lost.&#10;&#10;To proceed, you must restore the sequence. Touch the symbols in the correct order to rebuild the pathway forward.&#10;&#10;Remember: the facility remembers everything. The question is whether you can remember too." wrappingWidth="1345.9990234375">
+                    <font>
+                        <Font name="American Typewriter" size="38.0" />
+                    </font>
+                </Text>
+                <Button fx:id="acknowledgeButton" layoutX="1335.0" layoutY="856.0" mnemonicParsing="false" onMouseClicked="#onAcknowledge" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="ACKNOWLEDGE">
+                    <font>
+                        <Font name="Impact" size="30.0" />
+                    </font>
+                </Button>
+                <Button fx:id="infoButton" layoutX="268.0" layoutY="856.0" mnemonicParsing="false" onMouseClicked="#onInfo" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-border-color: white; -fx-border-width: 2px; -fx-cursor: hand;" text="INFO" visible="false">
+                    <font>
+                        <Font name="Impact" size="30.0" />
+                    </font>
+                </Button>
+            </children>
+        </Group>
+
         <Group fx:id="boardOverlay">
             <children>
 
