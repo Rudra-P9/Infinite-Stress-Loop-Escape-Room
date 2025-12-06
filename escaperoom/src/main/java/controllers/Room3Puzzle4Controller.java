@@ -102,7 +102,7 @@ public class Room3Puzzle4Controller implements Initializable {
         }
 
         // Set hint text
-        String hint = "If there are six apples and you take away four, how many do you have?";
+        String hint = "Every shape has a secret - start with its edges.";
         if (hintTextLabel != null) {
             hintTextLabel.setText(hint);
         }
