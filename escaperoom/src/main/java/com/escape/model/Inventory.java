@@ -93,4 +93,14 @@ public class Inventory {
     public int getItemCount() {
         return items.size();
     }
+
+    /**
+     * Clears all items from the inventory.
+     */
+    public void clearItems() {
+        if (items != null) {
+            items.clear();
+            System.out.println("[Inventory] All items cleared");
+        }
+    }
 }

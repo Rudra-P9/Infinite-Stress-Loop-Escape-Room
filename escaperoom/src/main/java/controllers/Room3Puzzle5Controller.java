@@ -146,60 +146,18 @@ public class Room3Puzzle5Controller implements Initializable {
 
     /**
      * Handle the "Play" button click.
-     * Speaks the riddle clues for the word MIRROR.
+     * Plays the varen.wav audio file using AudioController.
      */
     @FXML
     private void onPlayB(MouseEvent event) {
-        System.out.println("Play button clicked - speaking puzzle text...");
+        System.out.println("Play button clicked - playing varen audio...");
 
         // Stop any existing audio first
         stopAudio();
 
-        // Reset the stop flag to allow new audio to play
-        com.escape.model.Speek.resetStopFlag();
-
-        // Run TTS in background thread to avoid blocking UI
-        audioThread = new Thread(() -> {
-            try {
-                // Speak the riddle - check for interruption before each speak call
-                if (Thread.interrupted())
-                    return;
-                com.escape.model.Speek.speak("Look into what reflects you.");
-                if (Thread.interrupted())
-                    return;
-                Thread.sleep(1200);
-
-                if (Thread.interrupted())
-                    return;
-                com.escape.model.Speek.speak("Its name begins with, M, then, I.");
-                if (Thread.interrupted())
-                    return;
-                Thread.sleep(1500);
-
-                if (Thread.interrupted())
-                    return;
-                com.escape.model.Speek.speak("In the center, two identical letters stand side by side.");
-                if (Thread.interrupted())
-                    return;
-                Thread.sleep(1500);
-
-                if (Thread.interrupted())
-                    return;
-                com.escape.model.Speek.speak("It ends with, O, then, R.");
-                if (Thread.interrupted())
-                    return;
-                Thread.sleep(1500);
-
-                if (Thread.interrupted())
-                    return;
-                com.escape.model.Speek.speak("Put the pieces together to find the word.");
-                Thread.sleep(500);
-
-            } catch (InterruptedException e) {
-                System.out.println("Audio thread interrupted - stopping playback");
-            }
-        });
-        audioThread.start();
+        // Play the varen audio file using AudioController
+        AudioController audio = AudioController.getInstance();
+        audio.playSoundEffect("audio/varenprojectescapeaudio.wav");
     }
 
     /**

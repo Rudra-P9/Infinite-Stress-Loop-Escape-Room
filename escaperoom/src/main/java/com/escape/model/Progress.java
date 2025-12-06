@@ -137,6 +137,21 @@ public class Progress {
         this.difficulty = difficulty;
     }
 
+    /**
+     * Resets all progress to initial state (used when game is completed).
+     * Clears story position, questions answered, hints used, room, timer, and difficulty.
+     */
+    public void reset() {
+        this.storyPos = 0;
+        this.questionsAnswered = 0;
+        this.hintsUsed = 0;
+        this.hintedPuzzles.clear();
+        this.currentRoomID = null;
+        this.timeRemainingSeconds = 0;
+        this.difficulty = null;
+        System.out.println("[Progress] Reset to initial state");
+    }
+
 /**
  * Returns a string representation of the Progress object.
  * Includes the completion percentage, number of hints used, and number of puzzles solved.

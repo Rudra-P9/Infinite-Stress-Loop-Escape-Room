@@ -18,6 +18,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
+/**
+ * Controller for the final puzzle room
+ * @author Dylan Diaz
+ */
+
 public class FinalPuzzleController {
 
     @FXML private ImageView bgImage;
@@ -345,8 +350,20 @@ public class FinalPuzzleController {
 
     /** FINAL PUZZLE END GAME */
     private void onCompleteFinalPuzzle() {
+        System.out.println("[FinalPuzzle] Puzzle complete! Player has escaped!");
+        
         if (App.gameFacade != null) {
-            App.gameFacade.endGame();
+            // End the game first (this calculates final score and updates leaderboard)
+            try {
+                App.gameFacade.endGame();
+                System.out.println("[FinalPuzzle] Game ended, score recorded");
+            } catch (Exception e) {
+                System.err.println("[FinalPuzzle] Error ending game: " + e.getMessage());
+            }
+            
+            // Now reset the save data so they can play again
+            App.gameFacade.resetGameState();
+            System.out.println("[FinalPuzzle] Save data reset - user can start a new game");
         }
     }
 

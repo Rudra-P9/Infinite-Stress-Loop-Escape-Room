@@ -398,6 +398,58 @@ public class EscapeRoomFacade {
             System.out.println("[SaveGame] User inventory saved (collected letters: " + 
                 (currentUser.getCollectedLetters() != null ? currentUser.getCollectedLetters().size() : 0) + ")");
         }
+    }
+
+    /**
+     * Resets the game state for the current user after completing the game.
+     * Clears progress, inventory, and saves the reset state.
+     * This allows the user to start a completely fresh game.
+     */
+    public void resetGameState() {
+        ensureCore();
+        
+        if (!isLoggedIn()) {
+            System.out.println("[ResetGameState] No user logged in");
+            return;
+        }
+        
+        System.out.println("[ResetGameState] Resetting game state for user: " + currentUser.getUsername());
+        
+        // Reset progress
+        if (progress != null) {
+            progress.reset();
+            System.out.println("[ResetGameState] Progress reset");
+        } else {
+            // Create fresh progress if it doesn't exist
+            progress = new Progress(java.util.UUID.randomUUID(), currentUser.userID);
+            System.out.println("[ResetGameState] New progress created");
+        }
+        
+        // Reset user's inventory (clear collected letters)
+        if (currentUser != null) {
+            currentUser.resetGameState();
+            System.out.println("[ResetGameState] User inventory cleared");
+        }
+        
+        // Save the reset state to persistence
+        try {
+            // Save reset progress
+            if (writer != null && progress != null) {
+                writer.saveProgress(progress);
+                System.out.println("[ResetGameState] Reset progress saved to playerData.json");
+            }
+            
+            // Save user with cleared inventory
+            if (writer != null && currentUser != null) {
+                writer.saveUser(currentUser);
+                System.out.println("[ResetGameState] User with cleared inventory saved");
+            }
+            
+            System.out.println("[ResetGameState] Game state successfully reset and saved");
+        } catch (Exception e) {
+            System.err.println("[ResetGameState] Failed to save reset state: " + e.getMessage());
+            e.printStackTrace();
+        }
         
         // persist minimal saved data via writer for backward compatibility
         if (writer == null)
