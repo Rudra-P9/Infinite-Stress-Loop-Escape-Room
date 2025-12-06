@@ -1,22 +1,22 @@
 package controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import com.escape.App;
+
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.ProgressBar;
-import javafx.animation.FadeTransition;
 import javafx.util.Duration;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.escape.App;
 
 /**
  * Controller for Room3 Puzzle 5 (Frequency Spectrum).
@@ -110,7 +110,7 @@ public class Room3Puzzle5Controller implements Initializable {
         }
 
         // Set hint text
-        String hint = "Listen carefully to the audio clip. The answer is a word that describes what you see when you look at yourself.";
+        String hint = "Start at the start of every word and then assemble";
         if (hintTextLabelB != null) {
             hintTextLabelB.setText(hint);
         }
