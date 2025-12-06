@@ -12,7 +12,7 @@
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.FragmentCorridorRoom2Controller"
+            fx:controller="controllers.FragmentCorridorRoomTwoController"
             stylesheets="@/styles.css">
    <children>
       <ImageView fitHeight="1307.0" fitWidth="1981.0" layoutX="-24.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
