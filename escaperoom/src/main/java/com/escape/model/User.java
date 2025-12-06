@@ -180,4 +180,16 @@ public class User {
     public void setScore(int score) {
         this.score = score;
     }
+
+    /**
+     * Resets the user's game state when they complete the game.
+     * Clears collected letters from inventory.
+     */
+    public void resetGameState() {
+        if (this.inventory != null) {
+            // Clear all collected letters
+            this.inventory.clearItems();
+            System.out.println("[User] Inventory cleared");
+        }
+    }
 }
