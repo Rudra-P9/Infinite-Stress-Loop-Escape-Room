@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 /**
  * JavaFX App
  * Handles the main application logic and state management.
+ * 
  * @author Rudra Patel
  */
 public class App extends Application {
@@ -41,7 +42,7 @@ public class App extends Application {
         }
 
         // Load the initial view wrapped in the scaler
-        Parent root = loadFXML("Room3Puzzle5");
+        Parent root = loadFXML("MainScreen");
 
         // Create scene with the scalable root
         scene = new Scene(root, 640, 480);

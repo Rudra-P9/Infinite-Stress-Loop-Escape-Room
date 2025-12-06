@@ -998,4 +998,36 @@ public class EscapeRoomFacade {
         return loader.getLeaderboard();
     }
 
+    /**
+     * Checks if Door 1 (Room One) should be locked.
+     * Door 1 is locked when the player has collected letter 'E' (Room One
+     * complete).
+     * 
+     * @return true if player has letter 'E', false otherwise
+     */
+    public boolean isDoorOneLocked() {
+        return hasItem("E");
+    }
+
+    /**
+     * Checks if Door 2 (Fragment Corridor) should be locked.
+     * Door 2 is locked when the player has collected both letters 'A' and 'M'.
+     * 
+     * @return true if player has both 'A' and 'M', false otherwise
+     */
+    public boolean isDoorTwoLocked() {
+        return hasItem("A") && hasItem("M");
+    }
+
+    /**
+     * Checks if the player can access the Final Puzzle.
+     * Requires all 5 letters to be collected: R, E, A, L, M.
+     * 
+     * @return true if all 5 letters are collected, false otherwise
+     */
+    public boolean canAccessFinalPuzzle() {
+        return hasItem("R") && hasItem("E") && hasItem("A") &&
+                hasItem("L") && hasItem("M");
+    }
+
 }
