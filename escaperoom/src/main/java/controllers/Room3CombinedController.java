@@ -18,6 +18,7 @@ import com.escape.App;
  * Controller for the Room 3 main menu.
  * Handles showing and hiding the intro dialog and opening the three vault
  * hotspots.
+ * 
  * @author Rudra Patel
  * @author Kirtan Patel
  */
@@ -86,6 +87,9 @@ public class Room3CombinedController implements Initializable {
         System.out.println(" coreBtn = " + (coreBtn != null));
         System.out.println(" hotspotGroup = " + (hotspotGroup != null));
         System.out.println(" dialog visible = " + (dialogRoot != null && dialogRoot.isVisible()));
+
+        // Update core button state based on collected letters
+        updateCoreButtonState();
     }
 
     /**
@@ -166,6 +170,10 @@ public class Room3CombinedController implements Initializable {
      */
     @FXML
     private void onCoreClicked(MouseEvent event) {
+        if (facade != null && !facade.canAccessFinalPuzzle()) {
+            System.out.println("Core locked - collect all 5 letters first (R, E, A, L, M)");
+            return;
+        }
         System.out.println("Core clicked - open final puzzle");
         System.out.println("Event source: " + event.getSource());
         System.out.println("Event target: " + event.getTarget());
@@ -218,6 +226,24 @@ public class Room3CombinedController implements Initializable {
             int percentage = facade.getProgressPercentage();
             progressBar.setProgress(percentage / 100.0);
             progressLabel.setText(percentage + "%");
+        }
+    }
+
+    /**
+     * Updates the visual state of the core button based on collected letters.
+     * Core button is disabled until all 5 letters are collected.
+     */
+    private void updateCoreButtonState() {
+        if (facade == null)
+            return;
+
+        // Core button - requires all 5 letters (R, E, A, L, M)
+        if (coreBtn != null) {
+            boolean canAccess = facade.canAccessFinalPuzzle();
+            coreBtn.setDisable(!canAccess);
+            if (!canAccess) {
+                coreBtn.setStyle("-fx-opacity: 0.5;");
+            }
         }
     }
 

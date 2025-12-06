@@ -96,6 +96,8 @@ public class ChamberHallController implements Initializable {
             System.err.println("Error initializing ChamberHallController: " + e.getMessage());
         }
 
+        // Update door lock states based on collected letters
+        updateDoorLockStates();
     }
 
     private void startTimerUpdate() {
@@ -121,7 +123,7 @@ public class ChamberHallController implements Initializable {
                 timerLabel.setTextFill(javafx.scene.paint.Color.LIME); // Or whatever default color
             }
         }
-        
+
         // Update progress bar
         updateProgress();
     }
@@ -132,6 +134,40 @@ public class ChamberHallController implements Initializable {
             progressBar.setProgress(percentage / 100.0);
             progressLabel.setText(percentage + "%");
         }
+    }
+
+    /**
+     * Updates the visual state of doors based on collected letters.
+     * Locked doors are disabled and styled with reduced opacity.
+     */
+    private void updateDoorLockStates() {
+        if (facade == null)
+            return;
+
+        // Door 1 - Lock when player has letter 'E' (Room One complete)
+        if (door1Button != null) {
+            boolean locked = facade.isDoorOneLocked();
+            // Don't disable so hover events still work
+            if (locked) {
+                door1Button.setStyle("-fx-cursor: default; -fx-background-color: transparent;");
+            } else {
+                door1Button.setStyle("-fx-cursor: hand; -fx-background-color: transparent;");
+            }
+        }
+
+        // Door 2 - Lock when player has letters 'A' and 'M' (Fragment Corridor
+        // complete)
+        if (door2Button != null) {
+            boolean locked = facade.isDoorTwoLocked();
+            // Don't disable so hover events still work
+            if (locked) {
+                door2Button.setStyle("-fx-cursor: default; -fx-background-color: transparent;");
+            } else {
+                door2Button.setStyle("-fx-cursor: hand; -fx-background-color: transparent;");
+            }
+        }
+
+        // Door 3 - Always accessible (leads to Room3Combined)
     }
 
     @FXML
@@ -164,16 +200,27 @@ public class ChamberHallController implements Initializable {
 
     @FXML
     private void handleDoorHover(MouseEvent event) {
-        if (doorNameLabel == null)
-            return;
+        Button source = (Button) event.getSource();
+        String doorName = "";
 
-        Object source = event.getSource();
         if (source == door1Button) {
-            doorNameLabel.setText("CALIBRATION HALL");
+            if (facade != null && facade.isDoorOneLocked()) {
+                doorName = "Room Completed";
+            } else {
+                doorName = "Calibration Hall";
+            }
         } else if (source == door2Button) {
-            doorNameLabel.setText("FRAGMENT CORRIDOR");
+            if (facade != null && facade.isDoorTwoLocked()) {
+                doorName = "Room Completed";
+            } else {
+                doorName = "Fragment Corridor";
+            }
         } else if (source == door3Button) {
-            doorNameLabel.setText("SYNC CORE");
+            doorName = "Sync Core";
+        }
+
+        if (doorNameLabel != null) {
+            doorNameLabel.setText(doorName);
         }
     }
 
@@ -186,6 +233,10 @@ public class ChamberHallController implements Initializable {
 
     @FXML
     private void handleDoor1(MouseEvent event) {
+        if (facade != null && facade.isDoorOneLocked()) {
+            System.out.println("Door 1 is locked - Room One already completed");
+            return;
+        }
         try {
             com.escape.App.setRoot("RoomOneBoard");
         } catch (java.io.IOException e) {
@@ -196,6 +247,10 @@ public class ChamberHallController implements Initializable {
 
     @FXML
     private void handleDoor2(MouseEvent event) {
+        if (facade != null && facade.isDoorTwoLocked()) {
+            System.out.println("Door 2 is locked - Fragment Corridor already completed");
+            return;
+        }
         System.out.println("Door 2 clicked");
         try {
             com.escape.App.setRoot("FragmentCorridor");
